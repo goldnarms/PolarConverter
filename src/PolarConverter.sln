@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.20623.1 VSUPREVIEW
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "PolarConverter.BLL\PolarConverter.BLL.csproj", "{B22CD80D-5630-44A6-87F4-1CBB8AD31275}"
 EndProject
@@ -19,28 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Win", "Polar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Web", "PolarConverter.Web\PolarConverter.Web.csproj", "{4020A9EF-5541-4E8B-8E18-245B98C40236}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSWeb", "PolarConverter.JSWeb\PolarConverter.JSWeb.csproj", "{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://giveback.tfspreview.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = PolarConverter.BLL\\PolarConverter.BLL.csproj
-		SccProjectName1 = PolarConverter.BLL
-		SccLocalPath1 = PolarConverter.BLL
-		SccProjectUniqueName2 = PolarConverter.MVC\\PolarConverter.MVC.csproj
-		SccProjectName2 = PolarConverter.MVC
-		SccLocalPath2 = PolarConverter.MVC
-		SccProjectUniqueName3 = PolarConverter.Test\\PolarConverter.Test.csproj
-		SccProjectName3 = PolarConverter.Test
-		SccLocalPath3 = PolarConverter.Test
-		SccProjectUniqueName4 = PolarConverter.Win\\PolarConverter.Win.csproj
-		SccProjectName4 = PolarConverter.Win
-		SccLocalPath4 = PolarConverter.Win
-		SccProjectUniqueName5 = PolarConverter.Web\\PolarConverter.Web.csproj
-		SccProjectName5 = PolarConverter.Web
-		SccLocalPath5 = PolarConverter.Web
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -119,6 +100,16 @@ Global
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|ARM.ActiveCfg = Release|Any CPU
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|x64.ActiveCfg = Release|Any CPU
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|x86.ActiveCfg = Release|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x64.ActiveCfg = Release|Any CPU
+		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
