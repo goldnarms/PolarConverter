@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "PolarConverter";
+}
+@section scripts {
+    <style>
+        html .fb_share_button
+        {
+            color: #fff;
+            width: 40px;
+            display: -moz-inline-block;
+            display: inline-block;
+            padding: 0 20px 0 5px;
+            height: 16px;
+            margin-top: 0;
+            border: 1px solid #295582;
+            background: #3b5998 url(http://static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat top right;
+        }
+
+            html .fb_share_button:hover
+                color: #aaa;
+                border-color: #295582;
+                background: #3b5998 url(http://static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat top right;
+                text-decoration: none;
+            }
+
+        html a .fb_share_button
+        {
+            color: #fff;
+        }
+    </style>
+    <script>
+        function supportMultiple() {
+            //do I support input type=file/multiple
+            var el = document.createElement("input");
+
+            return ("multiple" in el);
+        }
+
+        $(function () {
+            if (supportMultiple()) {
+                document.querySelector("#multipleFileLabel").setAttribute("style", "");
+            }
+        });
+    </script>
+
+}
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <br />
+    <br />
+    <br />
+    <span id="multipleFileLabel" style="display: none">Multiple </span>
+    <span>File:</span><input type="file" name="files" multiple="multiple">
+
+    <input type="submit">
+}

@@ -1,0 +1,82 @@
+﻿@model PolarConverter.MVC.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "PolarConverter";
+}
+<div class="row" data-ng-app="myApp" data-ng-controller="FrontPageController">
+    <div class="large-10 columns">
+        <input type="filepicker" name="myName" />
+    </div>
+    <div class="large-2 columns">
+        <div class="infobox">
+            <p>
+                <b>
+                    PolarConverter converts your .xml, .hrm and .gpx files from your Polar&reg; watch
+                    to
+                    .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.
+                </b>
+            </p>
+            <p>
+                In order to get your .hrm and .gpx files you need to have a Polar&reg; watch that
+                is compatible with Polar Pro Trainer&trade;. Export your files from the watch to
+                your computer with Polar Pro Trainer&trade;, and use those files to convert with
+                PolarConverter. You'll usually find your .hrm and .gpx files under C:\Users\{user}\AppData\Local\VirtualStore\Program
+                Files (x86)\Polar\Polar ProTrainer\{polar user}. Xml files can be downloaded from
+                your account at <a href="https://www.polarpersonaltrainer.com/" target="_blank">https://www.polarpersonaltrainer.com/.</a>
+            </p>
+            <p>
+                Visit Polar's homepage to see a list of Polar Pro Trainer&trade; compatible Polar&reg;
+                products:<br />
+                <a href="http://www.polar.fi/en/support/Polar_Products_Compatible_with_Polar_ProTrainer_5?product_id=446&category=faqs"
+                   target="_blank">Polar Pro Trainer&trade; compatible watches.</a>
+            </p>
+            <p>
+                Connect to your Dropbox account and place your .hrm and .gpx in the Apps/PolarConverter
+                folder in your Dropbox folder.
+            </p>
+            <p>
+                Any questions or comments?<br />
+                <a href="mailto:polarconverter@gmail.com">Contact me</a><br />
+            </p>
+            <a rel="nofollow" href="http://www.facebook.com/share.php?u=http://www.facebook.com/sharer/sharer.php?u=http://polarconverter.azurewebsites.net/&t=Convert%20your%20Polar%20files%20with%20PolarConverter"
+               class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration: none;">
+                Share
+            </a><br />
+            @Html.ActionLink("DONATE", "Donate", null, new { @class = "convertknappliten", style = "width: 200px; margin-left:0px" })<br />
+            @Html.Partial("_AdSense")
+            <br />
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+    <script src="~/js/pcFilePicker.min.js"></script>
+@*    <script type="text/javascript" src="~/scripts/polarconverter.js"></script>
+    <style>
+        html .fb_share_button
+        {
+            color: #fff;
+            width: 40px;
+            display: -moz-inline-block;
+            display: inline-block;
+            padding: 0 20px 0 5px;
+            height: 16px;
+            margin-top: 0;
+            border: 1px solid #295582;
+            background: #3b5998 url(http://static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat top right;
+        }
+
+            html .fb_share_button:hover
+            {
+                color: #aaa;
+                border-color: #295582;
+                background: #3b5998 url(http://static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat top right;
+                text-decoration: none;
+            }
+
+        html a .fb_share_button
+        {
+            color: #fff;
+        }
+    </style>*@
+}
