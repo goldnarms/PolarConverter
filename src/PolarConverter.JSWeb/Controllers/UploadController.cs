@@ -1,35 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
 namespace PolarConverter.JSWeb.Controllers
 {
-    public class HomeController : Controller
+    public class UploadController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        public HttpResponseMessage Upload()
+        public HttpResponseMessage Index()
         {
             // Get a reference to the file that our jQuery sent.  Even with multiple files, they will all be their own request and be the 0 index
             HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
@@ -49,5 +32,28 @@ namespace PolarConverter.JSWeb.Controllers
             // For compatibility with IE's "done" event we need to return a result as well as setting the context.response
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
-    }
+
+        //
+        // GET: /Upload/
+        //[HttpPost]
+        //public ContentResult Index(HttpPostedFileBase file)
+        //{
+        //    if (file.ContentLength > 0)
+        //    {
+        //        var filename = Path.GetFileName(file.FileName);
+        //        return CreateContentResult(filename);
+        //    }
+        //    return CreateContentResult("File invalid or empty.");
+        //}
+
+        //private static ContentResult CreateContentResult(string content)
+        //{
+        //    return new ContentResult
+        //    {
+        //        Content = content,
+        //        ContentEncoding = Encoding.UTF8,
+        //        ContentType = "text/plain"
+        //    };
+        //}
+	}
 }

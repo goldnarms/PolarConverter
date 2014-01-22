@@ -91,9 +91,6 @@ namespace PolarConverter.JSWeb {
                 clientFiles.Scripts + "jquery.fileupload-angular.js")
             );
             bundles.Add(new StyleBundle("~/bundles/fileupload/angularjs/css").Include(
-                //clientFiles.Styles + "bootstrap/bootstrap.debug.css",
-                //clientFiles.Styles + "bootstrap/bootstrap-responsive.debug.css",
-                //clientFiles.Styles + "bootstrap/bootstrap-image-gallery.debug.css",
                 clientFiles.Styles + "jquery.fileupload-ui.css")
             );
 

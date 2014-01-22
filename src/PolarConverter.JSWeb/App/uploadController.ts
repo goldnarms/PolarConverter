@@ -11,7 +11,7 @@ module PolarConverter {
         static $inject = ["$scope", "$http", "$filter", "$window"];
 
         constructor(private $scope: IUploadScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService) {
-            var url = "/Backload/UploadHandler";
+            var url = "/api/upload";
             this.$scope.options = {
                 url: url
             };

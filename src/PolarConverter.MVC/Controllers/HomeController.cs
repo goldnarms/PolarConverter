@@ -224,10 +224,5 @@ namespace PolarConverter.MVC.Controllers
         {
             return View();
         }
-
-        public ActionResult NgHome()
-        {
-            return View();
-        }
     }
 }
