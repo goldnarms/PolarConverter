@@ -9,8 +9,8 @@
 </div>
 
 <div class="row" data-ng-app="polarApp">
-    <div class="col-md-12">
-        <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-ng-controller="uploadCtrl" data-file-upload="options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+    <div class="col-md-12" data-ng-controller="uploadCtrl as uc">
+        <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
             <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -81,6 +81,10 @@
                 </tr>
             </table>
         </form>
+        
+        <ul><li data-ng-repeat="file in uc.uploadedFiles">
+                {{ file.name }}
+            </li></ul>
     </div>
 </div>
 <div class="row">

@@ -1,31 +1,50 @@
+/// <reference path="_all.ts" />
 module PolarConverter {
     'use strict';
-    export interface IUploadScope extends ng.IScope {
-        options: any;
-        loadingFiles: boolean;
-        queue: any[];
-    }
 
     export class UploadController {
         public injection(): any[] { return ["$scope", "$http", "$filter", "$window", UploadController]; }
         static $inject = ["$scope", "$http", "$filter", "$window"];
+        public options: any;
+        public loadingFiles: boolean;
+        public queue: any[];
+        public uploadedFiles: PolarConverter.PolarFile[];
 
-        constructor(private $scope: IUploadScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService) {
+            this.uploadedFiles = [];
             var url = "/api/upload";
-            this.$scope.options = {
-                url: url
+            this.options = {
+                acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
+                url: url,
+                dataType: 'json'
             };
-            $scope.loadingFiles = true;
-            $http.get(url)
+            this.loadingFiles = true;
+            this.$http.get(url)
                 .then(
                 (response) => {
-                    $scope.loadingFiles = false;
-                    $scope.queue = response.data.files || [];
+                    this.$log.info(response);
+                    this.loadingFiles = false;
+                    this.queue = response.data.files || [];
                 },
                 () => {
-                    $scope.loadingFiles = false;
+                    this.loadingFiles = false;
                 }
                 );
+
+            this.$scope.$on('fileuploadfail', (event, data) => {
+                this.handleError(data);
+            });
+            this.$scope.$on('fileuploaddone', (event, data) => {
+                this.handleUpload(data);
+            });
+        }
+
+        private handleError(data: any): void {
+            this.$log.error(data);
+        }
+
+        private handleUpload(data: any): void {
+            this.uploadedFiles.push(<PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference });
         }
     }
 }

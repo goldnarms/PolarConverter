@@ -1,3 +1,5 @@
+/// <reference path="Models/PolarFile.ts" />
+/// <reference path="Models/FileTypeEnum.ts" />
 /// <reference path="fileDestroyController.ts" />
 /// <reference path="uploadController.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />

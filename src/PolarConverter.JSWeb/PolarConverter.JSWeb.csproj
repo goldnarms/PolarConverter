@@ -247,6 +247,18 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\app.js">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
+    <Content Include="App\fileDestroyController.js">
+      <DependentUpon>fileDestroyController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\uploadController.js">
+      <DependentUpon>uploadController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\_all.js">
+      <DependentUpon>_all.ts</DependentUpon>
+    </Content>
     <Content Include="Content\Backload\content-types\128\Excel.png" />
     <Content Include="Content\Backload\content-types\128\File.png" />
     <Content Include="Content\Backload\content-types\128\FileNotFound.png" />
@@ -358,6 +370,18 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="App\_all.js.map">
+      <DependentUpon>_all.ts</DependentUpon>
+    </Content>
+    <Content Include="App\app.js.map">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
+    <Content Include="App\fileDestroyController.js.map">
+      <DependentUpon>fileDestroyController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\uploadController.js.map">
+      <DependentUpon>uploadController.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\FileUpload\angularjs\angular.debug.js" />
     <Content Include="Scripts\FileUpload\backload.demo.js" />
@@ -431,6 +455,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Upload\" />
     <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>
@@ -440,6 +465,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\fileDestroyController.ts" />
+    <TypeScriptCompile Include="App\Models\FileTypeEnum.ts" />
+    <TypeScriptCompile Include="App\Models\PolarFile.ts" />
     <TypeScriptCompile Include="App\uploadController.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
