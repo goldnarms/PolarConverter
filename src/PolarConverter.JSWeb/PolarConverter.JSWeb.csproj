@@ -382,6 +382,7 @@
     <Content Include="App\uploadController.js.map">
       <DependentUpon>uploadController.ts</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\FileUpload\angularjs\angular.debug.js" />
     <Content Include="Scripts\FileUpload\backload.demo.js" />

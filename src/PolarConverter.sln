@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "PolarConverter.BLL\PolarConverter.BLL.csproj", "{B22CD80D-5630-44A6-87F4-1CBB8AD31275}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Web", "PolarConverter.Web\PolarConverter.Web.csproj", "{4020A9EF-5541-4E8B-8E18-245B98C40236}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSWeb", "PolarConverter.JSWeb\PolarConverter.JSWeb.csproj", "{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCleaner", "FileCleaner\FileCleaner.csproj", "{856F186E-8A00-42EB-8641-C3A48C63D8D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,16 @@ Global
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|ARM.ActiveCfg = Release|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x64.ActiveCfg = Release|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x86.ActiveCfg = Release|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
