@@ -1,6 +1,6 @@
 /// <reference path="_all.ts" />
 module PolarConverter {
-    'use strict';
+    "use strict";
 
     export class UploadController {
         public injection(): any[] { return ["$scope", "$http", "$filter", "$window", UploadController]; }
@@ -11,12 +11,17 @@ module PolarConverter {
         public uploadedFiles: PolarConverter.PolarFile[];
 
         constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService) {
+            this.init();
+            this.setupWatches();
+        }
+
+        private init(): void {
             this.uploadedFiles = [];
             var url = "/api/upload";
             this.options = {
                 acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
                 url: url,
-                dataType: 'json'
+                dataType: "json"
             };
             this.loadingFiles = true;
             this.$http.get(url)
@@ -28,15 +33,7 @@ module PolarConverter {
                 },
                 () => {
                     this.loadingFiles = false;
-                }
-                );
-
-            this.$scope.$on('fileuploadfail', (event, data) => {
-                this.handleError(data);
-            });
-            this.$scope.$on('fileuploaddone', (event, data) => {
-                this.handleUpload(data);
-            });
+                });
         }
 
         private handleError(data: any): void {
@@ -44,7 +41,16 @@ module PolarConverter {
         }
 
         private handleUpload(data: any): void {
-            this.uploadedFiles.push(<PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference });
+            this.uploadedFiles.push(<PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: PolarConverter.Sport.other, checked: true });
+        }
+
+        private setupWatches(): void {
+            this.$scope.$on("fileuploadfail", (event, data) => {
+                this.handleError(data);
+            });
+            this.$scope.$on("fileuploaddone", (event, data) => {
+                this.handleUpload(data);
+            });
         }
     }
 }

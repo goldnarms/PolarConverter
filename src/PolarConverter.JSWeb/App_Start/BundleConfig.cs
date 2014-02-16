@@ -13,6 +13,8 @@ namespace PolarConverter.JSWeb
                         "~/Scripts/angular.js",
                         "~/App/fileDestroyController.js",
                         "~/App/uploadController.js",
+                        "~/App/Models/PolarFile.js",
+                        "~/App/Models/Sport.js",
                         "~/App/app.js"
                         ));
 

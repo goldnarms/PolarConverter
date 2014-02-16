@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Xml;
 using Microsoft.WindowsAzure.Storage;
-using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Hjelpeklasser;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
     public class UploadController : ApiController
     {
-        private List<DropboxItem> _filesToBeConverted;
-
         [Route("api/upload")]
         [HttpPost]
         [HttpGet]
@@ -42,7 +42,24 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     blob.Metadata.Add(new KeyValuePair<string, string>("FileName", fileName));
                     blob.Properties.ContentType = fileData.ContentType;
                     blob.UploadFromStream(fileData.InputStream);
-
+                    var extension = GetFileExtension(fileData.FileName);
+                    if (extension == 1)
+                    {
+                        using (var xmlr = XmlReader.Create(fileData.InputStream))
+                        {
+                            var line = "";
+                            var found = false;
+                            while ((line = xmlr.ReadContentAsString()) != null && !found)
+                            {
+                                if (line.Contains("<type>"))
+                                {
+                                    var index = line.IndexOf("<type>");
+                                    var sport = line.Substring(index, line.IndexOf("</type>") - index);
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                     var result = new { name = fileName, reference = fileReference, fileType = GetFileExtension(fileData.FileName) };
 

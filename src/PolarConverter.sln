@@ -23,6 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSWeb", "Pol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCleaner", "FileCleaner\FileCleaner.csproj", "{856F186E-8A00-42EB-8641-C3A48C63D8D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{25B2D88F-534F-4AE6-9814-38B9F3B208B1}"
+	ProjectSection(SolutionItems) = preProject
+		WebEssentials-Settings.json = WebEssentials-Settings.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,7 +53,6 @@ Global
 		{B22CD80D-5630-44A6-87F4-1CBB8AD31275}.Release|x86.ActiveCfg = Release|Any CPU
 		{B22CD80D-5630-44A6-87F4-1CBB8AD31275}.Release|x86.Build.0 = Release|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -72,7 +76,6 @@ Global
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|x86.ActiveCfg = Release|Any CPU
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|x86.Build.0 = Release|Any CPU
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.ActiveCfg = Debug|ARM
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.Build.0 = Debug|ARM
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -93,7 +96,6 @@ Global
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.Deploy.0 = Release|x64
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x86.ActiveCfg = Release|x86
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -113,7 +115,6 @@ Global
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x64.ActiveCfg = Release|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Release|x86.ActiveCfg = Release|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Debug|x86.ActiveCfg = Debug|Any CPU

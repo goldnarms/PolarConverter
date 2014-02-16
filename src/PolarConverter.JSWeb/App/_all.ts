@@ -1,3 +1,4 @@
+/// <reference path="Models/Sport.ts" />
 /// <reference path="Models/PolarFile.ts" />
 /// <reference path="Models/FileTypeEnum.ts" />
 /// <reference path="fileDestroyController.ts" />
