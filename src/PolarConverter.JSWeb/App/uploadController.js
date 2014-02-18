@@ -41,7 +41,7 @@ var PolarConverter;
         };
 
         UploadController.prototype.handleUpload = function (data) {
-            this.uploadedFiles.push({ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: PolarConverter.Sport.other, checked: true });
+            this.uploadedFiles.push({ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true });
         };
 
         UploadController.prototype.setupWatches = function () {

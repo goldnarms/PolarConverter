@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
@@ -11,9 +12,31 @@ namespace PolarConverter.Test
     [TestClass]
     public class XmlTester
     {
-        private const string RotSti = @"D:\Google Drive\Prosjekt\Polar\";
+        //private const string RotSti = @"D:\Google Drive\Prosjekt\Polar\";
         //private const string RotSti = @"C:\Users\ajohanse\Google Drive\Prosjekt\Polar\";
         //private const string RotSti = @"C:\Users\GoldnArms\Google Drive\Prosjekt\Polar\";
+        private const string RotSti = @"C:\Users\Arnstein\Google Drive\PolarFiler\";
+
+        [TestMethod]
+        public void ReadTypeFromXml()
+        {
+            var sport = "";
+            var settings = new XmlReaderSettings();
+            settings.ConformanceLevel = ConformanceLevel.Fragment;
+            using (var xmlReader = XmlReader.Create(string.Format(RotSti + "{0}",
+                                            @"Done\Goldnarms_09.07.2012_export(1).xml"), settings))
+            {
+                while (xmlReader.Read())
+                {
+                    if (xmlReader.Name == "type")
+                    {
+                        sport = xmlReader.ReadInnerXml();
+                        break;
+                    }
+                }
+            }
+            sport.ShouldEqual("CYCLING");
+        }
 
         [TestMethod]
         public void ImportFromFilFraXml()

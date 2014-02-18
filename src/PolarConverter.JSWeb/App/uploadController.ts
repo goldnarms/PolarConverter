@@ -41,7 +41,7 @@ module PolarConverter {
         }
 
         private handleUpload(data: any): void {
-            this.uploadedFiles.push(<PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: PolarConverter.Sport.other, checked: true });
+            this.uploadedFiles.push(<PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true });
         }
 
         private setupWatches(): void {

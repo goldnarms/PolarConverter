@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
-using Microsoft.WindowsAzure.Storage;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.JSWeb.Helpers;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -21,7 +15,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
         [HttpGet]
         public HttpResponseMessage Upload()
         {
-            // Get a reference to the file that our jQuery sent.  Even with multiple files, they will all be their own request and be the 0 index
             var id = "1";
             if (HttpContext.Current.Request.Files.Count > 0)
             {
@@ -30,39 +23,11 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 if (fileData.ContentLength > 0)
                 {
                     //Save to blob storage
-                    var storageAccount =
-                        CloudStorageAccount.Parse(
-                            ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
-                    var client = storageAccount.CreateCloudBlobClient();
-                    var container = client.GetContainerReference("polarfiles");
-                    container.CreateIfNotExists();
-                    var fileReference = Guid.NewGuid().ToString();
-                    var fileName = StringHelper.Filnavnfikser(Path.GetFileName(fileData.FileName), id);
-                    var blob = container.GetBlockBlobReference(fileReference);
-                    blob.Metadata.Add(new KeyValuePair<string, string>("FileName", fileName));
-                    blob.Properties.ContentType = fileData.ContentType;
-                    blob.UploadFromStream(fileData.InputStream);
-                    var extension = GetFileExtension(fileData.FileName);
-                    if (extension == 1)
-                    {
-                        using (var xmlr = XmlReader.Create(fileData.InputStream))
-                        {
-                            var line = "";
-                            var found = false;
-                            while ((line = xmlr.ReadContentAsString()) != null && !found)
-                            {
-                                if (line.Contains("<type>"))
-                                {
-                                    var index = line.IndexOf("<type>");
-                                    var sport = line.Substring(index, line.IndexOf("</type>") - index);
-                                    found = true;
-                                }
-                            }
-                        }
-                    }
+                    var blobStorageHelper = new BlobStorageHelper("polarfiles");
+                    var fileReference = blobStorageHelper.UploadFile(fileData);
+                    var sport = CheckForSport(fileData);
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var result = new { name = fileName, reference = fileReference, fileType = GetFileExtension(fileData.FileName) };
-
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = GetFileExtension(fileData.FileName), sport = sport };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
 
@@ -71,6 +36,53 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 }
             }
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        }
+
+        private string CheckForSport(HttpPostedFile fileData)
+        {
+            var extension = GetFileExtension(fileData.FileName);
+            var sport = "Other";
+            if (extension == 1)
+            {
+
+                var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
+                fileData.InputStream.Seek(0, SeekOrigin.Begin);
+                using (var xmlReader = XmlReader.Create(fileData.InputStream, settings))
+                {
+                    while (xmlReader.Read())
+                    {
+                        if (xmlReader.Name == "type")
+                        {
+                            switch (xmlReader.ReadInnerXml())
+                            {
+                                case "CYCLING":
+                                    return "Biking";
+                                case "RUNNING":
+                                    return "Running";
+                                default:
+                                    return "Other";
+                            }
+                        }
+                    }
+                }
+            }
+            else if (extension == 3)
+            {
+                fileData.InputStream.Seek(0, SeekOrigin.Begin);
+                using (var textReader = new StreamReader(fileData.InputStream))
+                {
+                    while (!textReader.EndOfStream)
+                    {
+                        var line = textReader.ReadLine();
+                        if (line != null && line.Contains("[Trip]"))
+                        {
+                            sport = "Biking";
+                            break;
+                        }
+                    }
+                }
+            }
+            return sport;
         }
 
         private int GetFileExtension(string filenName)
