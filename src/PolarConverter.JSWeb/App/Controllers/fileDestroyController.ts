@@ -1,5 +1,6 @@
+/// <reference path="../_all.ts" />
 module PolarConverter {
-    'use strict';
+    "use strict";
 
     export interface IFileDestroyScope extends ng.IScope {
         file: any;
@@ -20,17 +21,17 @@ module PolarConverter {
                     return state;
                 };
                 file.$destroy = () => {
-                    state = 'pending';
+                    state = "pending";
                     return $http({
                         url: file.deleteUrl,
                         method: file.deleteType
                     }).then(
                         () => {
-                            state = 'resolved';
+                            state = "resolved";
                             $scope.clear(file);
                         },
                         () => {
-                            state = 'rejected';
+                            state = "rejected";
                         }
                         );
                 };

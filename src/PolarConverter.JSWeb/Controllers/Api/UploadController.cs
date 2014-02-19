@@ -15,7 +15,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
         [HttpGet]
         public HttpResponseMessage Upload()
         {
-            var id = "1";
             if (HttpContext.Current.Request.Files.Count > 0)
             {
                 var fileData = HttpContext.Current.Request.Files[0];
@@ -30,8 +29,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     var result = new { name = fileData.FileName, reference = fileReference, fileType = GetFileExtension(fileData.FileName), sport = sport };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
-
-                    // For compatibility with IE's "done" event we need to return a result as well as setting the context.response
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
             }

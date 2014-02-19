@@ -1,4 +1,4 @@
-/// <reference path="_all.ts" />
+/// <reference path="../_all.ts" />
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
@@ -20,6 +20,7 @@ var PolarConverter;
         UploadController.prototype.init = function () {
             var _this = this;
             this.uploadedFiles = [];
+            this.gpxFiles = [];
             var url = "/api/upload";
             this.options = {
                 acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
@@ -41,7 +42,23 @@ var PolarConverter;
         };
 
         UploadController.prototype.handleUpload = function (data) {
-            this.uploadedFiles.push({ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true });
+            if (data.result.fileType === 2) {
+                var gpxFile = { name: data.result.name, matched: false };
+                this.gpxFiles.push(gpxFile);
+                var matchingPolarFile = this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
+                if (matchingPolarFile) {
+                    gpxFile.matched = true;
+                    matchingPolarFile.gpxFile = gpxFile;
+                }
+            } else {
+                var polarFile = { fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true };
+                this.uploadedFiles.push(polarFile);
+                var matchingGpxFile = this.checkForMatchingFile(this.gpxFiles, polarFile.name);
+                if (matchingGpxFile) {
+                    polarFile.gpxFile = matchingGpxFile;
+                    matchingGpxFile.matched = true;
+                }
+            }
         };
 
         UploadController.prototype.setupWatches = function () {
@@ -51,6 +68,12 @@ var PolarConverter;
             });
             this.$scope.$on("fileuploaddone", function (event, data) {
                 _this.handleUpload(data);
+            });
+        };
+
+        UploadController.prototype.checkForMatchingFile = function (list, fileName) {
+            return _.find(list, function (file) {
+                return file.name.substring(0, file.name.length - 4) === fileName.substring(0, file.name.length - 4);
             });
         };
         UploadController.$inject = ["$scope", "$http", "$filter", "$window"];

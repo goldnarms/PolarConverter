@@ -11,10 +11,9 @@ namespace PolarConverter.JSWeb
             bundles.Add(new ScriptBundle("~/bundles/libraries").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/angular.js",
-                        "~/App/fileDestroyController.js",
-                        "~/App/uploadController.js",
-                        "~/App/Models/PolarFile.js",
-                        "~/App/Models/Sport.js",
+                        "~/Scripts/underscore.js",
+                        "~/App/Controllers/fileDestroyController.js",
+                        "~/App/Controllers/uploadController.js",
                         "~/App/app.js"
                         ));
 

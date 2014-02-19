@@ -88,6 +88,7 @@
                         <th>#</th>
                         <th>Filename</th>
                         <th>Sport</th>
+                        <th>Gpx file</th>
                         <th>Upload</th>
                     </tr>
                 </thead>
@@ -95,11 +96,17 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ file.name }}</td>
                     <td>{{ file.sport }}</td>
+                    <td>
+                        <span data-ng-show="file.gpxFile">{{ file.gpxFile.name}}</span><span data-ng-hide="file.gpxFile"><select><option data-ng-repeat="gpxFile in uc.gpxFiles">{{gpxFile.name}}</option></select></span>
+                    </td>
                     <td><input type="checkbox" data-ng-checked="file.checked" /></td>
                 </tr>
             </table>
         </div>
-        </div>
+        <ul>
+            <li data-ng-repeat="gpxFile in uc.gpxFiles">{{gpxFile.fileName}}</li>
+        </ul>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-4">

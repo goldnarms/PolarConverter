@@ -241,6 +241,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\UploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JasmineController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -255,7 +256,7 @@
     <Content Include="App\app.js">
       <DependentUpon>app.ts</DependentUpon>
     </Content>
-    <Content Include="App\fileDestroyController.js">
+    <Content Include="App\Controllers\fileDestroyController.js">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
     </Content>
     <Content Include="App\Models\FileTypeEnum.js">
@@ -267,7 +268,7 @@
     <Content Include="App\Models\Sport.js">
       <DependentUpon>Sport.ts</DependentUpon>
     </Content>
-    <Content Include="App\uploadController.js">
+    <Content Include="App\Controllers\uploadController.js">
       <DependentUpon>uploadController.ts</DependentUpon>
     </Content>
     <Content Include="App\_all.js">
@@ -371,10 +372,19 @@
     <Content Include="Content\FileUpload\img\loading.gif" />
     <Content Include="Content\FileUpload\img\progressbar.gif" />
     <Content Include="Content\FileUpload\img\progressblue.gif" />
+    <Content Include="Content\jasmine\jasmine.css" />
+    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="JsTest\index.html" />
+    <Content Include="JsTest\unit\controllers\upload.js">
+      <DependentUpon>upload.ts</DependentUpon>
+    </Content>
+    <Content Include="JsTest\unit\runner.htm" />
+    <Content Include="karma.e2e.conf.js" />
+    <Content Include="karma.unit.conf.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
@@ -384,10 +394,10 @@
     <Content Include="App\app.js.map">
       <DependentUpon>app.ts</DependentUpon>
     </Content>
-    <Content Include="App\fileDestroyController.js.map">
+    <Content Include="App\Controllers\fileDestroyController.js.map">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
     </Content>
-    <Content Include="App\uploadController.js.map">
+    <Content Include="App\Controllers\uploadController.js.map">
       <DependentUpon>uploadController.ts</DependentUpon>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -403,6 +413,9 @@
     </Content>
     <Content Include="App\Models\FileTypeEnum.js.map">
       <DependentUpon>FileTypeEnum.ts</DependentUpon>
+    </Content>
+    <Content Include="JsTest\unit\controllers\upload.js.map">
+      <DependentUpon>upload.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
@@ -433,7 +446,14 @@
     <Content Include="Scripts\FileUpload\load-image.debug.js" />
     <Content Include="Scripts\FileUpload\tmpl.debug.js" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\jasmine\jasmine-html.js" />
+    <Content Include="Scripts\jasmine\jasmine.js" />
+    <Content Include="Scripts\jasmine\MIT.LICENSE" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\jasmine-samples\Player.js" />
+    <Content Include="Scripts\jasmine-samples\PlayerSpec.js" />
+    <Content Include="Scripts\jasmine-samples\Song.js" />
+    <Content Include="Scripts\jasmine-samples\SpecHelper.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
@@ -446,6 +466,8 @@
     <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -474,6 +496,8 @@
     <Content Include="Views\BackloadDemo\Index.cshtml" />
     <Content Include="Views\Shared\_AdSense.cshtml" />
     <Content Include="Views\Shared\_Donate.cshtml" />
+    <Content Include="Scripts\underscore.min.map" />
+    <Content Include="Views\Jasmine\SpecRunner.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
@@ -481,6 +505,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="JsTest\e2e\" />
     <Folder Include="Upload\" />
     <Folder Include="Views\Upload\" />
   </ItemGroup>
@@ -490,12 +515,15 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\app.ts" />
-    <TypeScriptCompile Include="App\fileDestroyController.ts" />
+    <TypeScriptCompile Include="App\Controllers\fileDestroyController.ts" />
+    <TypeScriptCompile Include="App\Models\File.ts" />
     <TypeScriptCompile Include="App\Models\FileTypeEnum.ts" />
+    <TypeScriptCompile Include="App\Models\GpxFile.ts" />
     <TypeScriptCompile Include="App\Models\PolarFile.ts" />
     <TypeScriptCompile Include="App\Models\Sport.ts" />
-    <TypeScriptCompile Include="App\uploadController.ts" />
+    <TypeScriptCompile Include="App\Controllers\uploadController.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
+    <TypeScriptCompile Include="JsTest\unit\controllers\upload.ts" />
     <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>
     </TypeScriptCompile>
@@ -507,7 +535,9 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\underscore\underscore.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PolarConverter.BLL\PolarConverter.BLL.csproj">

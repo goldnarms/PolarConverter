@@ -1,15 +1,15 @@
 /// <reference path="_all.ts" />
 module PolarConverter {
-    'use strict';
+    "use strict";
 
     angular.module("polarApp", ["blueimp.fileupload"])
         .config([
-            '$httpProvider', 'fileUploadProvider',
+            "$httpProvider", "fileUploadProvider",
             ($httpProvider, fileUploadProvider) => {
-                delete $httpProvider.defaults.headers.common['X-Requested-With'];
+                delete $httpProvider.defaults.headers.common["X-Requested-With"];
                 fileUploadProvider.defaults.redirect = window.location.href.replace(
                     /\/[^\/]*$/,
-                    '/cors/result.html?%s'
+                    "/cors/result.html?%s"
                     );
                 angular.extend(fileUploadProvider.defaults, {
                     maxFileSize: 50000000,

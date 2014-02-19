@@ -1,6 +1,7 @@
+/// <reference path="../_all.ts" />
 var PolarConverter;
 (function (PolarConverter) {
-    'use strict';
+    "use strict";
 
     var FileDestroyController = (function () {
         function FileDestroyController($scope, $http) {
@@ -12,15 +13,15 @@ var PolarConverter;
                     return state;
                 };
                 file.$destroy = function () {
-                    state = 'pending';
+                    state = "pending";
                     return $http({
                         url: file.deleteUrl,
                         method: file.deleteType
                     }).then(function () {
-                        state = 'resolved';
+                        state = "resolved";
                         $scope.clear(file);
                     }, function () {
-                        state = 'rejected';
+                        state = "rejected";
                     });
                 };
             } else if (!file.$cancel && !file._index) {
