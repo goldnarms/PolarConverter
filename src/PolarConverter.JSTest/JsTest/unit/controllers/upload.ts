@@ -1,4 +1,5 @@
-/// <reference path="../../../App/_all.ts" />
+/// <reference path="../../_all.ts" />
+
 "use strict";
 describe("Controller: uploadCtrl", () => {
     beforeEach(module("polarApp"));

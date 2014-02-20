@@ -259,14 +259,17 @@
     <Content Include="App\Controllers\fileDestroyController.js">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
     </Content>
-    <Content Include="App\Models\FileTypeEnum.js">
+    <Content Include="App\Models\File.js">
+      <DependentUpon>File.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Enums\FileTypeEnum.js">
       <DependentUpon>FileTypeEnum.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\GpxFile.js">
+      <DependentUpon>GpxFile.ts</DependentUpon>
     </Content>
     <Content Include="App\Models\PolarFile.js">
       <DependentUpon>PolarFile.ts</DependentUpon>
-    </Content>
-    <Content Include="App\Models\Sport.js">
-      <DependentUpon>Sport.ts</DependentUpon>
     </Content>
     <Content Include="App\Controllers\uploadController.js">
       <DependentUpon>uploadController.ts</DependentUpon>
@@ -378,13 +381,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="JsTest\index.html" />
-    <Content Include="JsTest\unit\controllers\upload.js">
-      <DependentUpon>upload.ts</DependentUpon>
-    </Content>
-    <Content Include="JsTest\unit\runner.htm" />
-    <Content Include="karma.e2e.conf.js" />
-    <Content Include="karma.unit.conf.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
@@ -405,17 +401,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="App\Models\Sport.js.map">
-      <DependentUpon>Sport.ts</DependentUpon>
-    </Content>
     <Content Include="App\Models\PolarFile.js.map">
       <DependentUpon>PolarFile.ts</DependentUpon>
     </Content>
-    <Content Include="App\Models\FileTypeEnum.js.map">
+    <Content Include="App\Enums\FileTypeEnum.js.map">
       <DependentUpon>FileTypeEnum.ts</DependentUpon>
     </Content>
-    <Content Include="JsTest\unit\controllers\upload.js.map">
-      <DependentUpon>upload.ts</DependentUpon>
+    <Content Include="App\Models\File.js.map">
+      <DependentUpon>File.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\GpxFile.js.map">
+      <DependentUpon>GpxFile.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
@@ -505,7 +501,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="JsTest\e2e\" />
     <Folder Include="Upload\" />
     <Folder Include="Views\Upload\" />
   </ItemGroup>
@@ -517,13 +512,12 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controllers\fileDestroyController.ts" />
     <TypeScriptCompile Include="App\Models\File.ts" />
-    <TypeScriptCompile Include="App\Models\FileTypeEnum.ts" />
+    <TypeScriptCompile Include="App\Enums\FileTypeEnum.ts" />
     <TypeScriptCompile Include="App\Models\GpxFile.ts" />
     <TypeScriptCompile Include="App\Models\PolarFile.ts" />
-    <TypeScriptCompile Include="App\Models\Sport.ts" />
     <TypeScriptCompile Include="App\Controllers\uploadController.ts" />
+    <TypeScriptCompile Include="App\Enums\SportEnum.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
-    <TypeScriptCompile Include="JsTest\unit\controllers\upload.ts" />
     <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>
     </TypeScriptCompile>

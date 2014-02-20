@@ -1,4 +1,5 @@
-module.exports = function (config) {
+/// <reference path="http://localhost:50713/Scripts/angular.js" />
+module.exports = function(config) {
     config.set({
         // Test frameworks to use
         frameworks: ['jasmine'],
@@ -8,19 +9,19 @@ module.exports = function (config) {
 
         // List of files / patterns to load in the browser
         files: [
-          { pattern: 'Scripts/angular.js', watched: false, included: true, served: true },
-          { pattern: 'Scripts/angular-mocks.js', watched: false, included: true, served: true },
-          { pattern: 'Scripts/FileUpload/jquery.fileupload-angular.js', watched: false, included: true, served: true },
-        { pattern: 'Scripts/underscore.js', watched: false, included: true, served: true },
-          'App/**/*.js',
-          'App/*.js',
-          'JsTest/unit/**/*.js',
-          'Views/**/*.cshtml'
+            { pattern: '../PolarConverter.JSWeb/Scripts/angular.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/Scripts/angular-mocks.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/Scripts/FileUpload/jquery.fileupload-angular.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/Scripts/underscore.js', watched: false, included: true, served: true },
+            '../PolarConverter.JSWeb/App/**/*.js',
+            '../PolarConverter.JSWeb/App/*.js',
+            'JsTest/unit/**/*.js',
+            '../PolarConverter.JSWeb/Views/**/*.cshtml'
         ],
 
         // Preprocessors to convert e.g. html to angular template cache items
         preprocessors: {
-            'Views/**/*.cshtml': 'ng-html2js'
+            '../PolarConverter.JSWeb/Views/**/*.cshtml': 'ng-html2js'
         },
 
         // List of files to exclude
@@ -63,13 +64,13 @@ module.exports = function (config) {
 
         // Plugins
         plugins: [
-          'karma-jasmine',
-          'karma-ng-scenario',
-          'karma-ng-html2js-preprocessor',
-          'Karma-phantomjs-launcher',
-          'karma-chrome-launcher',
-          'karma-firefox-launcher',
-          'karma-junit-reporter'
+            'karma-jasmine',
+            'karma-ng-scenario',
+            'karma-ng-html2js-preprocessor',
+            'Karma-phantomjs-launcher',
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-junit-reporter'
         ]
     });
-}
+};

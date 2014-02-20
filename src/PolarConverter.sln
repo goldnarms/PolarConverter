@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28D67260-B584-4A9A-ACD3-0F04FDDDAD12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSTest", "PolarConverter.JSTest\PolarConverter.JSTest.csproj", "{871602AD-2635-4233-9452-978115552691}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,8 +129,21 @@ Global
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|ARM.ActiveCfg = Release|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|x64.ActiveCfg = Release|Any CPU
 		{856F186E-8A00-42EB-8641-C3A48C63D8D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Release|ARM.ActiveCfg = Release|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Release|x64.ActiveCfg = Release|Any CPU
+		{871602AD-2635-4233-9452-978115552691}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{871602AD-2635-4233-9452-978115552691} = {28D67260-B584-4A9A-ACD3-0F04FDDDAD12}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
-module.exports = function (config) {
+/// <reference path="http://localhost:50713/Scripts/angular.js" />
+module.exports = function(config) {
     config.set({
         // Test frameworks to use
         frameworks: ['ng-scenario', 'jasmine'],
@@ -8,11 +9,11 @@ module.exports = function (config) {
 
         // List of files / patterns to load in the browser
         files: [
-          { pattern: 'JsTest/*.html', watched: true, included: false, served: false },
-        { pattern: 'Scripts/angular-mocks.js', watched: false, included: true, served: true },
-          { pattern: 'Scripts/FileUpload/jquery.fileupload-angular.js', watched: false, included: true, served: true },
-        { pattern: 'Scripts/underscore.js', watched: false, included: true, served: true },
-          'JsTest/e2e/**/*.js'
+            { pattern: 'JsTest/*.html', watched: true, included: false, served: false },
+            { pattern: '../PolarConverter.JSWeb/Scripts/angular-mocks.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/Scripts/FileUpload/jquery.fileupload-angular.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/Scripts/underscore.js', watched: false, included: true, served: true },
+            'JsTest/e2e/**/*.js'
         ],
 
         urlRoot: '/_karma_/',
@@ -21,10 +22,9 @@ module.exports = function (config) {
             '/': 'http://localhost:52473/'
         },
 
-
         // Preprocessors to convert e.g. html to angular template cache items
         preprocessors: {
-            'Views/**/*.cshtml': 'ng-html2js'
+            '../PolarConverter.JSWeb/Views/**/*.cshtml': 'ng-html2js'
         },
 
         // List of files to exclude
@@ -67,13 +67,13 @@ module.exports = function (config) {
 
         // Plugins
         plugins: [
-          'karma-jasmine',
-          'karma-ng-scenario',
-          'karma-ng-html2js-preprocessor',
-          'Karma-phantomjs-launcher',
-          'karma-chrome-launcher',
-          'karma-firefox-launcher',
-          'karma-junit-reporter'
+            'karma-jasmine',
+            'karma-ng-scenario',
+            'karma-ng-html2js-preprocessor',
+            'Karma-phantomjs-launcher',
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-junit-reporter'
         ]
     });
-}
+};

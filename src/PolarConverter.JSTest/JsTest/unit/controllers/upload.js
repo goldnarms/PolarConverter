@@ -1,4 +1,4 @@
-/// <reference path="../../../App/_all.ts" />
+/// <reference path="../../_all.ts" />
 "use strict";
 describe("Controller: uploadCtrl", function () {
     beforeEach(module("polarApp"));
@@ -25,4 +25,3 @@ describe("Controller: uploadCtrl", function () {
         expect(uploadCtrl.checkForMatchingFile(hrmFiles, "12001.gpx")).not.toBeDefined();
     });
 });
-//# sourceMappingURL=upload.js.map

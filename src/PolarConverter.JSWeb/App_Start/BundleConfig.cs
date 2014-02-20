@@ -11,11 +11,12 @@ namespace PolarConverter.JSWeb
             bundles.Add(new ScriptBundle("~/bundles/libraries").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/angular.js",
-                        "~/Scripts/underscore.js",
-                        "~/App/Controllers/fileDestroyController.js",
-                        "~/App/Controllers/uploadController.js",
-                        "~/App/app.js"
-                        ));
+                        "~/Scripts/underscore.js"
+                        )
+                        .IncludeDirectory("~/App/Controllers/", "*.js")
+                        .IncludeDirectory("~/App/Enums/", "*.js")
+                        .Include("~/App/app.js")
+                        );
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
