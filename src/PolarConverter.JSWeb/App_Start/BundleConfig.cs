@@ -11,7 +11,8 @@ namespace PolarConverter.JSWeb
             bundles.Add(new ScriptBundle("~/bundles/libraries").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/angular.js",
-                        "~/Scripts/underscore.js"
+                        "~/Scripts/underscore.js",
+                        "~/bower_components/angular-local-storage/angular-local-storage.js"
                         )
                         .IncludeDirectory("~/App/Controllers/", "*.js")
                         .IncludeDirectory("~/App/Enums/", "*.js")

@@ -1,16 +1,1 @@
-/// <reference path="../../PolarConverter.JSWeb/Scripts/angular.js" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/angularjs/angular-resource.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/angularjs/angular-scenario.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/angularjs/angular-mocks.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/jasmine/jasmine.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Models/File.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Models/GpxFile.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Models/Sport.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Models/PolarFile.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Models/FileTypeEnum.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Controllers/fileDestroyController.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/Controllers/uploadController.ts" />
-/// <reference path="../../PolarConverter.JSWeb/App/app.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/bootstrap/bootstrap.d.ts" />
-/// <reference path="../../PolarConverter.JSWeb/Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../../PolarConverter.JSWeb/App/_all.ts"/>

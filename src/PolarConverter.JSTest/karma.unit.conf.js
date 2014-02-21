@@ -13,6 +13,7 @@ module.exports = function(config) {
             { pattern: '../PolarConverter.JSWeb/Scripts/angular-mocks.js', watched: false, included: true, served: true },
             { pattern: '../PolarConverter.JSWeb/Scripts/FileUpload/jquery.fileupload-angular.js', watched: false, included: true, served: true },
             { pattern: '../PolarConverter.JSWeb/Scripts/underscore.js', watched: false, included: true, served: true },
+            { pattern: '../PolarConverter.JSWeb/bower_components/angular-local-storage/angular-local-storage.js', watched: false, included: true, served: true },
             '../PolarConverter.JSWeb/App/**/*.js',
             '../PolarConverter.JSWeb/App/*.js',
             'JsTest/unit/**/*.js',

@@ -248,7 +248,13 @@
     </Compile>
     <Compile Include="Helpers\BlobStorageHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\FileType.cs" />
+    <Compile Include="Models\GpxFile.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PolarFile.cs" />
+    <Compile Include="Models\Sport.cs" />
+    <Compile Include="Models\UploadViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -259,24 +265,39 @@
     <Content Include="App\Controllers\fileDestroyController.js">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
     </Content>
-    <Content Include="App\Models\File.js">
-      <DependentUpon>File.ts</DependentUpon>
-    </Content>
     <Content Include="App\Enums\FileTypeEnum.js">
-      <DependentUpon>FileTypeEnum.ts</DependentUpon>
-    </Content>
-    <Content Include="App\Models\GpxFile.js">
-      <DependentUpon>GpxFile.ts</DependentUpon>
-    </Content>
-    <Content Include="App\Models\PolarFile.js">
-      <DependentUpon>PolarFile.ts</DependentUpon>
+      <DependentUpon>fileTypeEnum.ts</DependentUpon>
     </Content>
     <Content Include="App\Controllers\uploadController.js">
       <DependentUpon>uploadController.ts</DependentUpon>
     </Content>
+    <Content Include="App\Enums\SportEnum.js">
+      <DependentUpon>sportEnum.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\file.js">
+      <DependentUpon>file.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\gpxFile.js">
+      <DependentUpon>gpxFile.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\polarFile.js">
+      <DependentUpon>polarFile.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\timeZone.js">
+      <DependentUpon>timeZone.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\uploadViewModel.js">
+      <DependentUpon>uploadViewModel.ts</DependentUpon>
+    </Content>
     <Content Include="App\_all.js">
       <DependentUpon>_all.ts</DependentUpon>
     </Content>
+    <Content Include="bower_components\angular-local-storage\angular-local-storage.js" />
+    <Content Include="bower_components\angular-local-storage\angular-local-storage.min.js" />
+    <Content Include="bower_components\angular-local-storage\demo\demo-app.js" />
+    <Content Include="bower_components\angular-local-storage\demo\demo-style.css" />
+    <Content Include="bower_components\angular-local-storage\demo\demo.html" />
+    <Content Include="bower_components\angular-local-storage\Gruntfile.js" />
     <Content Include="Content\Backload\content-types\128\Excel.png" />
     <Content Include="Content\Backload\content-types\128\File.png" />
     <Content Include="Content\Backload\content-types\128\FileNotFound.png" />
@@ -401,17 +422,31 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="App\Models\PolarFile.js.map">
-      <DependentUpon>PolarFile.ts</DependentUpon>
-    </Content>
     <Content Include="App\Enums\FileTypeEnum.js.map">
-      <DependentUpon>FileTypeEnum.ts</DependentUpon>
+      <DependentUpon>fileTypeEnum.ts</DependentUpon>
     </Content>
-    <Content Include="App\Models\File.js.map">
-      <DependentUpon>File.ts</DependentUpon>
+    <Content Include="bower_components\angular-local-storage\.bower.json" />
+    <Content Include="bower_components\angular-local-storage\bower.json" />
+    <Content Include="bower_components\angular-local-storage\LICENSE" />
+    <Content Include="bower_components\angular-local-storage\package.json" />
+    <Content Include="bower_components\angular-local-storage\README.md" />
+    <Content Include="App\Models\file.js.map">
+      <DependentUpon>file.ts</DependentUpon>
     </Content>
-    <Content Include="App\Models\GpxFile.js.map">
-      <DependentUpon>GpxFile.ts</DependentUpon>
+    <Content Include="App\Models\gpxFile.js.map">
+      <DependentUpon>gpxFile.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\timeZone.js.map">
+      <DependentUpon>timeZone.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\uploadViewModel.js.map">
+      <DependentUpon>uploadViewModel.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\polarFile.js.map">
+      <DependentUpon>polarFile.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Enums\SportEnum.js.map">
+      <DependentUpon>sportEnum.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
@@ -511,15 +546,30 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controllers\fileDestroyController.ts" />
-    <TypeScriptCompile Include="App\Models\File.ts" />
-    <TypeScriptCompile Include="App\Enums\FileTypeEnum.ts" />
-    <TypeScriptCompile Include="App\Models\GpxFile.ts" />
-    <TypeScriptCompile Include="App\Models\PolarFile.ts" />
+    <TypeScriptCompile Include="App\Interfaces\IStorage.ts" />
+    <TypeScriptCompile Include="App\Models\file.ts" />
+    <TypeScriptCompile Include="App\Enums\fileTypeEnum.ts" />
+    <TypeScriptCompile Include="App\Models\gpxFile.ts" />
+    <TypeScriptCompile Include="App\Models\polarFile.ts" />
     <TypeScriptCompile Include="App\Controllers\uploadController.ts" />
-    <TypeScriptCompile Include="App\Enums\SportEnum.ts" />
+    <TypeScriptCompile Include="App\Enums\sportEnum.ts" />
+    <TypeScriptCompile Include="App\Models\timeZone.ts" />
+    <TypeScriptCompile Include="App\Models\uploadViewModel.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
     <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Models\File.cs.d.ts">
+      <DependentUpon>File.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Models\GpxFile.cs.d.ts">
+      <DependentUpon>GpxFile.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Models\PolarFile.cs.d.ts">
+      <DependentUpon>PolarFile.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Models\UploadViewModel.cs.d.ts">
+      <DependentUpon>UploadViewModel.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

@@ -1,8 +1,8 @@
 module PolarConverter {
-    'use strict';
-    export enum FileType {
-        Gpx,
-        Hrm,
-        Xml
+    "use strict";
+    export enum fileType {
+        gpx,
+        hrm,
+        xml
     }
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"GpxFile.js","sourceRoot":"","sources":["GpxFile.ts"],"names":["PolarConverter"],"mappings":"AAAA,IAAO,cAAc;AAOpB,CAPD,UAAO,cAAc;IACjBA,YAAYA,CAACA;AAMjBA,CAACA,2CAAA"}
+{"version":3,"file":"gpxFile.js","sourceRoot":"","sources":["gpxFile.ts"],"names":["PolarConverter"],"mappings":"AAAA,IAAO,cAAc;AAMpB,CAND,UAAO,cAAc;IACjBA,YAAYA,CAACA;AAKjBA,CAACA,2CAAA"}

@@ -102,6 +102,35 @@
                     <td><input type="checkbox" data-ng-checked="file.checked" /></td>
                 </tr>
             </table>
+            <div class="well">
+                <form class="form-horizontal">
+                    <legend>User profile</legend>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="inputWeight">Weight</label>
+                        <div class="col-lg-10">
+                            <input type="text" value="" id="inputWeight" data-ng-model="uc.uploadViewModel.weight" />
+                            <label>
+                                <input type="radio" value="kg" data-ng-model="uc.uploadViewModel.weightMode" />&nbsp;Kg
+                            </label>
+                            <label>
+                                <input type="radio" value="lbs" data-ng-model="uc.uploadViewModel.weightMode" />&nbsp;Lbs
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="inputTimeZone">
+                            Timezone
+                        </label>
+                            <div class="col-lg-10">
+                                <select id="inputTimeZone" class="form-control">
+                                    <option data-ng-repeat="tz in uc.timeZones" data-ng-click="uc.setTimeZoneOffset(tz)">{{tz.text}}</option>
+                                </select>
+                            </div>
+                        
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

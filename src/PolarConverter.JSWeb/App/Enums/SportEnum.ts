@@ -1,6 +1,6 @@
 module PolarConverter {
     "use strict";
-    export enum SportEnum {
+    export enum sportEnum {
         Biking,
         Running,
         Other
