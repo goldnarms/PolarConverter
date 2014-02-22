@@ -100,6 +100,10 @@ var PolarConverter;
             this.storage.add("TimeZoneOffset", timeZone.offset);
         };
 
+        UploadController.prototype.convert = function (uploadViewModel) {
+            return true;
+        };
+
         UploadController.prototype.setTimeZones = function () {
             this.timeZones = [
                 { offset: -12, text: "(GMT -12:00) Etc/GMT" },

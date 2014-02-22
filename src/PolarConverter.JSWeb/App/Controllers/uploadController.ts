@@ -13,9 +13,10 @@ module PolarConverter {
         uploadViewModel: PolarConverter.UploadViewModel;
         checkForMatchingFile(list: PolarConverter.File[], fileName: string): PolarConverter.File;
         setWeightTypeBasedOnCountry(countryCode: string): void;
-        setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void
-
-    }
+        setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void;
+        reset(): void;
+        convert(uploadViewModel: PolarConverter.UploadViewModel): boolean;
+}
 
     export class UploadController {
         public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", UploadController]; }
@@ -107,7 +108,7 @@ module PolarConverter {
             this.uploadViewModel.weightMode = this.isMetricWeight ? "kg" : "lbs";
         }
 
-        private reset(): void {
+        public reset(): void {
             this.gpxFiles = [];
             this.uploadedFiles = [];
         }
@@ -115,6 +116,10 @@ module PolarConverter {
         public setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void {
             this.uploadViewModel.timeZoneOffset = timeZone.offset;
             this.storage.add("TimeZoneOffset", timeZone.offset);
+        }
+
+        public convert(uploadViewModel: PolarConverter.UploadViewModel): boolean {
+            return true;
         }
 
         private setTimeZones() {

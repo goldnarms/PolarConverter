@@ -4,7 +4,9 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
+using PolarConverter.BLL;
 using PolarConverter.JSWeb.Helpers;
+using PolarConverter.JSWeb.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -33,6 +35,20 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 }
             }
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        }
+
+        public HttpResponseMessage Convert(UploadViewModel uploadViewModel)
+        {
+            var stream = FilHandler.LesFraFiler();
+            var result = new { name = "ZipFil", reference = "..."};
+            //using (FileStream file = File.OpenWrite(""))
+            //{
+            //    FileIOHelper.CopyStream(FilHandler.LesFraFiler(brukerModel), file);
+            //}
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            HttpContext.Current.Response.Write(serializer.Serialize(result));
+            HttpContext.Current.Response.StatusCode = 200;
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         private string CheckForSport(HttpPostedFile fileData)

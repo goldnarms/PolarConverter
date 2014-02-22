@@ -25,7 +25,7 @@ describe("Controller: uploadCtrl", function () {
 
     it("should return null if no match", function () {
         var hrmFiles = [{ name: "12002.hrm" }];
-        expect(uploadCtrl.checkForMatchingFile(hrmFiles, "12001.gpx")).not.toBeDefined();
+        expect(uploadCtrl.checkForMatchingFile(hrmFiles, "12001.gpx")).toBe(undefined);
     });
 
     it("should set weightmode to imperial if user from USA", function () {
@@ -40,9 +40,19 @@ describe("Controller: uploadCtrl", function () {
         expect(uploadCtrl.isMetricWeight).toBeTruthy();
     });
 
-    it("should save timeZoneOffset to localstorage", function () {
+    it("should save timeZoneOffset", function () {
         var timeZone = { offset: 12, text: "Offset" };
         uploadCtrl.setTimeZoneOffset(timeZone);
         expect(uploadCtrl.uploadViewModel.timeZoneOffset).toBe(12);
+    });
+
+    it("should clear file lists when cancel is clicked", function () {
+        var hrmFile = { name: "12001.hrm" };
+        uploadCtrl.polarFiles.push(hrmFile);
+        var gpxFile = { name: "12001.gpx" };
+        uploadCtrl.gpxFiles.push(gpxFile);
+        uploadCtrl.reset();
+        uploadCtrl.gpxFiles.length.toBe(0);
+        uploadCtrl.polarFiles.length.toBe(0);
     });
 });

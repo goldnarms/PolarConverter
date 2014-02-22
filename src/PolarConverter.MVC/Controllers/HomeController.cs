@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.MVC.Helpers;
 using System.IO;
 
 namespace PolarConverter.MVC.Controllers

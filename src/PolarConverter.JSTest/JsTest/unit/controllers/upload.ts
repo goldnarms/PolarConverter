@@ -26,7 +26,7 @@ describe("Controller: uploadCtrl", () => {
 
     it("should return null if no match", () => {
         var hrmFiles = <PolarConverter.PolarFile[]>[<PolarConverter.PolarFile>{ name: "12002.hrm" }];
-        expect(uploadCtrl.checkForMatchingFile(hrmFiles, "12001.gpx")).not.toBeDefined();
+        expect(uploadCtrl.checkForMatchingFile(hrmFiles, "12001.gpx")).toBe(undefined);
     });
 
     it("should set weightmode to imperial if user from USA", () => {
@@ -41,9 +41,19 @@ describe("Controller: uploadCtrl", () => {
         expect(uploadCtrl.isMetricWeight).toBeTruthy();
     });
 
-    it("should save timeZoneOffset to localstorage", ()=> {
+    it("should save timeZoneOffset", ()=> {
         var timeZone: PolarConverter.TimeZone = { offset: 12, text: "Offset" };
         uploadCtrl.setTimeZoneOffset(timeZone);
         expect(uploadCtrl.uploadViewModel.timeZoneOffset).toBe(12);
+    });
+
+    it("should clear file lists when cancel is clicked", () => {
+        var hrmFile = <PolarConverter.PolarFile>{ name: "12001.hrm" };
+        uploadCtrl.uploadedFiles.push(hrmFile);
+        var gpxFile = <PolarConverter.GpxFile>{ name: "12001.gpx" };
+        uploadCtrl.gpxFiles.push(gpxFile);
+        uploadCtrl.reset();
+        uploadCtrl.gpxFiles.length.toBe(0);
+        uploadCtrl.uploadedFiles.length.toBe(0);
     });
 });
