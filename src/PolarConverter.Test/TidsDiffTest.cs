@@ -23,13 +23,7 @@ namespace PolarConverter.Test
             var polarData = new PolarData
                                 {
                                     HrmData = hrmData,
-                                    BrukerModel =
-                                        new BrukerModel
-                                            {
-                                                AntallDropboxItems = 1,
-                                                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin",
-                                                Sport = "Biking"
-                                            },
+                                    UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                                     Modus = modus,
                                     ModusVerdi = modusVerdi,
                                     HarCadence =

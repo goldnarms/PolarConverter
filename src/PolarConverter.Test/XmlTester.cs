@@ -63,7 +63,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                BrukerModel = brukerModel,
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
@@ -114,7 +114,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                BrukerModel = brukerModel,
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
@@ -167,7 +167,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                BrukerModel = brukerModel,
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),

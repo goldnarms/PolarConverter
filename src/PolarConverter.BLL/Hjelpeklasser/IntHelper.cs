@@ -4,6 +4,12 @@ namespace PolarConverter.BLL.Hjelpeklasser
 {
     public static class IntHelper
     {
+        public static int HentTidsKorreksjon(double gmt)
+        {
+            var minutes = gmt*60;
+            return Convert.ToInt32(minutes);
+        }
+
         public static int HentTidsKorreksjon(string gmt)
         {
             int timer = 0, minutter = 0;

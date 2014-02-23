@@ -23,7 +23,7 @@ namespace PolarConverter.Test
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                BrukerModel = new BrukerModel { AntallDropboxItems = 1, TimeZoneCorrection = "(GMT +1:00) Europe/Berlin", Sport = "Biking" },
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"Vanlig\12081101.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,

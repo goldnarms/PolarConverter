@@ -24,7 +24,7 @@ namespace PolarConverter.Test
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                BrukerModel = new BrukerModel { AntallDropboxItems = 1, TimeZoneCorrection = "(GMT +1:00) Europe/Berlin", Sport = "Biking" },
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 Modus = modus,
                 ModusVerdi = modusVerdi,
                 HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -64,7 +64,7 @@ namespace PolarConverter.Test
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                BrukerModel = new BrukerModel { AntallDropboxItems = 1, TimeZoneCorrection = "(GMT +1:00) Europe/Berlin", Sport = "Biking" },
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"Duration\12112501.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,
@@ -106,7 +106,7 @@ namespace PolarConverter.Test
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                BrukerModel = new BrukerModel { AntallDropboxItems = 1, TimeZoneCorrection = "(GMT +1:00) Europe/Berlin", Sport = "Biking" },
+                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
                 GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"Duration\12120801.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,

@@ -193,7 +193,7 @@ namespace PolarConverter.BLL
             dataSomSkalSkrives.Append(data.XmlDoc + "\n");
             dataSomSkalSkrives.Append(data.Header + "\n");
             dataSomSkalSkrives.Append("<Activities>" + "\n");
-            dataSomSkalSkrives.Append(string.Format("<Activity Sport=\"{0}\">\n", data.BrukerModel.Sport));
+            dataSomSkalSkrives.Append(string.Format("<Activity Sport=\"{0}\">\n", data.Sport));
             dataSomSkalSkrives.Append(string.Format("<Id>{0}</Id>\n", data.StartTime.ToPolarTime()));
             foreach (var lap in data.Runder)
             {
@@ -277,8 +277,8 @@ namespace PolarConverter.BLL
                 dataSomSkalSkrives.Append("</Track>\n");
                 dataSomSkalSkrives.Append("</Lap>\n");
             }
-            dataSomSkalSkrives.Append(string.Format("<Notes>{0}</Notes>\n", data.BrukerModel.Notat));
-            if (data.BrukerModel.ForceGarmin)
+            dataSomSkalSkrives.Append(string.Format("<Notes>{0}</Notes>\n", data.Note));
+            if (data.UserInfo.ForceGarmin)
                 dataSomSkalSkrives.Append(
                     "<Creator xsi:type=\"Device_t\">\n<Name>Garmin Edge 500</Name>\n<UnitId>0</UnitId>\n<ProductID>0</ProductID>\n<Version>\n<VersionMajor>2</VersionMajor>\n<VersionMinor>60</VersionMinor>\n<BuildMajor>0</BuildMajor>\n<BuildMinor>0</BuildMinor>\n</Version>\n</Creator>\n");
             else if (PolarData.Devices.ContainsKey(data.Device))

@@ -8,6 +8,7 @@ module PolarConverter {
         queue: any[];
         uploadedFiles: PolarConverter.PolarFile[];
         gpxFiles: PolarConverter.GpxFile[];
+        convertedFiles: PolarConverter.File[];
         isMetricWeight: boolean;
         timeZones: PolarConverter.TimeZone[];
         uploadViewModel: PolarConverter.UploadViewModel;
@@ -15,7 +16,7 @@ module PolarConverter {
         setWeightTypeBasedOnCountry(countryCode: string): void;
         setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void;
         reset(): void;
-        convert(uploadViewModel: PolarConverter.UploadViewModel): boolean;
+        convert(uploadViewModel: PolarConverter.UploadViewModel): void;
 }
 
     export class UploadController {
@@ -26,6 +27,7 @@ module PolarConverter {
         public queue: any[];
         public uploadedFiles: PolarConverter.PolarFile[];
         public gpxFiles: PolarConverter.GpxFile[];
+        public convertedFiles: PolarConverter.File[];
         public uploadViewModel: PolarConverter.UploadViewModel;
         public isMetricWeight: boolean;
         public timeZones: PolarConverter.TimeZone[];
@@ -38,9 +40,10 @@ module PolarConverter {
         private init(): void {
             this.setTimeZones();
             this.uploadedFiles = [];
+            this.convertedFiles = [];
             this.gpxFiles = [];
             this.isMetricWeight = true;
-            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: 0, polarFiles: [] };
+            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false };
             var url = "/api/upload";
             this.options = {
                 acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
@@ -68,8 +71,8 @@ module PolarConverter {
         }
 
         private onUpload(data: any): void {
-            if (data.result.fileType === 2) {
-                var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, matched: false };
+            if (data.result.fileType === "gpx") {
+                var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false };
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -111,6 +114,7 @@ module PolarConverter {
         public reset(): void {
             this.gpxFiles = [];
             this.uploadedFiles = [];
+            this.convertedFiles = [];
         }
 
         public setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void {
@@ -118,8 +122,15 @@ module PolarConverter {
             this.storage.add("TimeZoneOffset", timeZone.offset);
         }
 
-        public convert(uploadViewModel: PolarConverter.UploadViewModel): boolean {
-            return true;
+        public convert(uploadViewModel: PolarConverter.UploadViewModel): void {
+            this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
+            this.$http.post("/api/convert", this.uploadViewModel).then((response)=> {
+                this.onSuccesssfullConvert(response);
+            });
+        }
+
+        private onSuccesssfullConvert(response): void {
+            this.convertedFiles.push(<PolarConverter.File>{ name: response.result.name, reference: response.result.reference });
         }
 
         private setTimeZones() {

@@ -22,9 +22,10 @@ var PolarConverter;
             var _this = this;
             this.setTimeZones();
             this.uploadedFiles = [];
+            this.convertedFiles = [];
             this.gpxFiles = [];
             this.isMetricWeight = true;
-            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: 0, polarFiles: [] };
+            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false };
             var url = "/api/upload";
             this.options = {
                 acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
@@ -49,8 +50,8 @@ var PolarConverter;
         };
 
         UploadController.prototype.onUpload = function (data) {
-            if (data.result.fileType === 2) {
-                var gpxFile = { name: data.result.name, matched: false };
+            if (data.result.fileType === "gpx") {
+                var gpxFile = { name: data.result.name, reference: data.result.reference, matched: false };
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -93,6 +94,7 @@ var PolarConverter;
         UploadController.prototype.reset = function () {
             this.gpxFiles = [];
             this.uploadedFiles = [];
+            this.convertedFiles = [];
         };
 
         UploadController.prototype.setTimeZoneOffset = function (timeZone) {
@@ -101,7 +103,17 @@ var PolarConverter;
         };
 
         UploadController.prototype.convert = function (uploadViewModel) {
-            return true;
+            var _this = this;
+            this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
+                return uf.checked;
+            });
+            this.$http.post("/api/convert", this.uploadViewModel).then(function (response) {
+                _this.onSuccesssfullConvert(response);
+            });
+        };
+
+        UploadController.prototype.onSuccesssfullConvert = function (response) {
+            this.convertedFiles.push({ name: response.result.name, reference: response.result.reference });
         };
 
         UploadController.prototype.setTimeZones = function () {

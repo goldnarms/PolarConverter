@@ -1,12 +1,20 @@
-﻿namespace PolarConverter.BLL.Entiteter
+﻿using System.Runtime;
+
+namespace PolarConverter.BLL.Entiteter
 {
     public class PolarFile
     {
-        public string Url { get; set; }
-        public string Filename { get; set; }
-        public string MimeType { get; set; }
-        public string Size { get; set; }
-        public string Key { get; set; }
-        public string SportName { get; set; }
+        public string Name { get; set; }
+        public string Reference { get; set; }
+        public string FileType { get; set; }
+        public string Sport { get; set; }
+        public GpxFile GpxFile { get; set; }
+    }
+
+    public class GpxFile
+    {
+        public string Name { get; set; }
+        public string Reference { get; set; }
+
     }
 }

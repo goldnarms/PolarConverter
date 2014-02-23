@@ -56,11 +56,13 @@ namespace PolarConverter.BLL.Entiteter
         public List<double> AntallMeter { get; set; }
         public List<GPSData> GpxDataString { get; set; }
         public List<Runde> Runder { get; set; }
-        public BrukerModel BrukerModel { get; set; }
+        //public BrukerModel BrukerModel { get; set; }
         public UserInfo UserInfo { get; set; }
         public List<string> RundeTider { get; set; }
         public bool ErXml { get; set; }
         public DateTime StartTime { get; set; }
+        public string Sport { get; set; }
+        public string Note { get; set; }
 
         public void VaskHrData()
         {
@@ -153,9 +155,5 @@ namespace PolarConverter.BLL.Entiteter
                 }
             }
         }
-    }
-
-    public class UserInfo
-    {
     }
 }

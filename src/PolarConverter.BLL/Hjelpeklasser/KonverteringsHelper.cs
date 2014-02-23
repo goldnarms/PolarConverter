@@ -162,7 +162,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         private static double BeregnVekt(PolarData polarData)
         {
-            return polarData.BrukerModel.Vekt.HasValue ? polarData.BrukerModel.Vekt.Value : 0;
+            return polarData.UserInfo.Weight;
         }
 
         private static DateTime OppdaterStartTime(DateTime? startTime, DateTime startDate, DateTime tid)
@@ -204,7 +204,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
         {
             var startTime = StringHelper.HentVerdi("StartTime=", 10, polarData.HrmData).ToPolarTid();
             if (startTime != null)
-                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.BrukerModel.TimeZoneCorrection));
+                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UserInfo.TimeZoneOffset));
             return startTime;
         }
 
@@ -227,7 +227,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
             var startDate = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst).KonvertertTilDato();
             var startTime = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst, 11).ToPolarTid();
             if (startTime != null)
-                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.BrukerModel.TimeZoneCorrection));
+                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UserInfo.TimeZoneOffset));
             var runder = new List<Runde>();
             var runde = new Runde();
             var antallIntervalPrRunde = new List<double>();
@@ -310,7 +310,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 {
                     runde.Distanse = StringHelper.HentVerdi("<distance>", 6, tmpResultXml).PolarConvertToDouble();
                 }
-                runde.Vekt = polarData.BrukerModel.Vekt.HasValue ? polarData.BrukerModel.Vekt.Value : 0;
+                runde.Vekt = polarData.UserInfo.Weight;
                 runde.Kalorier = tmpResultXml.Contains("<calories>")
                                      ? Convert.ToInt32(Math.Floor(Convert.ToDouble(
                                          StringHelper.HentVerdi("<calories>", 5, tmpResultXml).Replace('<', ' ').Replace
@@ -481,7 +481,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 }
                 else if (i%28 == 27)
                 {
-                    runde.Vekt = polarData.BrukerModel.Vekt.HasValue ? polarData.BrukerModel.Vekt.Value : 0;
+                    runde.Vekt = polarData.UserInfo.Weight;
                     var hrmData = polarData.HrmData;
                     runde.HrmData = hrmData;
                     int antallTabs;
@@ -570,7 +570,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 }
                 else if (i % 16 == 15)
                 {
-                    runde.Vekt = polarData.BrukerModel.Vekt.HasValue ? polarData.BrukerModel.Vekt.Value : 0;
+                    runde.Vekt = polarData.UserInfo.Weight;
                     var hrmData = polarData.HrmData;
                     runde.HrmData = hrmData;
                     int antallTabs;

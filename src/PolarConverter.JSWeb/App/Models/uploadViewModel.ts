@@ -5,6 +5,7 @@ module PolarConverter {
         weight: number;
         weightMode: string;
         timeZoneOffset: number;
+        forceGarmin: boolean;
         polarFiles: PolarConverter.PolarFile[];
     }
 }

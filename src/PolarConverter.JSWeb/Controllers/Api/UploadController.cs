@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.Http;
 using System.Xml;
 using PolarConverter.BLL;
-using PolarConverter.JSWeb.Helpers;
+using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
@@ -28,7 +29,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     var fileReference = blobStorageHelper.UploadFile(fileData);
                     var sport = CheckForSport(fileData);
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var result = new { name = fileData.FileName, reference = fileReference, fileType = GetFileExtension(fileData.FileName), sport = sport };
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
                     return new HttpResponseMessage(HttpStatusCode.OK);
@@ -37,25 +38,11 @@ namespace PolarConverter.JSWeb.Controllers.Api
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
-        public HttpResponseMessage Convert(UploadViewModel uploadViewModel)
-        {
-            var stream = FilHandler.LesFraFiler();
-            var result = new { name = "ZipFil", reference = "..."};
-            //using (FileStream file = File.OpenWrite(""))
-            //{
-            //    FileIOHelper.CopyStream(FilHandler.LesFraFiler(brukerModel), file);
-            //}
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            HttpContext.Current.Response.Write(serializer.Serialize(result));
-            HttpContext.Current.Response.StatusCode = 200;
-            return new HttpResponseMessage(HttpStatusCode.OK);
-        }
-
         private string CheckForSport(HttpPostedFile fileData)
         {
-            var extension = GetFileExtension(fileData.FileName);
+            var extension = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower();
             var sport = "Other";
-            if (extension == 1)
+            if (extension == "xml")
             {
 
                 var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
@@ -79,7 +66,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     }
                 }
             }
-            else if (extension == 3)
+            else if (extension == "hrm")
             {
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var textReader = new StreamReader(fileData.InputStream))
