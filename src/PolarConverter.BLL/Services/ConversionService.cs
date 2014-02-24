@@ -19,9 +19,6 @@ namespace PolarConverter.BLL.Services
 
         public string Convert(UploadViewModel model)
         {
-            var tcxFilstier = new List<string>();
-            //var hrmFiler = model.DropboxItems.Where(fil => fil.Filnavn.Contains(".hrm"));
-            //var xmlFiler = model.DropboxItems.Where(fil => fil.Filnavn.Contains(".xml"));
             var blobStorageHelper = new BlobStorageHelper("polarfiles");
             var readable =
                 GetPipedStream(output =>
@@ -29,9 +26,14 @@ namespace PolarConverter.BLL.Services
                     using (var zip = new ZipFile())
                     {
                         zip.FlattenFoldersOnExtract = true;
+                        var userInfo = new UserInfo
+                        {
+                            Weight = model.WeightMode == "kg" ? model.Weight : model.Weight * 0.45359237,
+                            TimeZoneOffset = model.TimeZoneOffset,
+                            ForceGarmin = model.ForceGarmin
+                        };
                         foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType == "hrm"))
                         {
-
                             var hrmData = blobStorageHelper.ReadFile(hrmFile.Reference);
                             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
                             var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
@@ -39,7 +41,7 @@ namespace PolarConverter.BLL.Services
                             var polarData = new PolarData
                             {
                                 HrmData = hrmData,
-                                UserInfo = new UserInfo{ Weight = model.Weight, TimeZoneOffset = model.TimeZoneOffset, ForceGarmin = model.ForceGarmin},
+                                UserInfo = userInfo,
                                 Sport = hrmFile.Sport,
                                 Note = "",
                                 Modus = modus,

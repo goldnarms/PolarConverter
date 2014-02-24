@@ -1,7 +1,12 @@
 ﻿<!DOCTYPE html>
 
 <html>
-<head>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta property="og:image" content="http://polarconverter.azurewebsites.net/content/images/bgBilde.jpg" />
+    <meta property="og:site_name" content="PolarConverter" />
+    <meta property="fb:app_id" content="128362510636193">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Convert your Polar files to Endomondo and Strava compatible files.">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
@@ -10,19 +15,18 @@
     @Scripts.Render("~/bundles/modernizr")
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-
-    <meta name="description" content="Convert your polar files" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header" style="padding-top: 10px; padding-bottom: 10px">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("PolarConverter", "Index", "Home", null, new { @class = "navbar-brand" })
+                <img src="~/Content/polarLogo01_small.png" height="40" />
+                @*@Html.ActionLink("PolarConverter", "Index", "Home", null, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

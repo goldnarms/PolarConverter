@@ -24,10 +24,20 @@ var PolarConverter;
             this.uploadedFiles = [];
             this.convertedFiles = [];
             this.gpxFiles = [];
+            this.sports = [];
+            var initalized = false;
+            for (var sport in PolarConverter.sportEnum) {
+                if (typeof PolarConverter.sportEnum[sport] === "number") {
+                    this.sports.push(sport);
+                }
+            }
+
             this.isMetricWeight = true;
+            this.isConverting = false;
             this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false };
             var url = "/api/upload";
             this.options = {
+                autoUpload: true,
                 acceptFileTypes: /(\.|\/)(gpx|hrm|xml)$/i,
                 url: url,
                 dataType: "json"
@@ -36,13 +46,17 @@ var PolarConverter;
             this.$http.jsonp("http://ipinfo.io", function (response) {
                 _this.setWeightTypeBasedOnCountry(response.country);
             });
-            this.$http.get(url).then(function (response) {
-                _this.$log.info(response);
-                _this.loadingFiles = false;
-                _this.queue = response.data.files || [];
-            }, function () {
-                _this.loadingFiles = false;
-            });
+            if (initalized) {
+                this.$http.get(url).then(function (response) {
+                    _this.$log.info(response);
+                    _this.loadingFiles = false;
+                    _this.queue = response.data.files || [];
+                }, function () {
+                    _this.loadingFiles = false;
+                });
+            }
+
+            initalized = true;
         };
 
         UploadController.prototype.onError = function (data) {
@@ -96,6 +110,10 @@ var PolarConverter;
             this.uploadedFiles = [];
             this.convertedFiles = [];
         };
+        UploadController.prototype.removeGpxFile = function (polarFile) {
+            polarFile.gpxFile.matched = false;
+            polarFile.gpxFile = null;
+        };
 
         UploadController.prototype.setTimeZoneOffset = function (timeZone) {
             this.uploadViewModel.timeZoneOffset = timeZone.offset;
@@ -104,6 +122,7 @@ var PolarConverter;
 
         UploadController.prototype.convert = function (uploadViewModel) {
             var _this = this;
+            this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
                 return uf.checked;
             });
@@ -113,7 +132,10 @@ var PolarConverter;
         };
 
         UploadController.prototype.onSuccesssfullConvert = function (response) {
-            this.convertedFiles.push({ name: response.result.name, reference: response.result.reference });
+            this.convertedFiles.push({ name: response.data.name, reference: response.data.reference });
+            this.isConverting = false;
+            this.uploadedFiles = [];
+            this.gpxFiles = [];
         };
 
         UploadController.prototype.setTimeZones = function () {

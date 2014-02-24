@@ -418,6 +418,8 @@
     <Content Include="Content\FileUpload\img\progressblue.gif" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="Content\polarLogo01.png" />
+    <Content Include="Content\polarLogo01_small.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -466,6 +468,7 @@
       <DependentUpon>sportEnum.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
