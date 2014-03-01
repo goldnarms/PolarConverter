@@ -51,7 +51,7 @@ namespace PolarConverter.BLL
 
                             var startTid = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
                             startTid = startTid.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneCorrection));
-                            var startDato = StringHelper.HentVerdi("Date=", 8, hrmData).KonvertertTilDato();
+                            var startDato = StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato();
                             polarData.StartTime = new DateTime(startDato.Year, startDato.Month, startDato.Day, startTid.Hour, startTid.Minute, startTid.Second);
                             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
 
@@ -99,7 +99,7 @@ namespace PolarConverter.BLL
                                                     };
                                 int intervall;
                                 polarData.Intervall = int.TryParse(StringHelper.HentVerdi("<recording-rate>", 3, exercise).Replace('<', ' ').Replace('/', ' ').Trim(), out intervall) ? intervall : 5;
-                                var startDate = StringHelper.HentVerdi("<time>", 10, exercise).KonvertertTilDato();
+                                var startDate = StringHelper.HentVerdi("<time>", 10, exercise).KonverterTilDato();
                                 var startTime = StringHelper.HentVerdi("<time>", 10, exercise, 11).ToPolarTid();
                                 if (startTime != null)
                                 {

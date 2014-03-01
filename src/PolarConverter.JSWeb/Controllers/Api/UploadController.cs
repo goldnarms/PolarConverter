@@ -44,7 +44,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
             var sport = "Other";
             if (extension == "xml")
             {
-
                 var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var xmlReader = XmlReader.Create(fileData.InputStream, settings))

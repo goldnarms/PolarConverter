@@ -15,7 +15,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
             return new TimeSpan(dato.Hour, dato.Minute, dato.Second).TotalSeconds;
         }
 
-        public static DateTime KonvertertTilDato(this string tekst)
+        public static DateTime KonverterTilDato(this string tekst)
         {
             DateTime dato;
             if (DateTime.TryParseExact(tekst, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out dato)) return dato;

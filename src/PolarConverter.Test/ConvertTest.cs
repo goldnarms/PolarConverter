@@ -21,7 +21,7 @@ namespace PolarConverter.Test
         public void DatoToPolarString()
         {
             const string dato = "20120624";
-            dato.KonvertertTilDato().ShouldEqual(new DateTime(2012, 6, 24));
+            dato.KonverterTilDato().ShouldEqual(new DateTime(2012, 6, 24));
         }
 
         [TestMethod]

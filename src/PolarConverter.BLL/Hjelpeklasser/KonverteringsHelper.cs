@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Services;
 
 namespace PolarConverter.BLL.Hjelpeklasser
 {
@@ -81,6 +82,55 @@ namespace PolarConverter.BLL.Hjelpeklasser
             }
 
             return tmp;
+        }
+
+        public static List<Runde> GenererRunder(XmlPolarData polarData)
+        {
+            var runder = new List<Runde>();
+            var runde = new Runde();
+            var antallIntervalPrRunde = new List<double>();
+            var antallSekunderPrRunde = new List<double>();
+            var forrigeRundetidISekunder = 0;
+            double forrigeDistanser = 0;
+            var startDate = polarData.StartTime;
+            if (polarData.LapTimes.Count == 1)
+            {
+                var varighet = polarData.LapTimes[0];
+                runde.AntallSekunder = varighet.TotalSeconds;
+                if (polarData.GpxDataString != null)
+                {
+                    runde.GpsData = polarData.GpxDataString;
+                }
+
+                if (polarData.HeartRate != null)
+                {
+                    BeregnXmlHrData(polarData, runde);
+                }
+                //runde.StartTime = OppdaterStartTime(startDate, startDate, tid);
+                //runde.Vekt = BeregnVekt(polarData);
+                //var hrmData = polarData.HrmData;
+                //runde.HrmData = hrmData;
+                //runde.VO2MaxAbsolutt = BeregnVo2MaxAbsolutt(hrmData, runde);
+                //runde.MaxHr = BeregneMaxHr(hrmData);
+                //runde.Kalorier = BeregnKalorier(runde);
+                //runde.AltitudeData = polarData.AltitudeData;
+                //BeregnHastighet(polarData, runde);
+                //runde.AntallMeterData = polarData.AntallMeter;
+                //runde.Distanse = BeregnDistanse(polarData);
+                //runde.CadenseData = polarData.CadenseData;
+                //runde.PowerData = polarData.PowerData;
+                runder.Add(runde);
+            }
+            else
+            {
+                //if (polarData.Versjon == "102")
+                //    runder.AddRange(CalculateOldIntTimes(runde, polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
+                //else
+                //{
+                //    runder.AddRange(CalculateIntTimes(runde, polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
+                //}
+            }
+            return runder;
         }
 
         public static List<Runde> GenererRunder(PolarData polarData)
@@ -184,6 +234,15 @@ namespace PolarConverter.BLL.Hjelpeklasser
             runde.MaksHjertefrekvens = runde.HrData.Max(hr => hr.HjerteFrekvens);
         }
 
+        private static void BeregnXmlHrData(XmlPolarData polarData, Runde runde)
+        {
+            runde.HrData = polarData.HeartRate.Select(hr => new HRData { HjerteFrekvens = (byte)hr}).ToList();
+
+            runde.MinHjertefrekvens = (byte)polarData.HeartRate.Min();
+            runde.SnittHjerteFrekvens = Math.Floor(polarData.HeartRate.Average());
+            runde.MaksHjertefrekvens = polarData.HeartRate.Max();
+        }
+
         private static double BeregnAntallSekunder(DateTime varighet)
         {
             var antallSekunder =
@@ -210,7 +269,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         private static DateTime HentStartDato(PolarData polarData)
         {
-            return StringHelper.HentVerdi("Date=", 8, polarData.HrmData).KonvertertTilDato();
+            return StringHelper.HentVerdi("Date=", 8, polarData.HrmData).KonverterTilDato();
         }
 
         private static int BeregnKalorier(Runde runde)
@@ -224,7 +283,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         public static List<Runde> GenererXmlRunder(PolarData polarData)
         {
-            var startDate = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst).KonvertertTilDato();
+            var startDate = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst).KonverterTilDato();
             var startTime = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst, 11).ToPolarTid();
             if (startTime != null)
                 startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UserInfo.TimeZoneOffset));

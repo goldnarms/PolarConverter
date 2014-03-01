@@ -143,6 +143,22 @@
                     </ul>
                     <br />
                 </div>
+                <div class="alert alert-error" data-ng-show="uc.errors.length > 0">
+                    <h3>Oops, something went wrong ...</h3>
+                    <p>See a list of errors below.</p>
+                    <ul>
+                        <li data-ng-repeat="error in uc.errors">
+                            {{error}}
+                        </li>
+                    </ul>
+                    <p>
+                        The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
+                        <input type="email" value="" />
+                    </p>
+                    <p>Please take a look at the F.A.Q. for more information.</p>
+                    <p>Any other questions? Feel free to contact me at <a href="mailto:polarconverter@gmail.com">polarconverter@gmail.com</a></p>
+                    <br />
+                </div>
             </div>
         </div>
     </div>
