@@ -148,7 +148,7 @@ module PolarConverter {
         public convert(uploadViewModel: PolarConverter.UploadViewModel): void {
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
-            this.$http.post("/api/convert", this.uploadViewModel).then((response) => {
+            this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone"}).then((response) => {
                 this.onSuccesssfullConvert(response);
             });
         }

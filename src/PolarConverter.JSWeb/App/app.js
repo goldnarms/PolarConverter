@@ -3,7 +3,7 @@ var PolarConverter;
 (function (PolarConverter) {
     "use strict";
 
-    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule"]).config([
+    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "ngAnimate", "ajoslin.promise-tracker", "cgBusy"]).config([
         "$httpProvider",
         "fileUploadProvider",
         function ($httpProvider, fileUploadProvider) {

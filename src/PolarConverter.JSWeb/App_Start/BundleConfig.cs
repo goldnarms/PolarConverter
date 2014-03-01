@@ -11,8 +11,12 @@ namespace PolarConverter.JSWeb
             bundles.Add(new ScriptBundle("~/bundles/libraries").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/angular.js",
+                        "~/Scripts/angular-animate.js",
                         "~/Scripts/underscore.js",
-                        "~/bower_components/angular-local-storage/angular-local-storage.js"
+                        "~/bower_components/angular-local-storage/angular-local-storage.js",
+                        "~/bower_components/angular-promise-tracker/promise-tracker.js",
+                        "~/bower_components/angular-busy/angular-busy.js"
+                        
                         )
                         .IncludeDirectory("~/App/Controllers/", "*.js")
                         .IncludeDirectory("~/App/Enums/", "*.js")
@@ -33,7 +37,8 @@ namespace PolarConverter.JSWeb
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/bower_components/angular-busy/angular-busy.css"));
         }
     }
 }

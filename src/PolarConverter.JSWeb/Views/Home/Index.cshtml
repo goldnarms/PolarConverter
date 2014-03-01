@@ -129,6 +129,7 @@
                             <a class="btn btn-default btn-lg" data-ng-click="uc.reset(); cancel()">Cancel</a>
                             <a class="btn btn-primary btn-lg" data-ng-click="uc.convert()" data-ng-disabled="uc.isConverting">Convert</a>
                         </div>
+                        <div cg-busy="{tracker:'convertdone'}"></div>
                     </div>
 
                 </form>

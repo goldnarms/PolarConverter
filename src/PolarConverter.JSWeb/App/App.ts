@@ -2,7 +2,7 @@
 module PolarConverter {
     "use strict";
 
-    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule"])
+    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "ngAnimate", "ajoslin.promise-tracker", "cgBusy"])
         .config([
             "$httpProvider", "fileUploadProvider",
             ($httpProvider, fileUploadProvider) => {
