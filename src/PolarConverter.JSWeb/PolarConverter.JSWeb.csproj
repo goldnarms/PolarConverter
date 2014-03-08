@@ -61,9 +61,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Backload.1.9.3.1\lib\net45\Backload.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -299,6 +298,9 @@
     <Content Include="App\Enums\SportEnum.js">
       <DependentUpon>sportEnum.ts</DependentUpon>
     </Content>
+    <Content Include="App\Interfaces\IStorage.js">
+      <DependentUpon>IStorage.ts</DependentUpon>
+    </Content>
     <Content Include="App\Models\file.js">
       <DependentUpon>file.ts</DependentUpon>
     </Content>
@@ -502,6 +504,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="App\Interfaces\IStorage.js.map">
+      <DependentUpon>IStorage.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />

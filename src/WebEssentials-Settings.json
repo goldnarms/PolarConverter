@@ -3,7 +3,7 @@
     "CssIgnorePatterns": "bootstrap*; reset.css; normalize.css; jquery*; toastr*; foundation*; animate*; inuit*; elements*; ratchet*; hint*; flat-ui*; 960*; skeleton*",
     "EnableMenu": true,
     "EnablePixelPushing": true,
-    "ShowMenu": true
+    "ShowMenu": false
   },
   "CodeGen": {
     "CamelCasePropertyNames": true,
@@ -16,7 +16,10 @@
     "OutputDirectory": "",
     "ShowPreviewPane": true,
     "WrapClosure": true,
-    "MinifyInPlace": false
+    "MinifyInPlace": false,
+    "LintOnBuild": false,
+    "LintOnSave": true,
+    "LintResultLocation": "Message"
   },
   "Css": {
     "AdjustRelativePaths": true,
@@ -77,7 +80,8 @@
     "GenerateSourceMaps": false,
     "OutputDirectory": null,
     "ShowPreviewPane": true,
-    "MinifyInPlace": false
+    "MinifyInPlace": false,
+    "EnableChainCompilation": true
   },
   "Markdown": {
     "AutoHyperlink": true,
@@ -106,5 +110,13 @@
     "LintOnSave": true,
     "LintResultLocation": "Message",
     "ShowPreviewPane": false
+  },
+  "SweetJs": {
+    "CompileOnBuild": false,
+    "CompileOnSave": true,
+    "GenerateSourceMaps": true,
+    "MinifyInPlace": false,
+    "OutputDirectory": null,
+    "ShowPreviewPane": true
   }
 }

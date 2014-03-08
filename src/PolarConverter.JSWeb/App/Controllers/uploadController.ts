@@ -119,7 +119,7 @@ module PolarConverter {
         }
 
         public checkForMatchingFile(list: PolarConverter.File[], fileName: string): PolarConverter.File {
-            return _.find(list, (file) => {
+            return _.find(list, (file: PolarConverter.File) => {
                 return file.name.substring(0, file.name.length - 4) === fileName.substring(0, file.name.length - 4);
             });
         }
@@ -154,7 +154,7 @@ module PolarConverter {
         }
 
         private onSuccesssfullConvert(response): void {
-            this.convertedFiles.push(<PolarConverter.File>{ name: response.data.name, reference: response.data.reference });
+            this.convertedFiles.push(<PolarConverter.File>{ name: response.data.FileName, reference: response.data.Reference });
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];

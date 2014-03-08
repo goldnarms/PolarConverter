@@ -24,6 +24,20 @@ namespace PolarConverter.BLL.Hjelpeklasser
             return null;
         }
 
+        public static TimeSpan ToTimeSpan(this string date)
+        {
+            if (date.Length >= 11)
+            {
+                return new TimeSpan(
+                Convert.ToInt32(date.Substring(0, 2)), //hour
+                Convert.ToInt32(date.Substring(3, 2)), //minutes
+                Convert.ToInt32(date.Substring(6, 2)), //seconds
+                Convert.ToInt32(date.Substring(9, 3)) //mm
+                );
+            } 
+            throw new InvalidDataException("Invalid duration");            
+        }
+
         public static DateTime? ToPolarTid(this string dato)
         {
             if (dato.Length > 9)

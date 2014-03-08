@@ -1,4 +1,4 @@
-declare module server {
+﻿declare module server {
 	interface uploadViewModel {
 		weight: number;
 		weightMode: string;
@@ -13,6 +13,8 @@ declare module server {
 				name: string;
 				reference: string;
 			};
+			note: string;
 		}[];
+		notes: string;
 	}
 }

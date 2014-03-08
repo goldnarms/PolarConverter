@@ -4,6 +4,8 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.StorageClient;
@@ -61,13 +63,16 @@ namespace PolarConverter.BLL.Services
             }
         }
 
-        public MemoryStream ReadXmlDocument(string fileReference)
+        public polarexercisedata ReadXmlDocument(string fileReference)
         {
+            var ser = new XmlSerializer(typeof(polarexercisedata));            
             var blob = _container.GetBlockBlobReference(fileReference);
+
             using (var memoryStream = new MemoryStream())
             {
                 blob.DownloadToStream(memoryStream);
-                return memoryStream;
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return ser.Deserialize(memoryStream) as polarexercisedata;
             }
         }
     }

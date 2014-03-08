@@ -7,5 +7,6 @@
         public double TimeZoneOffset { get; set; }
         public bool ForceGarmin { get; set; }
         public PolarFile[] PolarFiles { get; set; }
+        public string Notes { get; set; }
     }
 }

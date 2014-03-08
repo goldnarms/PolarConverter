@@ -132,7 +132,7 @@ var PolarConverter;
         };
 
         UploadController.prototype.onSuccesssfullConvert = function (response) {
-            this.convertedFiles.push({ name: response.data.name, reference: response.data.reference });
+            this.convertedFiles.push({ name: response.data.FileName, reference: response.data.Reference });
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
