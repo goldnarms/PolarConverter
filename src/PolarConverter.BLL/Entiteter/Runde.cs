@@ -7,7 +7,7 @@ namespace PolarConverter.BLL.Entiteter
 {
     public class Runde
     {
-        public List<HRData> HrData { get; set; }
+        public List<HRData> HeartRateData { get; set; }
         public List<string> AltitudeData { get; set; }
         public List<string> SpeedData { get; set; }
         public List<GPSData> GpsData { get; set; }

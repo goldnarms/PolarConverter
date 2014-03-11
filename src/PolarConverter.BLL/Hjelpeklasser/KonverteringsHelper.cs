@@ -228,15 +228,15 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         private static void BeregnHrData(PolarData polarData, Runde runde)
         {
-            runde.HrData = polarData.HrData;
-            runde.MinHjertefrekvens = runde.HrData.Min(hr => hr.HjerteFrekvens);
-            runde.SnittHjerteFrekvens = Math.Floor(runde.HrData.Average(hr => hr.HjerteFrekvens));
-            runde.MaksHjertefrekvens = runde.HrData.Max(hr => hr.HjerteFrekvens);
+            runde.HeartRateData = polarData.HrData;
+            runde.MinHjertefrekvens = runde.HeartRateData.Min(hr => hr.HjerteFrekvens);
+            runde.SnittHjerteFrekvens = Math.Floor(runde.HeartRateData.Average(hr => hr.HjerteFrekvens));
+            runde.MaksHjertefrekvens = runde.HeartRateData.Max(hr => hr.HjerteFrekvens);
         }
 
         private static void BeregnXmlHrData(XmlPolarData polarData, Runde runde)
         {
-            runde.HrData = polarData.HeartRate.Select(hr => new HRData { HjerteFrekvens = (byte)hr}).ToList();
+            runde.HeartRateData = polarData.HeartRate.Select(hr => new HRData { HjerteFrekvens = (byte)hr}).ToList();
 
             runde.MinHjertefrekvens = (byte)polarData.HeartRate.Min();
             runde.SnittHjerteFrekvens = Math.Floor(polarData.HeartRate.Average());
@@ -317,12 +317,12 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
                 if (polarData.HrData != null && polarData.HrData.Count > 0)
                 {
-                    runde.HrData = HentRange(polarData.HrData, range.Item1, range.Item2);
-                    if (runde.HrData.Count > 0)
+                    runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
+                    if (runde.HeartRateData.Count > 0)
                     {
-                        runde.MinHjertefrekvens = runde.HrData.Min(hr => hr.HjerteFrekvens);
-                        runde.SnittHjerteFrekvens = runde.HrData.Average(hr => hr.HjerteFrekvens);
-                        runde.MaksHjertefrekvens = runde.HrData.Max(hr => hr.HjerteFrekvens);
+                        runde.MinHjertefrekvens = runde.HeartRateData.Min(hr => hr.HjerteFrekvens);
+                        runde.SnittHjerteFrekvens = runde.HeartRateData.Average(hr => hr.HjerteFrekvens);
+                        runde.MaksHjertefrekvens = runde.HeartRateData.Max(hr => hr.HjerteFrekvens);
                     }
                 }
                 else
@@ -394,7 +394,6 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         public static List<string> VaskXmlTider(string innlestData)
         {
-            var rundeTider = new List<string>();
             if (innlestData.Contains("<laps>"))
                 return GetXmlLaps(innlestData, "laps");
             if (innlestData.Contains("<autolaps>"))
@@ -498,7 +497,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                             runde.GpsData = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
                             range = new Tuple<int, int>(range.Item1, runde.GpsData.Count);
                         }
-                        runde.HrData = HentRange(polarData.HrData, range.Item1, range.Item2);
+                        runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
                         runde.AltitudeData = HentRange(polarData.AltitudeData, range.Item1, range.Item2);
                         runde.SpeedData = HentRange(polarData.SpeedData, range.Item1, range.Item2);
                         runde.AntallMeterData = HentRange(polarData.AntallMeter, range.Item1, range.Item2);
@@ -591,7 +590,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                             runde.GpsData = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
                             range = new Tuple<int, int>(range.Item1, runde.GpsData.Count);
                         }
-                        runde.HrData = HentRange(polarData.HrData, range.Item1, range.Item2);
+                        runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
                         runde.AltitudeData = HentRange(polarData.AltitudeData, range.Item1, range.Item2);
                         runde.SpeedData = HentRange(polarData.SpeedData, range.Item1, range.Item2);
                         runde.AntallMeterData = HentRange(polarData.AntallMeter, range.Item1, range.Item2);

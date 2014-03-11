@@ -140,6 +140,7 @@
     <Compile Include="Entiteter\DropboxItem.cs" />
     <Compile Include="Entiteter\FileTypeEnum.cs" />
     <Compile Include="Entiteter\GPSData.cs" />
+    <Compile Include="Entiteter\gpx.cs" />
     <Compile Include="Entiteter\HRData.cs" />
     <Compile Include="Entiteter\PolarData.cs" />
     <Compile Include="Entiteter\Koordinater.cs" />

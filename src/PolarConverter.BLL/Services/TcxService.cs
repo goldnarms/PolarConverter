@@ -12,6 +12,7 @@ namespace PolarConverter.BLL.Services
 {
     public class TcxService
     {
+
         public StringBuilder DataSomSkalSkrives(PolarData data)
         {
             var dataSomSkalSkrives = new StringBuilder();
@@ -33,9 +34,9 @@ namespace PolarConverter.BLL.Services
                     dataSomSkalSkrives.Append(string.Format("<Cadence>{0}</Cadence>\n", lap.SnittCadense.ToPolarDouble()));
                 dataSomSkalSkrives.Append(string.Format("<TriggerMethod>{0}</TriggerMethod>\n", lap.TriggerMetode));
                 dataSomSkalSkrives.Append("<Track>\n");
-                if (lap.HrData != null)
+                if (lap.HeartRateData != null)
                 {
-                    for (var i = 0; i < lap.HrData.Count; i++)
+                    for (var i = 0; i < lap.HeartRateData.Count; i++)
                     {
                         dataSomSkalSkrives.Append("<Trackpoint>\n");
                         if (lap.GpsData != null && lap.GpsData.Count >= i + 1)
@@ -63,7 +64,7 @@ namespace PolarConverter.BLL.Services
                                                                     lap.AltitudeData[i]));
                         dataSomSkalSkrives.Append(
                             string.Format("<HeartRateBpm>\n<Value>{0}</Value>\n</HeartRateBpm>\n",
-                                          lap.HrData[i].HjerteFrekvens));
+                                          lap.HeartRateData[i].HjerteFrekvens));
                         if (data.HarCadence && lap.CadenseData != null)
                             dataSomSkalSkrives.Append(string.Format("<Cadence>{0}</Cadence>\n",
                                                                     lap.CadenseData[i]));
@@ -202,7 +203,7 @@ namespace PolarConverter.BLL.Services
                             }
                             dataSomSkalSkrives.Append(
                                     string.Format("<HeartRateBpm>\n<Value>{0}</Value>\n</HeartRateBpm>\n",
-                                        lap.HrData[i].HjerteFrekvens));
+                                        lap.HeartRateData[i].HjerteFrekvens));
 
                             dataSomSkalSkrives.Append("</Trackpoint>\n");
                         }

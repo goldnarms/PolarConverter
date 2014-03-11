@@ -63,16 +63,16 @@ namespace PolarConverter.BLL.Services
             }
         }
 
-        public polarexercisedata ReadXmlDocument(string fileReference)
+        public object ReadXmlDocument(string fileReference, Type xmlType)
         {
-            var ser = new XmlSerializer(typeof(polarexercisedata));            
+            var ser = new XmlSerializer(xmlType);            
             var blob = _container.GetBlockBlobReference(fileReference);
 
             using (var memoryStream = new MemoryStream())
             {
                 blob.DownloadToStream(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                return ser.Deserialize(memoryStream) as polarexercisedata;
+                return ser.Deserialize(memoryStream);
             }
         }
     }
