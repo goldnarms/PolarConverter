@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -45,7 +46,7 @@ namespace PolarConverter.BLL.Services
 
         public string SaveStream(Stream stream, string fileName, string contentType, string extension)
         {
-            var fileReference = string.Format("{0}.{1}", Guid.NewGuid(), extension);
+            var fileReference = String.Format("{0}.{1}", Guid.NewGuid(), extension);
             var blob = _container.GetBlockBlobReference(fileReference);
             blob.Metadata.Add(new KeyValuePair<string, string>("FileName", fileName));
             blob.Properties.ContentType = contentType;
@@ -59,7 +60,7 @@ namespace PolarConverter.BLL.Services
             using (var memoryStream = new MemoryStream())
             {
                 blob.DownloadToStream(memoryStream);
-                return System.Text.Encoding.UTF8.GetString(memoryStream.ToArray());
+                return Encoding.UTF8.GetString(memoryStream.ToArray());
             }
         }
 

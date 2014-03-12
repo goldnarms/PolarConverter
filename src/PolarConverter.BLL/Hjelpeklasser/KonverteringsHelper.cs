@@ -9,8 +9,9 @@ namespace PolarConverter.BLL.Hjelpeklasser
 {
     public static class KonverteringsHelper
     {
-        private const double _imperial = 0.621371192237d;
+        private const double Imperial = 0.621371192237d;
         private const double ForbrenningsFaktor = 4.4;
+
         public static byte BeregnHjerteFrekvense(int intervall, string verdi)
         {
             if (intervall == 238)
@@ -163,7 +164,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 runde.Vekt = BeregnVekt(polarData);
                 var hrmData = polarData.HrmData;
                 runde.HrmData = hrmData;
-                runde.VO2MaxAbsolutt = BeregnVo2MaxAbsolutt(hrmData, runde);
+                runde.VO2MaxAbsolutt = Calculators.CalculateVo2Max(hrmData, polarData.UserInfo.Weight);
                 runde.MaxHr = BeregneMaxHr(hrmData);
                 runde.Kalorier = BeregnKalorier(runde);
                 runde.AltitudeData = polarData.AltitudeData;
@@ -176,11 +177,13 @@ namespace PolarConverter.BLL.Hjelpeklasser
             }
             else
             {
-                if(polarData.Versjon == "102")
-                    runder.AddRange(CalculateOldIntTimes(runde, polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
+                if (polarData.Versjon == "102")
+                {
+                    //runder.AddRange(CalculateOldIntTimes(polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
+                }
                 else
                 {
-                    runder.AddRange(CalculateIntTimes(runde, polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
+                    //runder.AddRange(CalculateIntTimes(runde, polarData, startTime, forrigeRundetidISekunder, antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));
                 }
             }
             return runder;
@@ -189,11 +192,6 @@ namespace PolarConverter.BLL.Hjelpeklasser
         private static double BeregneMaxHr(string hrmData)
         {
             return StringHelper.HentVerdi("MaxHR=", 3, hrmData).PolarConvertToDouble();
-        }
-
-        private static double BeregnVo2MaxAbsolutt(string hrmData, Runde runde)
-        {
-            return StringHelper.HentVerdi("VO2max=", 2, hrmData).PolarConvertToDouble() * runde.Vekt;
         }
 
         private static double BeregnDistanse(PolarData polarData)
@@ -236,7 +234,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         private static void BeregnXmlHrData(XmlPolarData polarData, Runde runde)
         {
-            runde.HeartRateData = polarData.HeartRate.Select(hr => new HRData { HjerteFrekvens = (byte)hr}).ToList();
+            runde.HeartRateData = polarData.HeartRate.Select(hr => new HRData { HjerteFrekvens = (byte)hr }).ToList();
 
             runde.MinHjertefrekvens = (byte)polarData.HeartRate.Min();
             runde.SnittHjerteFrekvens = Math.Floor(polarData.HeartRate.Average());
@@ -267,7 +265,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
             return startTime;
         }
 
-        private static DateTime HentStartDato(PolarData polarData)
+        public static DateTime HentStartDato(PolarData polarData)
         {
             return StringHelper.HentVerdi("Date=", 8, polarData.HrmData).KonverterTilDato();
         }
@@ -306,7 +304,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                                               Math.Ceiling((tid.AntallSekunder() /
                                                         (polarData.Intervall == 238 ? 5 : polarData.Intervall)))))
                                 : new Tuple<int, int>(0, 0);
-                    runde.AntallSekunder = BeregnAntallSekunder(tid);
+                runde.AntallSekunder = BeregnAntallSekunder(tid);
                 //if (runde.AntallSekunder > 50000)
                 //    runde.AntallSekunder = runde.AntallSekunder / 1000;
 
@@ -462,109 +460,81 @@ namespace PolarConverter.BLL.Hjelpeklasser
         {
             var stop = innlestData.IndexOf("</dur", index, StringComparison.Ordinal);
             var result = innlestData.Substring(index, stop - index).Replace('<', ' ').Replace('/', ' ').Replace('d', ' ').TrimEnd(' ');
-            if(result.Length == 5)
+            if (result.Length == 5)
                 return string.Format("00:{0}", result);
             return result;
         }
 
-        private static List<Runde> CalculateIntTimes(Runde runde, PolarData polarData, DateTime? startTime, 
-            int forrigeRundetidISekunder, List<double> antallIntervalPrRunde, List<double> antallSekunderPrRunde,
-            double forrigeDistanser, DateTime startDate)
+        public static ActivityLap_t[] CalculateIntTimes(PolarData polarData, DateTime startTime, DateTime startDate)
         {
-            var runder = new List<Runde>();
-            for (var i = 0; i < polarData.RundeTider.Count; i++)
+            var laps = new List<ActivityLap_t>();
+            var lastLapInSeconds = 0;
+            var intervalsPerLap = new List<double>();
+            var secondsInLap = new List<double>();
+            for (var i = 0; i < polarData.RundeTider.Count; i = i + 28)
             {
-                if (i%28 == 0)
+                var lap = new ActivityLap_t();
+                var rundeTid = polarData.RundeTider[i];
+                DateTime tid;
+                if (DateTime.TryParse(rundeTid, out tid))
                 {
-                    var rundeTid = polarData.RundeTider[i];
-                    DateTime tid;
-                    if (DateTime.TryParse(rundeTid, out tid))
+                    startTime = startTime.AddSeconds(lastLapInSeconds);
+                    var range = new Tuple<int, int>(
+                        Convert.ToInt32(Math.Ceiling(intervalsPerLap.Sum())),
+                        Convert.ToInt32(
+                            Math.Ceiling((tid.AntallSekunder() /
+                                          (polarData.Intervall == 238 ? 5 : polarData.Intervall) -
+                                          intervalsPerLap.Sum()))));
+                    var varighet = tid.AddSeconds(intervalsPerLap.Sum() * (-1));
+                    lap.TotalTimeSeconds = BeregnAntallSekunder(varighet);
+                    //if (runde.AntallSekunder > 50000)
+                    //    runde.AntallSekunder = runde.AntallSekunder/1000;
+                    if (polarData.GpxDataString != null)
                     {
-                        if (startTime.HasValue)
-                            startTime = startTime.Value.AddSeconds(forrigeRundetidISekunder);
-                        var range = new Tuple<int, int>(
-                            Convert.ToInt32(Math.Ceiling(antallIntervalPrRunde.Sum())),
-                            Convert.ToInt32(
-                                Math.Ceiling((tid.AntallSekunder()/
-                                              (polarData.Intervall == 238 ? 5 : polarData.Intervall) -
-                                              antallIntervalPrRunde.Sum()))));
-                        var varighet = tid.AddSeconds(antallSekunderPrRunde.Sum()*(-1));
-                        runde.AntallSekunder = BeregnAntallSekunder(varighet);
-                        //if (runde.AntallSekunder > 50000)
-                        //    runde.AntallSekunder = runde.AntallSekunder/1000;
-                        if (polarData.GpxDataString != null)
-                        {
-                            runde.GpsData = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
-                            range = new Tuple<int, int>(range.Item1, runde.GpsData.Count);
-                        }
-                        runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
-                        runde.AltitudeData = HentRange(polarData.AltitudeData, range.Item1, range.Item2);
-                        runde.SpeedData = HentRange(polarData.SpeedData, range.Item1, range.Item2);
-                        runde.AntallMeterData = HentRange(polarData.AntallMeter, range.Item1, range.Item2);
-                        runde.Distanse = HentRange(polarData.AntallMeter, range.Item1, range.Item2) != null &&
-                                         HentRange(polarData.AntallMeter, range.Item1, range.Item2).Count > 0
-                                             ? HentRange(polarData.AntallMeter, range.Item1, range.Item2).Last() -
-                                               forrigeDistanser
-                                             : 0;
-                        forrigeDistanser += runde.Distanse;
-                        runde.CadenseData = HentRange(polarData.CadenseData, range.Item1, range.Item2);
-                        runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
-                        antallIntervalPrRunde.Add(range.Item2);
-                        antallSekunderPrRunde.Add(tid.AntallSekunder() - antallSekunderPrRunde.Sum());
-                        forrigeRundetidISekunder = Convert.ToInt32(Math.Ceiling(antallSekunderPrRunde.Last()));
-                        runde.StartTime = startTime.HasValue
-                                              ? new DateTime(startDate.Year, startDate.Month, startDate.Day,
-                                                             startTime.Value.Hour, startTime.Value.Minute,
-                                                             startTime.Value.Second)
-                                              : new DateTime(startDate.Year, startDate.Month, startDate.Day,
-                                                             tid.Hour, tid.Minute,
-                                                             tid.Second);
+                        var gpsData = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
+                        range = new Tuple<int, int>(range.Item1, gpsData.Count);
                     }
+                    //runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
+                    //runde.AltitudeData = HentRange(polarData.AltitudeData, range.Item1, range.Item2);
+                    //runde.SpeedData = HentRange(polarData.SpeedData, range.Item1, range.Item2);
+                    //runde.AntallMeterData = HentRange(polarData.AntallMeter, range.Item1, range.Item2);
+                    //runde.Distanse = HentRange(polarData.AntallMeter, range.Item1, range.Item2) != null &&
+                    //                 HentRange(polarData.AntallMeter, range.Item1, range.Item2).Count > 0
+                    //                     ? HentRange(polarData.AntallMeter, range.Item1, range.Item2).Last() -
+                    //                       forrigeDistanser
+                    //                     : 0;
+                    //forrigeDistanser += runde.Distanse;
+                    //runde.CadenseData = HentRange(polarData.CadenseData, range.Item1, range.Item2);
+                    //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
+                    intervalsPerLap.Add(range.Item2);
+                    secondsInLap.Add(tid.AntallSekunder() - secondsInLap.Sum());
+                    lastLapInSeconds = Convert.ToInt32(Math.Ceiling(secondsInLap.Last()));
+                    lap.StartTime = new DateTime(startDate.Year, startDate.Month, startDate.Day,
+                                                         startTime.Hour, startTime.Minute,
+                                                         startTime.Second);
                 }
-                else if (i%28 == 2)
-                {
-                    runde.MinHjertefrekvens = Convert.ToByte(polarData.RundeTider[i]);
-                }
-                else if (i%28 == 3)
-                {
-                    runde.SnittHjerteFrekvens = Convert.ToByte(polarData.RundeTider[i]);
-                }
-                else if (i%28 == 4)
-                {
-                    runde.MaksHjertefrekvens = Convert.ToByte(polarData.RundeTider[i]);
-                }
-                else if (i%28 == 17)
-                {
-                    //runde.Distanse = polarData.ImperiskeEnheter ? Convert.ToDouble(rundeTid) / _imperial : Convert.ToDouble(rundeTid);
-                }
-                else if (i%28 == 27)
-                {
-                    runde.Vekt = polarData.UserInfo.Weight;
-                    var hrmData = polarData.HrmData;
-                    runde.HrmData = hrmData;
-                    int antallTabs;
-                    var tripInfo = StringHelper.LesLinjer(hrmData, "[Trip]", out antallTabs);
-                    if (tripInfo.Count > 0)
-                        runde.MaksHastighet = Convert.ToDouble(tripInfo[6])/36;
-                    runde.VO2MaxAbsolutt = StringHelper.HentVerdi("VO2max=", 2, hrmData).PolarConvertToDouble()*
-                                           runde.Vekt;
-                    runde.MaxHr = StringHelper.HentVerdi("MaxHR=", 3, hrmData).PolarConvertToDouble();
-                    runde.HrmData = hrmData;
-                    runde.VO2MaxAbsolutt = BeregnVo2MaxAbsolutt(hrmData, runde);
-                    runde.MaxHr = BeregneMaxHr(hrmData);
-                    runde.Kalorier = BeregnKalorier(runde);
-                    runder.Add(runde);
-                    runde = new Runde();
-                }
+                //runde.MinHjertefrekvens = Convert.ToByte(polarData.RundeTider[i + 2]);
+
+                lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i + 3]) };
+                lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i + 4]) };
+                //lap.DistanceMeters
+                //runde.Distanse = polarData.ImperiskeEnheter ? Convert.ToDouble(rundeTid) / _imperial : Convert.ToDouble(rundeTid);
+
+                var v02Max = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UserInfo.Weight);
+                lap.Calories = Calculators.CalulateCalories(v02Max,
+                    StringHelper.HentVerdi("MaxHR=", 3, polarData.HrmData).PolarConvertToDouble(),
+                    lap.AverageHeartRateBpm.Value, lap.TotalTimeSeconds);
+                laps.Add(lap);
             }
-            return runder;
+            return laps.ToArray();
         }
 
-        private static List<Runde> CalculateOldIntTimes(Runde runde, PolarData polarData, DateTime? startTime,
+        public static ActivityLap_t[] CalculateOldIntTimes(PolarData polarData, DateTime? startTime,
             int forrigeRundetidISekunder, List<double> antallIntervalPrRunde, List<double> antallSekunderPrRunde,
             double forrigeDistanser, DateTime startDate)
         {
-            var runder = new List<Runde>();
+            var laps = new List<ActivityLap_t>();
+            var lap = new ActivityLap_t();
             for (var i = 0; i < polarData.RundeTider.Count; i++)
             {
                 if (i % 16 == 0)
@@ -582,14 +552,15 @@ namespace PolarConverter.BLL.Hjelpeklasser
                                               (polarData.Intervall == 238 ? 5 : polarData.Intervall) -
                                               antallIntervalPrRunde.Sum()))));
                         var varighet = tid.AddSeconds(antallSekunderPrRunde.Sum() * (-1));
-                        runde.AntallSekunder = BeregnAntallSekunder(varighet);
+                        lap.TotalTimeSeconds = BeregnAntallSekunder(varighet);
                         //if (runde.AntallSekunder > 50000)
                         //    runde.AntallSekunder = runde.AntallSekunder/1000;
                         if (polarData.GpxDataString != null)
                         {
-                            runde.GpsData = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
-                            range = new Tuple<int, int>(range.Item1, runde.GpsData.Count);
+                            var gpsRange = HentGpsRange(polarData.GpxDataString, range.Item1, range.Item2);
+                            range = new Tuple<int, int>(range.Item1, gpsRange.Count);
                         }
+                        var runde = new Runde();
                         runde.HeartRateData = HentRange(polarData.HrData, range.Item1, range.Item2);
                         runde.AltitudeData = HentRange(polarData.AltitudeData, range.Item1, range.Item2);
                         runde.SpeedData = HentRange(polarData.SpeedData, range.Item1, range.Item2);
@@ -616,37 +587,34 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 }
                 else if (i % 16 == 2)
                 {
-                    runde.MinHjertefrekvens = Convert.ToByte(polarData.RundeTider[i]);
+                    //lap. = Convert.ToByte(polarData.RundeTider[i]);
                 }
                 else if (i % 16 == 3)
                 {
-                    runde.SnittHjerteFrekvens = Convert.ToByte(polarData.RundeTider[i]);
+                    lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i]) };
                 }
                 else if (i % 16 == 4)
                 {
-                    runde.MaksHjertefrekvens = Convert.ToByte(polarData.RundeTider[i]);
+                    lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i]) };
                 }
                 else if (i % 16 == 15)
                 {
-                    runde.Vekt = polarData.UserInfo.Weight;
-                    var hrmData = polarData.HrmData;
-                    runde.HrmData = hrmData;
                     int antallTabs;
-                    var tripInfo = StringHelper.LesLinjer(hrmData, "[Trip]", out antallTabs);
+                    var tripInfo = StringHelper.LesLinjer(polarData.HrmData, "[Trip]", out antallTabs);
                     if (tripInfo.Count > 0)
-                        runde.MaksHastighet = Convert.ToDouble(tripInfo[6]) / 36;
-                    runde.VO2MaxAbsolutt = StringHelper.HentVerdi("VO2max=", 2, hrmData).PolarConvertToDouble() *
-                                           runde.Vekt;
-                    runde.MaxHr = StringHelper.HentVerdi("MaxHR=", 3, hrmData).PolarConvertToDouble();
-                    runde.HrmData = hrmData;
-                    runde.VO2MaxAbsolutt = BeregnVo2MaxAbsolutt(hrmData, runde);
-                    runde.MaxHr = BeregneMaxHr(hrmData);
-                    runde.Kalorier = BeregnKalorier(runde);
-                    runder.Add(runde);
-                    runde = new Runde();
+                    {
+                        lap.MaximumSpeedSpecified = true;
+                        lap.MaximumSpeed = Convert.ToDouble(tripInfo[6]) / 36;
+                    }
+                    lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(StringHelper.HentVerdi("MaxHR=", 3, polarData.HrmData)) };
+                    var maxV02 = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UserInfo.Weight);
+                    lap.Calories = Calculators.CalulateCalories(maxV02, lap.MaximumHeartRateBpm.Value,
+                        lap.AverageHeartRateBpm.Value, lap.TotalTimeSeconds);
+                    laps.Add(lap);
+                    lap = new ActivityLap_t();
                 }
             }
-            return runder;
+            return laps.ToArray();
         }
     }
 }
