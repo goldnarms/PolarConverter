@@ -46,7 +46,8 @@ namespace PolarConverter.BLL.Services
                         };
                         foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType == "hrm"))
                         {
-                            zip.AddEntry(StringHelper.Filnavnfikser(hrmFile.Name, FilTyper.Tcx), MapHrmData(hrmFile, model, userInfo));
+                            var hrmFileData = MapHrmData(hrmFile, model, userInfo);
+                            zip.AddEntry(StringHelper.Filnavnfikser(hrmFile.Name, FilTyper.Tcx), hrmFileData);
                         }
 
                         foreach (var xmlFile in model.PolarFiles.Where(pf => pf.FileType == "xml"))
@@ -73,69 +74,17 @@ namespace PolarConverter.BLL.Services
         private byte[] MapHrmData(PolarFile hrmFile, UploadViewModel model, UserInfo userInfo)
         {
             var hrmData = _blobStorageHelper.ReadFile(hrmFile.Reference);
-
             var startTime = System.Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
             startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
-
             var trainingCenter = CreateTrainingCenterDatabaseT();
             var activity = CreateActivity(hrmFile.Sport, model.Notes, startTime);
-            var laps = KonverteringsHelper.VaskIntTimes(hrmData);
-
-            var v02max = 0d;
-            v02max = System.Convert.ToDouble(StringHelper.HentVerdi("VO2max=", 3, hrmData).Trim());
-
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusValue = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var trackTimes = KonverteringsHelper.VaskIntTimes(hrmData);
-            var interval = System.Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
-
-            var polarData = new PolarData
-            {
-                HrmData = hrmData,
-                UserInfo = userInfo,
-                Sport = hrmFile.Sport,
-                Note = "",
-                Modus = modus,
-                ModusVerdi = modusValue,
-                HarCadence = modus == "SMode" ? (modusValue.Substring(1, 1) == "1") : modusValue.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusValue.Substring(2, 1) == "1") : modusValue.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusValue.Substring(7, 1) == "1") : modusValue.Substring(2, 1) == "1",
-                HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") || (modus == "Mode" && modusValue.Substring(1, 1) == "1"),
-                HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1",
-                Device = System.Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim()),
-                Intervall = System.Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
-            };
-
-            //polarData.StartTime = startTime;
+            var polarData = InitalizePolarData(hrmFile, model, userInfo, hrmData);
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
-
-            //if (hrmFile.GpxFile != null)
-            //{
-            //    var gpxfil = hrmFile.GpxFile;
-            //    var timeKorreksjon = IntHelper.HentTidsKorreksjon(model.TimeZoneOffset);
-            //    polarData.GpxDataString = KonverteringsHelper.VaskGpxString(_blobStorageHelper.ReadFile(gpxfil.Reference), timeKorreksjon);
-            //    //SlettFil(gpxfil.hrmKey);
-            //}
-
-            //polarData.VaskHrData();
-            activity = CollectHrmData(polarData, activity);
+            VaskHrData(ref polarData);
+            CollectHrmData(ref activity, polarData);
             //polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-            activity.Lap = CollectLapsData(polarData.Runder, startTime, v02max, polarData.Intervall);
-            //var intervall = polarData.Intervall == 238 ? 5 : polarData.Intervall == 0 ? 5 : polarData.Intervall;
-            //activity.Lap[0].Track = CreateTrackData(polarData.Runder);
-
-            if (hrmFile.GpxFile != null)
-            {
-                trainingCenter.Activities = new ActivityList_t
-                {
-                    Activity = new[] { MapGpxFile(hrmFile.GpxFile, model, activity) }
-                };
-            }
-            else
-            {
-                trainingCenter.Activities.Activity = new[] { activity };
-            }
-
+            //activity.Lap = CollectLapsData(polarData.Runder, startTime, v02max, polarData.Intervall);
+            trainingCenter.Activities = new ActivityList_t { Activity = new[] { activity } };
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
 
             using (var memStream = new MemoryStream())
@@ -155,7 +104,97 @@ namespace PolarConverter.BLL.Services
             //}
         }
 
-        private Activity_t CollectHrmData(PolarData polarData, Activity_t activity)
+        private PolarData InitalizePolarData(PolarFile file, UploadViewModel model, UserInfo userInfo, string hrmData)
+        {
+            var v02max = 0d;
+            double.TryParse(StringHelper.HentVerdi("VO2max=", 3, hrmData).Trim(), out v02max);
+            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
+            var modusValue = StringHelper.HentVerdi("Mode=", 9, hrmData);
+            //var trackTimes = KonverteringsHelper.VaskIntTimes(hrmData);
+            var interval = System.Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
+
+            return new PolarData
+            {
+                HrmData = hrmData,
+                UserInfo = userInfo,
+                Sport = file.Sport,
+                Note = "",
+                Modus = modus,
+                ModusVerdi = modusValue,
+                HarCadence = modus == "SMode" ? (modusValue.Substring(1, 1) == "1") : modusValue.Substring(0, 1) == "0",
+                HarAltitude = modus == "SMode" ? (modusValue.Substring(2, 1) == "1") : modusValue.Substring(0, 1) == "1",
+                ImperiskeEnheter = modus == "SMode" ? (modusValue.Substring(7, 1) == "1") : modusValue.Substring(2, 1) == "1",
+                HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") || (modus == "Mode" && modusValue.Substring(1, 1) == "1"),
+                HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1",
+                Device = System.Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim()),
+                Intervall = interval,
+                HrData = new List<HRData>(),
+                AltitudeData = new List<string>(),
+                PowerData = new List<string>(),
+                CadenseData = new List<string>(),
+                SpeedData = new List<string>(),
+                AntallMeter = new List<double>(),
+                GpxData = file.GpxFile != null ? MapGpxFile(file.GpxFile, model) : null
+            };
+        }
+
+        public void VaskHrData(ref PolarData data)
+        {
+            int antallTabs;
+            var hrmVerdier = StringHelper.LesLinjer(data.HrmData, "[HRData]", out antallTabs, true);
+            for (var i = 0; i < hrmVerdier.Count; i++)
+            {
+                if (i % antallTabs == 0)
+                {
+                    data.HrData.Add(new HRData { HjerteFrekvens = KonverteringsHelper.BeregnHjerteFrekvense(data.Intervall, hrmVerdier[i]) });
+                }
+                else if (i % antallTabs == 1)
+                {
+                    if (data.HarSpeed)
+                    {
+                        var speed = hrmVerdier[i].PolarConvertToDouble();
+                        if (speed > 1400)
+                            speed = i > antallTabs ? hrmVerdier[i - antallTabs].PolarConvertToDouble() : 200;
+                        data.AntallMeter.Add(data.AntallMeter.Count > 0 ? data.AntallMeter.Last() + (speed / 0.6 / 60 * data.Intervall) : (speed / 0.6 / 60 * data.Intervall));
+                    }
+                    else if (data.HarCadence)
+                        data.CadenseData.Add(hrmVerdier[i]);
+                    else if (data.HarAltitude)
+                        data.AltitudeData.Add(hrmVerdier[i]);
+                    else if (data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                }
+                else if (i % antallTabs == 2)
+                {
+                    if (data.HarSpeed && data.HarCadence)
+                        data.CadenseData.Add(hrmVerdier[i]);
+                    else if (data.HarSpeed && data.HarAltitude)
+                        data.AltitudeData.Add(hrmVerdier[i]);
+                    else if (data.HarSpeed && data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                    else if (data.HarCadence && data.HarAltitude)
+                        data.AltitudeData.Add(hrmVerdier[i]);
+                    else if (data.HarCadence && data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                    else if (data.HarAltitude && data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                }
+                else if (i % antallTabs == 3)
+                {
+                    if (data.HarSpeed && data.HarCadence && data.HarAltitude)
+                        data.AltitudeData.Add(hrmVerdier[i]);
+                    else if (data.HarSpeed && data.HarCadence && data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                }
+                else if (i % antallTabs == 4)
+                {
+                    if (data.HarSpeed && data.HarCadence && data.HarAltitude && data.HarPower)
+                        data.PowerData.Add(hrmVerdier[i]);
+                }
+            }
+        }
+
+        private void CollectHrmData(ref Activity_t activity, PolarData polarData)
         {
             int antallTabs;
             var hrmVerdier = StringHelper.LesLinjer(polarData.HrmData, "[HRData]", out antallTabs, true);
@@ -163,7 +202,7 @@ namespace PolarConverter.BLL.Services
             if (polarData.RundeTider.Count == 1)
             {
                 var lap = CollectLapForHrmData(polarData, hrmVerdier, antallTabs);
-                activity.Lap = new[] {lap};
+                activity.Lap = new[] { lap };
             }
             else if (polarData.Versjon == "102")
             {
@@ -176,7 +215,6 @@ namespace PolarConverter.BLL.Services
             {
                 activity.Lap = KonverteringsHelper.CalculateIntTimes(polarData, activity.Id, KonverteringsHelper.HentStartDato(polarData));
             }
-            return activity;
         }
 
         private ActivityLap_t CollectLapForHrmData(PolarData polarData, List<string> hrmVerdier, int antallTabs)
@@ -188,21 +226,21 @@ namespace PolarConverter.BLL.Services
             for (var i = 0; i < hrmVerdier.Count; i++)
             {
                 lap.Track[i] = new Trackpoint_t();
-                if (i%antallTabs == 0)
+                if (i % antallTabs == 0)
                 {
                     lap.Track[i].HeartRateBpm = new HeartRateInBeatsPerMinute_t
                     {
                         Value = KonverteringsHelper.BeregnHjerteFrekvense(polarData.Intervall, hrmVerdier[i])
                     };
                 }
-                else if (i%antallTabs == 1)
+                else if (i % antallTabs == 1)
                 {
                     if (polarData.HarSpeed)
                     {
                         var speed = hrmVerdier[i].PolarConvertToDouble();
                         if (speed > 1400)
                             speed = i > antallTabs ? hrmVerdier[i - antallTabs].PolarConvertToDouble() : 200;
-                        meters += (speed/0.6/60*polarData.Intervall);
+                        meters += (speed / 0.6 / 60 * polarData.Intervall);
                         lap.Track[i].DistanceMeters = meters;
                     }
                     else if (polarData.HarCadence)
@@ -220,7 +258,7 @@ namespace PolarConverter.BLL.Services
                         lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
                     }
                 }
-                else if (i%antallTabs == 2)
+                else if (i % antallTabs == 2)
                 {
                     if (polarData.HarSpeed && polarData.HarCadence)
                     {
@@ -250,7 +288,7 @@ namespace PolarConverter.BLL.Services
                         lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
                     }
                 }
-                else if (i%antallTabs == 3)
+                else if (i % antallTabs == 3)
                 {
                     if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude)
                     {
@@ -262,7 +300,7 @@ namespace PolarConverter.BLL.Services
                         lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
                     }
                 }
-                else if (i%antallTabs == 4)
+                else if (i % antallTabs == 4)
                 {
                     if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude && polarData.HarPower)
                     {
@@ -436,10 +474,14 @@ namespace PolarConverter.BLL.Services
                                 }
                                 if (xmlFile.GpxFile != null)
                                 {
-                                    trainingCenter.Activities = new ActivityList_t
-                                    {
-                                        Activity = new[] { MapGpxFile(xmlFile.GpxFile, model, activity) }
-                                    };
+                                    var gpsData = MapGpxFile(xmlFile.GpxFile, model);
+                                    // Add gpsData til lap.track...
+                                    //lap.Track[j].Position = new Position_t
+                                    //{
+                                    //    LatitudeDegrees = Convert.ToDouble(gpsData[j].trkseg[i].lat),
+                                    //    LongitudeDegrees = Convert.ToDouble(gpsData[j].trkseg[i].lon)
+                                    //};                            
+
                                 }
 
                                 trainingCenter.Activities.Activity = new[] { activity };
@@ -466,22 +508,10 @@ namespace PolarConverter.BLL.Services
             return null;
         }
 
-        private Activity_t MapGpxFile(GpxFile gpxFile, UploadViewModel model, Activity_t activity)
+        private gpx MapGpxFile(GpxFile gpxFile, UploadViewModel model)
         {
             var timeKorreksjon = IntHelper.HentTidsKorreksjon(model.TimeZoneOffset);
-            var gpxData = _gpxService.ReadGpxFile(gpxFile.Reference, timeKorreksjon);
-            var maxLength = activity.Lap[0].Track.Length;
-            if (gpxData.trk[0].trkseg.Length < maxLength)
-                maxLength = gpxData.trk[0].trkseg.Length;
-            for (int i = 0; i < maxLength; i++)
-            {
-                activity.Lap[0].Track[i].Position = new Position_t
-                {
-                    LatitudeDegrees = System.Convert.ToDouble(gpxData.trk[0].trkseg[i].lat),
-                    LongitudeDegrees = System.Convert.ToDouble(gpxData.trk[0].trkseg[i].lon)
-                };
-            }
-            return activity;
+            return _gpxService.ReadGpxFile(gpxFile.Reference, timeKorreksjon);
         }
 
         private ActivityLap_t[] CollectLapsData(IEnumerable<lap> laps, DateTime startTime, double v02max)
@@ -658,28 +688,6 @@ namespace PolarConverter.BLL.Services
                 default:
                     return Sport_t.Other;
             }
-        }
-
-        private double[] ConvertToDoubleArray(string[] array)
-        {
-            var tmpArray = new double[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                tmpArray[i] =
-                    System.Convert.ToDouble(array[i]);
-            }
-            return tmpArray;
-        }
-
-        private int[] ConvertToIntArray(string[] array)
-        {
-            var tmpArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                tmpArray[i] =
-                    System.Convert.ToInt32(array[i]);
-            }
-            return tmpArray;
         }
 
         static Stream GetPipedStream(Action<Stream> writeAction)

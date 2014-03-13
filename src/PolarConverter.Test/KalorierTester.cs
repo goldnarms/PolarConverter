@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Services;
 using Should;
 
 namespace PolarConverter.Test
@@ -34,7 +35,9 @@ namespace PolarConverter.Test
                 Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
             };
 
-            polarData.VaskHrData();
+            var conversionService = new ConversionService();
+            conversionService.VaskHrData(ref polarData);
+
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
 

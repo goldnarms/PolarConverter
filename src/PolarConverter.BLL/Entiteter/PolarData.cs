@@ -63,75 +63,8 @@ namespace PolarConverter.BLL.Entiteter
         public DateTime StartTime { get; set; }
         public string Sport { get; set; }
         public string Note { get; set; }
+        public gpx GpxData { get; set; }
 
-        public void VaskHrData()
-        {
-            int antallTabs;
-            var hrmVerdier = StringHelper.LesLinjer(HrmData, "[HRData]", out antallTabs, true);
-            var hrData = new List<HRData>();
-            var altitudeData = new List<string>();
-            var speedData = new List<string>();
-            var cadensData = new List<string>();
-            var powerData = new List<string>();
-            var antallMeter = new List<double>();
-            for (var i = 0; i < hrmVerdier.Count; i++)
-            {
-                if (i % antallTabs == 0)
-                {
-                    hrData.Add(new HRData { HjerteFrekvens = KonverteringsHelper.BeregnHjerteFrekvense(Intervall, hrmVerdier[i]) });
-                }
-                else if (i % antallTabs == 1)
-                {
-                    if (HarSpeed)
-                    {
-                        var speed = hrmVerdier[i].PolarConvertToDouble();
-                        if(speed > 1400)
-                            speed = i > antallTabs ? hrmVerdier[i-antallTabs].PolarConvertToDouble() : 200;
-                        antallMeter.Add(antallMeter.Count > 0 ? antallMeter.Last() + (speed / 0.6 / 60 * Intervall) : (speed / 0.6 / 60 * Intervall));
-                    }
-                    else if (HarCadence)
-                        cadensData.Add(hrmVerdier[i]);
-                    else if (HarAltitude)
-                        altitudeData.Add(hrmVerdier[i]);
-                    else if (HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                }
-                else if (i % antallTabs == 2)
-                {
-                    if (HarSpeed && HarCadence)
-                        cadensData.Add(hrmVerdier[i]);
-                    else if (HarSpeed && HarAltitude)
-                        altitudeData.Add(hrmVerdier[i]);
-                    else if (HarSpeed && HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                    else if (HarCadence && HarAltitude)
-                        altitudeData.Add(hrmVerdier[i]);
-                    else if (HarCadence && HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                    else if (HarAltitude && HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                }
-                else if (i % antallTabs == 3)
-                {
-                    if (HarSpeed && HarCadence && HarAltitude)
-                        altitudeData.Add(hrmVerdier[i]);
-                    else if (HarSpeed && HarCadence && HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                }
-                else if (i % antallTabs == 4)
-                {
-                    if (HarSpeed && HarCadence && HarAltitude && HarPower)
-                        powerData.Add(hrmVerdier[i]);
-                }
-            }
-
-            HrData = hrData;
-            AltitudeData = altitudeData;
-            SpeedData = speedData;
-            PowerData = powerData;
-            CadenseData = cadensData;
-            AntallMeter = antallMeter;
-        }
 
         public void VaskXmlHrData(string innlestData)
         {

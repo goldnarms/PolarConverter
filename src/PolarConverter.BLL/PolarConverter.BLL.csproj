@@ -153,6 +153,7 @@
     <Compile Include="Entiteter\UserInfo.cs" />
     <Compile Include="Entiteter\UserModel.cs" />
     <Compile Include="Hjelpeklasser\ByteExtension.cs" />
+    <Compile Include="Hjelpeklasser\Converters.cs" />
     <Compile Include="Hjelpeklasser\DateTimeExtensions.cs" />
     <Compile Include="Hjelpeklasser\DoubleExtensions.cs" />
     <Compile Include="Hjelpeklasser\DropboxHelper.cs" />

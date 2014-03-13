@@ -63,7 +63,7 @@ namespace PolarConverter.BLL
                                 //SlettFil(gpxfil.hrmKey);
                             }
 
-                            polarData.VaskHrData();
+                            //polarData.VaskHrData();
                             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
 
                             //SlettFil(hrmfil.Filnavn);
