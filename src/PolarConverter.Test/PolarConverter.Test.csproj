@@ -71,6 +71,7 @@
     <Compile Include="KalorierTester.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="BugFixesTest.cs" />
+    <Compile Include="StringHelperTest.cs" />
     <Compile Include="TidsDiffTest.cs" />
     <Compile Include="XmlTester.cs" />
     <Compile Include="DataTypeTest.cs" />

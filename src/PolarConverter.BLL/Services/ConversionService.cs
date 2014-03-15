@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web.WebSockets;
 using System.Xml;
@@ -40,7 +41,7 @@ namespace PolarConverter.BLL.Services
                         zip.FlattenFoldersOnExtract = true;
                         var userInfo = new UserInfo
                         {
-                            Weight = model.WeightMode == "kg" ? model.Weight : model.Weight * 0.45359237,
+                            Weight = model.WeightMode == "kg" ? model.Weight : model.Weight * Config.ConfigVariables.Lbsfactor,
                             TimeZoneOffset = model.TimeZoneOffset,
                             ForceGarmin = model.ForceGarmin
                         };
@@ -77,11 +78,13 @@ namespace PolarConverter.BLL.Services
             var startTime = System.Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
             startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
             var trainingCenter = CreateTrainingCenterDatabaseT();
-            var activity = CreateActivity(hrmFile.Sport, model.Notes, startTime);
             var polarData = InitalizePolarData(hrmFile, model, userInfo, hrmData);
+            var activity = CreateActivity(hrmFile.Sport, model.Notes != "" ? model.Notes : polarData.Note, startTime);
+
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             VaskHrData(ref polarData);
             CollectHrmData(ref activity, polarData);
+
             //polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
             //activity.Lap = CollectLapsData(polarData.Runder, startTime, v02max, polarData.Intervall);
             trainingCenter.Activities = new ActivityList_t { Activity = new[] { activity } };
@@ -112,13 +115,19 @@ namespace PolarConverter.BLL.Services
             var modusValue = StringHelper.HentVerdi("Mode=", 9, hrmData);
             //var trackTimes = KonverteringsHelper.VaskIntTimes(hrmData);
             var interval = System.Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
-
+            var tabs = 0;
+            var noteData = StringHelper.LesLinjer(hrmData, "[Note]", out tabs);
+            var noteText = new StringBuilder();
+            foreach (var notes in noteData)
+            {
+                noteText.AppendLine(notes);
+            }
             return new PolarData
             {
                 HrmData = hrmData,
                 UserInfo = userInfo,
                 Sport = file.Sport,
-                Note = "",
+                Note = noteText.ToString(),
                 Modus = modus,
                 ModusVerdi = modusValue,
                 HarCadence = modus == "SMode" ? (modusValue.Substring(1, 1) == "1") : modusValue.Substring(0, 1) == "0",
@@ -223,92 +232,118 @@ namespace PolarConverter.BLL.Services
             var maximumDataLength = hrmVerdier.Count;
             lap.Track = new Trackpoint_t[maximumDataLength];
             var meters = 0d;
-            for (var i = 0; i < hrmVerdier.Count; i++)
+            var lapIndex = 0;
+            for (var i = 0; i < hrmVerdier.Count; i = i + antallTabs)
             {
-                lap.Track[i] = new Trackpoint_t();
-                if (i % antallTabs == 0)
+                var lapTrackPoint = new Trackpoint_t();
+                lapTrackPoint.Time = polarData.StartTime.AddSeconds(lapIndex*polarData.Intervall);
+                lapTrackPoint.HeartRateBpm = new HeartRateInBeatsPerMinute_t
                 {
-                    lap.Track[i].HeartRateBpm = new HeartRateInBeatsPerMinute_t
-                    {
-                        Value = KonverteringsHelper.BeregnHjerteFrekvense(polarData.Intervall, hrmVerdier[i])
-                    };
-                }
-                else if (i % antallTabs == 1)
-                {
-                    if (polarData.HarSpeed)
-                    {
-                        var speed = hrmVerdier[i].PolarConvertToDouble();
-                        if (speed > 1400)
-                            speed = i > antallTabs ? hrmVerdier[i - antallTabs].PolarConvertToDouble() : 200;
-                        meters += (speed / 0.6 / 60 * polarData.Intervall);
-                        lap.Track[i].DistanceMeters = meters;
-                    }
-                    else if (polarData.HarCadence)
-                    {
-                        lap.Track[i].CadenceSpecified = true;
-                        lap.Track[i].Cadence = System.Convert.ToByte(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarAltitude)
-                    {
-                        lap.Track[i].AltitudeMetersSpecified = true;
-                        lap.Track[i].AltitudeMeters = System.Convert.ToDouble(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarPower)
-                    {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
-                    }
-                }
-                else if (i % antallTabs == 2)
-                {
-                    if (polarData.HarSpeed && polarData.HarCadence)
-                    {
-                        lap.Track[i].CadenceSpecified = true;
-                        lap.Track[i].Cadence = System.Convert.ToByte(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarSpeed && polarData.HarAltitude)
-                    {
-                        lap.Track[i].AltitudeMetersSpecified = true;
-                        lap.Track[i].AltitudeMeters = System.Convert.ToDouble(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarSpeed && polarData.HarPower)
-                    {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarCadence && polarData.HarAltitude)
-                    {
-                        lap.Track[i].AltitudeMetersSpecified = true;
-                        lap.Track[i].AltitudeMeters = System.Convert.ToDouble(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarCadence && polarData.HarPower)
-                    {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarAltitude && polarData.HarPower)
-                    {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
-                    }
-                }
-                else if (i % antallTabs == 3)
-                {
-                    if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude)
-                    {
-                        lap.Track[i].AltitudeMetersSpecified = true;
-                        lap.Track[i].AltitudeMeters = System.Convert.ToDouble(hrmVerdier[i]);
-                    }
-                    else if (polarData.HarSpeed && polarData.HarCadence && polarData.HarPower)
-                    {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
-                    }
-                }
-                else if (i % antallTabs == 4)
+                    Value = KonverteringsHelper.BeregnHjerteFrekvense(polarData.Intervall, hrmVerdier[i])
+                };
+                if (antallTabs > 4)
                 {
                     if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude && polarData.HarPower)
                     {
-                        lap.Track[i].Extensions = WritePowerData(hrmVerdier[i]);
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[i + 4]);
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 3]);
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
                     }
                 }
+                else if (antallTabs > 3)
+                {
+                    if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude)
+                    {
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 3]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                    else if (polarData.HarSpeed && polarData.HarCadence && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[i + 3]);
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                }
+                else if (antallTabs > 2)
+                {
+                    if (polarData.HarSpeed && polarData.HarCadence)
+                    {
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                    else if (polarData.HarSpeed && polarData.HarAltitude)
+                    {
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                    else if (polarData.HarSpeed && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[i + 2]);
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                    else if (polarData.HarCadence && polarData.HarAltitude)
+                    {
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                    }
+                    else if (polarData.HarCadence && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[i + 2]);
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
+                    }
+                    else if (polarData.HarAltitude && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[i + 2]);
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 1]);
+                    }
+                }
+                else if (antallTabs > 1)
+                {
+                    if (polarData.HarSpeed)
+                    {
+                        meters += AddDistanceData(ref lapTrackPoint, hrmVerdier[i + 1], polarData.Intervall, meters);
+                    }
+                    else if (polarData.HarCadence)
+                    {
+                        AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 1]);
+                    }
+                    else if (polarData.HarAltitude)
+                    {
+                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 1]);
+                    }
+                    else if (polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = WritePowerData(hrmVerdier[lapIndex]);
+                    }
+                }
+                lap.Track[lapIndex] = lapTrackPoint;
+                lapIndex++;
             }
             return lap;
+        }
+
+        private void AddAltitudeData(ref Trackpoint_t trackpoint, string value)
+        {
+            trackpoint.AltitudeMetersSpecified = true;
+            trackpoint.AltitudeMeters = System.Convert.ToDouble(value);   
+        }
+
+        private void AddCadenceData(ref Trackpoint_t trackpoint, string value)
+        {
+            trackpoint.CadenceSpecified = true;
+            trackpoint.Cadence = System.Convert.ToByte(value);
+        }
+
+        private double AddDistanceData(ref Trackpoint_t trackpoint, string value, int interval, double meters)
+        {
+            var speed = value.PolarConvertToDouble();
+            if (speed > 1400)
+                speed = 200;
+            var distance = (speed / 0.6 / 60 * interval);
+            trackpoint.DistanceMetersSpecified = true;
+            trackpoint.DistanceMeters = meters + distance;
+            return distance;
         }
 
         private ActivityLap_t[] CollectLapsData(IEnumerable<Runde> laps, DateTime startTime, double v02max, int interval)
@@ -428,7 +463,7 @@ namespace PolarConverter.BLL.Services
             var doc = new XmlDocument();
             var tpxElement = doc.CreateElement("TPX", @"http://www.garmin.com/xmlschemas/ActivityExtension/v2");
             var wattElement = doc.CreateElement("Watts");
-            wattElement.Value = powerValue;
+            wattElement.InnerText = powerValue;
             tpxElement.AppendChild(wattElement);
             return new Extensions_t { Any = new[] { tpxElement } };
         }

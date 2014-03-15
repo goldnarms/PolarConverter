@@ -135,6 +135,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigVariables.cs" />
     <Compile Include="Entiteter\BrukerModel.cs" />
     <Compile Include="Entiteter\ConversionResult.cs" />
     <Compile Include="Entiteter\DropboxItem.cs" />
