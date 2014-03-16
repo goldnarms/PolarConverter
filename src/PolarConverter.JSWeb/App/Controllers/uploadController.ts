@@ -20,6 +20,7 @@ module PolarConverter {
         convert(uploadViewModel: PolarConverter.UploadViewModel): void;
         removeGpxFile(polarFile: PolarConverter.PolarFile): void;
         isConverting: boolean;
+        showExtraVariables: boolean;
     }
 
     export class UploadController {
@@ -34,6 +35,7 @@ module PolarConverter {
         public uploadViewModel: PolarConverter.UploadViewModel;
         public isMetricWeight: boolean;
         public isConverting: boolean;
+        public showExtraVariables: boolean;
         public timeZones: PolarConverter.TimeZone[];
         public sports: any[];
 
@@ -90,6 +92,7 @@ module PolarConverter {
         }
 
         private onUpload(data: any): void {
+            this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
                 var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false };
                 this.gpxFiles.push(gpxFile);

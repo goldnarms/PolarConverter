@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Xml;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Hjelpeklasser;
 using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Models;
 
@@ -27,9 +28,16 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     //Save to blob storage
                     var blobStorageHelper = new BlobStorageHelper("polarfiles");
                     var fileReference = blobStorageHelper.UploadFile(fileData);
-                    var sport = CheckForSport(fileData);
+                    var showExtraVariables = false;
+                    string sport;
+                    double v02Max;
+                    CheckForData(fileData, out sport, out v02Max);
+                    if (v02Max < 1)
+                    {
+                        showExtraVariables = true;
+                    }
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport };
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport, showExtraVariables = showExtraVariables };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
                     return new HttpResponseMessage(HttpStatusCode.OK);
@@ -38,13 +46,14 @@ namespace PolarConverter.JSWeb.Controllers.Api
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
-        private string CheckForSport(HttpPostedFile fileData)
+        private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max)
         {
             var extension = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower();
-            var sport = "Other";
+            sport = "Other";
+            v02Max = 0;
             if (extension == "xml")
             {
-                var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
+                var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var xmlReader = XmlReader.Create(fileData.InputStream, settings))
                 {
@@ -52,15 +61,22 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     {
                         if (xmlReader.Name == "type")
                         {
-                            switch (xmlReader.ReadInnerXml())
+                            switch (xmlReader.ReadInnerXml().Trim())
                             {
                                 case "CYCLING":
-                                    return "Biking";
+                                    sport = "Biking";
+                                    break;
                                 case "RUNNING":
-                                    return "Running";
+                                    sport = "Running";
+                                    break;
                                 default:
-                                    return "Other";
+                                    sport = "Other";
+                                    break;
                             }
+                        }
+                        else if (xmlReader.Name == "vo2max")
+                        {
+                            v02Max = xmlReader.ReadInnerXml().Trim().ToPolarDouble();
                         }
                     }
                 }
@@ -73,15 +89,21 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     while (!textReader.EndOfStream)
                     {
                         var line = textReader.ReadLine();
-                        if (line != null && line.Contains("[Trip]"))
+                        if (line != null)
                         {
-                            sport = "Biking";
-                            break;
+                            if (line.Contains("VO2max"))
+                            {
+                                v02Max = StringHelper.HentVerdi("VO2max=", 3, line).Trim().ToPolarDouble();
+                            }
+                            if (line.Contains("[Trip]"))
+                            {
+                                sport = "Biking";
+                                break;
+                            }
                         }
                     }
                 }
             }
-            return sport;
         }
 
         private int GetFileExtension(string filenName)

@@ -64,6 +64,7 @@ var PolarConverter;
         };
 
         UploadController.prototype.onUpload = function (data) {
+            this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
                 var gpxFile = { name: data.result.name, reference: data.result.reference, matched: false };
                 this.gpxFiles.push(gpxFile);
