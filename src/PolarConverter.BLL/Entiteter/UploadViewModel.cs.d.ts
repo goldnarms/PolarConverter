@@ -3,6 +3,9 @@
 		weight: number;
 		weightMode: string;
 		timeZoneOffset: number;
+		v02Max: number;
+		age: number;
+		gender: string;
 		forceGarmin: boolean;
 		polarFiles: {
 			name: string;

@@ -2,13 +2,8 @@
     ViewBag.Title = "PolarConverter";
 }
 
-<div class="jumbotron">
-    <p class="lead">PolarConverter converts your .xml, .hrm and .gpx files from your Polar® watch to .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.</p>
-    @*<p><a href="http://asp.net" class="btn btn-primary btn-large">Use Dropbox</a></p>
-        <p><a href="http://asp.net" class="btn btn-primary btn-large">Upload yourself</a></p>*@
-</div>
 
-<div class="row" data-ng-app="polarApp">
+<div class="row" data-ng-app="polarApp" style="padding-top: 45px">
     <div class="col-md-12" data-ng-controller="uploadCtrl as uc">
         <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
@@ -97,7 +92,7 @@
                     <div class="form-group">
                         <label class="col-lg-2 control-label" for="inputWeight">Weight</label>
                         <div class="col-lg-10">
-                            <input type="number" step="0.1" min="1" max="900" value="" id="inputWeight" data-ng-model="uc.uploadViewModel.weight" />
+                            <input type="number" step="0.1" min="1" max="600" value="" id="inputWeight" data-ng-model="uc.uploadViewModel.weight" />
                             <label>
                                 <input type="radio" value="kg" data-ng-model="uc.uploadViewModel.weightMode" />&nbsp;Kg
                             </label>
@@ -108,7 +103,7 @@
                     </div>
                     <div class="form-group" data-ng-if="uc.showExtraVariables">
                         <label class="col-lg-2 control-label" for="inputAge">Age</label>
-                        <div class="col-lg-10"><input type="number" value="" id="inputAge" data-ng-model="uc.uploadViewModel.age" /></div>
+                        <div class="col-lg-10"><input type="number" value="" id="inputAge" min="1" max="130" step="1" data-ng-model="uc.uploadViewModel.age" /></div>
                     </div>
                     <div class="form-group" data-ng-if="uc.showExtraVariables">
                         <label class="col-lg-2 control-label">Gender</label>
@@ -178,6 +173,12 @@
         </div>
     </div>
 </div>
+<div class="jumbotron">
+    <p class="lead">PolarConverter converts your .xml, .hrm and .gpx files from your Polar® watch to .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.</p>
+    @*<p><a href="http://asp.net" class="btn btn-primary btn-large">Use Dropbox</a></p>
+        <p><a href="http://asp.net" class="btn btn-primary btn-large">Upload yourself</a></p>*@
+</div>
+
 <div class="row">
     <div class="col-md-4">
         <h3>Upload</h3>

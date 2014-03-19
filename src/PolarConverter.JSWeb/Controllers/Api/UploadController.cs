@@ -4,11 +4,8 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
-using PolarConverter.BLL;
-using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Hjelpeklasser;
 using PolarConverter.BLL.Services;
-using PolarConverter.JSWeb.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -31,13 +28,14 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     var showExtraVariables = false;
                     string sport;
                     double v02Max;
-                    CheckForData(fileData, out sport, out v02Max);
+                    double weight;
+                    CheckForData(fileData, out sport, out v02Max, out weight);
                     if (v02Max < 1)
                     {
                         showExtraVariables = true;
                     }
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport, showExtraVariables = showExtraVariables };
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport, showExtraVariables = showExtraVariables, weight = weight };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
                     return new HttpResponseMessage(HttpStatusCode.OK);
@@ -46,11 +44,12 @@ namespace PolarConverter.JSWeb.Controllers.Api
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
-        private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max)
+        private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max, out double weight)
         {
             var extension = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower();
             sport = "Other";
             v02Max = 0;
+            weight = 0;
             if (extension == "xml")
             {
                 var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
@@ -78,6 +77,14 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         {
                             v02Max = xmlReader.ReadInnerXml().Trim().ToPolarDouble();
                         }
+                        else if (xmlReader.Name == "weight")
+                        {
+                            weight = xmlReader.ReadInnerXml().Trim().ToPolarDouble();
+                        }
+                        else if (xmlReader.Name == "samples")
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -93,7 +100,21 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         {
                             if (line.Contains("VO2max"))
                             {
-                                v02Max = StringHelper.HentVerdi("VO2max=", 3, line).Trim().ToPolarDouble();
+                                var v02result = StringHelper.HentVerdi("VO2max=", 3, line).Trim();
+                                if (string.IsNullOrEmpty(v02result))
+                                {
+                                    v02result = StringHelper.HentVerdi("VO2max=", 2, line).Trim();
+                                    if(string.IsNullOrEmpty(v02result))
+                                        v02result = StringHelper.HentVerdi("VO2max=", 1, line).Trim();
+                                }
+                                v02Max = v02result.ToPolarDouble();
+                            }
+                            if (line.Contains("Weight"))
+                            {
+                                var weightResult = StringHelper.HentVerdi("Weight=", 3, line).Trim();
+                                if (string.IsNullOrEmpty(weightResult))
+                                    weightResult = StringHelper.HentVerdi("Weight=", 2, line).Trim();
+                                weight = weightResult.ToPolarDouble();
                             }
                             if (line.Contains("[Trip]"))
                             {

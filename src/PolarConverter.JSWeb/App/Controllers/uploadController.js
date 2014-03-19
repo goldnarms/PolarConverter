@@ -34,7 +34,7 @@ var PolarConverter;
 
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false };
+            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false, gender: "m", age: 0 };
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -65,6 +65,7 @@ var PolarConverter;
 
         UploadController.prototype.onUpload = function (data) {
             this.showExtraVariables = data.result.showExtraVariables;
+            this.uploadViewModel.weight = data.result.weight;
             if (data.result.fileType === "gpx") {
                 var gpxFile = { name: data.result.name, reference: data.result.reference, matched: false };
                 this.gpxFiles.push(gpxFile);
