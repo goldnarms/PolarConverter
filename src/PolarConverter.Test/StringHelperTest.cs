@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using Should;
 
 namespace PolarConverter.Test

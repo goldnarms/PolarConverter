@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using PolarConverter.BLL.Entiteter;
 using System.IO;
+using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.MVC.Controllers
 {
@@ -11,7 +12,6 @@ namespace PolarConverter.MVC.Controllers
     using System.Linq;
 
     using BLL;
-    using BLL.Hjelpeklasser;
     using ViewModels;
 
     public class HomeController : Controller

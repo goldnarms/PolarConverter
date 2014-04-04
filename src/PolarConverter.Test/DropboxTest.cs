@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using Should;
 using Should.Fluent;
 

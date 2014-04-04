@@ -1,8 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Globalization;
 
-namespace PolarConverter.BLL.Hjelpeklasser
+namespace PolarConverter.BLL.Helpers
 {
     public static class DoubleExtensions
     {

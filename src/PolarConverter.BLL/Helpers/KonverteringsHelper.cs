@@ -5,7 +5,7 @@ using System.Linq;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Services;
 
-namespace PolarConverter.BLL.Hjelpeklasser
+namespace PolarConverter.BLL.Helpers
 {
     public static class KonverteringsHelper
     {
@@ -164,7 +164,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 runde.Vekt = BeregnVekt(polarData);
                 var hrmData = polarData.HrmData;
                 runde.HrmData = hrmData;
-                runde.VO2MaxAbsolutt = Calculators.CalculateVo2Max(hrmData, polarData.UserInfo.Weight);
+                runde.VO2MaxAbsolutt = Calculators.CalculateVo2Max(hrmData, polarData.UploadViewModel.Weight);
                 runde.MaxHr = BeregneMaxHr(hrmData);
                 runde.Kalorier = BeregnKalorier(runde);
                 runde.AltitudeData = polarData.AltitudeData;
@@ -210,7 +210,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
 
         private static double BeregnVekt(PolarData polarData)
         {
-            return polarData.UserInfo.Weight;
+            return polarData.UploadViewModel.Weight;
         }
 
         private static DateTime OppdaterStartTime(DateTime? startTime, DateTime startDate, DateTime tid)
@@ -261,7 +261,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
         {
             var startTime = StringHelper.HentVerdi("StartTime=", 10, polarData.HrmData).ToPolarTid();
             if (startTime != null)
-                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UserInfo.TimeZoneOffset));
+                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UploadViewModel.TimeZoneOffset));
             return startTime;
         }
 
@@ -284,7 +284,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
             var startDate = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst).KonverterTilDato();
             var startTime = StringHelper.HentVerdi("<time>", 10, polarData.XmlTekst, 11).ToPolarTid();
             if (startTime != null)
-                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UserInfo.TimeZoneOffset));
+                startTime = startTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UploadViewModel.TimeZoneOffset));
             var runder = new List<Runde>();
             var runde = new Runde();
             var antallIntervalPrRunde = new List<double>();
@@ -367,7 +367,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 {
                     runde.Distanse = StringHelper.HentVerdi("<distance>", 6, tmpResultXml).PolarConvertToDouble();
                 }
-                runde.Vekt = polarData.UserInfo.Weight;
+                runde.Vekt = polarData.UploadViewModel.Weight;
                 runde.Kalorier = tmpResultXml.Contains("<calories>")
                                      ? Convert.ToInt32(Math.Floor(Convert.ToDouble(
                                          StringHelper.HentVerdi("<calories>", 5, tmpResultXml).Replace('<', ' ').Replace
@@ -591,7 +591,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                 //lap.DistanceMeters
                 //runde.Distanse = polarData.ImperiskeEnheter ? Convert.ToDouble(rundeTid) / _imperial : Convert.ToDouble(rundeTid);
 
-                var v02Max = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UserInfo.Weight);
+                var v02Max = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UploadViewModel.Weight);
                 lap.Calories = Calculators.CalulateCalories(v02Max,
                     StringHelper.HentVerdi("MaxHR=", 3, polarData.HrmData).PolarConvertToDouble(),
                     lap.AverageHeartRateBpm.Value, lap.TotalTimeSeconds);
@@ -678,7 +678,7 @@ namespace PolarConverter.BLL.Hjelpeklasser
                         lap.MaximumSpeed = Convert.ToDouble(tripInfo[6]) / 36;
                     }
                     lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(StringHelper.HentVerdi("MaxHR=", 3, polarData.HrmData)) };
-                    var maxV02 = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UserInfo.Weight);
+                    var maxV02 = Calculators.CalculateVo2Max(polarData.HrmData, polarData.UploadViewModel.Weight);
                     lap.Calories = Calculators.CalulateCalories(maxV02, lap.MaximumHeartRateBpm.Value,
                         lap.AverageHeartRateBpm.Value, lap.TotalTimeSeconds);
                     laps.Add(lap);

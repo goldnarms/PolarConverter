@@ -1,5 +1,5 @@
 ﻿using System;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.BLL.Services
 {

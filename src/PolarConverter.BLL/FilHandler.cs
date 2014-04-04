@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ionic.Zip;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.BLL
 {
@@ -37,7 +37,6 @@ namespace PolarConverter.BLL
                             var polarData = new PolarData
                                 {
                                     HrmData = hrmData,
-                                    UserInfo = model.UserInfo,
                                     Modus = modus,
                                     ModusVerdi = modusVerdi,
                                     HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -89,7 +88,6 @@ namespace PolarConverter.BLL
                             {
                                 var polarData = new PolarData
                                                     {
-                                                        UserInfo = model.UserInfo,
                                                         HarCadence = exercise.Contains("<cadence>"),
                                                         HarAltitude = exercise.Contains("<altitude>"),
                                                         HarSpeed = exercise.Contains("<speed>"),
@@ -278,7 +276,7 @@ namespace PolarConverter.BLL
                 dataSomSkalSkrives.Append("</Lap>\n");
             }
             dataSomSkalSkrives.Append(string.Format("<Notes>{0}</Notes>\n", data.Note));
-            if (data.UserInfo.ForceGarmin)
+            if (data.UploadViewModel.ForceGarmin)
                 dataSomSkalSkrives.Append(
                     "<Creator xsi:type=\"Device_t\">\n<Name>Garmin Edge 500</Name>\n<UnitId>0</UnitId>\n<ProductID>0</ProductID>\n<Version>\n<VersionMajor>2</VersionMajor>\n<VersionMinor>60</VersionMinor>\n<BuildMajor>0</BuildMajor>\n<BuildMinor>0</BuildMinor>\n</Version>\n</Creator>\n");
             else if (PolarData.Devices.ContainsKey(data.Device))

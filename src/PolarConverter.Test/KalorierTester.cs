@@ -2,29 +2,26 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Services;
 using Should;
 
 namespace PolarConverter.Test
 {
     [TestClass]
-    public class KalorierTester
+    public class KalorierTester: BaseTest
     {
-        private const string RotSti = @"D:\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\ajohanse\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\GoldnArms\Google Drive\Prosjekt\Polar\";
         [TestMethod]
         public void TommeKalorier()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(RotSti + "{0}", @"TommeKalorier\12101601.hrm"));
+            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"TommeKalorier\12101601.hrm"));
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
             var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"TommeKalorier\12101601.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
+                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"TommeKalorier\12101601.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,
                 HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -35,8 +32,7 @@ namespace PolarConverter.Test
                 Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
             };
 
-            var conversionService = new ConversionService();
-            conversionService.VaskHrData(ref polarData);
+            DataMapper.VaskHrData(ref polarData);
 
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
@@ -61,7 +57,7 @@ namespace PolarConverter.Test
             polarData.HrData.Count.ShouldEqual(583);
             polarData.Runder[2].Kalorier.ShouldNotEqual(0);
             polarData.Runder.Count.ShouldEqual(9);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
         }
     }
 }

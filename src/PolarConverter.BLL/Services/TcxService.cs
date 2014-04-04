@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using Spring.Collections;
 
 namespace PolarConverter.BLL.Services
@@ -100,7 +100,7 @@ namespace PolarConverter.BLL.Services
                 dataSomSkalSkrives.Append("</Lap>\n");
             }
             dataSomSkalSkrives.Append(string.Format("<Notes>{0}</Notes>\n", data.Note));
-            if (data.UserInfo.ForceGarmin)
+            if (data.UploadViewModel.ForceGarmin)
                 dataSomSkalSkrives.Append(
                     "<Creator xsi:type=\"Device_t\">\n<Name>Garmin Edge 500</Name>\n<UnitId>0</UnitId>\n<ProductID>0</ProductID>\n<Version>\n<VersionMajor>2</VersionMajor>\n<VersionMinor>60</VersionMinor>\n<BuildMajor>0</BuildMajor>\n<BuildMinor>0</BuildMinor>\n</Version>\n</Creator>\n");
             else if (PolarData.Devices.ContainsKey(data.Device))

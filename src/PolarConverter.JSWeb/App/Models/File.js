@@ -2,4 +2,4 @@ var PolarConverter;
 (function (PolarConverter) {
     "use strict";
 })(PolarConverter || (PolarConverter = {}));
-//# sourceMappingURL=File.js.map
+//# sourceMappingURL=file.js.map

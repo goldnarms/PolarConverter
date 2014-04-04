@@ -4,13 +4,25 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
+using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
     public class UploadController : ApiController
     {
+        private readonly IStorageHelper _storageHelper;
+
+        public UploadController()
+        {
+            _storageHelper = new LocalStorageHelper();
+        }
+        public UploadController(IStorageHelper storageHelper)
+        {
+            _storageHelper = storageHelper;
+        }
+
         [Route("api/upload")]
         [HttpPost]
         [HttpGet]
@@ -23,8 +35,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 if (fileData.ContentLength > 0)
                 {
                     //Save to blob storage
-                    var blobStorageHelper = new BlobStorageHelper("polarfiles");
-                    var fileReference = blobStorageHelper.UploadFile(fileData);
+                    //var blobStorageHelper = new BlobStorageHelper("polarfiles");
+                    var fileReference = _storageHelper.UploadFile(fileData);
                     var showExtraVariables = false;
                     string sport;
                     double v02Max;

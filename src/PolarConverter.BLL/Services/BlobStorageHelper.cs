@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.StorageClient;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Interfaces;
 using Spring.Caching;
 using BlobContainerPermissions = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPermissions;
 using BlobContainerPublicAccessType = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPublicAccessType;
@@ -19,7 +19,7 @@ using CloudBlobContainer = Microsoft.WindowsAzure.Storage.Blob.CloudBlobContaine
 
 namespace PolarConverter.BLL.Services
 {
-    public class BlobStorageHelper
+    public class BlobStorageHelper: IStorageHelper
     {
         private readonly CloudBlobContainer _container;
         public BlobStorageHelper(string containerName)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.BLL.Entiteter
 {
@@ -18,6 +18,7 @@ namespace PolarConverter.BLL.Entiteter
         public bool HarPower { get; set; }
         public string Versjon { get { return StringHelper.HentVerdi("Version=", 3, HrmData); } }
         public int Device { get; set; }
+        public UploadViewModel UploadViewModel { get; set; }
         public static Dictionary<int, string> Devices = new Dictionary<int, string>
                                                             {
                                                                 { 0, "Unknown" },
@@ -56,8 +57,6 @@ namespace PolarConverter.BLL.Entiteter
         public List<double> AntallMeter { get; set; }
         public List<GPSData> GpxDataString { get; set; }
         public List<Runde> Runder { get; set; }
-        //public BrukerModel BrukerModel { get; set; }
-        public UserInfo UserInfo { get; set; }
         public List<string> RundeTider { get; set; }
         public bool ErXml { get; set; }
         public DateTime StartTime { get; set; }

@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolarConverter.BLL.Helpers;
 using Should;
 
 namespace PolarConverter.Test
 {
     using BLL.Entiteter;
-    using BLL.Hjelpeklasser;
 
     [TestClass]
     public class ConvertTest

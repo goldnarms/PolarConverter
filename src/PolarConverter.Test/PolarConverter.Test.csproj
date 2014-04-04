@@ -48,6 +48,7 @@
       <HintPath>..\packages\ShouldFluent.1.1.19\lib\Should.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -63,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BaseTest.cs" />
     <Compile Include="ConvertTest.cs" />
     <Compile Include="ImportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

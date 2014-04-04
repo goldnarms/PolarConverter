@@ -4,26 +4,21 @@ using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using Should;
 
 namespace PolarConverter.Test
 {
     [TestClass]
-    public class XmlTester
+    public class XmlTester: BaseTest
     {
-        //private const string RotSti = @"D:\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\ajohanse\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\GoldnArms\Google Drive\Prosjekt\Polar\";
-        private const string RotSti = @"C:\Users\Arnstein\Google Drive\PolarFiler\";
-
         [TestMethod]
         public void ReadTypeFromXml()
         {
             var sport = "";
             var settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
-            using (var xmlReader = XmlReader.Create(string.Format(RotSti + "{0}",
+            using (var xmlReader = XmlReader.Create(string.Format(FileRoot + "{0}",
                                             @"Done\Goldnarms_09.07.2012_export(1).xml"), settings))
             {
                 while (xmlReader.Read())
@@ -50,7 +45,7 @@ namespace PolarConverter.Test
                     new DropboxItem
                         {
                             Filnavn =
-                                string.Format(RotSti + "{0}",
+                                string.Format(FileRoot + "{0}",
                                             @"XmlFil\børge_18.10.2012_export.xml"),
                             Notat = "Xml",
                             Sport = "Biking",
@@ -63,7 +58,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
@@ -86,7 +81,7 @@ namespace PolarConverter.Test
             polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(162);
             polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 10, 1, 17, 58, 22));
             polarData.Runder[0].AntallSekunder.ShouldEqual(281.5);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
         }
 
         [TestMethod]
@@ -101,7 +96,7 @@ namespace PolarConverter.Test
                     new DropboxItem
                         {
                             Filnavn =
-                                string.Format(RotSti + "{0}",
+                                string.Format(FileRoot + "{0}",
                                             @"XmlFil\escalade_29.11.2012_export.xml"),
                             Notat = "Xml",
                             Sport = "Biking",
@@ -114,7 +109,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
@@ -139,7 +134,7 @@ namespace PolarConverter.Test
             polarData.Runder[0].Distanse.ShouldEqual(26740);
             polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52));
             polarData.Runder[0].AntallSekunder.ShouldEqual(3380.0);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
         }
 
         [TestMethod]
@@ -154,7 +149,7 @@ namespace PolarConverter.Test
                     new DropboxItem
                         {
                             Filnavn =
-                                string.Format(RotSti + "{0}",
+                                string.Format(FileRoot + "{0}",
                                             @"XmlFil\escalade_12.12.2012_export.xml"),
                             Notat = "Xml",
                             Sport = "Biking",
@@ -167,7 +162,7 @@ namespace PolarConverter.Test
             var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
             var polarData = new PolarData
             {
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
                 HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
                 HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
                 HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
@@ -192,7 +187,7 @@ namespace PolarConverter.Test
             polarData.Runder[0].Distanse.ShouldEqual(22124);
             polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 12, 8, 15, 02, 04));
             polarData.Runder[0].AntallSekunder.ShouldEqual(42);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
         }
     }
 }

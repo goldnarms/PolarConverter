@@ -3,29 +3,25 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
 using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Hjelpeklasser;
+using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Services;
 using Should;
 
 namespace PolarConverter.Test
 {
     [TestClass]
-    public class DurationTest
+    public class DurationTest: BaseTest
     {
-        private const string RotSti = @"D:\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\ajohanse\Google Drive\Prosjekt\Polar\";
-        //private const string RotSti = @"C:\Users\GoldnArms\Google Drive\Prosjekt\Polar\";
-
         [TestMethod]
         public void ForLangDuration()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(RotSti + "{0}", @"Duration\12101601_2.hrm"));
+            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Duration\12101601_2.hrm"));
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
             var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
                 Modus = modus,
                 ModusVerdi = modusVerdi,
                 HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -36,8 +32,7 @@ namespace PolarConverter.Test
                 Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
             };
 
-            var conversionService = new ConversionService();
-            conversionService.VaskHrData(ref polarData);
+            DataMapper.VaskHrData(ref polarData);
 
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
@@ -55,20 +50,20 @@ namespace PolarConverter.Test
             polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(133);
             polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 10, 16, 16, 57, 44));
             polarData.Runder[0].AntallSekunder.ShouldEqual(3014);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "trening.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
         }
 
         [TestMethod]
         public void ForKortDuration()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(RotSti + "{0}", @"Duration\12112501.hrm"));
+            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Duration\12112501.hrm"));
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
             var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"Duration\12112501.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
+                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Duration\12112501.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,
                 HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -79,8 +74,7 @@ namespace PolarConverter.Test
                 Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
             };
 
-            var conversionService = new ConversionService();
-            conversionService.VaskHrData(ref polarData);
+            DataMapper.VaskHrData(ref polarData);
 
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
@@ -99,20 +93,20 @@ namespace PolarConverter.Test
             polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 11, 25, 13, 19, 42));
             polarData.Runder[0].AntallSekunder.ShouldEqual(159.3);
             Math.Round(polarData.Runder.Sum(runde => runde.AntallSekunder), 1).ShouldEqual(9151.3);
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "trening.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
         }
 
         [TestMethod]
         public void ForKortDuration2()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(RotSti + "{0}", @"Duration\12120801.hrm"));
+            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Duration\12120801.hrm"));
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
             var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
             var polarData = new PolarData
             {
                 HrmData = hrmData,
-                UserInfo = new UserInfo() { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(RotSti + "{0}", @"Duration\12120801.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
+                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
+                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Duration\12120801.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
                 Modus = modus,
                 ModusVerdi = modusVerdi,
                 HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
@@ -123,8 +117,7 @@ namespace PolarConverter.Test
                 Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
             };
 
-            var conversionService = new ConversionService();
-            conversionService.VaskHrData(ref polarData);
+            DataMapper.VaskHrData(ref polarData);
 
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
             polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
@@ -150,7 +143,7 @@ namespace PolarConverter.Test
             Math.Round(polarData.Runder.Sum(runde => runde.AntallSekunder), 0).ShouldEqual(24458);
             var skrevetData = FilHandler.DataSomSkalSkrives(polarData).ToString();
             //skrevetData.Substring(skrevetData.IndexOf("<Time>"), 20).ShouldContain("05:14:30");
-            FilHandler.SkrivTilFil(polarData, string.Format(RotSti + "{0}", "trening.tcx")).ShouldNotBeNull();
+            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
         }
     }
 }

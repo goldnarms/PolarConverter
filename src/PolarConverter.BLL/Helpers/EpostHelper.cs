@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using SendGrid.Transport;
+﻿using System.Collections.Generic;
 
-namespace PolarConverter.BLL.Hjelpeklasser
+namespace PolarConverter.BLL.Helpers
 {
     public static class EpostHelper
     {
