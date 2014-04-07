@@ -15,45 +15,27 @@ namespace PolarConverter.Test
         [TestMethod]
         public void DistanseForLang()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Distanse\12093001.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Distanse\12093001.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Distanse\12093001.hrm", "12093001", @"Distanse\12093001.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(149);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(105);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 9, 30, 14, 32, 27));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(4502);
-            Math.Round(polarData.Runder[0].Distanse, 1).ShouldEqual(6850.6);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(4502);
-            polarData.Runder[0].Kalorier.ShouldNotEqual(0);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
+                firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
+                TestHelper.AssertAvgAndMax(firstLap, 105, 149).ShouldBeTrue();
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 14, 32, 27));
+                firstLap.TotalTimeSeconds.ShouldEqual(4502);
+                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6850.6);
+            }
         }
     }
 }

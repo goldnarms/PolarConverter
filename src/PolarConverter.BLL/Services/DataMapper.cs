@@ -26,6 +26,7 @@ namespace PolarConverter.BLL.Services
         public DataMapper(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
+            _gpxService = new GpxService();
         }
 
         public byte[] MapData(PolarFile hrmFile, UploadViewModel model)
@@ -33,23 +34,31 @@ namespace PolarConverter.BLL.Services
             var hrmData = _storageHelper.ReadFile(hrmFile.Reference);
             var startTime = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
             startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
-            var polarData = InitalizePolarData(hrmFile, model, hrmData, startTime);
-            var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, startTime);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
-            VaskHrData(ref polarData);
-            CollectHrmData(ref activity, polarData);
-
-            //polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-            //activity.Lap = CollectLapsData(polarData.Runder, startTime, v02max, polarData.Intervall);
-            var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activity);
-            var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
-
-            using (var memStream = new MemoryStream())
+            try
             {
-                serializer.Serialize(memStream, trainingCenter);
-                return memStream.ToArray();
+                var polarData = InitalizePolarData(hrmFile, model, hrmData, startTime);
+                var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, startTime);
+
+                polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
+                VaskHrData(ref polarData);
+                CollectHrmData(ref activity, polarData);
+                var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activity);
+                var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
+
+                using (var memStream = new MemoryStream())
+                {
+                    serializer.Serialize(memStream, trainingCenter);
+                    return memStream.ToArray();
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
 
             //return _fileService.WriteToMemoryStream(polarData).ToArray();
             //if (model.SendToStrava)
@@ -76,32 +85,48 @@ namespace PolarConverter.BLL.Services
             {
                 noteText.AppendLine(notes);
             }
-            return new PolarData
+            var polardata = new PolarData();
+            polardata.UploadViewModel = model;
+            polardata.V02max = v02Max;
+            polardata.HrmData = hrmData;
+            polardata.Sport = file.Sport;
+            polardata.Note = noteText.ToString();
+            polardata.StartDate = StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato();
+            polardata.StartTime = starTime;
+            polardata.Modus = modus;
+            polardata.ModusVerdi = modusValue;
+            polardata.HarCadence = modus == "SMode"
+                ? (modusValue.Substring(1, 1) == "1")
+                : modusValue.Substring(0, 1) == "0";
+            polardata.HarAltitude = modus == "SMode"
+                ? (modusValue.Substring(2, 1) == "1")
+                : modusValue.Substring(0, 1) == "1";
+            polardata.ImperiskeEnheter = modus == "SMode"
+                ? (modusValue.Substring(7, 1) == "1")
+                : modusValue.Substring(2, 1) == "1";
+            polardata.HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") ||
+                                 (modus == "Mode" && modusValue.Substring(1, 1) == "1");
+            polardata.HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1";
+            polardata.Device = Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim());
+            polardata.Intervall = interval;
+            polardata.HrData = new List<HRData>();
+            polardata.AltitudeData = new List<string>();
+            polardata.PowerData = new List<string>();
+            polardata.CadenseData = new List<string>();
+            polardata.SpeedData = new List<string>();
+            polardata.AntallMeter = new List<double>();
+            try
             {
-                UploadViewModel = model,
-                V02max = v02Max,
-                HrmData = hrmData,
-                Sport = file.Sport,
-                Note = noteText.ToString(),
-                StartTime = starTime,
-                StartDate = StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato(),
-                Modus = modus,
-                ModusVerdi = modusValue,
-                HarCadence = modus == "SMode" ? (modusValue.Substring(1, 1) == "1") : modusValue.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusValue.Substring(2, 1) == "1") : modusValue.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusValue.Substring(7, 1) == "1") : modusValue.Substring(2, 1) == "1",
-                HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") || (modus == "Mode" && modusValue.Substring(1, 1) == "1"),
-                HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1",
-                Device = System.Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim()),
-                Intervall = interval,
-                HrData = new List<HRData>(),
-                AltitudeData = new List<string>(),
-                PowerData = new List<string>(),
-                CadenseData = new List<string>(),
-                SpeedData = new List<string>(),
-                AntallMeter = new List<double>(),
-                GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model) : null
-            };
+                var gpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model) : null;
+                polardata.GpxData = gpxData;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+            return polardata;
         }
 
         public void VaskHrData(ref PolarData data)

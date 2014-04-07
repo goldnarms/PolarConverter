@@ -17,919 +17,456 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilMedFlereRunder()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"FlereRunder\12060301.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"FlereRunder\12060301.gpx"), 120),
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"FlereRunder\12060301.hrm", "12060301", @"FlereRunder\12060301.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(600);
-            polarData.GpxDataString.Count.ShouldEqual(598);
-            polarData.Runder.Count.ShouldEqual(5);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(159);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(144);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 6, 3, 14, 50, 33));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(661.4);
-            polarData.Runder[1].MaksHjertefrekvens.ShouldEqual(180);
-            polarData.Runder[1].SnittHjerteFrekvens.ShouldEqual(166);
-            polarData.Runder[1].StartTime.ShouldEqual(new DateTime(2012, 6, 3, 15, 1, 34));
-            polarData.Runder[1].AntallSekunder.ShouldEqual(529.8);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 144, 159, new DateTime(2012, 6, 3, 14, 50, 33));
+                firstLap.TotalTimeSeconds.ShouldEqual(661.4);
+                var lastLap = trainingDoc.Activities.Activity[0].Lap[1];
+                lastLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(lastLap, 166, 180, new DateTime(2012, 6, 3, 15, 1, 34));
+                firstLap.TotalTimeSeconds.ShouldEqual(529.8);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilGmtAmerika()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Vanlig\12072201.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Vanlig\12072201.gpx"), 120),
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Vanlig\12072201.hrm", "12072201", @"Vanlig\12072201.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeTrue();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(1602);
-            polarData.GpxDataString.Count.ShouldEqual(1600);
-            polarData.Runder[0].GpsData[0].Tid.Tidspunkt.ShouldEqual(new DateTime(2012, 7, 22, 17, 55, 17));
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 144, 159, new DateTime(2012, 7, 22, 17, 55, 17), true, true);
+                firstLap.TotalTimeSeconds.ShouldEqual(661.4);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilMedGpsUtenDatoINavn()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"GpsNavnUtenDato\rondjeRotte.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"GpsNavnUtenDato\rondjeRotte.gpx"), 120),
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"GpsNavnUtenDato\rondjeRotte.hrm", "rondjeRotte", @"GpsNavnUtenDato\rondjeRotte.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(658);
-            polarData.GpxDataString.Count.ShouldEqual(932);
-            polarData.Runder.Count.ShouldEqual(1);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(167);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(133);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 20, 12, 46, 45));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(3287.9);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "trening.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 133, 167, new DateTime(2012, 7, 20, 12, 46, 45), true, false);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilUtenGpx()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"KunHrm\12070601.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"KunHrm\12070601.hrm", "12070601")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(129);
-            polarData.Runder[1].MaksHjertefrekvens.ShouldEqual(127);
-            polarData.Runder[2].MaksHjertefrekvens.ShouldEqual(115);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(119);
-            polarData.Runder[1].SnittHjerteFrekvens.ShouldEqual(119);
-            polarData.Runder[2].SnittHjerteFrekvens.ShouldEqual(114);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 6, 17, 38, 27));
-            polarData.Runder[1].StartTime.ShouldEqual(new DateTime(2012, 7, 6, 17, 46, 30));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(483.8);
-            polarData.Runder[1].AntallSekunder.ShouldEqual(89.3);
-            polarData.Runder[2].AntallSekunder.ShouldEqual(6.5);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(116);
-            polarData.Runder.Count.ShouldEqual(3);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrm.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 119, 129, new DateTime(2012, 7, 6, 17, 38, 27), true, false);
+                firstLap.TotalTimeSeconds.ShouldEqual(483.8);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 119, 127, new DateTime(2012, 7, 6, 17, 46, 30), true, false);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilUtenGpx2()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"KunHrm\12081502.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"KunHrm\12081502.hrm", "12081502")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(127);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(112);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 8, 15, 19, 7, 18));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(1410.7);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(282);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrm.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 112, 127, new DateTime(2012, 8, 15, 19, 7, 18));
+                firstLap.TotalTimeSeconds.ShouldEqual(1410.7);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilUtenGpx3()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"KunHrm\12081501.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"KunHrm\12081501.hrm", "12081501")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(127);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(108);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 8, 15, 18, 14, 35));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(1617.4);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(324);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrm.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 108, 127, new DateTime(2012, 8, 15, 18, 14, 35));
+                firstLap.TotalTimeSeconds.ShouldEqual(1617.4);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilUtenGpxMedSpeed()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"KunHrm\12070602.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"KunHrm\12070602.hrm", "12070602")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(143);
-            polarData.Runder[1].MaksHjertefrekvens.ShouldEqual(130);
-            polarData.Runder[2].MaksHjertefrekvens.ShouldEqual(130);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(128);
-            polarData.Runder[1].SnittHjerteFrekvens.ShouldEqual(130);
-            polarData.Runder[2].SnittHjerteFrekvens.ShouldEqual(130);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 6, 17, 48, 26));
-            polarData.Runder[1].StartTime.ShouldEqual(new DateTime(2012, 7, 6, 17, 56, 30));
-            polarData.Runder[2].StartTime.ShouldEqual(new DateTime(2012, 7, 6, 17, 56, 32));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(484.6);
-            polarData.Runder[1].AntallSekunder.ShouldEqual(2.4);
-            polarData.Runder[2].AntallSekunder.ShouldEqual(2.1);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(99);
-            polarData.Runder.Count.ShouldEqual(4);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 130, 143, new DateTime(2012, 7, 6, 17, 48, 26), true);
+                firstLap.TotalTimeSeconds.ShouldEqual(1617.4);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 130, 130, new DateTime(2012, 7, 6, 17, 56, 30), true);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[2], 130, 130, new DateTime(2012, 7, 6, 17, 56, 32), true);
+            }
         }
 
         [TestMethod]
         public void ImportSomFeiler()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"stiilnomapinstrava\12073001.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"stiilnomapinstrava\12073001.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"stiilnomapinstrava\12073001.hrm", "12073001", @"stiilnomapinstrava\12073001.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(169);
-            polarData.Runder[1].MaksHjertefrekvens.ShouldEqual(115);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(138);
-            polarData.Runder[1].SnittHjerteFrekvens.ShouldEqual(115);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 30, 17, 36, 25));
-            polarData.Runder[1].StartTime.ShouldEqual(new DateTime(2012, 7, 30, 18, 44, 22));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(4077.5);
-            polarData.Runder[1].AntallSekunder.ShouldEqual(1);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(816);
-            polarData.Runder[0].Kalorier.ShouldNotEqual(0);
-            polarData.Runder.Count.ShouldEqual(2);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 115, 169, new DateTime(2012, 7, 30, 17, 36, 25), true);
+                firstLap.TotalTimeSeconds.ShouldEqual(4077.5);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 138, new DateTime(2012, 7, 30, 18, 44, 22), true);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[2], 130, 130, new DateTime(2012, 7, 6, 17, 56, 32), true);
+            }
         }
 
         [TestMethod]
         public void ImportSomManglerGPSData()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Vanlig\12081101.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Vanlig\12081101.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Vanlig\12081101.hrm", "12081101", @"Vanlig\12081101.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.HrmData.Length.ShouldNotEqual(0);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(165);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(139);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 8, 11, 5, 45, 14));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(11666);
-            polarData.Versjon.ShouldEqual("106");
-            polarData.Modus.ShouldEqual("SMode");
-            polarData.HrData.Count.ShouldEqual(2334);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 139, 165, new DateTime(2012, 8, 11, 5, 45, 14), true);
+                firstLap.TotalTimeSeconds.ShouldEqual(11666);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 138, new DateTime(2012, 7, 30, 18, 44, 22), true);
+            }
         }
 
         [TestMethod]
         public void ForkortetFil()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Filer\12082401.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            ViewModel.TimeZoneOffset = 1;
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                GpxDataString = KonverteringsHelper.VaskGpxString(string.Format(FileRoot + "{0}", @"Filer\12082401.gpx"), IntHelper.HentTidsKorreksjon("(GMT +1:00) Europe/Berlin")),
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Filer\12082401.hrm", "12082401", @"Filer\12082401.gpx")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HrData.Count.ShouldEqual(541);
-            polarData.Runder.Count.ShouldEqual(7);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, true, false);
+            }
         }
 
         [TestMethod]
         public void OldieFil()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Oldies\1998\98011201.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = modus == "SMode" && modusVerdi.Substring(0, 1) == "1",
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Oldies\1998\98011201.hrm", "98011201")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.HrData.Count.ShouldEqual(377);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, false, false);
+            }
         }
 
         [TestMethod]
         public void OldieFil2()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Oldies\1998\98011801.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = (modus == "SMode" && modusVerdi.Substring(0, 1) == "1") || (modus == "Mode" && modusVerdi.Substring(0, 1) == "3"),
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Oldies\1998\98011801.hrm", "98011801")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HrData.Count.ShouldEqual(1870);
-            polarData.Runder.Count.ShouldEqual(4);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, false, false);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(4);
+            }
         }
 
         [TestMethod]
         public void OldieFil3()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Oldies\1998\98011802.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = (modus == "SMode" && modusVerdi.Substring(0, 1) == "1") || (modus == "Mode" && modusVerdi.Substring(1, 1) == "1"),
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Oldies\1998\98011802.hrm", "98011802")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.HrData.Count.ShouldEqual(1617);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, false, false);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void OldieFil4()
         {
-            var hrmData = FilHandler.LesFraFil(string.Format(FileRoot + "{0}", @"Oldies\1998\98012101.hrm"));
-            var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusVerdi = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            var polarData = new PolarData
+            var polarFiles = new[]
             {
-                HrmData = hrmData,
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                Modus = modus,
-                ModusVerdi = modusVerdi,
-                HarCadence = modus == "SMode" ? (modusVerdi.Substring(1, 1) == "1") : modusVerdi.Substring(0, 1) == "0",
-                HarAltitude = modus == "SMode" ? (modusVerdi.Substring(2, 1) == "1") : modusVerdi.Substring(0, 1) == "1",
-                ImperiskeEnheter = modus == "SMode" ? (modusVerdi.Substring(7, 1) == "1") : modusVerdi.Substring(2, 1) == "1",
-                HarSpeed = (modus == "SMode" && modusVerdi.Substring(0, 1) == "1") || (modus == "Mode" && modusVerdi.Substring(1, 1) == "1"),
-                HarPower = modus == "SMode" && modusVerdi.Substring(3, 1) == "1",
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim())
+                TestHelper.GeneratePolarFile(@"Oldies\1998\98012101.hrm", "98012101")
             };
-
-            DataMapper.VaskHrData(ref polarData);
-
-            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(polarData.HrmData);
-            polarData.Runder = KonverteringsHelper.GenererRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.HrData.Count.ShouldEqual(139);
-            polarData.Runder.Count.ShouldEqual(1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningKunHrmSpeed.tcx")).ShouldNotBeNull();
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, false, false);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilFraXml()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\Goldnarms_21.07.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\Goldnarms_21.07.2012_export.xml", "Goldnarms_21.07.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
-                HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
-                HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
-                HarPower = xmlTekst.Contains("<type>POWER</type>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeTrue();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.HrData.Count.ShouldEqual(343);
-            polarData.Runder.Count.ShouldEqual(1);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(167);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldBeInRange(126, 127);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 14, 17, 7, 32));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(1712.7);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 167, new DateTime(2012, 7, 14, 17, 7, 32), false, true);
+                firstLap.TotalTimeSeconds.ShouldEqual(1712.7);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void FeiVedImportFromFilFraXml()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\Mattias242_2012-07-30_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\Mattias242_2012-07-30_export.xml", "Mattias242_2012-07-30_export.xml", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<cadence>"),
-                HarAltitude = xmlTekst.Contains("<altitude>"),
-                HarSpeed = xmlTekst.Contains("<speed>"),
-                HarPower = xmlTekst.Contains("<power>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HarPower.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.HrData.ShouldBeNull();
-            polarData.Runder.Count.ShouldEqual(2);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(163);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 6, 26, 16, 0, 0));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(3026.7);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 163, new DateTime(2012, 6, 26, 16, 0, 0), true, false);
+                firstLap.TotalTimeSeconds.ShouldEqual(3026.7);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+            }
         }
 
         [TestMethod]
         public void FeiVedImportFromFilFraXml2()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\Mattias242_2012-07-31_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\Mattias242_2012-07-31_export.xml", "Mattias242_2012-07-31_export.xml", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<cadence>"),
-                HarAltitude = xmlTekst.Contains("<altitude>"),
-                HarSpeed = xmlTekst.Contains("<speed>"),
-                HarPower = xmlTekst.Contains("<power>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HarPower.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.HrData.ShouldBeNull();
-            polarData.Runder.Count.ShouldEqual(24);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(156);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 7, 25, 5, 15, 15));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(394.1);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 156, new DateTime(2012, 7, 25, 5, 15, 15), true, false);
+                firstLap.TotalTimeSeconds.ShouldEqual(394.1);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(24);
+            }
         }
 
         [TestMethod]
         public void FeiVedImportFromFilFraXml3()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\ttfje_14.08.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\ttfje_14.08.2012_export.xml", "ttfje_14.08.2012_export.xml", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<cadence>"),
-                HarAltitude = xmlTekst.Contains("<altitude>"),
-                HarSpeed = xmlTekst.Contains("<speed>"),
-                HarPower = xmlTekst.Contains("<power>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeTrue();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HarPower.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.HrData.ShouldNotBeNull();
-            polarData.Runder.Count.ShouldEqual(3);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(164);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 8, 13, 17, 23, 7));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(374);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 164, new DateTime(2012, 8, 13, 17, 23, 7), true, true);
+                firstLap.TotalTimeSeconds.ShouldEqual(374);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilFraXmlFlereExercises()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\inspiring_21.07.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\inspiring_21.07.2012_export.xml", "inspiring_21.07.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<cadence>"),
-                HarAltitude = xmlTekst.Contains("<altitude>"),
-                HarSpeed = xmlTekst.Contains("<speed>"),
-                HarPower = xmlTekst.Contains("<power>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.HarPower.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.HrData.ShouldBeNull();
-            polarData.Runder.Count.ShouldEqual(3);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(128);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 6, 25, 17, 17, 40));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(706.6);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 128, new DateTime(2012, 6, 25, 17, 17, 40), true, false);
+                firstLap.TotalTimeSeconds.ShouldEqual(706.6);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilFraXmlFlereExercises2()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\120820.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\120820.xml", "120820", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var exercises = xmlTekst.Split(new[] { "</exercise>" }, StringSplitOptions.RemoveEmptyEntries).Where(ex => ex.Contains("<exercise>"));
-            var i = 1;
-            foreach (var exercise in exercises.Where(ex => ex.Contains("<result>")))
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                var polarData = new PolarData
-                                    {
-                                        UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                                        HarCadence = exercise.Contains("<cadence>"),
-                                        HarAltitude = exercise.Contains("<altitude>"),
-                                        HarSpeed = exercise.Contains("<speed>"),
-                                        HarPower = exercise.Contains("<power>"),
-                                        XmlTekst = exercise,
-                                        Intervall =
-                                            Convert.ToInt32(
-                                                StringHelper.HentVerdi("<recording-rate>", 3, exercise).
-                                                    Replace('<', ' ').Replace('/', ' ').Trim()),
-                                        RundeTider = KonverteringsHelper.VaskXmlTider(exercise)
-                                    };
-
-                polarData.VaskXmlHrData(exercise);
-                polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-                FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).
-                    ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.TotalTimeSeconds.ShouldEqual(706.6);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldBeGreaterThan(0);
             }
         }
 
         [TestMethod]
         public void ImportFromFilFraXmlFlereExercises3()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\Joerund_01.09.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\Joerund_01.09.2012_export.xml", "Joerund_01.09.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var exercises = xmlTekst.Split(new[] { "</exercise>" }, StringSplitOptions.RemoveEmptyEntries).Where(ex => ex.Contains("<exercise>"));
-            var i = 1;
-            foreach (var exercise in exercises.Where(ex => ex.Contains("<result>")))
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                var polarData = new PolarData
-                {
-                    UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                    HarCadence = exercise.Contains("<cadence>"),
-                    HarAltitude = exercise.Contains("<altitude>"),
-                    HarSpeed = exercise.Contains("<speed>"),
-                    HarPower = exercise.Contains("<power>"),
-                    XmlTekst = exercise,
-                    Intervall =
-                        Convert.ToInt32(
-                            StringHelper.HentVerdi("<recording-rate>", 3, exercise).
-                                Replace('<', ' ').Replace('/', ' ').Trim()),
-                    RundeTider = KonverteringsHelper.VaskXmlTider(exercise)
-                };
-
-                polarData.VaskXmlHrData(exercise);
-                polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-                FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).
-                    ShouldNotBeNull();
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldBeGreaterThan(0);
             }
+
         }
     }
 }

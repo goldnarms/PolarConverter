@@ -74,6 +74,7 @@
     <Compile Include="DurationTest.cs" />
     <Compile Include="BugFixesTest.cs" />
     <Compile Include="StringHelperTest.cs" />
+    <Compile Include="TestHelper.cs" />
     <Compile Include="TidsDiffTest.cs" />
     <Compile Include="XmlTester.cs" />
     <Compile Include="DataTypeTest.cs" />
@@ -87,6 +88,9 @@
       <Project>{B22CD80D-5630-44A6-87F4-1CBB8AD31275}</Project>
       <Name>PolarConverter.BLL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ConvertedFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

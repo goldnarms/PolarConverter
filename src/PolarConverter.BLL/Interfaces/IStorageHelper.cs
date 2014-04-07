@@ -14,5 +14,6 @@ namespace PolarConverter.BLL.Interfaces
         string SaveStream(Stream stream, string fileName, string contentType, string extension);
         string ReadFile(string fileReference);
         object ReadXmlDocument(string fileReference, Type xmlType);
+        IEnumerable<string> Unzip(string fileReference);
     }
 }

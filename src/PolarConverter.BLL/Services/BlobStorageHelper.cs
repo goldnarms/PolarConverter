@@ -4,14 +4,9 @@ using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.StorageClient;
 using PolarConverter.BLL.Interfaces;
-using Spring.Caching;
 using BlobContainerPermissions = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPermissions;
 using BlobContainerPublicAccessType = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPublicAccessType;
 using CloudBlobClient = Microsoft.WindowsAzure.Storage.Blob.CloudBlobClient;
@@ -75,6 +70,11 @@ namespace PolarConverter.BLL.Services
                 memoryStream.Seek(0, SeekOrigin.Begin);
                 return ser.Deserialize(memoryStream);
             }
+        }
+
+        public IEnumerable<string> Unzip(string fileReference)
+        {
+            throw new NotImplementedException();
         }
     }
 }

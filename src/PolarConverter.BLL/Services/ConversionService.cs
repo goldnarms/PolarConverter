@@ -33,6 +33,7 @@ namespace PolarConverter.BLL.Services
         }
         public ConversionResult Convert(UploadViewModel model)
         {
+            var errorMessages = new List<string>();
             var readable =
                 GetPipedStream(output =>
                 {
@@ -41,15 +42,31 @@ namespace PolarConverter.BLL.Services
                         zip.FlattenFoldersOnExtract = true;
                         foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType == "hrm"))
                         {
-                            var hrmFileData = _dataMapper.MapData(hrmFile, model);
-                            zip.AddEntry(StringHelper.Filnavnfikser(hrmFile.Name, FilTyper.Tcx), hrmFileData);
+                            try
+                            {
+                                var hrmFileData = _dataMapper.MapData(hrmFile, model);
+                                zip.AddEntry(StringHelper.Filnavnfikser(hrmFile.Name, FilTyper.Tcx), hrmFileData);
+                            }
+                            catch (Exception ex)
+                            {
+                                errorMessages.Add(ex.Message);
+                            }
+
                         }
 
                         foreach (var xmlFile in model.PolarFiles.Where(pf => pf.FileType == "xml"))
                         {
-                            var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
-                            var stream = _xmlMapper.MapData(xmlFile, model);
-                            zip.AddEntry(fileName, stream);
+                            try
+                            {
+                                var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
+                                var stream = _xmlMapper.MapData(xmlFile, model);
+                                zip.AddEntry(fileName, stream);
+                            }
+                            catch (Exception ex)
+                            {
+                                errorMessages.Add(ex.Message);
+                            }
+
                         }
                         zip.Save(output);
                         //if (model.SendToStrava)
@@ -60,7 +77,7 @@ namespace PolarConverter.BLL.Services
             var fileReference = _storageHelper.SaveStream(readable, "TcxFiles.zip", "application/zip", "zip");
             return new ConversionResult
             {
-                ErrorMessages = new List<string>(),
+                ErrorMessages = errorMessages,
                 FileName = "TcxFiles.zip",
                 Reference = fileReference
             };
