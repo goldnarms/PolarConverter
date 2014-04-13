@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PolarConverter.BLL.Helpers;
+using PolarConverter.BLL.Interfaces;
 
 namespace PolarConverter.BLL.Entiteter
 {
@@ -62,7 +63,7 @@ namespace PolarConverter.BLL.Entiteter
         public DateTime StartTime { get; set; }
         public string Sport { get; set; }
         public string Note { get; set; }
-        public gpx GpxData { get; set; }
+        public IGpx GpxData { get; set; }
         public double V02max { get; set; }
         public DateTime StartDate { get; set; }
         public double Weight { get; set; }

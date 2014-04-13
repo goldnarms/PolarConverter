@@ -51,9 +51,8 @@ namespace PolarConverter.BLL.Services
                     return memStream.ToArray();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 throw;
             }
 

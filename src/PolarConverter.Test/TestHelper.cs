@@ -19,13 +19,14 @@ namespace PolarConverter.Test
                 FileType = fileType,
                 Name = name,
                 Note = note,
-                Reference = string.Format(FileRoot + "{0}", @"EmptyFiles\11101501.hrm"),
                 Sport = sport,
+                Reference = string.Format(FileRoot + "{0}", fileReference),
                 GpxFile = gpxFileReference == string.Empty ? null : new GpxFile
                 {
-                    Name = gpxFileReference.Substring(gpxFileReference.LastIndexOf("\\", gpxFileReference.Length - 4, StringComparison.Ordinal)),
-                    Reference = gpxFileReference
-
+                    //Name = string.Format(FileRoot + "{0}", gpxFileReference.Substring(gpxFileReference.LastIndexOf("\\", gpxFileReference.Length - 4, StringComparison.Ordinal))),
+                    Name = gpxFileReference,
+                    Reference = string.Format(FileRoot + "{0}", gpxFileReference),
+                    Version = "1.1"
                 }
             };
         

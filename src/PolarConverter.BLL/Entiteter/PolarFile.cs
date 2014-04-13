@@ -16,6 +16,6 @@ namespace PolarConverter.BLL.Entiteter
     {
         public string Name { get; set; }
         public string Reference { get; set; }
-
+        public string Version { get; set; }
     }
 }

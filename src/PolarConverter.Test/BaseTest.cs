@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
@@ -36,7 +31,7 @@ namespace PolarConverter.Test
                 ForceGarmin = false,
                 Gender = "m",
                 Notes = "Freakkin kewl note",
-                TimeZoneOffset = 2,
+                TimeZoneOffset = 6,
                 WeightMode = "kgs",
                 Weight = 82,
                 V02Max = 52

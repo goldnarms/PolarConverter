@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Configuration;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PolarConverter.BLL;
-using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Helpers;
-using PolarConverter.BLL.Services;
 using Should;
 
 namespace PolarConverter.Test
@@ -24,6 +20,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -31,10 +28,10 @@ namespace PolarConverter.Test
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
-                TestHelper.AssertAvgAndMax(firstLap, 105, 149).ShouldBeTrue();
-                firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 14, 32, 27));
+                TestHelper.AssertAvgAndMax(firstLap, 106, 149).ShouldBeTrue();
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 17, 32, 27));
                 firstLap.TotalTimeSeconds.ShouldEqual(4502);
-                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6850.6);
+                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6854.7);
             }
         }
     }

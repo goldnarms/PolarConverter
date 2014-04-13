@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PolarConverter.BLL;
@@ -23,6 +24,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -36,12 +38,13 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"XmlFil\børge_18.10.2012_export.xml", "børge_18.10.2012_export", fileType: "xml")
+                TestHelper.GeneratePolarFile(@"XmlFil\børge_18.10.2012_export.xml", "børge_18.10.2012_export", fileType: "xml", sport: "Biking")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc =
@@ -61,12 +64,13 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"XmlFil\escalade_29.11.2012_export.xml", "escalade_29.11.2012_export", fileType: "xml")
+                TestHelper.GeneratePolarFile(@"XmlFil\escalade_29.11.2012_export.xml", "escalade_29.11.2012_export", fileType: "xml", sport: "Biking")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc =
@@ -86,12 +90,13 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"XmlFil\escalade_12.12.2012_export.xml", "escalade_12.12.2012_export", fileType: "xml")
+                TestHelper.GeneratePolarFile(@"XmlFil\escalade_12.12.2012_export.xml", "escalade_12.12.2012_export", fileType: "xml", sport: "Biking")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc =

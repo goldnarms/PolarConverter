@@ -24,15 +24,30 @@ namespace PolarConverter.BLL.Services
         }
         public ConversionResult Convert(UploadViewModel model)
         {
+            var errorMessages = new List<string>();
             foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType == "hrm"))
             {
-                var hrmFileData = _dataMapper.MapData(hrmFile, model);
+                try
+                {
+                    var hrmFileData = _dataMapper.MapData(hrmFile, model);
+                }
+                catch (Exception ex)
+                {
+                    errorMessages.Add(ex.Message);
+                }
             }
 
             foreach (var xmlFile in model.PolarFiles.Where(pf => pf.FileType == "xml"))
             {
-                var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
-                var stream = _xmlMapper.MapData(xmlFile, model);
+                try
+                {
+                    var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
+                    var stream = _xmlMapper.MapData(xmlFile, model);
+                }
+                catch (Exception ex)
+                {
+                    errorMessages.Add(ex.Message);
+                }
             }
             return new ConversionResult
             {

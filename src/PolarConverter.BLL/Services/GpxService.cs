@@ -1,5 +1,6 @@
 ﻿using System;
 using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Entiteter.gpxver11;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 
@@ -20,11 +21,33 @@ namespace PolarConverter.BLL.Services
             _storageHelper = storageHelper;
         }
 
-        public gpx ReadGpxFile(string fileReference, int timeOffset)
+        public IGpx ReadGpxFile(string fileReference, string version, int timeOffset)
         {
             try
             {
-                var xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                IGpx xml;
+                switch (version)
+                {
+                    case "1.0":
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpx)) as gpx;
+                        break;
+                    }
+                    case "1.1":
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpxType)) as gpxType;
+                        break;
+                    }
+                    default:
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpx)) as gpx;
+                        break;
+                    }
+                }
+                if (xml != null)
+                {
+                    xml.Version = version;
+                }
                 return xml;
             }
             catch (Exception)
@@ -33,12 +56,12 @@ namespace PolarConverter.BLL.Services
             }            
         }
 
-        public gpx MapGpxFile(GpxFile gpxFile, UploadViewModel model)
+        public IGpx MapGpxFile(GpxFile gpxFile, UploadViewModel model)
         {
             try
             {
                 var timeKorreksjon = IntHelper.HentTidsKorreksjon(model.TimeZoneOffset);
-                return ReadGpxFile(gpxFile.Reference, timeKorreksjon);
+                return ReadGpxFile(gpxFile.Reference, gpxFile.Version, timeKorreksjon);
             }
             catch (Exception)
             {

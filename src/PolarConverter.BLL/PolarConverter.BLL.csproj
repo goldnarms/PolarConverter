@@ -48,6 +48,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotNetZip.1.9.2\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
@@ -142,11 +143,13 @@
     <Compile Include="Entiteter\FileTypeEnum.cs" />
     <Compile Include="Entiteter\GPSData.cs" />
     <Compile Include="Entiteter\gpx.cs" />
+    <Compile Include="Entiteter\gpxver11\gpx.cs" />
     <Compile Include="Entiteter\HRData.cs" />
     <Compile Include="Entiteter\PolarData.cs" />
     <Compile Include="Entiteter\Koordinater.cs" />
     <Compile Include="Entiteter\PolarFile.cs" />
     <Compile Include="Entiteter\Polartrainer.cs" />
+    <Compile Include="Entiteter\PositionData.cs" />
     <Compile Include="Entiteter\Runde.cs" />
     <Compile Include="Entiteter\Tid.cs" />
     <Compile Include="Entiteter\TrainingCenterDatabasev2.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="FilHandler.cs" />
     <Compile Include="Interfaces\IConversion.cs" />
     <Compile Include="Interfaces\IFileMapper.cs" />
+    <Compile Include="Interfaces\IGpx.cs" />
     <Compile Include="Interfaces\IStorageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BlobStorageHelper.cs" />

@@ -26,6 +26,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -53,6 +54,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -76,6 +78,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -98,6 +101,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -122,13 +126,14 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 112, 127, new DateTime(2012, 8, 15, 19, 7, 18));
-                firstLap.TotalTimeSeconds.ShouldEqual(1410.7);
+                firstLap.TotalTimeSeconds.ShouldEqual(1410);
             }
         }
 
@@ -144,13 +149,14 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 108, 127, new DateTime(2012, 8, 15, 18, 14, 35));
-                firstLap.TotalTimeSeconds.ShouldEqual(1617.4);
+                firstLap.TotalTimeSeconds.ShouldEqual(1620);
             }
         }
 
@@ -166,6 +172,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -190,6 +197,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -214,13 +222,14 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 139, 165, new DateTime(2012, 8, 11, 5, 45, 14), true);
-                firstLap.TotalTimeSeconds.ShouldEqual(11666);
+                firstLap.TotalTimeSeconds.ShouldEqual(11670);
                 TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 138, new DateTime(2012, 7, 30, 18, 44, 22), true);
             }
         }
@@ -237,6 +246,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -256,6 +266,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -275,6 +286,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -295,6 +307,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -315,6 +328,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -335,6 +349,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -356,6 +371,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -377,6 +393,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -398,6 +415,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -419,6 +437,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -440,6 +459,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
@@ -460,6 +480,7 @@ namespace PolarConverter.Test
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Entiteter.gpxver11;
 using PolarConverter.BLL.Services;
 
 namespace PolarConverter.BLL.Helpers
@@ -512,11 +513,30 @@ namespace PolarConverter.BLL.Helpers
                     lap.TotalTimeSeconds = BeregnAntallSekunder(varighet);
                     //if (runde.AntallSekunder > 50000)
                     //    runde.AntallSekunder = runde.AntallSekunder/1000;
-                    var gpsData = new gpxTrkTrksegTrkpt[] {};
+                    var gpsLength = 0;
+                    PositionData[] positionData = null;
                     if (polarData.GpxData != null)
                     {
-                        gpsData = GetRange(polarData.GpxData.trk[0].trkseg, range.Item1, range.Item2);
-                        range = new Tuple<int, int>(range.Item1, gpsData.Length);
+                        switch (polarData.GpxData.Version)
+                        {
+                            case "1.0":
+                            {
+                                var gpx = (gpx) polarData.GpxData;
+                                var gpsData = GetRange(gpx.trk[0].trkseg, range.Item1, range.Item2);
+                                positionData = gpsData.Select(gd => new PositionData {Lat = gd.lat, Lon = gd.lon}).ToArray();
+                                gpsLength = gpsData.Length;
+                            }
+                                break;
+                            case "1.1":
+                            {
+                                var gpx = (gpxType)polarData.GpxData;
+                                var gpsData = GetRange(gpx.trk[0].trkseg, range.Item1, range.Item2);
+                                positionData = gpsData.Select(gd => new PositionData { Lat = gd.trkpt[0].lat, Lon = gd.trkpt[0].lon }).ToArray();
+                                gpsLength = gpsData.Length;
+                            }
+                                break;
+                        }
+                        range = new Tuple<int, int>(range.Item1, gpsLength);
                     }
                     var heartRateData = GetRange(polarData.HrData, range.Item1, range.Item2);
                     var altitudeData = GetRange(polarData.AltitudeData, range.Item1, range.Item2);
@@ -571,12 +591,12 @@ namespace PolarConverter.BLL.Helpers
                             trackData.DistanceMetersSpecified = true;
                             trackData.DistanceMeters = antallMeterData[j];
                         }
-                        if (j < gpsData.Length)
+                        if (j < positionData.Length)
                         {
                             trackData.Position = new Position_t
                             {
-                                LatitudeDegrees = Convert.ToDouble(gpsData[j].lat),
-                                LongitudeDegrees = Convert.ToDouble(gpsData[j].lon)
+                                LatitudeDegrees = Convert.ToDouble(positionData[j].Lat),
+                                LongitudeDegrees = Convert.ToDouble(positionData[j].Lon)
                             };                            
                         }
                         trackData.Time = lap.StartTime.AddSeconds(polarData.Intervall * j);

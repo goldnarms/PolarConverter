@@ -4,11 +4,12 @@ using System.IO;
 using System.Web;
 using System.Xml.Serialization;
 using Ionic.Zip;
+using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 
 namespace PolarConverter.BLL.Services
 {
-    public class LocalStorageHelper: IStorageHelper
+    public class LocalStorageHelper : IStorageHelper
     {
         private string _basePath;
 
@@ -48,7 +49,7 @@ namespace PolarConverter.BLL.Services
 
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
-            var ser = new XmlSerializer(xmlType);
+            XmlSerializer ser = xmlType == typeof(gpx) ? new XmlSerializer(xmlType, "http://www.topografix.com/GPX/1/0") : new XmlSerializer(xmlType);
             try
             {
                 using (var reader = new StreamReader(fileReference))
@@ -60,7 +61,6 @@ namespace PolarConverter.BLL.Services
             {
                 throw;
             }
-
         }
 
         public IEnumerable<string> Unzip(string fileReference)
