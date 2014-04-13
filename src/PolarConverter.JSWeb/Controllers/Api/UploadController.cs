@@ -7,6 +7,7 @@ using System.Xml;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
+using System.Web.Script.Serialization;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -46,8 +47,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     {
                         showExtraVariables = true;
                     }
-                    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport = sport, showExtraVariables = showExtraVariables, weight = weight };
+                    var serializer = new JavaScriptSerializer();
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport, showExtraVariables, weight };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
                     return new HttpResponseMessage(HttpStatusCode.OK);

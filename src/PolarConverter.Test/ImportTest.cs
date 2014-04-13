@@ -378,7 +378,7 @@ namespace PolarConverter.Test
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 163, new DateTime(2012, 6, 26, 16, 0, 0), true, false);
                 firstLap.TotalTimeSeconds.ShouldEqual(3026.7);
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
             }
         }
 

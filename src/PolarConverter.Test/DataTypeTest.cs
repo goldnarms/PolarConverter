@@ -10,7 +10,6 @@ namespace PolarConverter.Test
         [TestMethod]
         public void CaloriesShouldBeInt()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
                 TestHelper.GeneratePolarFile(@"Vanlig\12081101.hrm", "12081101", @"Vanlig\12081101.gpx")

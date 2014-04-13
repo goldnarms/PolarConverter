@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PolarConverter.BLL.Entiteter;
 
 namespace PolarConverter.Test
@@ -12,7 +8,7 @@ namespace PolarConverter.Test
     public static class TestHelper
     {
         private static readonly string FileRoot = ConfigurationManager.AppSettings["rootPath"];
-        public static PolarFile GeneratePolarFile(string fileReference, string name, string gpxFileReference = "", string note = "test note", string sport = "biking", string fileType = "hrm")
+        public static PolarFile GeneratePolarFile(string fileReference, string name, string gpxFileReference = "", string gpxVersion = "1.1", string note = "test note", string sport = "biking", string fileType = "hrm")
         {
             return new PolarFile
             {
@@ -26,7 +22,7 @@ namespace PolarConverter.Test
                     //Name = string.Format(FileRoot + "{0}", gpxFileReference.Substring(gpxFileReference.LastIndexOf("\\", gpxFileReference.Length - 4, StringComparison.Ordinal))),
                     Name = gpxFileReference,
                     Reference = string.Format(FileRoot + "{0}", gpxFileReference),
-                    Version = "1.1"
+                    Version = gpxVersion
                 }
             };
         

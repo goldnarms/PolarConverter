@@ -32,11 +32,10 @@ namespace PolarConverter.Test
                 Gender = "m",
                 Notes = "Freakkin kewl note",
                 TimeZoneOffset = 6,
-                WeightMode = "kgs",
+                WeightMode = "kg",
                 Weight = 82,
                 V02Max = 52
             };
-
         }
 
         [TestCleanup]

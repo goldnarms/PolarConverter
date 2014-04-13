@@ -44,7 +44,7 @@ namespace PolarConverter.Test
             ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"EmptyFiles\13021901.hrm", "13021901", @"EmptyFiles\13021901.gpx")
+                TestHelper.GeneratePolarFile(@"EmptyFiles\13021901.hrm", "13021901", @"EmptyFiles\13021901.gpx", gpxVersion: "1.0")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);

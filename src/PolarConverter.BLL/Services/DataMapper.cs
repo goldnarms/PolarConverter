@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Factories;
@@ -312,12 +311,12 @@ namespace PolarConverter.BLL.Services
                 lapIndex++;
             }
             lap.DistanceMeters = meters;
-            lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(heartRates / maximumDataLength) };
+            lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(heartRates / maximumDataLength) };
             lap.CadenceSpecified = polarData.HarCadence;
             if (lap.CadenceSpecified)
             {
                 var avgCadence = cadenceData / maximumDataLength;
-                lap.Cadence = System.Convert.ToByte(avgCadence);
+                lap.Cadence = Convert.ToByte(avgCadence);
             }
             if (polarData.V02max > 0)
             {
@@ -328,7 +327,7 @@ namespace PolarConverter.BLL.Services
             {
                 lap.Calories = Calculators.CalulateCalories(polarData.UploadViewModel.Age, polarData.UploadViewModel.Weight, lap.AverageHeartRateBpm.Value, duration, polarData.UploadViewModel.Gender == "m");
             }
-            lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(maxHr) };
+            lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(maxHr) };
             lap.StartTime = startTime;
             if (polarData.HarSpeed)
             {
@@ -343,12 +342,12 @@ namespace PolarConverter.BLL.Services
         public void AddAltitudeData(ref Trackpoint_t trackpoint, string value)
         {
             trackpoint.AltitudeMetersSpecified = true;
-            trackpoint.AltitudeMeters = System.Convert.ToDouble(value);
+            trackpoint.AltitudeMeters = Convert.ToDouble(value);
         }
 
         public byte AddCadenceData(ref Trackpoint_t trackpoint, string value)
         {
-            var cadence = System.Convert.ToByte(value);
+            var cadence = Convert.ToByte(value);
             trackpoint.CadenceSpecified = true;
             trackpoint.Cadence = cadence;
             return cadence;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using PolarConverter.BLL.Entiteter;
@@ -14,7 +12,7 @@ using PolarConverter.BLL.Interfaces;
 
 namespace PolarConverter.BLL.Services
 {
-    public class XmlMapper: IFileMapper
+    public class XmlMapper : IFileMapper
     {
         private readonly IStorageHelper _storageHelper;
         private readonly GpxService _gpxService;
@@ -65,8 +63,13 @@ namespace PolarConverter.BLL.Services
                                         var intervall = data.result.recordingrate == 238
                                             ? 5
                                             : data.result.recordingrate == 0 ? 5 : data.result.recordingrate;
-                                        activity.Lap[0].Track = CollectSampleData(data.result.samples, startTime,
-                                            intervall);
+                                        var startRange = 0;
+                                        foreach (var t in activity.Lap)
+                                        {                                            
+                                            t.Track = CollectSampleData(data.result.samples, startTime,
+                                                intervall, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)));
+                                            startRange += t.Track.Length;
+                                        }
                                     }
                                 }
                                 if (xmlFile.GpxFile != null)
@@ -118,11 +121,11 @@ namespace PolarConverter.BLL.Services
                 {
                     if (lap.heartrate.averageSpecified)
                     {
-                        activityLap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(lap.heartrate.average) };
+                        activityLap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.heartrate.average) };
                     }
                     if (lap.heartrate.maximumSpecified)
                     {
-                        activityLap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(lap.heartrate.maximum) };
+                        activityLap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.heartrate.maximum) };
                     }
                     if (v02max > 0 && lap.heartrate.maximumSpecified && lap.heartrate.averageSpecified)
                     {
@@ -134,7 +137,7 @@ namespace PolarConverter.BLL.Services
                     activityLap.CadenceSpecified = lap.cadence.averageSpecified;
                     if (activityLap.CadenceSpecified)
                     {
-                        activityLap.Cadence = System.Convert.ToByte(lap.cadence.average);
+                        activityLap.Cadence = Convert.ToByte(lap.cadence.average);
                     }
                 }
                 else
@@ -173,8 +176,8 @@ namespace PolarConverter.BLL.Services
                 var activityLap = new ActivityLap_t();
                 activityLap.StartTime = lapStartTime;
 
-                activityLap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(lap.SnittHjerteFrekvens) };
-                activityLap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(lap.MaksHjertefrekvens) };
+                activityLap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.SnittHjerteFrekvens) };
+                activityLap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.MaksHjertefrekvens) };
                 if (v02max > 0 && lap.MaksHjertefrekvens > 0 && lap.SnittHjerteFrekvens > 0)
                 {
                     activityLap.Calories = Calculators.CalulateCalories(v02max, lap.MaksHjertefrekvens, lap.SnittHjerteFrekvens, lapDuration);
@@ -182,7 +185,7 @@ namespace PolarConverter.BLL.Services
                 if (lap.CadenseData != null)
                 {
                     activityLap.CadenceSpecified = true;
-                    activityLap.Cadence = System.Convert.ToByte(lap.SnittCadense);
+                    activityLap.Cadence = Convert.ToByte(lap.SnittCadense);
                 }
                 else
                 {
@@ -197,7 +200,7 @@ namespace PolarConverter.BLL.Services
                 if (lap.SpeedData != null)
                 {
                     activityLap.MaximumSpeedSpecified = true;
-                    activityLap.MaximumSpeed = lap.SpeedData.Max(sd => Double.Parse(sd));
+                    activityLap.MaximumSpeed = lap.SpeedData.Max(sd => double.Parse(sd));
                 }
                 activityLap.TotalTimeSeconds = lapDuration;
 
@@ -212,7 +215,7 @@ namespace PolarConverter.BLL.Services
                     if (lap.AltitudeData != null)
                     {
                         trackPoints[i].AltitudeMetersSpecified = true;
-                        trackPoints[i].AltitudeMeters = System.Convert.ToDouble(lap.AltitudeData[i]);
+                        trackPoints[i].AltitudeMeters = Convert.ToDouble(lap.AltitudeData[i]);
                     }
                     else
                     {
@@ -230,7 +233,7 @@ namespace PolarConverter.BLL.Services
                     if (lap.CadenseData != null)
                     {
                         trackPoints[i].CadenceSpecified = true;
-                        trackPoints[i].Cadence = System.Convert.ToByte(lap.CadenseData[i]);
+                        trackPoints[i].Cadence = Convert.ToByte(lap.CadenseData[i]);
                     }
                     else
                     {
@@ -249,7 +252,7 @@ namespace PolarConverter.BLL.Services
                         // Distance set by sample Distance
                         if (trackPoints[i].DistanceMetersSpecified)
                             break;
-                        meters = meters + (System.Convert.ToDouble(lap.SpeedData[i]) / 0.06d / 60 * interval);
+                        meters = meters + (Convert.ToDouble(lap.SpeedData[i]) / 0.06d / 60 * interval);
                         trackPoints[i].DistanceMetersSpecified = true;
                         trackPoints[i].DistanceMeters = meters;
                     }
@@ -275,62 +278,66 @@ namespace PolarConverter.BLL.Services
             return lapList.ToArray();
         }
 
-        private Trackpoint_t[] CollectSampleData(IEnumerable<sample> samples, DateTime starTime, int recordingRate)
+        private Trackpoint_t[] CollectSampleData(IEnumerable<sample> samples, DateTime starTime, int recordingRate, int startRange, int endRange)
         {
             var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
             var sampleDic = samples.ToDictionary(sample => sample.type, sample => Array.ConvertAll(sample.values.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries), s => float.Parse(s, numberFormatInfo)));
 
             var maximumDataLength = FindMaximumLength(sampleDic);
-            var trackPoints = new Trackpoint_t[maximumDataLength];
-            for (int i = 0; i < maximumDataLength; i++)
+            if (endRange > maximumDataLength)
             {
-                trackPoints[i] = new Trackpoint_t { Time = starTime.AddSeconds(i * recordingRate) };
+                endRange = maximumDataLength;
+            }
+            var trackPoints = new Trackpoint_t[endRange - startRange];
+            for (int i = startRange; i < endRange; i++)
+            {
+                trackPoints[i - startRange] = new Trackpoint_t { Time = starTime.AddSeconds(i * recordingRate) };
             }
             foreach (var sampleData in sampleDic)
             {
                 switch (sampleData.Key)
                 {
                     case sampleType.HEARTRATE:
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
-                            trackPoints[i].HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = System.Convert.ToByte(sampleData.Value[i]) };
+                            trackPoints[i - startRange].HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(sampleData.Value[i]) };
                         }
                         break;
                     case sampleType.SPEED:
                         var meters = 0f;
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
                             // Distance set by sample Distance
-                            if (trackPoints[i].DistanceMetersSpecified)
+                            if (trackPoints[i - startRange].DistanceMetersSpecified)
                                 break;
                             meters = meters + (sampleData.Value[i] / 0.06f / 60 * recordingRate);
-                            trackPoints[i].DistanceMetersSpecified = true;
-                            trackPoints[i].DistanceMeters = meters;
+                            trackPoints[i - startRange].DistanceMetersSpecified = true;
+                            trackPoints[i - startRange].DistanceMeters = meters;
                         }
                         break;
                     case sampleType.CADENCE:
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
-                            trackPoints[i].CadenceSpecified = true;
-                            trackPoints[i].Cadence = System.Convert.ToByte(sampleData.Value[i]);
+                            trackPoints[i - startRange].CadenceSpecified = true;
+                            trackPoints[i - startRange].Cadence = Convert.ToByte(sampleData.Value[i]);
                         }
                         break;
                     case sampleType.ALTITUDE:
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
-                            trackPoints[i].AltitudeMetersSpecified = true;
-                            trackPoints[i].AltitudeMeters = sampleData.Value[i];
+                            trackPoints[i - startRange].AltitudeMetersSpecified = true;
+                            trackPoints[i - startRange].AltitudeMeters = sampleData.Value[i];
                         }
                         break;
                     case sampleType.POWER:
                         var doc = new XmlDocument();
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < sampleData.Value.Length; i++)
                         {
                             var tpxElement = doc.CreateElement("TPX", @"http://www.garmin.com/xmlschemas/ActivityExtension/v2");
                             var wattElement = doc.CreateElement("Watts");
                             wattElement.Value = sampleData.Value[i].ToString();
                             tpxElement.AppendChild(wattElement);
-                            trackPoints[i].Extensions = new Extensions_t { Any = new[] { tpxElement } };
+                            trackPoints[i - startRange].Extensions = new Extensions_t { Any = new[] { tpxElement } };
                         }
                         break;
                     case sampleType.POWER_PI:
@@ -340,19 +347,19 @@ namespace PolarConverter.BLL.Services
                     case sampleType.AIR_PRESSURE:
                         break;
                     case sampleType.RUN_CADENCE:
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
-                            trackPoints[i].CadenceSpecified = true;
-                            trackPoints[i].Cadence = System.Convert.ToByte(sampleData.Value[i]);
+                            trackPoints[i - startRange].CadenceSpecified = true;
+                            trackPoints[i - startRange].Cadence = Convert.ToByte(sampleData.Value[i]);
                         }
                         break;
                     case sampleType.TEMPERATURE:
                         break;
                     case sampleType.DISTANCE:
-                        for (int i = 0; i < sampleData.Value.Length; i++)
+                        for (int i = startRange; i < endRange; i++)
                         {
-                            trackPoints[i].DistanceMetersSpecified = true;
-                            trackPoints[i].DistanceMeters = sampleData.Value[i];
+                            trackPoints[i - startRange].DistanceMetersSpecified = true;
+                            trackPoints[i - startRange].DistanceMeters = sampleData.Value[i];
                         }
                         break;
                     default:

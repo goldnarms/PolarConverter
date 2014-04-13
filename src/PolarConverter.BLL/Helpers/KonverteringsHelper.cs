@@ -381,24 +381,24 @@ namespace PolarConverter.BLL.Helpers
             return runder;
         }
 
-        private static List<GPSData> HentGpsRange(List<GPSData> data, int range1, int range2)
+        public static List<GPSData> HentGpsRange(List<GPSData> data, int range1, int range2)
         {
             return data.Count >= range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)) : null;
         }
 
-        private static List<T> HentRange<T>(List<T> data, int range1, int range2)
+        public static List<T> HentRange<T>(List<T> data, int range1, int range2)
         {
             return data.Count > range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)) : null;
         }
 
-        private static T[] GetRange<T>(List<T> data, int range1, int range2)
+        public static T[] GetRange<T>(List<T> data, int range1, int range2)
         {
             return data.Count > range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)).ToArray() : null;
         }
 
 
         // Thanks to http://stackoverflow.com/questions/943635/c-sharp-arrays-getting-a-sub-array-from-an-existing-array
-        private static T[] GetRange<T>(T[] data, int range1, int range2)
+        public static T[] GetRange<T>(T[] data, int range1, int range2)
         {
             var length = range2 - range1;
             if (length > data.Length)

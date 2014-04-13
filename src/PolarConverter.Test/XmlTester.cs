@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PolarConverter.BLL;
-using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Helpers;
 using Should;
 
 namespace PolarConverter.Test
@@ -78,6 +73,7 @@ namespace PolarConverter.Test
                         TrainingCenterDatabase_t;
                 var activityType = trainingDoc.Activities.Activity[0].Sport;
                 activityType.ToString().ShouldContain("Biking");
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 155, 179, new DateTime(2012, 11, 29, 3, 36, 52), true,
                     true);
@@ -99,16 +95,14 @@ namespace PolarConverter.Test
             fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)
             {
-                var trainingDoc =
-                    StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as
-                        TrainingCenterDatabase_t;
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var activityType = trainingDoc.Activities.Activity[0].Sport;
                 activityType.ToString().ShouldContain("Biking");
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadenceAltitude(firstLap, true,
-                    true);
+                TestHelper.AssertCadenceAltitude(firstLap, true, true);
                 TestHelper.AssertStartTime(firstLap, new DateTime(2012, 12, 8, 15, 02, 04));
-                firstLap.TotalTimeSeconds.ShouldEqual(3380.0);
+                firstLap.TotalTimeSeconds.ShouldEqual(2520);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
                 firstLap.DistanceMeters.ShouldEqual(22124);
             }
