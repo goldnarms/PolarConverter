@@ -15,179 +15,98 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ReadTypeFromXml()
         {
-            var sport = "";
-            var settings = new XmlReaderSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            using (var xmlReader = XmlReader.Create(string.Format(FileRoot + "{0}",
-                                            @"Done\Goldnarms_09.07.2012_export(1).xml"), settings))
+            var polarFiles = new[]
             {
-                while (xmlReader.Read())
-                {
-                    if (xmlReader.Name == "type")
-                    {
-                        sport = xmlReader.ReadInnerXml();
-                        break;
-                    }
-                }
+                TestHelper.GeneratePolarFile(@"Done\Goldnarms_09.07.2012_export(1).xml", "Goldnarms_09.07.2012_export(1)", fileType: "xml")
+            };
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var activityType = trainingDoc.Activities.Activity[0].Sport;
+                activityType.ToString().ShouldContain("Biking");
             }
-            sport.ShouldEqual("CYCLING");
         }
 
         [TestMethod]
         public void ImportFromFilFraXml()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\børge_18.10.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\børge_18.10.2012_export.xml", "børge_18.10.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
-                HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
-                HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
-                HarPower = xmlTekst.Contains("<type>POWER</type>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeFalse();
-            polarData.HarCadence.ShouldBeFalse();
-            polarData.HarSpeed.ShouldBeFalse();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.Runder.Count.ShouldEqual(9);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(177);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(162);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 10, 1, 17, 58, 22));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(281.5);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc =
+                    StorageHelper.ReadXmlDocument(reference, typeof (TrainingCenterDatabase_t)) as
+                        TrainingCenterDatabase_t;
+                var activityType = trainingDoc.Activities.Activity[0].Sport;
+                activityType.ToString().ShouldContain("Biking");
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 162, 177, new DateTime(2012, 10, 1, 17, 58, 22), false,
+                    false);
+                firstLap.TotalTimeSeconds.ShouldEqual(281.5);
+            }
         }
 
         [TestMethod]
         public void ImportFromFilFraXmlFlereRunderMedAutolaps()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\escalade_29.11.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\escalade_29.11.2012_export.xml", "escalade_29.11.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
-                HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
-                HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
-                HarPower = xmlTekst.Contains("<type>POWER</type>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeTrue();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.Runder.Count.ShouldEqual(2);
-            polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(179);
-            polarData.Runder[0].MaksHastighet.ShouldEqual(52.25);
-            polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(154.60207100591717);
-            polarData.Runder[0].Distanse.ShouldEqual(26740);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(3380.0);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc =
+                    StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as
+                        TrainingCenterDatabase_t;
+                var activityType = trainingDoc.Activities.Activity[0].Sport;
+                activityType.ToString().ShouldContain("Biking");
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 155, 179, new DateTime(2012, 11, 29, 3, 36, 52), true,
+                    true);
+                firstLap.TotalTimeSeconds.ShouldEqual(3380.0);
+            }
         }
 
         [TestMethod]
         public void FeilerVedImport()
         {
-            var brukerModel = new BrukerModel
+            var polarFiles = new[]
             {
-                AntallDropboxItems = 1,
-                BrukerGuid = "fek",
-                DropboxItems = new List<DropboxItem>
-                {
-                    new DropboxItem
-                        {
-                            Filnavn =
-                                string.Format(FileRoot + "{0}",
-                                            @"XmlFil\escalade_12.12.2012_export.xml"),
-                            Notat = "Xml",
-                            Sport = "Biking",
-                            Valgt = true
-                        }
-                },
-                TimeZoneCorrection = "(GMT +1:00) Europe/Berlin"
+                TestHelper.GeneratePolarFile(@"XmlFil\escalade_12.12.2012_export.xml", "escalade_12.12.2012_export", fileType: "xml")
             };
-
-            var xmlTekst = FilHandler.LesFraFil(brukerModel.DropboxItems[0].Filnavn);
-            var polarData = new PolarData
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            foreach (var reference in fileReferences)
             {
-                UploadViewModel = new UploadViewModel { TimeZoneOffset = 1 },
-                HarCadence = xmlTekst.Contains("<type>CADENCE</type>"),
-                HarAltitude = xmlTekst.Contains("<type>ALTITUDE</type>"),
-                HarSpeed = xmlTekst.Contains("<type>SPEED</type>"),
-                HarPower = xmlTekst.Contains("<type>POWER</type>"),
-                XmlTekst = xmlTekst,
-                Intervall = Convert.ToInt32(StringHelper.HentVerdi("<recording-rate>", 3, xmlTekst).Replace('<', ' ').Replace('/', ' ').Trim()),
-                RundeTider = KonverteringsHelper.VaskXmlTider(xmlTekst)
-            };
-
-            polarData.VaskXmlHrData(xmlTekst);
-            polarData.Runder = KonverteringsHelper.GenererXmlRunder(polarData);
-
-            polarData.HarAltitude.ShouldBeTrue();
-            polarData.HarCadence.ShouldBeTrue();
-            polarData.HarSpeed.ShouldBeTrue();
-            polarData.ImperiskeEnheter.ShouldBeFalse();
-            polarData.XmlTekst.Length.ShouldNotEqual(0);
-            polarData.Runder.Count.ShouldEqual(5);
-            //polarData.Runder[0].MaksHjertefrekvens.ShouldEqual(178);
-            //polarData.Runder[0].MaksHastighet.ShouldEqual(52.25);
-            //polarData.Runder[0].SnittHjerteFrekvens.ShouldEqual(162);
-            polarData.Runder[0].Distanse.ShouldEqual(22124);
-            polarData.Runder[0].StartTime.ShouldEqual(new DateTime(2012, 12, 8, 15, 02, 04));
-            polarData.Runder[0].AntallSekunder.ShouldEqual(42);
-            FilHandler.SkrivTilFil(polarData, string.Format(FileRoot + "{0}", "treningXml.tcx")).ShouldNotBeNull();
+                var trainingDoc =
+                    StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as
+                        TrainingCenterDatabase_t;
+                var activityType = trainingDoc.Activities.Activity[0].Sport;
+                activityType.ToString().ShouldContain("Biking");
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadenceAltitude(firstLap, true,
+                    true);
+                TestHelper.AssertStartTime(firstLap, new DateTime(2012, 12, 8, 15, 02, 04));
+                firstLap.TotalTimeSeconds.ShouldEqual(3380.0);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
+                firstLap.DistanceMeters.ShouldEqual(22124);
+            }
         }
     }
 }
