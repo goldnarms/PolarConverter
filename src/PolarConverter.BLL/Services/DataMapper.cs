@@ -33,29 +33,20 @@ namespace PolarConverter.BLL.Services
             var hrmData = _storageHelper.ReadFile(hrmFile.Reference);
             var startTime = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
             startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
-            try
+            var polarData = InitalizePolarData(hrmFile, model, hrmData, startTime);
+            var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, startTime);
+
+            polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
+            VaskHrData(ref polarData);
+            CollectHrmData(ref activity, polarData);
+            var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(new []{activity});
+            var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
+
+            using (var memStream = new MemoryStream())
             {
-                var polarData = InitalizePolarData(hrmFile, model, hrmData, startTime);
-                var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, startTime);
-
-                polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
-                VaskHrData(ref polarData);
-                CollectHrmData(ref activity, polarData);
-                var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activity);
-                var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
-
-                using (var memStream = new MemoryStream())
-                {
-                    serializer.Serialize(memStream, trainingCenter);
-                    return memStream.ToArray();
-                }
+                serializer.Serialize(memStream, trainingCenter);
+                return memStream.ToArray();
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-
 
 
             //return _fileService.WriteToMemoryStream(polarData).ToArray();

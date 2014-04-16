@@ -8,9 +8,9 @@ namespace PolarConverter.BLL.Factories
 {
     public static class TrainingCenterFactory
     {
-        public static TrainingCenterDatabase_t CreateTrainingCenterDatabase(Activity_t activity)
+        public static TrainingCenterDatabase_t CreateTrainingCenterDatabase(Activity_t[] activities)
         {
-            return new TrainingCenterDatabase_t { Author = new Application_t { Name = "www.polarconverter.com" }, Activities = new ActivityList_t { Activity = new []{ activity}} };
+            return new TrainingCenterDatabase_t { Author = new Application_t { Name = "www.polarconverter.com" }, Activities = new ActivityList_t { Activity = activities} };
         }
     }
 }

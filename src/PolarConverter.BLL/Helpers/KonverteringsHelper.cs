@@ -404,7 +404,7 @@ namespace PolarConverter.BLL.Helpers
             if (length > data.Length)
                 length = data.Length;
             var result = new T[length];
-            Array.Copy(data, range1, result, range1, length);
+            Array.Copy(data, range1, result, 0, length);
             return result;
         }
 
@@ -502,12 +502,12 @@ namespace PolarConverter.BLL.Helpers
                 if (DateTime.TryParse(rundeTid, out tid))
                 {
                     startTime = startTime.AddSeconds(lastLapInSeconds);
+                    var lastLapIntervals = Convert.ToInt32(Math.Ceiling(intervalsPerLap.Sum()));
+                    var lengthOfLap = Convert.ToInt32(Math.Ceiling(tid.AntallSekunder()/(polarData.Intervall == 238 ? 5 : polarData.Intervall)));
                     var range = new Tuple<int, int>(
-                        Convert.ToInt32(Math.Ceiling(intervalsPerLap.Sum())),
-                        Convert.ToInt32(
-                            Math.Ceiling((tid.AntallSekunder() /
-                                          (polarData.Intervall == 238 ? 5 : polarData.Intervall) -
-                                          intervalsPerLap.Sum()))));
+                        lastLapIntervals,
+                        lengthOfLap
+                    );
                     lap.StartTime = startTime;
                     var varighet = tid.AddSeconds(intervalsPerLap.Sum() * (-1));
                     lap.TotalTimeSeconds = BeregnAntallSekunder(varighet);

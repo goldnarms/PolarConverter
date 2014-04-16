@@ -34,6 +34,7 @@ namespace PolarConverter.BLL.Services
             var polarExercise = _storageHelper.ReadXmlDocument(xmlFile.Reference, typeof(polarexercisedata)) as polarexercisedata;
             if (polarExercise != null && polarExercise.calendaritems != null)
             {
+                var activites = new List<Activity_t>();
                 foreach (calendaritem calendaritem in polarExercise.calendaritems.Items)
                 {
                     var offsetInMinutes = IntHelper.HentTidsKorreksjon(model.TimeZoneOffset);
@@ -57,6 +58,10 @@ namespace PolarConverter.BLL.Services
                                     if (data.result.laps != null)
                                     {
                                         activity.Lap = CollectLapsData(data.result.laps, startTime, v02max);
+                                    }
+                                    else if (data.result.autolaps != null)
+                                    {
+                                        activity.Lap = CollectLapsData(data.result.autolaps, startTime, v02max);
                                     }
                                     if (data.result.samples != null)
                                     {
@@ -83,18 +88,7 @@ namespace PolarConverter.BLL.Services
                                     //};                            
 
                                 }
-                                var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activity);
-
-
-                                var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
-
-                                using (var memStream = new MemoryStream())
-                                {
-                                    serializer.Serialize(memStream, trainingCenter);
-                                    return memStream.ToArray();
-                                }
-                                //return _fileService.WriteToMemoryStream(polarData).ToArray();
-
+                                activites.Add(activity);
                                 break;
                             }
                         default:
@@ -102,6 +96,14 @@ namespace PolarConverter.BLL.Services
                                 throw new Exception("Invalid XML file");
                             }
                     }
+                }
+                var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activites.ToArray());
+                var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
+
+                using (var memStream = new MemoryStream())
+                {
+                    serializer.Serialize(memStream, trainingCenter);
+                    return memStream.ToArray();
                 }
             }
             return null;

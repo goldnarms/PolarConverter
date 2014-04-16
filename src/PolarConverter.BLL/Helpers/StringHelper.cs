@@ -26,9 +26,10 @@ namespace PolarConverter.BLL.Helpers
 
         public static TimeSpan ToTimeSpan(this string date)
         {
-            if (date.Length >= 11)
+            if (date.Length == 12)
             {
                 return new TimeSpan(
+                0, //days
                 Convert.ToInt32(date.Substring(0, 2)), //hour
                 Convert.ToInt32(date.Substring(3, 2)), //minutes
                 Convert.ToInt32(date.Substring(6, 2)), //seconds

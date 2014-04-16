@@ -33,7 +33,7 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"XmlFil\børge_18.10.2012_export.xml", "børge_18.10.2012_export", fileType: "xml", sport: "Biking")
+                TestHelper.GeneratePolarFile(@"XmlFil\børge_18.10.2012_export.xml", "børge_18.10.2012_export", fileType: "xml", sport: "Running")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -46,9 +46,9 @@ namespace PolarConverter.Test
                     StorageHelper.ReadXmlDocument(reference, typeof (TrainingCenterDatabase_t)) as
                         TrainingCenterDatabase_t;
                 var activityType = trainingDoc.Activities.Activity[0].Sport;
-                activityType.ToString().ShouldContain("Biking");
+                activityType.ToString().ShouldContain("Running");
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 162, 177, new DateTime(2012, 10, 1, 17, 58, 22), false,
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 153, 167, new DateTime(2012, 10, 1, 17, 58, 22), false,
                     false);
                 firstLap.TotalTimeSeconds.ShouldEqual(281.5);
             }

@@ -12,7 +12,7 @@ namespace PolarConverter.Test
     using BLL.Entiteter;
 
     [TestClass]
-    public class ImportTest: BaseTest
+    public class ImportTest : BaseTest
     {
         [TestMethod]
         public void ImportFromFilMedFlereRunder()
@@ -22,7 +22,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"FlereRunder\12060301.hrm", "12060301", @"FlereRunder\12060301.gpx")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -50,7 +50,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Vanlig\12072201.hrm", "12072201", @"Vanlig\12072201.gpx")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -74,7 +74,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"GpsNavnUtenDato\rondjeRotte.hrm", "rondjeRotte", @"GpsNavnUtenDato\rondjeRotte.gpx")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -84,7 +84,7 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 133, 167, new DateTime(2012, 7, 20, 12, 46, 45), true, false);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 133, 167, new DateTime(2012, 7, 20, 12, 46, 45), true);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -97,7 +97,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12070601.hrm", "12070601")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -122,7 +122,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12081502.hrm", "12081502")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -145,7 +145,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12081501.hrm", "12081501")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -168,7 +168,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12070602.hrm", "12070602")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -193,7 +193,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"stiilnomapinstrava\12073001.hrm", "12073001", @"stiilnomapinstrava\12073001.gpx")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -218,7 +218,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Vanlig\12081101.hrm", "12081101", @"Vanlig\12081101.gpx")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -237,12 +237,11 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ForkortetFil()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"Filer\12082401.hrm", "12082401", @"Filer\12082401.gpx")
+                TestHelper.GeneratePolarFile(@"Filer\12082401.hrm", "12082401", @"Filer\12082401.gpx", gpxVersion: "1.0")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -251,7 +250,7 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadenceAltitude(firstLap, true, false);
+                TestHelper.AssertCadenceAltitude(firstLap, true);
             }
         }
 
@@ -262,7 +261,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Oldies\1998\98011201.hrm", "98011201")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -282,7 +281,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Oldies\1998\98011801.hrm", "98011801")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -303,7 +302,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Oldies\1998\98011802.hrm", "98011802")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -324,7 +323,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"Oldies\1998\98012101.hrm", "98012101")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -345,7 +344,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\Goldnarms_21.07.2012_export.xml", "Goldnarms_21.07.2012_export", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -355,7 +354,7 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 167, new DateTime(2012, 7, 14, 17, 7, 32), false, true);
-                firstLap.TotalTimeSeconds.ShouldEqual(1712.7);
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(1712.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -367,7 +366,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\Mattias242_2012-07-30_export.xml", "Mattias242_2012-07-30_export.xml", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -375,7 +374,9 @@ namespace PolarConverter.Test
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                trainingDoc.Activities.Activity.Length.ShouldEqual(33);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 163, new DateTime(2012, 6, 26, 16, 0, 0), true, false);
                 firstLap.TotalTimeSeconds.ShouldEqual(3026.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
@@ -389,7 +390,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\Mattias242_2012-07-31_export.xml", "Mattias242_2012-07-31_export.xml", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -411,7 +412,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\ttfje_14.08.2012_export.xml", "ttfje_14.08.2012_export.xml", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -433,7 +434,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\inspiring_21.07.2012_export.xml", "inspiring_21.07.2012_export", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -455,7 +456,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\120820.xml", "120820", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
@@ -476,7 +477,7 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"XmlFil\Joerund_01.09.2012_export.xml", "Joerund_01.09.2012_export", fileType: "xml")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
