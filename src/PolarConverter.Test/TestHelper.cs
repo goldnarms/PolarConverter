@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using PolarConverter.BLL.Entiteter;
+using Should;
 
 namespace PolarConverter.Test
 {
@@ -37,8 +38,8 @@ namespace PolarConverter.Test
 
         public static bool AssertCadenceAltitude(ActivityLap_t lap, bool hasCadence = false, bool hasAltitude = false)
         {
-            return lap.CadenceSpecified == hasCadence && lap.Track[0].CadenceSpecified == hasCadence &&
-                   lap.Track[0].AltitudeMetersSpecified == hasAltitude;
+            return lap.CadenceSpecified == hasCadence && lap.Track.Length == 0 || (lap.Track.Length > 0 && lap.Track[0].CadenceSpecified == hasCadence &&
+                   lap.Track[0].AltitudeMetersSpecified == hasAltitude);
         }
 
         public static bool AssertStartTimeAvgMax(ActivityLap_t lap, byte avg, byte max, DateTime startTime)

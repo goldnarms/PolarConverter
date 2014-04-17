@@ -18,7 +18,7 @@ namespace PolarConverter.Test
             ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"Distanse\12101601_2.hrm", "12101601_2")
+                TestHelper.GeneratePolarFile(@"Duration\12101601_2.hrm", "12101601_2")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -44,7 +44,7 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"Distanse\12112501.hrm", "12112501", @"Duration\12112501.gpx", gpxVersion: "1.0")
+                TestHelper.GeneratePolarFile(@"Duration\12112501.hrm", "12112501", @"Duration\12112501.gpx", gpxVersion: "1.0")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -70,7 +70,7 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"Distanse\12120801.hrm", "12120801", @"Duration\12120801.gpx", gpxVersion: "1.0")
+                TestHelper.GeneratePolarFile(@"Duration\12120801.hrm", "12120801", @"Duration\12120801.gpx", gpxVersion: "1.0")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);

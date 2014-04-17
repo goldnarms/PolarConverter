@@ -17,7 +17,7 @@ namespace PolarConverter.Test
         {
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"TommeKalorier\12101601.hrm", "12101601", @"TommeKalorier\12101601.gpx")
+                TestHelper.GeneratePolarFile(@"TommeKalorier\12101601.hrm", "12101601", @"TommeKalorier\12101601.gpx", gpxVersion:"1.0")
             };
             this.SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -28,11 +28,11 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 0, 0, new DateTime(2012, 10, 16, 18, 06, 08), false, true);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 0, 0, new DateTime(2012, 10, 16, 18, 06, 08), false, true).ShouldBeTrue();
                 var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
                 TestHelper.AssertCadAltAvgMaxStarttime(secondLap, 148, 164, new DateTime(2012, 10, 16, 18, 06, 08),
-                    false, true);
-                ushort cal = 89;
+                    false, true).ShouldBeTrue();
+                ushort cal = 78;
                 secondLap.Calories.ShouldEqual(cal);
                 secondLap.TotalTimeSeconds.ShouldEqual(423.5);
             }

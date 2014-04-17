@@ -31,7 +31,7 @@ namespace PolarConverter.Test
                 ForceGarmin = false,
                 Gender = "m",
                 Notes = "Freakkin kewl note",
-                TimeZoneOffset = 6,
+                TimeZoneOffset = -2,
                 WeightMode = "kg",
                 Weight = 82,
                 V02Max = 52

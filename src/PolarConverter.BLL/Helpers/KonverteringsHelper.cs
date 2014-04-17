@@ -401,8 +401,8 @@ namespace PolarConverter.BLL.Helpers
         public static T[] GetRange<T>(T[] data, int range1, int range2)
         {
             var length = range2 - range1;
-            if (length > data.Length)
-                length = data.Length;
+            if (length > data.Length - range1)
+                length = data.Length - range1;
             var result = new T[length];
             Array.Copy(data, range1, result, 0, length);
             return result;
@@ -591,7 +591,7 @@ namespace PolarConverter.BLL.Helpers
                             trackData.DistanceMetersSpecified = true;
                             trackData.DistanceMeters = antallMeterData[j];
                         }
-                        if (j < positionData.Length)
+                        if (positionData != null && j < positionData.Length)
                         {
                             trackData.Position = new Position_t
                             {
@@ -602,7 +602,7 @@ namespace PolarConverter.BLL.Helpers
                         trackData.Time = lap.StartTime.AddSeconds(polarData.Intervall * j);
                         lap.Track[j] = trackData;
                     }
-                    lastDistance += antallMeterData.Last();
+                    lastDistance += antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
                     //runde.CadenseData = HentRange(polarData.CadenseData, range.Item1, range.Item2);
                     //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
                     intervalsPerLap.Add(range.Item2);

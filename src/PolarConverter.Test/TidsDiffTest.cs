@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PolarConverter.BLL;
-using PolarConverter.BLL.Entiteter;
-using PolarConverter.BLL.Helpers;
-using PolarConverter.BLL.Services;
 using Should;
 
 namespace PolarConverter.Test
 {
     [TestClass]
-    public class TidsDiffTest: BaseTest
+    public class TidsDiffTest : BaseTest
     {
         [TestMethod]
         public void TidForFort()
@@ -19,18 +15,10 @@ namespace PolarConverter.Test
             {
                 TestHelper.GeneratePolarFile(@"distansetoolong.hrm", "distansetoolong")
             };
-            this.SetPolarFiles(polarFiles);
+            SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 113, 149, new DateTime(2013, 3, 10, 12, 1, 29), true, true);
-                firstLap.TotalTimeSeconds.ShouldEqual(6359.2);
-            }
+            //File not found
+            result.ErrorMessages.Count.ShouldEqual(1);
         }
     }
 }
