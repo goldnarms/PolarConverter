@@ -348,7 +348,7 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 167, new DateTime(2012, 7, 14, 17, 7, 32), false, true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 127, 166, new DateTime(2012, 7, 14, 17, 7, 32), false, true).ShouldBeTrue();
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(1712.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
@@ -369,12 +369,7 @@ namespace PolarConverter.Test
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                trainingDoc.Activities.Activity.Length.ShouldEqual(33);
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 163, new DateTime(2012, 6, 26, 16, 0, 0), true, false).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(3026.7);
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
+                trainingDoc.Activities.Activity.Length.ShouldEqual(32);
             }
         }
 
@@ -394,8 +389,8 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 156, new DateTime(2012, 7, 25, 5, 15, 15), true, false).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(394.1);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 140, 156, new DateTime(2012, 7, 25, 5, 15, 15), true, false).ShouldBeTrue();
+                firstLap.TotalTimeSeconds.ShouldEqual(671.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(24);
             }
         }
@@ -437,10 +432,11 @@ namespace PolarConverter.Test
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                trainingDoc.Activities.Activity.Length.ShouldEqual(30);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 128, new DateTime(2012, 6, 25, 17, 17, 40), true, false).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(706.6);
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 114, 128, new DateTime(2012, 6, 25, 17, 17, 40), false, false).ShouldBeTrue();
+                firstLap.TotalTimeSeconds.ShouldEqual(771.5);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
 

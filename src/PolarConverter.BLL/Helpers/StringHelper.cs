@@ -26,6 +26,11 @@ namespace PolarConverter.BLL.Helpers
 
         public static TimeSpan ToTimeSpan(this string date)
         {
+            // Check for buggy time
+            if (date.Length == 10 && date.Contains(":."))
+            {
+                date = date.Replace(":.", ":00.");
+            }
             if (date.Length == 12)
             {
                 return new TimeSpan(
