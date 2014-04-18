@@ -202,7 +202,7 @@ namespace PolarConverter.Test
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 138, 169, new DateTime(2012, 7, 30, 17, 36, 25), true).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(4077.5);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 115, new DateTime(2012, 7, 30, 18, 44, 22), true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 115, new DateTime(2012, 7, 30, 18, 44, 22, 500), true).ShouldBeTrue();
             }
         }
 
@@ -389,9 +389,9 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 140, 156, new DateTime(2012, 7, 25, 5, 15, 15), true, false).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(671.7);
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(24);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 140, 156, new DateTime(2012, 7, 25, 5, 15, 15), false, false).ShouldBeTrue();
+                firstLap.TotalTimeSeconds.ShouldEqual(3911.7);
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
 
@@ -411,7 +411,7 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 126, 164, new DateTime(2012, 8, 13, 17, 23, 7), true, true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 151, 163, new DateTime(2012, 8, 13, 17, 23, 7), true, true).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(374);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
             }

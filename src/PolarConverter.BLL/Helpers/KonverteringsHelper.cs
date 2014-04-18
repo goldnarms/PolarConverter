@@ -486,33 +486,32 @@ namespace PolarConverter.BLL.Helpers
         public static ActivityLap_t[] CalculateIntTimes(PolarData polarData, DateTime startTime, DateTime startDate)
         {
             var laps = new List<ActivityLap_t>();
-            var lastLapInSeconds = 0;
             var intervalsPerLap = new List<double>();
-            var secondsInLap = new List<double>();
             var lastDistance = 0d;
+            DateTime previouseLapEndtime = startTime.Date;
             for (var i = 0; i < polarData.RundeTider.Count; i = i + 28)
             {
                 var lap = new ActivityLap_t();
                 startTime = new DateTime(startDate.Year, startDate.Month, startDate.Day,
                                      startTime.Hour, startTime.Minute,
-                                     startTime.Second);
+                                     startTime.Second, startTime.Millisecond);
 
                 var rundeTid = polarData.RundeTider[i];
-                DateTime tid;
-                if (DateTime.TryParse(rundeTid, out tid))
+                DateTime lapEndTime;
+                if (DateTime.TryParse(rundeTid, out lapEndTime))
                 {
-                    startTime = startTime.AddSeconds(lastLapInSeconds);
+                    lap.StartTime = startTime;
+                    var lapDuration = lapEndTime - previouseLapEndtime;
+                    startTime = startTime.AddMilliseconds(lapDuration.TotalMilliseconds);
+                    previouseLapEndtime = lapEndTime;
+                    lap.TotalTimeSeconds = lapDuration.TotalSeconds;
                     var lastLapIntervals = Convert.ToInt32(Math.Ceiling(intervalsPerLap.Sum()));
-                    var lengthOfLap = Convert.ToInt32(Math.Ceiling(tid.AntallSekunder()/(polarData.Intervall == 238 ? 5 : polarData.Intervall)));
+                    var lengthOfLap = Convert.ToInt32(Math.Ceiling(lapEndTime.AntallSekunder() / (polarData.Intervall == 238 ? 5 : polarData.Intervall)));
+
                     var range = new Tuple<int, int>(
                         lastLapIntervals,
                         lengthOfLap
                     );
-                    lap.StartTime = startTime;
-                    var varighet = tid.AddSeconds(intervalsPerLap.Sum() * (-1));
-                    lap.TotalTimeSeconds = BeregnAntallSekunder(varighet);
-                    //if (runde.AntallSekunder > 50000)
-                    //    runde.AntallSekunder = runde.AntallSekunder/1000;
                     var gpsLength = 0;
                     PositionData[] positionData = null;
                     if (polarData.GpxData != null)
@@ -603,14 +602,30 @@ namespace PolarConverter.BLL.Helpers
                         lap.Track[j] = trackData;
                     }
                     lastDistance += antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
-                    //runde.CadenseData = HentRange(polarData.CadenseData, range.Item1, range.Item2);
                     //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
                     intervalsPerLap.Add(range.Item2);
-                    secondsInLap.Add(tid.AntallSekunder() - secondsInLap.Sum());
-                    lastLapInSeconds = Convert.ToInt32(Math.Ceiling(secondsInLap.Last()));
+                    //secondsInLap.Add(lapEndTime.AntallSekunder() - secondsInLap.Sum());
+                    //lastLapInSeconds = Convert.ToInt32(Math.Ceiling(secondsInLap.Last()));
+                    if (cadenceData != null)
+                    {
+                        lap.CadenceSpecified = true;
+                        var convertedCadence = new List<double>();
+                        foreach (var s in cadenceData)
+                        {
+                            double val;
+                            if (double.TryParse(s, out val))
+                            {
+                                convertedCadence.Add(val);
+                            }
+                        }
+                        byte zero = 0;
+                        lap.Cadence = convertedCadence.Count > 0 ? Convert.ToByte(convertedCadence.Average()) : zero;
+                    }
+                    else
+                    {
+                        lap.CadenceSpecified = false;
+                    }
                 }
-                //runde.MinHjertefrekvens = Convert.ToByte(polarData.RundeTider[i + 2]);
-
                 lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i + 3]) };
                 lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(polarData.RundeTider[i + 4]) };
                 lap.DistanceMeters = lastDistance;
@@ -621,6 +636,7 @@ namespace PolarConverter.BLL.Helpers
                     StringHelper.HentVerdi("MaxHR=", 3, polarData.HrmData).PolarConvertToDouble(),
                     lap.AverageHeartRateBpm.Value, lap.TotalTimeSeconds);
                 laps.Add(lap);
+                lastDistance = 0;
             }
             return laps.ToArray();
         }

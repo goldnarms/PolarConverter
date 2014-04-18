@@ -38,7 +38,7 @@ namespace PolarConverter.Test
 
         public static bool AssertCadenceAltitude(ActivityLap_t lap, bool hasCadence = false, bool hasAltitude = false)
         {
-            return lap.CadenceSpecified == hasCadence && lap.Track.Length == 0 || (lap.Track.Length > 0 && lap.Track[0].CadenceSpecified == hasCadence &&
+            return lap.CadenceSpecified == hasCadence && lap.Track == null || (lap.Track != null && lap.Track.Length == 0) || (lap.Track.Length > 0 && lap.Track[0].CadenceSpecified == hasCadence &&
                    lap.Track[0].AltitudeMetersSpecified == hasAltitude);
         }
 

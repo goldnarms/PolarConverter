@@ -41,6 +41,16 @@ namespace PolarConverter.BLL.Helpers
                 Convert.ToInt32(date.Substring(9, 3)) //mm
                 );
             }
+            if (date.Length == 10)
+            {
+                return new TimeSpan(
+0, //days
+                Convert.ToInt32(date.Substring(0, 2)), //hour
+                Convert.ToInt32(date.Substring(3, 2)), //minutes
+                Convert.ToInt32(date.Substring(6, 2)), //seconds
+                Convert.ToInt32(date.Substring(9, 1) + "00") //mm
+                );
+            }
             if (date.Length == 8)
             {
                 //hh:mm:ss
