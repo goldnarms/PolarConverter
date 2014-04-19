@@ -558,7 +558,7 @@ namespace PolarConverter.BLL.Helpers
                         lengths.Add(antallMeterData.Length);
                     if(cadenceData != null)
                         lengths.Add(cadenceData.Length);
-                    var maximumLength = lengths.Max();
+                    var maximumLength = lengths.Count > 0 ? lengths.Max() : 0;
                     lap.Track = new Trackpoint_t[maximumLength];
                     for (int j = 0; j < maximumLength; j++)
                     {
@@ -601,7 +601,7 @@ namespace PolarConverter.BLL.Helpers
                         trackData.Time = lap.StartTime.AddSeconds(polarData.Intervall * j);
                         lap.Track[j] = trackData;
                     }
-                    lastDistance += antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
+                    lastDistance += antallMeterData != null && antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
                     //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
                     intervalsPerLap.Add(range.Item2);
                     //secondsInLap.Add(lapEndTime.AntallSekunder() - secondsInLap.Sum());

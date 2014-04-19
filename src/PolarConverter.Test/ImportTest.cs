@@ -17,10 +17,9 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilMedFlereRunder()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"FlereRunder\12060301.hrm", "12060301", @"FlereRunder\12060301.gpx")
+                TestHelper.GeneratePolarFile(@"FlereRunder\12060301.hrm", "12060301", @"FlereRunder\12060301.gpx", gpxVersion: "1.0")
             };
             SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -36,8 +35,8 @@ namespace PolarConverter.Test
                 firstLap.TotalTimeSeconds.ShouldEqual(661.4);
                 var lastLap = trainingDoc.Activities.Activity[0].Lap[1];
                 lastLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(lastLap, 166, 180, new DateTime(2012, 6, 3, 15, 1, 34)).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(529.8);
+                TestHelper.AssertCadAltAvgMaxStarttime(lastLap, 166, 180, new DateTime(2012, 6, 3, 15, 1, 34, 400)).ShouldBeTrue();
+                lastLap.TotalTimeSeconds.ShouldEqual(529.4);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
             }
         }
@@ -45,10 +44,10 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilGmtAmerika()
         {
-            ViewModel.TimeZoneOffset = 1;
+            ViewModel.TimeZoneOffset = 2;
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"Vanlig\12072201.hrm", "12072201", @"Vanlig\12072201.gpx")
+                TestHelper.GeneratePolarFile(@"Vanlig\12072201.hrm", "12072201", @"Vanlig\12072201.gpx", gpxVersion:"1.0")
             };
             SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
@@ -60,8 +59,8 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 144, 159, new DateTime(2012, 7, 22, 17, 55, 17), true, true).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(661.4);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 100, 128, new DateTime(2012, 7, 22, 17, 55, 17), true, true).ShouldBeTrue();
+                firstLap.TotalTimeSeconds.ShouldEqual(8007.2);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -69,7 +68,6 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilMedGpsUtenDatoINavn()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
                 TestHelper.GeneratePolarFile(@"GpsNavnUtenDato\rondjeRotte.hrm", "rondjeRotte", @"GpsNavnUtenDato\rondjeRotte.gpx")
@@ -84,7 +82,7 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 133, 167, new DateTime(2012, 7, 20, 12, 46, 45), true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 134, 167, new DateTime(2012, 7, 20, 12, 46, 45), true).ShouldBeTrue();
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -92,7 +90,6 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilUtenGpx()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12070601.hrm", "12070601")
@@ -107,10 +104,10 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 119, 129, new DateTime(2012, 7, 6, 17, 38, 27), true, false).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(483.8);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 119, 127, new DateTime(2012, 7, 6, 17, 46, 30), true, false).ShouldBeTrue();
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 119, 129, new DateTime(2012, 7, 6, 17, 38, 27), false, false).ShouldBeTrue();
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(483.8);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 119, 127, new DateTime(2012, 7, 6, 17, 46, 30, 800), false, false).ShouldBeTrue();
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
             }
         }
 
