@@ -489,7 +489,8 @@ namespace PolarConverter.BLL.Helpers
             var intervalsPerLap = new List<double>();
             var lastDistance = 0d;
             DateTime previouseLapEndtime = startTime.Date;
-            for (var i = 0; i < polarData.RundeTider.Count; i = i + 28)
+            var increment = polarData.Versjon == "102" || polarData.Versjon == "105" ? 16 : 28;
+            for (var i = 0; i < polarData.RundeTider.Count; i = i + increment)
             {
                 var lap = new ActivityLap_t();
                 startTime = new DateTime(startDate.Year, startDate.Month, startDate.Day,

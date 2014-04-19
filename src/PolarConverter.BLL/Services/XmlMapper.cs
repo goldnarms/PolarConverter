@@ -117,7 +117,7 @@ namespace PolarConverter.BLL.Services
         {
             var lap = new ActivityLap_t();
             int recordingLength = 0;
-            int interval = result.recordingrateSpecified ? result.recordingrate : 5;
+            int interval = result.recordingrateSpecified && result.recordingrate > 0 ? result.recordingrate : 5;
             var lapDuration = result.duration.ToTimeSpan();
             lap.StartTime = startTime;
             lap.TotalTimeSeconds = lapDuration.TotalSeconds;

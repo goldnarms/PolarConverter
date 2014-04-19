@@ -6,6 +6,7 @@ using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Services;
 using Should;
 
+
 namespace PolarConverter.Test
 {
     using BLL;
@@ -114,7 +115,6 @@ namespace PolarConverter.Test
         [TestMethod]
         public void ImportFromFilUtenGpx2()
         {
-            ViewModel.TimeZoneOffset = 1;
             var polarFiles = new[]
             {
                 TestHelper.GeneratePolarFile(@"KunHrm\12081502.hrm", "12081502")
@@ -129,7 +129,7 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 112, 127, new DateTime(2012, 8, 15, 19, 7, 18)).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 113, 127, new DateTime(2012, 8, 15, 19, 7, 18)).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(1410);
             }
         }
@@ -173,10 +173,10 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 130, 143, new DateTime(2012, 7, 6, 17, 48, 26), true).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(1617.4);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 130, 130, new DateTime(2012, 7, 6, 17, 56, 30), true).ShouldBeTrue();
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[2], 130, 130, new DateTime(2012, 7, 6, 17, 56, 32), true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 128, 143, new DateTime(2012, 7, 6, 17, 48, 26), true).ShouldBeTrue();
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(484.6);
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 130, 130, new DateTime(2012, 7, 6, 17, 56, 30, 600), true).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[2], 130, 130, new DateTime(2012, 7, 6, 17, 56, 32, 400), true).ShouldBeTrue();
             }
         }
 
@@ -222,7 +222,6 @@ namespace PolarConverter.Test
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 139, 165, new DateTime(2012, 8, 11, 5, 45, 14), true).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(11670);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 115, 138, new DateTime(2012, 7, 30, 18, 44, 22), true).ShouldBeTrue();
             }
         }
 
@@ -453,8 +452,8 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                firstLap.TotalTimeSeconds.ShouldEqual(706.6);
-                trainingDoc.Activities.Activity[0].Lap.Length.ShouldBeGreaterThan(0);
+                firstLap.TotalTimeSeconds.ShouldEqual(1643.0);
+                trainingDoc.Activities.Activity.Length.ShouldEqual(153);
             }
         }
 

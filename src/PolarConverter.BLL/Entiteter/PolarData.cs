@@ -17,7 +17,7 @@ namespace PolarConverter.BLL.Entiteter
         public bool ImperiskeEnheter { get; set; }
         public bool HarSpeed { get; set; }
         public bool HarPower { get; set; }
-        public string Versjon { get { return StringHelper.HentVerdi("Version=", 3, HrmData); } }
+        public string Versjon { get; set; }
         public int Device { get; set; }
         public UploadViewModel UploadViewModel { get; set; }
         public static Dictionary<int, string> Devices = new Dictionary<int, string>

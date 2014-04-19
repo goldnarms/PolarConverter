@@ -62,11 +62,41 @@ namespace PolarConverter.BLL.Services
 
         public PolarData InitalizePolarData(PolarFile file, UploadViewModel model, string hrmData, DateTime starTime)
         {
+            var polardata = new PolarData();
+            polardata.Versjon = StringHelper.HentVerdi("Version=", 3, hrmData);
             var v02Max = Calculators.CalculateVo2Max(hrmData, model.Weight);
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";
-            var modusValue = StringHelper.HentVerdi("Mode=", 9, hrmData);
-            //var trackTimes = KonverteringsHelper.VaskIntTimes(hrmData);
-            var interval = System.Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
+            var modusValue = "";
+            if (polardata.Versjon == "102" || polardata.Versjon == "105")
+            {
+                modusValue = StringHelper.HentVerdi("Mode=", 3, hrmData);
+                polardata.Modus = modus;
+                polardata.ModusVerdi = modusValue;
+                polardata.HarCadence = modusValue.Substring(0, 1) == "0";
+                polardata.HarAltitude = modusValue.Substring(0, 1) == "1";
+                polardata.ImperiskeEnheter = modusValue.Substring(2, 1) == "1";
+                polardata.HarSpeed = false;
+                polardata.HarPower = false;
+            }
+            else
+            {
+                modusValue = StringHelper.HentVerdi("Mode=", 9, hrmData);
+                polardata.Modus = modus;
+                polardata.ModusVerdi = modusValue;
+                polardata.HarCadence = modus == "SMode"
+                    ? (modusValue.Substring(1, 1) == "1")
+                    : modusValue.Substring(0, 1) == "0";
+                polardata.HarAltitude = modus == "SMode"
+                    ? (modusValue.Substring(2, 1) == "1")
+                    : modusValue.Substring(0, 1) == "1";
+                polardata.ImperiskeEnheter = modus == "SMode"
+                    ? (modusValue.Substring(7, 1) == "1")
+                    : modusValue.Substring(2, 1) == "1";
+                polardata.HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") ||
+                                     (modus == "Mode" && modusValue.Substring(1, 1) == "1");
+                polardata.HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1";
+            }
+            var interval = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
             var tabs = 0;
             var noteData = StringHelper.LesLinjer(hrmData, "[Note]", out tabs);
             var noteText = new StringBuilder();
@@ -74,7 +104,7 @@ namespace PolarConverter.BLL.Services
             {
                 noteText.AppendLine(notes);
             }
-            var polardata = new PolarData();
+
             polardata.UploadViewModel = model;
             polardata.V02max = v02Max;
             polardata.HrmData = hrmData;
@@ -82,20 +112,6 @@ namespace PolarConverter.BLL.Services
             polardata.Note = noteText.ToString();
             polardata.StartDate = StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato();
             polardata.StartTime = starTime;
-            polardata.Modus = modus;
-            polardata.ModusVerdi = modusValue;
-            polardata.HarCadence = modus == "SMode"
-                ? (modusValue.Substring(1, 1) == "1")
-                : modusValue.Substring(0, 1) == "0";
-            polardata.HarAltitude = modus == "SMode"
-                ? (modusValue.Substring(2, 1) == "1")
-                : modusValue.Substring(0, 1) == "1";
-            polardata.ImperiskeEnheter = modus == "SMode"
-                ? (modusValue.Substring(7, 1) == "1")
-                : modusValue.Substring(2, 1) == "1";
-            polardata.HarSpeed = (modus == "SMode" && modusValue.Substring(0, 1) == "1") ||
-                                 (modus == "Mode" && modusValue.Substring(1, 1) == "1");
-            polardata.HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1";
             polardata.Device = Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim());
             polardata.Intervall = interval;
             polardata.HrData = new List<HRData>();
@@ -186,7 +202,7 @@ namespace PolarConverter.BLL.Services
             }
             else if (polarData.Versjon == "102")
             {
-                activity.Lap = new ActivityLap_t[1];
+                activity.Lap = KonverteringsHelper.CalculateIntTimes(polarData, activity.Id, KonverteringsHelper.HentStartDato(polarData));
                 //activity.Lap = KonverteringsHelper.CalculateOldIntTimes();
                 //runder.AddRange(CalculateOldIntTimes(runde, polarData, startTime, forrigeRundetidISekunder,
                 //    antallIntervalPrRunde, antallSekunderPrRunde, forrigeDistanser, startDate));

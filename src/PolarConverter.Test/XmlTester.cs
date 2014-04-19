@@ -9,26 +9,6 @@ namespace PolarConverter.Test
     public class XmlTester: BaseTest
     {
         [TestMethod]
-        public void ReadTypeFromXml()
-        {
-            var polarFiles = new[]
-            {
-                TestHelper.GeneratePolarFile(@"Done\Goldnarms_09.07.2012_export(1).xml", "Goldnarms_09.07.2012_export(1)", fileType: "xml")
-            };
-            this.SetPolarFiles(polarFiles);
-            var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                var activityType = trainingDoc.Activities.Activity[0].Sport;
-                activityType.ToString().ShouldContain("Biking");
-            }
-        }
-
-        [TestMethod]
         public void ImportFromFilFraXml()
         {
             var polarFiles = new[]
@@ -75,8 +55,12 @@ namespace PolarConverter.Test
                 activityType.ToString().ShouldContain("Biking");
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 155, 179, new DateTime(2012, 11, 29, 3, 36, 52), true,
-                    true).ShouldBeTrue();
+                byte avgHr = 154;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHr);
+                TestHelper.AssertStartTime(firstLap, new DateTime(2012, 11, 29, 3, 36, 52)).ShouldBeTrue();
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                byte cadence = 76;
+                firstLap.Cadence.ShouldEqual(cadence);
                 firstLap.TotalTimeSeconds.ShouldEqual(3380.0);
             }
         }

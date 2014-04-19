@@ -11,6 +11,7 @@ namespace PolarConverter.Test
     public class DropboxTest
     {
         [TestMethod]
+        [Ignore]
         public void SokEtterFiler()
         {
             DropboxHelper.LoginDropbox("0l9thfitgdijcrh", "a4yemhsnokuz4jm");
