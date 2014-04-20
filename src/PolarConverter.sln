@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "PolarConverter.BLL\PolarConverter.BLL.csproj", "{B22CD80D-5630-44A6-87F4-1CBB8AD31275}"
 EndProject
@@ -31,6 +31,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28D67260-B584-4A9A-ACD3-0F04FDDDAD12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSTest", "PolarConverter.JSTest\PolarConverter.JSTest.csproj", "{871602AD-2635-4233-9452-978115552691}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.TestGenerator", "PolarConverter.TestGenerator\PolarConverter.TestGenerator.csproj", "{58FF6677-643F-4A30-A2DA-8EC843366BB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,11 +140,22 @@ Global
 		{871602AD-2635-4233-9452-978115552691}.Release|ARM.ActiveCfg = Release|Any CPU
 		{871602AD-2635-4233-9452-978115552691}.Release|x64.ActiveCfg = Release|Any CPU
 		{871602AD-2635-4233-9452-978115552691}.Release|x86.ActiveCfg = Release|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Release|x64.ActiveCfg = Release|Any CPU
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{871602AD-2635-4233-9452-978115552691} = {28D67260-B584-4A9A-ACD3-0F04FDDDAD12}
+		{58FF6677-643F-4A30-A2DA-8EC843366BB0} = {28D67260-B584-4A9A-ACD3-0F04FDDDAD12}
 	EndGlobalSection
 EndGlobal

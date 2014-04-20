@@ -1,1 +1,1 @@
-{"version":3,"file":"polarFile.js","sourceRoot":"","sources":["polarFile.ts"],"names":["PolarConverter"],"mappings":"AAAA,mCAAmC;AACnC,IAAO,cAAc;AAQpB,CARD,UAAO,cAAc;IACjBA,YAAYA;AAOhBA,CAACA,2CAAA"}
+{"version":3,"file":"PolarFile.js","sourceRoot":"","sources":["PolarFile.ts"],"names":["PolarConverter"],"mappings":"AAAA,mCAAmC;AACnC,IAAO,cAAc;AAQpB,CARD,UAAO,cAAc;IACjBA,YAAYA;AAOhBA,CAACA,2CAAA"}

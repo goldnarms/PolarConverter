@@ -24,6 +24,8 @@ namespace PolarConverter.BLL.Helpers
             if (DateTime.TryParseExact(tekst, "ddMMyy", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
             if (DateTime.TryParseExact(tekst, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
             if (DateTime.TryParseExact(tekst, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
+            if (DateTime.TryParseExact(tekst, "yyyyMMdd HH:mm:ss.F", CultureInfo.InvariantCulture,
+                DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
             return dato;
         }
 
