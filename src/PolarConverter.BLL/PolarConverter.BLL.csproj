@@ -168,6 +168,7 @@
     <Compile Include="Helpers\IntHelper.cs" />
     <Compile Include="Helpers\KonverteringsHelper.cs" />
     <Compile Include="Helpers\LapHelper.cs" />
+    <Compile Include="Helpers\RangeHelper.cs" />
     <Compile Include="Helpers\SportHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="FilHandler.cs" />

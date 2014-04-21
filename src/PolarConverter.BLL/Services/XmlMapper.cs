@@ -48,6 +48,7 @@ namespace PolarConverter.BLL.Services
                         case "exercisedata":
                             {
                                 var data = calendaritem as exercisedata;
+                                var intervall = data.result.recordingrate == 238 ? 5 : data.result.recordingrate == 0 ? 5 : data.result.recordingrate;
                                 if (data != null && data.result != null)
                                 {
                                     var v02max = 0d;
@@ -69,9 +70,6 @@ namespace PolarConverter.BLL.Services
                                     }
                                     if (data.result.samples != null)
                                     {
-                                        var intervall = data.result.recordingrate == 238
-                                            ? 5
-                                            : data.result.recordingrate == 0 ? 5 : data.result.recordingrate;
                                         var startRange = 0;
                                         foreach (var t in activity.Lap)
                                         {
@@ -83,14 +81,33 @@ namespace PolarConverter.BLL.Services
                                 }
                                 if (xmlFile.GpxFile != null)
                                 {
-                                    var gpsData = _gpxService.MapGpxFile(xmlFile.GpxFile, model);
-                                    // Add gpsData til lap.track...
-                                    //lap.Track[j].Position = new Position_t
-                                    //{
-                                    //    LatitudeDegrees = Convert.ToDouble(gpsData[j].trkseg[i].lat),
-                                    //    LongitudeDegrees = Convert.ToDouble(gpsData[j].trkseg[i].lon)
-                                    //};                            
-
+                                    var startRange = 0;
+                                    foreach (var t in activity.Lap)
+                                    {
+                                        var gpsData =
+                                            _gpxService.CollectGpxData(_gpxService.MapGpxFile(xmlFile.GpxFile, model),
+                                                xmlFile.GpxFile.Version, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)), startTime.AddMinutes(offsetInMinutes * -1), intervall);
+                                        startRange += t.Track.Length;
+                                        if (gpsData != null)
+                                        {
+                                            for (int i = 0; i < t.Track.Length; i++)
+                                            {
+                                                if (gpsData.Length > i)
+                                                {
+                                                    t.Track[i].Position = new Position_t
+                                                    {
+                                                        LatitudeDegrees = Convert.ToDouble(gpsData[i].Lat),
+                                                        LongitudeDegrees = Convert.ToDouble(gpsData[i].Lon)
+                                                    };
+                                                    if (gpsData[i].Altitude.HasValue)
+                                                    {
+                                                        t.Track[i].AltitudeMetersSpecified = true;
+                                                        t.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                                 activites.Add(activity);
                                 break;
@@ -125,7 +142,7 @@ namespace PolarConverter.BLL.Services
             lap.Track = new Trackpoint_t[recordingLength];
             for (int i = 0; i < lap.Track.Length; i++)
             {
-                lap.Track[i] = new Trackpoint_t {Time = startTime.AddSeconds(i*interval)};
+                lap.Track[i] = new Trackpoint_t { Time = startTime.AddSeconds(i * interval) };
             }
             if (result.heartrate != null)
             {

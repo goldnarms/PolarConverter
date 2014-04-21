@@ -62,7 +62,7 @@ namespace PolarConverter.BLL.Services
                                 var stream = _xmlMapper.MapData(xmlFile, model);
                                 zip.AddEntry(fileName, stream);
                             }
-                            catch (Exception ex)
+                             catch (Exception ex)
                             {
                                 errorMessages.Add(ex.Message);
                             }

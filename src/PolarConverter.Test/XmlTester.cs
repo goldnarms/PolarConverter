@@ -91,5 +91,33 @@ namespace PolarConverter.Test
                 firstLap.DistanceMeters.ShouldEqual(22124);
             }
         }
+
+        [TestMethod]
+        public void XmlFileWithGpx()
+        {
+            var polarFiles = new[]
+            {
+                TestHelper.GeneratePolarFile(@"XmlFil\Oystein69_24.03.2014_export.xml", "Oystein", fileType: "xml",
+                    gpxFileReference: @"XmlFil\Running-2014-3-23.gpx", gpxVersion: "1.1")
+            };
+            this.SetPolarFiles(polarFiles);
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc =
+                    StorageHelper.ReadXmlDocument(reference, typeof (TrainingCenterDatabase_t)) as
+                        TrainingCenterDatabase_t;
+                trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 146, 162, new DateTime(2014, 3, 23, 12, 57, 11, 0),
+                    false, true);
+                firstLap.Track[0].Position.ShouldNotBeNull();
+                firstLap.Track[0].Position.LatitudeDegrees.ShouldEqual(59.227538);
+                firstLap.Track[0].Position.LongitudeDegrees.ShouldEqual(10.954917);
+            }
+        }
     }
 }
