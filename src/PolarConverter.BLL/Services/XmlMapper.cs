@@ -86,7 +86,7 @@ namespace PolarConverter.BLL.Services
                                     {
                                         var gpsData =
                                             _gpxService.CollectGpxData(_gpxService.MapGpxFile(xmlFile.GpxFile, model),
-                                                xmlFile.GpxFile.Version, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)), startTime.AddMinutes(offsetInMinutes * -1), intervall);
+                                                xmlFile.GpxFile.Version, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)), startTime, intervall);
                                         startRange += t.Track.Length;
                                         if (gpsData != null)
                                         {

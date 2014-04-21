@@ -84,8 +84,7 @@ namespace PolarConverter.BLL.Helpers
                     PositionData[] positionData = null;
                     if (polarData.GpxData != null)
                     {
-                        var offsetInMinutes = IntHelper.HentTidsKorreksjon(polarData.UploadViewModel.TimeZoneOffset);
-                        positionData = gpxService.CollectGpxData(polarData.GpxData, polarData.GpxData.Version, range.Item1, range.Item2, polarData.StartTime.AddMinutes(offsetInMinutes * (-1)), polarData.Intervall);
+                        positionData = gpxService.CollectGpxData(polarData.GpxData, polarData.GpxData.Version, range.Item1, range.Item2, polarData.StartTime, polarData.Intervall);
                         range = new Tuple<int, int>(range.Item1, positionData.Length);
                     }
                     var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2);

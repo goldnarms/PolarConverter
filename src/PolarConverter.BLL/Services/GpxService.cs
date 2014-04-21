@@ -29,20 +29,20 @@ namespace PolarConverter.BLL.Services
             switch (version)
             {
                 case "1.0":
-                {
-                    xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpx)) as gpx;
-                    break;
-                }
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        break;
+                    }
                 case "1.1":
-                {
-                    xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpxType)) as gpxType;
-                    break;
-                }
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
+                        break;
+                    }
                 default:
-                {
-                    xml = _storageHelper.ReadXmlDocument(fileReference, typeof (gpx)) as gpx;
-                    break;
-                }
+                    {
+                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        break;
+                    }
             }
             if (xml != null)
             {
@@ -63,7 +63,9 @@ namespace PolarConverter.BLL.Services
             switch (version)
             {
                 case "1.0":
-                    {
+                {
+                    int offset = 0;
+                    int arrayOffset = 0;
                         var gpx = (gpx)data;
                         var positionData = new PositionData[endRange - startRange];
                         if (gpx.trk != null && gpx.trk.Length > 0 && gpx.trk[0].trkseg != null &&
@@ -72,19 +74,25 @@ namespace PolarConverter.BLL.Services
                             var firstPosition = MapPositionData(gpx.trk[0].trkseg[0]);
                             if (firstPosition.Time.HasValue)
                             {
-                                var offsetSpan = startTime - firstPosition.Time.Value;
-                                var offset = Convert.ToInt32((offsetSpan.TotalSeconds - offsetSpan.TotalSeconds % interval) / interval);
-                                // if gpxtime is started later, fill inn missing gps data with data from firstposition
+                                offset = CalculateOffset(startTime, firstPosition.Time.Value, interval);
                                 if (offset > 0)
                                 {
-                                    for (int i = 0; i < offset; i++)
+                                    if (startRange < offset)
                                     {
-                                        positionData[i] = firstPosition;
+                                        for (int i = startRange; i < offset; i++)
+                                        {
+                                            positionData[i] = firstPosition;
+                                            arrayOffset++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        startRange = startRange - offset;
                                     }
                                     endRange = endRange - offset;
                                 }
                                 // gpxtime is startet earlier, ignore irrelevant gpsdata
-                                else if(offset < 0)
+                                else if (offset < 0)
                                 {
                                     startRange = startRange + offset;
                                     endRange = endRange + offset;
@@ -92,14 +100,16 @@ namespace PolarConverter.BLL.Services
                             }
                         }
                         var gpsData = RangeHelper.GetRange(gpx.trk[0].trkseg, startRange, endRange);
-                        for (int i = positionData.Length; i < gpsData.Length + positionData.Length; i++)
+                        for (int i = 0; i < gpsData.Length; i++)
                         {
-                            positionData[i] = MapPositionData(gpsData[i]);
+                            positionData[i + arrayOffset] = MapPositionData(gpsData[i]);
                         }
                         return positionData;
                     }
                 case "1.1":
-                    {
+                {
+                        int offset = 0;
+                    int arrayOffset = 0;
                         var gpx = (gpxType)data;
                         var combineSegments = new trksegType[gpx.trk.Sum(t => t.trkseg.Length)];
                         var positionData = new PositionData[endRange - startRange];
@@ -109,14 +119,21 @@ namespace PolarConverter.BLL.Services
                             var firstPosition = MapPositionData(gpx.trk[0].trkseg[0].trkpt[0]);
                             if (firstPosition.Time.HasValue)
                             {
-                                var offsetSpan = firstPosition.Time.Value - startTime;
-                                var offset = Convert.ToInt32((offsetSpan.TotalSeconds - offsetSpan.TotalSeconds % interval) / interval);
+                                offset = CalculateOffset(startTime, firstPosition.Time.Value, interval);
                                 // if gpxtime is started later, fill inn missing gps data with data from firstposition
                                 if (offset > 0)
                                 {
-                                    for (int i = 0; i < offset; i++)
+                                    if (startRange < offset)
                                     {
-                                        positionData[i] = firstPosition;
+                                        for (int i = startRange; i < offset; i++)
+                                        {
+                                            positionData[i] = firstPosition;
+                                            arrayOffset ++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        startRange = startRange - offset;
                                     }
                                     endRange = endRange - offset;
                                 }
@@ -145,9 +162,9 @@ namespace PolarConverter.BLL.Services
                             destinationPointIndex += arrayLength;
                         }
                         var gpsData = RangeHelper.GetRange(combinedPoints, startRange, endRange);
-                        for (int i = positionData.Length; i < gpsData.Length + positionData.Length; i++)
+                        for (int i = 0; i < gpsData.Length; i++)
                         {
-                            positionData[i] = MapPositionData(gpsData[i]);
+                            positionData[i + arrayOffset] = MapPositionData(gpsData[i]);
                         }
                         return positionData;
                     }
@@ -156,6 +173,19 @@ namespace PolarConverter.BLL.Services
                         return null;
                     }
             }
+        }
+
+        private int CalculateOffset(DateTime startTime, DateTime gpsTime, int interval)
+        {
+            var offsetSpan = gpsTime - startTime;
+            var offset = (offsetSpan.TotalSeconds - offsetSpan.TotalSeconds % interval);
+            offset = offset % 3600; // 
+            if (offset > 2000)
+                offset = offset - 3600;
+            else if (offset < -2000)
+                offset = offset + 3600;
+            // if gpxtime is started later, fill inn missing gps data with data from firstposition
+            return Convert.ToInt32(offset / interval);
         }
 
         private PositionData MapPositionData(gpxTrkTrksegTrkpt trackPoint)

@@ -41,8 +41,8 @@ namespace PolarConverter.Test
         [TestCleanup]
         public void TestCleanup()
         {
-            if(ZipFileReference != null)
-                File.Delete(ZipFileReference);
+            //if(ZipFileReference != null)
+            //    File.Delete(ZipFileReference);
         }
 
         public void SetPolarFiles(PolarFile[] polarFiles)
