@@ -55,6 +55,14 @@ namespace PolarConverter.BLL.Services
                                     if (data.result.usersettings != null && data.result.usersettings.vo2maxSpecified)
                                     {
                                         v02max = data.result.usersettings.vo2max;
+                                        if (data.result.usersettings.weightSpecified)
+                                        {
+                                            v02max = v02max*data.result.usersettings.weight;
+                                        }
+                                        else
+                                        {
+                                            v02max = v02max*80;
+                                        }
                                     }
                                     if (data.result.laps != null)
                                     {

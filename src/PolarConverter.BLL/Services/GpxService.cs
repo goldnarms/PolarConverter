@@ -63,9 +63,8 @@ namespace PolarConverter.BLL.Services
             switch (version)
             {
                 case "1.0":
-                {
-                    int offset = 0;
-                    int arrayOffset = 0;
+                    {
+                        var arrayOffset = 0;
                         var gpx = (gpx)data;
                         var positionData = new PositionData[endRange - startRange];
                         if (gpx.trk != null && gpx.trk.Length > 0 && gpx.trk[0].trkseg != null &&
@@ -74,7 +73,7 @@ namespace PolarConverter.BLL.Services
                             var firstPosition = MapPositionData(gpx.trk[0].trkseg[0]);
                             if (firstPosition.Time.HasValue)
                             {
-                                offset = CalculateOffset(startTime, firstPosition.Time.Value, interval);
+                                var offset = CalculateOffset(startTime, firstPosition.Time.Value, interval);
                                 if (offset > 0)
                                 {
                                     if (startRange < offset)
@@ -99,17 +98,16 @@ namespace PolarConverter.BLL.Services
                                 }
                             }
                         }
-                        var gpsData = RangeHelper.GetRange(gpx.trk[0].trkseg, startRange, endRange);
-                        for (int i = 0; i < gpsData.Length; i++)
+                        if (gpx.trk != null && gpx.trk.Length > 0)
                         {
-                            positionData[i + arrayOffset] = MapPositionData(gpsData[i]);
+                            SetPositionDataFromGpx(gpx.trk[0].trkseg, startRange, endRange, arrayOffset, ref positionData);
                         }
                         return positionData;
                     }
                 case "1.1":
-                {
-                        int offset = 0;
-                    int arrayOffset = 0;
+                    {
+                        var arrayOffset = 0;
+                        var offset = 0;
                         var gpx = (gpxType)data;
                         var combineSegments = new trksegType[gpx.trk.Sum(t => t.trkseg.Length)];
                         var positionData = new PositionData[endRange - startRange];
@@ -128,7 +126,7 @@ namespace PolarConverter.BLL.Services
                                         for (int i = startRange; i < offset; i++)
                                         {
                                             positionData[i] = firstPosition;
-                                            arrayOffset ++;
+                                            arrayOffset++;
                                         }
                                     }
                                     else
@@ -161,17 +159,45 @@ namespace PolarConverter.BLL.Services
                             Array.Copy(seg.trkpt, 0, combinedPoints, destinationPointIndex, arrayLength);
                             destinationPointIndex += arrayLength;
                         }
-                        var gpsData = RangeHelper.GetRange(combinedPoints, startRange, endRange);
-                        for (int i = 0; i < gpsData.Length; i++)
-                        {
-                            positionData[i + arrayOffset] = MapPositionData(gpsData[i]);
-                        }
+                        SetPositionDataFromGpx(combinedPoints, startRange, endRange, arrayOffset, ref positionData);
                         return positionData;
                     }
                 default:
                     {
                         return null;
                     }
+            }
+        }
+
+        private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData)
+        {
+            var gpsData = RangeHelper.GetRange(pointData, start, end);
+            for (int i = 0; i < end - start; i++)
+            {
+                if (i > gpsData.Length)
+                {
+                    positionData[i + offset] = MapPositionData(gpsData.Last());
+                }
+                else
+                {
+                    positionData[i + offset] = MapPositionData(gpsData[i]);
+                }
+            }
+        }
+
+        private void SetPositionDataFromGpx(wptType[] pointData, int start, int end, int offset, ref PositionData[] positionData)
+        {
+            var gpsData = RangeHelper.GetRange(pointData, start, end);
+            for (int i = 0; i < end - start; i++)
+            {
+                if (i - start > gpsData.Length)
+                {
+                    positionData[i + offset] = MapPositionData(gpsData.Last());
+                }
+                else
+                {
+                    positionData[i + offset] = MapPositionData(gpsData[i]);
+                }
             }
         }
 
