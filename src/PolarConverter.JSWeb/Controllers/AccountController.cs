@@ -95,6 +95,19 @@ namespace PolarConverter.JSWeb.Controllers
             return View(model);
         }
 
+        private async void GetExternalInfo(string userId)
+        {
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, userId);
+            if (loginInfo != null)
+            {
+                var result = await UserManager.AddLoginAsync(userId, loginInfo.Login);
+                if (result.Succeeded)
+                {
+                    var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    //await StoreFacebookAuthToken(currentUser);
+                }
+            }
+        }
         //
         // POST: /Account/Disassociate
         [HttpPost]

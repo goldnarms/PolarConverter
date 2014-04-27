@@ -14,4 +14,4 @@ var PolarConverter;
             });
         }]).controller("uploadCtrl", PolarConverter.UploadController.prototype.injection()).controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection());
 })(PolarConverter || (PolarConverter = {}));
-//# sourceMappingURL=App.js.map
+//# sourceMappingURL=app.js.map

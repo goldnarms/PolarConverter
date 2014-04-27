@@ -95,7 +95,7 @@ module PolarConverter {
             this.showExtraVariables = data.result.showExtraVariables;
             this.uploadViewModel.weight = data.result.weight;
             if (data.result.fileType === "gpx") {
-                var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false };
+                var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false, version: data.result.gpxVersion };
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {

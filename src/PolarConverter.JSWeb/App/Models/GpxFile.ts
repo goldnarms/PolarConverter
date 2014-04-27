@@ -3,5 +3,6 @@ module PolarConverter {
 
     export interface GpxFile extends PolarConverter.File {
         matched: boolean;
+        version: string;
     }
 }

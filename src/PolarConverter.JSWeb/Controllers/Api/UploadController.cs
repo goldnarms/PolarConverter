@@ -42,13 +42,14 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     string sport;
                     double v02Max;
                     double weight;
-                    CheckForData(fileData, out sport, out v02Max, out weight);
+                    string gpxVersion;
+                    CheckForData(fileData, out sport, out v02Max, out weight, out gpxVersion);
                     if (v02Max < 1)
                     {
                         showExtraVariables = true;
                     }
                     var serializer = new JavaScriptSerializer();
-                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport, showExtraVariables, weight };
+                    var result = new { name = fileData.FileName, reference = fileReference, fileType = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower(), sport, showExtraVariables, weight, gpxVersion };
                     HttpContext.Current.Response.Write(serializer.Serialize(result));
                     HttpContext.Current.Response.StatusCode = 200;
                     return new HttpResponseMessage(HttpStatusCode.OK);
@@ -57,15 +58,17 @@ namespace PolarConverter.JSWeb.Controllers.Api
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
-        private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max, out double weight)
+        private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max, out double weight,
+            out string gpxVersion)
         {
             var extension = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower();
             sport = "Other";
             v02Max = 0;
             weight = 0;
+            gpxVersion = "";
             if (extension == "xml")
             {
-                var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
+                var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var xmlReader = XmlReader.Create(fileData.InputStream, settings))
                 {
@@ -117,24 +120,58 @@ namespace PolarConverter.JSWeb.Controllers.Api
                                 if (string.IsNullOrEmpty(v02result))
                                 {
                                     v02result = StringHelper.HentVerdi("VO2max=", 2, line).Trim();
-                                    if(string.IsNullOrEmpty(v02result))
+                                    if (string.IsNullOrEmpty(v02result))
+                                    {
                                         v02result = StringHelper.HentVerdi("VO2max=", 1, line).Trim();
+                                    }
                                 }
-                                v02Max = v02result.ToPolarDouble();
-                            }
+                                if (!string.IsNullOrEmpty(v02result))
+                                    {
+                                        v02Max = v02result.ToPolarDouble();
+                                    }
+                                }
                             if (line.Contains("Weight"))
                             {
                                 var weightResult = StringHelper.HentVerdi("Weight=", 3, line).Trim();
                                 if (string.IsNullOrEmpty(weightResult))
+                                {
                                     weightResult = StringHelper.HentVerdi("Weight=", 2, line).Trim();
-                                weight = weightResult.ToPolarDouble();
+                                }
+                                if(!string.IsNullOrEmpty(weightResult)){
+                                    weight = weightResult.ToPolarDouble();
+                                }
                             }
                             if (line.Contains("[Trip]"))
                             {
                                 sport = "Biking";
                                 break;
                             }
+                            // Got to far, abort
+                            if (line.Contains("[HRData]"))
+                            {
+                                break;
+                            }
                         }
+                    }
+                }
+            }
+            else if (extension == "gpx")
+            {
+                fileData.InputStream.Seek(0, SeekOrigin.Begin);
+                using (var textReader = new StreamReader(fileData.InputStream))
+                {
+                    while (!textReader.EndOfStream)
+                    {
+                        var line = textReader.ReadLine();
+                        if (line != null)
+                        {
+                            if (line.Contains("version="))
+                            {
+                                gpxVersion = StringHelper.HentVerdi("version=", 5, line).Replace("\\", "").Replace("\"", "").Trim();
+                                break;
+                            }
+                        }
+
                     }
                 }
             }

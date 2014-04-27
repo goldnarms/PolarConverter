@@ -40,7 +40,7 @@ namespace PolarConverter.BLL.Services
                     using (var zip = new ZipFile())
                     {
                         zip.FlattenFoldersOnExtract = true;
-                        foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType == "hrm"))
+                        foreach (var hrmFile in model.PolarFiles.Where(pf => pf.FileType.ToLower() == "hrm"))
                         {
                             try
                             {
@@ -54,7 +54,7 @@ namespace PolarConverter.BLL.Services
 
                         }
 
-                        foreach (var xmlFile in model.PolarFiles.Where(pf => pf.FileType == "xml"))
+                        foreach (var xmlFile in model.PolarFiles.Where(pf => pf.FileType.ToLower() == "xml"))
                         {
                             try
                             {

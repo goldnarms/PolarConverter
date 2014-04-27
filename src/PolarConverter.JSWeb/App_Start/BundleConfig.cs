@@ -38,6 +38,7 @@ namespace PolarConverter.JSWeb
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
+                      "~/Content/font-awesome.css",
                       "~/bower_components/angular-busy/angular-busy.css"));
         }
     }

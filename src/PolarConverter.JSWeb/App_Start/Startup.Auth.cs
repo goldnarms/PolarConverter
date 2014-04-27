@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
 
 namespace PolarConverter.JSWeb
@@ -27,12 +29,22 @@ namespace PolarConverter.JSWeb
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
+            var authOptions = new FacebookAuthenticationOptions();
+            authOptions.Scope.Add("email");
+            authOptions.Scope.Add("user_about_me");
+            authOptions.Scope.Add("user_hometown");
+            authOptions.AppId = "128362510636193";
+            authOptions.AppSecret = "14b9e0999d5338185d26551cf09d674f";
+            authOptions.Provider = new FacebookAuthenticationProvider()
+            {
+                OnAuthenticated = async context => context.Identity.AddClaim(
+                    new System.Security.Claims.Claim("FacebookAccessToken",
+                        context.AccessToken))
+            };
+            authOptions.SignInAsAuthenticationType = DefaultAuthenticationTypes.ExternalCookie;
+            app.UseFacebookAuthentication(authOptions);
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication();
         }
     }
 }
