@@ -17,16 +17,16 @@ namespace PolarConverter.BLL.Services
         private readonly IStorageHelper _storageHelper;
         private readonly GpxService _gpxService;
 
-        public XmlMapper(Activity_t activity1)
+        public XmlMapper()
         {
-            _storageHelper = new LocalStorageHelper();
-            _gpxService = new GpxService();
+            _storageHelper = new BlobStorageHelper("polarfiles");
+            _gpxService = new GpxService(_storageHelper);
         }
 
         public XmlMapper(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
-            _gpxService = new GpxService();
+            _gpxService = new GpxService(_storageHelper);
         }
 
         public byte[] MapData(PolarFile xmlFile, UploadViewModel model)

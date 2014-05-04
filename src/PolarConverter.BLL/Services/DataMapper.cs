@@ -18,14 +18,14 @@ namespace PolarConverter.BLL.Services
 
         public DataMapper()
         {
-            _storageHelper = new LocalStorageHelper();
-            _gpxService = new GpxService();
+            _storageHelper = new BlobStorageHelper("polarfiles");
+            _gpxService = new GpxService(_storageHelper);
         }
 
         public DataMapper(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
-            _gpxService = new GpxService();
+            _gpxService = new GpxService(storageHelper);
         }
 
         public byte[] MapData(PolarFile hrmFile, UploadViewModel model)

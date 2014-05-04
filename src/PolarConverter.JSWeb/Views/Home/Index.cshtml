@@ -142,7 +142,7 @@
                     </div>
 
                 </form>
-                <div class="alert alert-success" data-ng-show="uc.convertedFiles.length > 0">
+                <div class="alert alert-success" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">
                     <h3>Conversion successfull!</h3>
                     <p>Click the link to download your files</p>
                     <ul>
@@ -151,12 +151,13 @@
                             <a data-ng-href="http://polarconverter.blob.core.windows.net/polarfiles/{{ file.reference }}">{{file.name}}</a>
                         </li>
                     </ul>
-                    Spread the word!<br/>
-                    <ul>
-                        <li>Share on Facebook <i class="fa-facebook fa-2x"></i></li>
-                        <li>Tweet about it <i class="fa-twitter fa-2x"></i></li>
-                        <li></li>
-                    </ul>
+@*
+    Spread the word!<br />
+    <ul>
+        <li>Share on Facebook <i class="fa-facebook fa-2x"></i></li>
+        <li>Tweet about it <i class="fa-twitter fa-2x"></i></li>
+        <li></li>
+    </ul>*@
                     <br />
                 </div>
                 <div class="alert alert-error" data-ng-show="uc.errors.length > 0">
@@ -167,12 +168,12 @@
                             {{error}}
                         </li>
                     </ul>
-                    <p>
-                        The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
-                        <input type="email" value="" />
-                    </p>
-                    <p>Please take a look at the F.A.Q. for more information.</p>
-                    <p>Any other questions? Feel free to contact me at <a href="mailto:polarconverter@gmail.com">polarconverter@gmail.com</a></p>
+                    @*<p>
+        The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
+        <input type="email" value="" />
+    </p>
+    <p>Please take a look at the F.A.Q. for more information.</p>*@
+                    <p>Feel free to contact me at <a href="mailto:polarconverter@gmail.com">polarconverter@gmail.com</a></p>
                     <br />
                 </div>
             </div>

@@ -11,6 +11,10 @@ namespace PolarConverter.JSWeb.Helpers
 
         public UnityDependencyResolver(IUnityContainer container)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
             this.container = container;
         }
 
@@ -28,7 +32,14 @@ namespace PolarConverter.JSWeb.Helpers
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
+                    try
+        {
             return container.ResolveAll(serviceType);
+        }
+        catch (ResolutionFailedException)
+        {
+            return new List<object>();
+        }
         }
     }
 }

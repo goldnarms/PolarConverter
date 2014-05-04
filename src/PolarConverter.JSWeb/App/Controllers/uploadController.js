@@ -25,6 +25,7 @@ var PolarConverter;
             this.convertedFiles = [];
             this.gpxFiles = [];
             this.sports = [];
+            this.errors = [];
             var initalized = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
@@ -134,6 +135,9 @@ var PolarConverter;
         };
 
         UploadController.prototype.onSuccesssfullConvert = function (response) {
+            if (response.data.ErrorMessages && response.data.ErrorMessages.length > 0) {
+                this.errors = response.data.ErrorMessages;
+            }
             this.convertedFiles.push({ name: response.data.FileName, reference: response.data.Reference });
             this.isConverting = false;
             this.uploadedFiles = [];

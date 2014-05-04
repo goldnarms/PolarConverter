@@ -17,7 +17,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public UploadController()
         {
-            _storageHelper = new LocalStorageHelper();
+            _storageHelper = new BlobStorageHelper("polarfiles");
         }
         public UploadController(IStorageHelper storageHelper)
         {
@@ -165,7 +165,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         var line = textReader.ReadLine();
                         if (line != null)
                         {
-                            if (line.Contains("version="))
+                            if (line.Contains("gpx") && line.Contains("version="))
                             {
                                 gpxVersion = StringHelper.HentVerdi("version=", 5, line).Replace("\\", "").Replace("\"", "").Trim();
                                 break;

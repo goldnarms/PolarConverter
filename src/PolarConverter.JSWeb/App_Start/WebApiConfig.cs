@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using Microsoft.Practices.Unity;
+using PolarConverter.JSWeb.Helpers;
 
 namespace PolarConverter.JSWeb.App_Start
 {
@@ -12,7 +14,6 @@ namespace PolarConverter.JSWeb.App_Start
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
         }
     }
 }

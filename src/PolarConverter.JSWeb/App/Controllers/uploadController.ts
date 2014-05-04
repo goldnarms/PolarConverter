@@ -38,6 +38,7 @@ module PolarConverter {
         public showExtraVariables: boolean;
         public timeZones: PolarConverter.TimeZone[];
         public sports: any[];
+        public errors: string[];
 
         constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private storage: PolarConverter.IStorage) {
             this.init();
@@ -50,6 +51,7 @@ module PolarConverter {
             this.convertedFiles = [];
             this.gpxFiles = [];
             this.sports = [];
+            this.errors = [];
             var initalized = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
@@ -158,6 +160,9 @@ module PolarConverter {
         }
 
         private onSuccesssfullConvert(response): void {
+            if (response.data.ErrorMessages && response.data.ErrorMessages.length > 0) {
+                this.errors = response.data.ErrorMessages;
+            }
             this.convertedFiles.push(<PolarConverter.File>{ name: response.data.FileName, reference: response.data.Reference });
             this.isConverting = false;
             this.uploadedFiles = [];
