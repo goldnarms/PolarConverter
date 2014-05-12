@@ -20,5 +20,10 @@
 
 /// <reference path="Controllers/fileDestroyController.ts" />
 /// <reference path="Controllers/uploadController.ts" />
+/// <reference path="services/facebookshareurlservice.ts" />
 
 /// <reference path="app.ts" />
+/// <reference path="config.ts" />
+/// <reference path="directives/shareonfacebook.ts" />
+/// <reference path="directives/shareongoogleplus.ts" />
+/// <reference path="directives/shareontwitter.ts" />

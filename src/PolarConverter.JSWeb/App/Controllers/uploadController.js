@@ -4,18 +4,19 @@ var PolarConverter;
     "use strict";
 
     var UploadController = (function () {
-        function UploadController($scope, $http, $filter, $window, $log, storage) {
+        function UploadController($scope, $http, $filter, $window, $log, storage, facebookShareService) {
             this.$scope = $scope;
             this.$http = $http;
             this.$filter = $filter;
             this.$window = $window;
             this.$log = $log;
             this.storage = storage;
+            this.facebookShareService = facebookShareService;
             this.init();
             this.setupWatches();
         }
         UploadController.prototype.injection = function () {
-            return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", UploadController];
+            return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService", UploadController];
         };
 
         UploadController.prototype.init = function () {
@@ -35,7 +36,7 @@ var PolarConverter;
 
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false, gender: "m", age: 0 };
+            this.uploadViewModel = { polarFiles: [], forceGarmin: false, gender: "m" };
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -44,8 +45,10 @@ var PolarConverter;
                 dataType: "json"
             };
             this.loadingFiles = true;
-            this.$http.jsonp("http://ipinfo.io", function (response) {
+            this.$http.jsonp("http://ipinfo.io").success(function (response) {
                 _this.setWeightTypeBasedOnCountry(response.country);
+            }).error(function (error) {
+                _this.$log.error(error);
             });
             if (initalized) {
                 this.$http.get(url).then(function (response) {
@@ -60,13 +63,16 @@ var PolarConverter;
             initalized = true;
         };
 
+        UploadController.prototype.shareToFacebook = function () {
+            this.facebookShareService.openDialogue();
+        };
+
         UploadController.prototype.onError = function (data) {
             this.$log.error(data);
         };
 
         UploadController.prototype.onUpload = function (data) {
             this.showExtraVariables = data.result.showExtraVariables;
-            this.uploadViewModel.weight = data.result.weight;
             if (data.result.fileType === "gpx") {
                 var gpxFile = { name: data.result.name, reference: data.result.reference, matched: false, version: data.result.gpxVersion };
                 this.gpxFiles.push(gpxFile);
@@ -76,6 +82,9 @@ var PolarConverter;
                     matchingPolarFile.gpxFile = gpxFile;
                 }
             } else {
+                if (data.result.weight) {
+                    this.uploadViewModel.weight = data.result.weight;
+                }
                 var polarFile = { fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true };
                 this.uploadedFiles.push(polarFile);
                 var matchingGpxFile = this.checkForMatchingFile(this.gpxFiles, polarFile.name);
@@ -219,7 +228,7 @@ var PolarConverter;
                 { offset: 14, text: "(GMT +14:00) Pacific/Kiritimati" }
             ];
         };
-        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService"];
+        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService"];
         return UploadController;
     })();
     PolarConverter.UploadController = UploadController;

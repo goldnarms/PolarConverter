@@ -21,11 +21,12 @@ module PolarConverter {
         removeGpxFile(polarFile: PolarConverter.PolarFile): void;
         isConverting: boolean;
         showExtraVariables: boolean;
+        shareToFacebook(): void;
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService"];
+        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
@@ -40,7 +41,7 @@ module PolarConverter {
         public sports: any[];
         public errors: string[];
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private storage: PolarConverter.IStorage) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
             this.init();
             this.setupWatches();
         }
@@ -61,7 +62,7 @@ module PolarConverter {
 
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = { weightMode: "kg", weight: 0, timeZoneOffset: -12, polarFiles: [], forceGarmin: false, gender: "m", age: 0 };
+            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m"};
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -70,8 +71,11 @@ module PolarConverter {
                 dataType: "json"
             };
             this.loadingFiles = true;
-            this.$http.jsonp("http://ipinfo.io", (response) => {
+            this.$http.jsonp("http://ipinfo.io").success((response) => {
                 this.setWeightTypeBasedOnCountry(response.country);
+            })
+            .error((error) => {
+                this.$log.error(error);
             });
             if (initalized) {
                 this.$http.get(url)
@@ -89,13 +93,16 @@ module PolarConverter {
             initalized = true;
         }
 
+        public shareToFacebook(): void {
+            this.facebookShareService.openDialogue();
+        }
+
         private onError(data: any): void {
             this.$log.error(data);
         }
 
         private onUpload(data: any): void {
             this.showExtraVariables = data.result.showExtraVariables;
-            this.uploadViewModel.weight = data.result.weight;
             if (data.result.fileType === "gpx") {
                 var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false, version: data.result.gpxVersion };
                 this.gpxFiles.push(gpxFile);
@@ -105,6 +112,9 @@ module PolarConverter {
                     matchingPolarFile.gpxFile = gpxFile;
                 }
             } else {
+                if (data.result.weight) {
+                    this.uploadViewModel.weight = data.result.weight;
+                }
                 var polarFile = <PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true };
                 this.uploadedFiles.push(polarFile);
                 var matchingGpxFile = <PolarConverter.GpxFile> this.checkForMatchingFile(this.gpxFiles, polarFile.name);

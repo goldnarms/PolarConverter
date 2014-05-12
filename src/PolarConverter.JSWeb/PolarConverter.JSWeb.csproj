@@ -77,6 +77,9 @@
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.6.4.2\lib\net45\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.AspNet">
       <HintPath>..\packages\Glimpse.AspNet.1.9.0\lib\net45\Glimpse.AspNet.dll</HintPath>
       <Private>True</Private>
@@ -630,7 +633,8 @@
     <Content Include="Views\Shared\_Donate.cshtml" />
     <Content Include="Views\BackloadDemo\Index.cshtml" />
     <Content Include="Views\Jasmine\SpecRunner.cshtml" />
-    <Content Include="Scripts\underscore-min.map" />
+    <Content Include="Views\Shared\Plugins\_FacebookSdk.cshtml" />
+    <Content Include="Views\Shared\Plugins\_FacebookLike.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
@@ -648,7 +652,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\app.ts" />
+    <TypeScriptCompile Include="App\config.ts" />
     <TypeScriptCompile Include="App\Controllers\fileDestroyController.ts" />
+    <TypeScriptCompile Include="App\Directives\ShareOnFacebook.ts" />
+    <TypeScriptCompile Include="App\Directives\ShareOnGooglePlus.ts" />
+    <TypeScriptCompile Include="App\Directives\ShareOnTwitter.ts" />
     <TypeScriptCompile Include="App\Interfaces\IStorage.ts" />
     <TypeScriptCompile Include="App\Models\file.ts" />
     <TypeScriptCompile Include="App\Enums\fileTypeEnum.ts" />
@@ -658,6 +666,7 @@
     <TypeScriptCompile Include="App\Enums\sportEnum.ts" />
     <TypeScriptCompile Include="App\Models\timeZone.ts" />
     <TypeScriptCompile Include="App\Models\uploadViewModel.ts" />
+    <TypeScriptCompile Include="App\Services\FacebookShareUrlService.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
     <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>

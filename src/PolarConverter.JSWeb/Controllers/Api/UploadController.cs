@@ -68,7 +68,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             gpxVersion = "";
             if (extension == "xml")
             {
-                var settings = new XmlReaderSettings {ConformanceLevel = ConformanceLevel.Fragment};
+                var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var xmlReader = XmlReader.Create(fileData.InputStream, settings))
                 {
@@ -126,10 +126,10 @@ namespace PolarConverter.JSWeb.Controllers.Api
                                     }
                                 }
                                 if (!string.IsNullOrEmpty(v02result))
-                                    {
-                                        v02Max = v02result.ToPolarDouble();
-                                    }
+                                {
+                                    v02Max = v02result.ToPolarDouble();
                                 }
+                            }
                             if (line.Contains("Weight"))
                             {
                                 var weightResult = StringHelper.HentVerdi("Weight=", 3, line).Trim();
@@ -137,7 +137,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
                                 {
                                     weightResult = StringHelper.HentVerdi("Weight=", 2, line).Trim();
                                 }
-                                if(!string.IsNullOrEmpty(weightResult)){
+                                if (!string.IsNullOrEmpty(weightResult))
+                                {
                                     weight = weightResult.ToPolarDouble();
                                 }
                             }
@@ -160,6 +161,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 fileData.InputStream.Seek(0, SeekOrigin.Begin);
                 using (var textReader = new StreamReader(fileData.InputStream))
                 {
+                    var gpxNodeHit = false;
                     while (!textReader.EndOfStream)
                     {
                         var line = textReader.ReadLine();
@@ -167,14 +169,32 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         {
                             if (line.Contains("gpx") && line.Contains("version="))
                             {
-                                gpxVersion = StringHelper.HentVerdi("version=", 5, line).Replace("\\", "").Replace("\"", "").Trim();
+                                gpxVersion = ReadGpxVersion(line);
                                 break;
+                            }
+                            if (line.Contains("gpx"))
+                            {
+                                gpxNodeHit = true;
+                            }
+                            // Can read version after xml
+                            else if (gpxNodeHit && line.Contains("version="))
+                            {
+                                gpxVersion = ReadGpxVersion(line);
                             }
                         }
 
                     }
                 }
             }
+        }
+
+        private string ReadGpxVersion(string versionString)
+        {
+            return StringHelper.HentVerdi("version=", 5, versionString)
+                .Replace("\\", "")
+                .Replace("\"", "")
+                .Trim();
+
         }
 
         private int GetFileExtension(string filenName)

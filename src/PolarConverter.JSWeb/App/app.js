@@ -12,6 +12,6 @@ var PolarConverter;
                 maxFileSize: 50000000,
                 acceptFileTypes: /(\.|\/)(hrm|xml|gpx)$/i
             });
-        }]).controller("uploadCtrl", PolarConverter.UploadController.prototype.injection()).controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection());
+        }]).controller("uploadCtrl", PolarConverter.UploadController.prototype.injection()).controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection()).service("facebookShareService", PolarConverter.FacebookShareService.prototype.injection()).directive("shareOnGooglePlus", PolarConverter.ShareOnGooglePlus.prototype.injection()).directive("shareOnTwitter", PolarConverter.ShareOnTwitter.prototype.injection()).directive("shareOnFacebook", PolarConverter.ShareOnFacebook.prototype.injection());
 })(PolarConverter || (PolarConverter = {}));
-//# sourceMappingURL=App.js.map
+//# sourceMappingURL=app.js.map

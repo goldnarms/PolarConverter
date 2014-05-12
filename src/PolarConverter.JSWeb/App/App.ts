@@ -17,5 +17,9 @@ module PolarConverter {
                 });
             }])
         .controller("uploadCtrl", PolarConverter.UploadController.prototype.injection())
-        .controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection());
+        .controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection())
+        .service("facebookShareService", PolarConverter.FacebookShareService.prototype.injection())
+        .directive("shareOnGooglePlus", PolarConverter.ShareOnGooglePlus.prototype.injection())
+        .directive("shareOnTwitter", PolarConverter.ShareOnTwitter.prototype.injection())
+        .directive("shareOnFacebook", PolarConverter.ShareOnFacebook.prototype.injection());
 }

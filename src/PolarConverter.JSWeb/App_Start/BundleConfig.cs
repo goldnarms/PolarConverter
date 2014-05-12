@@ -19,8 +19,11 @@ namespace PolarConverter.JSWeb
                         
                         )
                         .IncludeDirectory("~/App/Controllers/", "*.js")
+                        .IncludeDirectory("~/App/Directives/", "*.js")
                         .IncludeDirectory("~/App/Enums/", "*.js")
+                        .IncludeDirectory("~/App/Services/", "*.js")
                         .Include("~/App/app.js")
+                        .Include("~/App/config.js")
                         );
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
