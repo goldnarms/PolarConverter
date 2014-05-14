@@ -1,6 +1,7 @@
 ﻿/// <reference path="../_all.ts" />
 module PolarConverter {
     "use strict";
+    declare var TimeZoneDB;
     export interface IUploadController {
         injection(): any[];
         options: any;
@@ -22,6 +23,8 @@ module PolarConverter {
         isConverting: boolean;
         showExtraVariables: boolean;
         shareToFacebook(): void;
+        tweetText: string;
+        selectedTimeZone: PolarConverter.TimeZone;
     }
 
     export class UploadController {
@@ -40,6 +43,9 @@ module PolarConverter {
         public timeZones: PolarConverter.TimeZone[];
         public sports: any[];
         public errors: string[];
+        public tweetText: string;
+        public selectedTimeZone: PolarConverter.TimeZone;
+        private initalized: boolean = false;
 
         constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
             this.init();
@@ -53,13 +59,13 @@ module PolarConverter {
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
-            var initalized = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
                 }
             }
 
+            this.tweetText = "I have just converted my Polar files to Endomondo compatible files using#polarconverter at http://www.polarconverter.com";
             this.isMetricWeight = true;
             this.isConverting = false;
             this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m"};
@@ -71,13 +77,21 @@ module PolarConverter {
                 dataType: "json"
             };
             this.loadingFiles = true;
-            this.$http.jsonp("http://ipinfo.io").success((response) => {
+            //this.$http({ method: "jsonp", url: "http://ipinfo.io/?callback=callback"}).success((data, status, headers, config) => {
+            //    this.setWeightTypeBasedOnCountry(data.country);
+            //})
+            //.error((data, status, headers, config) => {
+            //    this.$log.error(status);
+            //});
+            $.get("http://ipinfo.io", (response) => {
                 this.setWeightTypeBasedOnCountry(response.country);
-            })
-            .error((error) => {
-                this.$log.error(error);
-            });
-            if (initalized) {
+                var loc = response.loc;
+                var lat = loc.substring(0, loc.indexOf(','));
+                var lng = loc.substring(loc.indexOf(',') + 1, loc.length);
+                this.setTimeZoneOffsetBasedOnCountry(lat, lng);
+            }, "jsonp");
+
+            if (this.initalized) {
                 this.$http.get(url)
                     .then(
                     (response) => {
@@ -88,9 +102,12 @@ module PolarConverter {
                     () => {
                         this.loadingFiles = false;
                     });
+                this.initalized = true;
             }
+        }
 
-            initalized = true;
+        public callback(data: any): void {
+            this.$log.info(data);
         }
 
         public shareToFacebook(): void {
@@ -140,10 +157,25 @@ module PolarConverter {
             });
         }
 
-        public setWeightTypeBasedOnCountry(countryCode: string) {
+        public setWeightTypeBasedOnCountry(countryCode: string): void {
             var imperialCountries = ["US", "GB", "LR", "MM"];
             this.isMetricWeight = !_.contains(imperialCountries, countryCode);
             this.uploadViewModel.weightMode = this.isMetricWeight ? "kg" : "lbs";
+        }
+
+        private setTimeZoneOffsetBasedOnCountry(lat: string, lng: string): void {
+            var tzDb = new TimeZoneDB;
+            tzDb.getJSON({
+                key: PolarConverter.Config.TimeZoneDBKey,
+                lat: lat,
+                lng: lng
+            }, (data) => {
+                var timeZoneOffsetInHours = data.gmtOffset / 3600;
+                this.selectedTimeZone = _.find(this.timeZones, (tz: PolarConverter.TimeZone) => {
+                    return tz.offset === timeZoneOffsetInHours;
+                });
+                this.$scope.$apply();
+            });
         }
 
         public reset(): void {

@@ -12,6 +12,7 @@ var PolarConverter;
             this.$log = $log;
             this.storage = storage;
             this.facebookShareService = facebookShareService;
+            this.initalized = false;
             this.init();
             this.setupWatches();
         }
@@ -27,13 +28,13 @@ var PolarConverter;
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
-            var initalized = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
                 }
             }
 
+            this.tweetText = "I have just converted my Polar files to Endomondo compatible files using#polarconverter at http://www.polarconverter.com";
             this.isMetricWeight = true;
             this.isConverting = false;
             this.uploadViewModel = { polarFiles: [], forceGarmin: false, gender: "m" };
@@ -45,12 +46,22 @@ var PolarConverter;
                 dataType: "json"
             };
             this.loadingFiles = true;
-            this.$http.jsonp("http://ipinfo.io").success(function (response) {
+
+            //this.$http({ method: "jsonp", url: "http://ipinfo.io/?callback=callback"}).success((data, status, headers, config) => {
+            //    this.setWeightTypeBasedOnCountry(data.country);
+            //})
+            //.error((data, status, headers, config) => {
+            //    this.$log.error(status);
+            //});
+            $.get("http://ipinfo.io", function (response) {
                 _this.setWeightTypeBasedOnCountry(response.country);
-            }).error(function (error) {
-                _this.$log.error(error);
-            });
-            if (initalized) {
+                var loc = response.loc;
+                var lat = loc.substring(0, loc.indexOf(','));
+                var lng = loc.substring(loc.indexOf(',') + 1, loc.length);
+                _this.setTimeZoneOffsetBasedOnCountry(lat, lng);
+            }, "jsonp");
+
+            if (this.initalized) {
                 this.$http.get(url).then(function (response) {
                     _this.$log.info(response);
                     _this.loadingFiles = false;
@@ -58,9 +69,12 @@ var PolarConverter;
                 }, function () {
                     _this.loadingFiles = false;
                 });
+                this.initalized = true;
             }
+        };
 
-            initalized = true;
+        UploadController.prototype.callback = function (data) {
+            this.$log.info(data);
         };
 
         UploadController.prototype.shareToFacebook = function () {
@@ -115,6 +129,22 @@ var PolarConverter;
             var imperialCountries = ["US", "GB", "LR", "MM"];
             this.isMetricWeight = !_.contains(imperialCountries, countryCode);
             this.uploadViewModel.weightMode = this.isMetricWeight ? "kg" : "lbs";
+        };
+
+        UploadController.prototype.setTimeZoneOffsetBasedOnCountry = function (lat, lng) {
+            var _this = this;
+            var tzDb = new TimeZoneDB;
+            tzDb.getJSON({
+                key: PolarConverter.Config.TimeZoneDBKey,
+                lat: lat,
+                lng: lng
+            }, function (data) {
+                var timeZoneOffsetInHours = data.gmtOffset / 3600;
+                _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
+                    return tz.offset === timeZoneOffsetInHours;
+                });
+                _this.$scope.$apply();
+            });
         };
 
         UploadController.prototype.reset = function () {
