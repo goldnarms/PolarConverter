@@ -39,7 +39,7 @@ namespace PolarConverter.BLL.Services
             polarData.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             VaskHrData(ref polarData);
             CollectHrmData(ref activity, polarData);
-            var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(new []{activity});
+            var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(new[] { activity });
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
 
             using (var memStream = new MemoryStream())
@@ -356,7 +356,7 @@ namespace PolarConverter.BLL.Services
         {
             if (heartRateData != null && j < heartRateData.Length)
             {
-                trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t {Value = heartRateData[j].HjerteFrekvens};
+                trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData[j].HjerteFrekvens };
             }
         }
 
@@ -376,6 +376,8 @@ namespace PolarConverter.BLL.Services
         {
             var lap = new ActivityLap_t();
             var maximumDataLength = hrmVerdier.Count / antallTabs;
+            var range = new Tuple<int, int>(0, maximumDataLength);
+            var positionData = CollectPositionData(polarData, ref range);
             lap.Track = new Trackpoint_t[maximumDataLength];
             var meters = 0d;
             var lapIndex = 0;
@@ -387,8 +389,14 @@ namespace PolarConverter.BLL.Services
             var startTime = new DateTime(polarData.StartDate.Year, polarData.StartDate.Month, polarData.StartDate.Day, polarData.StartTime.Hour, polarData.StartTime.Minute, polarData.StartTime.Second);
             for (var i = 0; i < hrmVerdier.Count; i = i + antallTabs)
             {
-                var lapTrackPoint = new Trackpoint_t();
-                lapTrackPoint.Time = startTime.AddSeconds(lapIndex * polarData.Intervall);
+                var lapTrackPoint = new Trackpoint_t
+                {
+                    Time = startTime.AddSeconds(lapIndex*polarData.Intervall)
+                };
+                if (positionData != null && i < positionData.Count())
+                {
+                    lapTrackPoint.Position = new Position_t { LatitudeDegrees = Convert.ToDouble(positionData[i].Lat), LongitudeDegrees = Convert.ToDouble(positionData[i].Lon) };
+                }
                 var hr = AddHeartRateData(ref lapTrackPoint, hrmVerdier[i], polarData.Intervall);
                 heartRates += hr;
                 if (hr > maxHr)

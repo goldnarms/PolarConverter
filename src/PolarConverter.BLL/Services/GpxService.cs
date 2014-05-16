@@ -172,9 +172,10 @@ namespace PolarConverter.BLL.Services
         private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData)
         {
             var gpsData = RangeHelper.GetRange(pointData, start, end);
+
             for (int i = 0; i < end - start; i++)
             {
-                if (i > gpsData.Length)
+                if (i >= gpsData.Length)
                 {
                     positionData[i + offset] = MapPositionData(gpsData.Last());
                 }

@@ -168,6 +168,7 @@ var PolarConverter;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
                 return uf.checked;
             });
+            this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
             this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone" }).then(function (response) {
                 _this.onSuccesssfullConvert(response);
             });
