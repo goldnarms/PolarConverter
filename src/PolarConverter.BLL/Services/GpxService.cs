@@ -138,8 +138,7 @@ namespace PolarConverter.BLL.Services
                                 // gpxtime is startet earlier, ignore irrelevant gpsdata
                                 else if (offset < 0)
                                 {
-                                    startRange = startRange + offset;
-                                    endRange = endRange + offset;
+                                    startRange = 0;
                                 }
                             }
                         }
@@ -191,13 +190,13 @@ namespace PolarConverter.BLL.Services
             var gpsData = RangeHelper.GetRange(pointData, start, end);
             for (int i = 0; i < end - start; i++)
             {
-                if (i - start > gpsData.Length)
+                if (i < gpsData.Length)
                 {
-                    positionData[i + offset] = MapPositionData(gpsData.Last());
+                    positionData[i + offset] = MapPositionData(gpsData[i]);
                 }
                 else
                 {
-                    positionData[i + offset] = MapPositionData(gpsData[i]);
+                    positionData[i + offset] = MapPositionData(gpsData.Last());                    
                 }
             }
         }

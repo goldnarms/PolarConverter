@@ -31,7 +31,7 @@ namespace PolarConverter.Test
                 TestHelper.AssertAvgAndMax(firstLap, 106, 149).ShouldBeTrue();
                 firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 17, 32, 27));
                 firstLap.TotalTimeSeconds.ShouldEqual(4502);
-                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6854.7);
+                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6852.4);
             }
         }
     }

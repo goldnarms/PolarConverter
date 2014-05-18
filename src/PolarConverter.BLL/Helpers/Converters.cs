@@ -4,11 +4,11 @@ namespace PolarConverter.BLL.Helpers
 {
     public static class Converters
     {
-        public static double HmhToKmhMultiplicationFactor = 0.1;
-        public static double MphToKmhMultiplicationFactor = 0.160934;
-        public static double HmhToMs = 100 / 60 / 60;
-        public static double MphToMs = 160.934 / 60 / 60;
-        public static double MphToKmh = 1.60934;
+        public const double HmhToKmhMultiplicationFactor = 0.1;
+        public const double MphToKmhMultiplicationFactor = 0.160934;
+        public const double HmhToMs = 0.0277777777777778;
+        public const double MphToMs = 0.0447038888888889;
+        public const double MphToKmh = 1.60934;
 
         private static double[] ConvertToDoubleArray(string[] array)
         {
