@@ -145,8 +145,8 @@ namespace PolarConverter.BLL.Services
                         }
                         if (!data.ImperiskeEnheter)
                         {
-                            data.AntallMeter.Add(data.AntallMeter.Count > 0 
-                                ? data.AntallMeter.Last() + (speed * Converters.HmhToKmhMultiplicationFactor * data.Intervall) 
+                            data.AntallMeter.Add(data.AntallMeter.Count > 0
+                                ? data.AntallMeter.Last() + (speed * Converters.HmhToKmhMultiplicationFactor * data.Intervall)
                                 : (speed * Converters.HmhToKmhMultiplicationFactor * data.Intervall)
                             );
                         }
@@ -224,6 +224,7 @@ namespace PolarConverter.BLL.Services
             for (var i = 0; i < polarData.RundeTider.Count; i = i + increment)
             {
                 var lap = new ActivityLap_t();
+                byte cadenceRecordings = 0;
                 var distanceLogged = 0d;
                 var rundeTid = polarData.RundeTider[i];
                 DateTime lapEndTime;
@@ -245,11 +246,7 @@ namespace PolarConverter.BLL.Services
                     var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2);
                     var altitudeData = RangeHelper.GetRange(polarData.AltitudeData, range.Item1, range.Item2);
                     var antallMeterData = RangeHelper.GetRange(polarData.AntallMeter, range.Item1, range.Item2);
-                    var distanceData = RangeHelper.HentRange(polarData.AntallMeter, range.Item1, range.Item2) != null &&
-                                     RangeHelper.HentRange(polarData.AntallMeter, range.Item1, range.Item2).Count > 0
-                                         ? RangeHelper.HentRange(polarData.AntallMeter, range.Item1, range.Item2).Last() -
-                                           lastDistance
-                                         : 0;
+                    var distanceData = antallMeterData != null && antallMeterData.Length > 0 ? antallMeterData.Last() - lastDistance : 0;
                     var speedData = RangeHelper.GetRange(polarData.SpeedData, range.Item1, range.Item2);
                     var cadenceData = RangeHelper.GetRange(polarData.CadenseData, range.Item1, range.Item2);
                     var lengths = new List<int>();
@@ -269,13 +266,31 @@ namespace PolarConverter.BLL.Services
                     for (int j = 0; j < maximumLength; j++)
                     {
                         var trackData = new Trackpoint_t();
-                        GetHeartrate(heartRateData, j, ref trackData);
-                        GetCadence(cadenceData, j, ref trackData);
-                        GetAltitude(altitudeData, j, ref trackData);
-                        GetDistance(antallMeterData, j, ref trackData);
-                        if(speedData != null && speedData.Length > j)
+
+                        if (heartRateData != null && heartRateData.Length > j)
+                        {
+                            GetHeartrate(heartRateData[j], ref trackData);
+                        }
+                        if (cadenceData != null && cadenceData.Length > j)
+                        {
+                            cadenceRecordings += GetCadence(cadenceData[j], ref trackData);
+                        }
+                        if (altitudeData != null && altitudeData.Length > j)
+                        {
+                            GetAltitude(altitudeData[j], ref trackData);
+                        }
+                        if (antallMeterData != null && j < antallMeterData.Length)
+                        {
+                            GetDistance(antallMeterData[j], ref trackData);
+                        }
+                        if (speedData != null && speedData.Length > j)
+                        {
                             GetSpeed(speedData[j], polarData.Intervall, polarData.ImperiskeEnheter, ref distanceLogged, ref trackData, ref maxSpeed);
-                        GetPosition(positionData, j, ref trackData);
+                        }
+                        if (positionData != null && positionData.Length > j)
+                        {
+                            GetPosition(positionData[j], ref trackData);
+                        }
                         trackData.Time = lap.StartTime.AddSeconds(polarData.Intervall * j);
                         lap.Track[j] = trackData;
                     }
@@ -287,17 +302,8 @@ namespace PolarConverter.BLL.Services
                     if (cadenceData != null)
                     {
                         lap.CadenceSpecified = true;
-                        var convertedCadence = new List<double>();
-                        foreach (var s in cadenceData)
-                        {
-                            double val;
-                            if (double.TryParse(s, out val))
-                            {
-                                convertedCadence.Add(val);
-                            }
-                        }
-                        byte zero = 0;
-                        lap.Cadence = convertedCadence.Count > 0 ? Convert.ToByte(convertedCadence.Average()) : zero;
+                        var avgCadence = cadenceRecordings / cadenceData.Length;
+                        lap.Cadence = Convert.ToByte(avgCadence);
                     }
                     else
                     {
@@ -325,25 +331,170 @@ namespace PolarConverter.BLL.Services
             return laps.ToArray();
         }
 
-        private static void GetPosition(PositionData[] positionData, int j, ref Trackpoint_t trackData)
+        public ActivityLap_t CollectLapForHrmData(PolarData polarData, List<string> hrmVerdier, int antallTabs)
         {
-            if (positionData != null && j < positionData.Length)
+            var lap = new ActivityLap_t();
+            var maximumDataLength = hrmVerdier.Count / antallTabs;
+            var range = new Tuple<int, int>(0, maximumDataLength);
+            var positionData = CollectPositionData(polarData, ref range);
+            var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2);
+            lap.Track = new Trackpoint_t[maximumDataLength];
+            var meters = 0d;
+            var lapIndex = 0;
+            var maxSpeed = 0d;
+            byte cadenceData = 0;
+            var duration = 0;
+            var startTime = new DateTime(polarData.StartDate.Year, polarData.StartDate.Month, polarData.StartDate.Day, polarData.StartTime.Hour, polarData.StartTime.Minute, polarData.StartTime.Second);
+            for (var i = 0; i < hrmVerdier.Count; i = i + antallTabs)
             {
-                trackData.Position = new Position_t
+                var lapTrackPoint = new Trackpoint_t
                 {
-                    LatitudeDegrees = Convert.ToDouble(positionData[j].Lat),
-                    LongitudeDegrees = Convert.ToDouble(positionData[j].Lon)
+                    Time = startTime.AddSeconds(lapIndex * polarData.Intervall)
                 };
+                if (positionData != null && i < positionData.Count())
+                {
+                    GetPosition(positionData[i], ref lapTrackPoint);
+                }
+                GetHeartrate(heartRateData[i], ref lapTrackPoint);
+                if (antallTabs > 4)
+                {
+                    if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude && polarData.HarPower)
+                    {
+                        GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        cadenceData += GetCadence(hrmVerdier[i + 2], ref lapTrackPoint);
+                        GetAltitude(hrmVerdier[i + 3], ref lapTrackPoint);
+                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 4]);
+                    }
+                }
+                else if (antallTabs > 3)
+                {
+                    if (polarData.HarSpeed)
+                    {
+                        if (polarData.HarCadence && polarData.HarAltitude)
+                        {
+                            GetAltitude(hrmVerdier[i + 3], ref lapTrackPoint);
+                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        }
+                        else if (polarData.HarCadence && polarData.HarPower)
+                        {
+                            cadenceData += GetCadence(hrmVerdier[i + 2], ref lapTrackPoint);
+                            lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 3]);
+                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        }
+                    }
+                    else
+                    {
+                        cadenceData += GetCadence(hrmVerdier[i + 1], ref lapTrackPoint);
+                        GetAltitude(hrmVerdier[i + 2], ref lapTrackPoint);
+                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 3]);
+                    }
+                }
+                else if (antallTabs > 2)
+                {
+                    if (polarData.HarSpeed)
+                    {
+                        if (polarData.HarCadence)
+                        {
+                            cadenceData += GetCadence(hrmVerdier[i + 2], ref lapTrackPoint);
+                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        }
+                        else if (polarData.HarAltitude)
+                        {
+                            GetAltitude(hrmVerdier[i + 2], ref lapTrackPoint);
+                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        }
+                        else if (polarData.HarPower)
+                        {
+                            lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
+                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                        }
+                    }
+                    else if (polarData.HarCadence && polarData.HarAltitude)
+                    {
+                        GetAltitude(hrmVerdier[i + 2], ref lapTrackPoint);
+                        cadenceData += GetCadence(hrmVerdier[i + 2], ref lapTrackPoint);
+                    }
+                    else if (polarData.HarCadence && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
+                        cadenceData += GetCadence(hrmVerdier[i + 2], ref lapTrackPoint);
+                    }
+                    else if (polarData.HarAltitude && polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
+                        GetAltitude(hrmVerdier[i + 1], ref lapTrackPoint);
+                    }
+                }
+                else if (antallTabs > 1)
+                {
+                    if (polarData.HarSpeed)
+                    {
+                        GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
+                    }
+                    else if (polarData.HarCadence)
+                    {
+                        cadenceData += GetCadence(hrmVerdier[i + 1], ref lapTrackPoint);
+                    }
+                    else if (polarData.HarAltitude)
+                    {
+                        GetAltitude(hrmVerdier[i + 1], ref lapTrackPoint);
+                    }
+                    else if (polarData.HarPower)
+                    {
+                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[lapIndex]);
+                    }
+                }
+                lap.Track[lapIndex] = lapTrackPoint;
+                duration += polarData.Intervall;
+                lapIndex++;
             }
+            lap.DistanceMeters = meters;
+            lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(heartRateData.Average(hr => hr.HjerteFrekvens)) };
+            lap.CadenceSpecified = polarData.HarCadence;
+            if (lap.CadenceSpecified)
+            {
+                var avgCadence = cadenceData / polarData.CadenseData.Count;
+                lap.Cadence = Convert.ToByte(avgCadence);
+            }
+            if (polarData.V02max > 0)
+            {
+                lap.Calories = Calculators.CalulateCalories(polarData.V02max, heartRateData.Max(hr => hr.HjerteFrekvens), lap.AverageHeartRateBpm.Value,
+                    duration);
+            }
+            else
+            {
+                lap.Calories = Calculators.CalulateCalories(polarData.UploadViewModel.Age, polarData.UploadViewModel.Weight, lap.AverageHeartRateBpm.Value, duration, isMale: polarData.UploadViewModel.Gender == "m");
+            }
+            lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData.Max(hr => hr.HjerteFrekvens) };
+            lap.StartTime = startTime;
+            if (polarData.HarSpeed)
+            {
+                lap.MaximumSpeedSpecified = true;
+                lap.MaximumSpeed = maxSpeed * Converters.HmhToKmhMultiplicationFactor;
+            }
+            lap.TotalTimeSeconds = duration;
+            lap.TriggerMethod = TriggerMethod_t.Manual;
+            return lap;
         }
 
-        private static void GetDistance(double[] antallMeterData, int j, ref Trackpoint_t trackData)
+        private void CollectDataForLap()
         {
-            if (antallMeterData != null && j < antallMeterData.Length)
+            
+        }
+
+        private static void GetPosition(PositionData positionData, ref Trackpoint_t trackData)
+        {
+            trackData.Position = new Position_t
             {
-                trackData.DistanceMetersSpecified = true;
-                trackData.DistanceMeters = antallMeterData[j];
-            }
+                LatitudeDegrees = Convert.ToDouble(positionData.Lat),
+                LongitudeDegrees = Convert.ToDouble(positionData.Lon)
+            };
+        }
+
+        private static void GetDistance(double antallMeterData, ref Trackpoint_t trackData)
+        {
+            trackData.DistanceMetersSpecified = true;
+            trackData.DistanceMeters = antallMeterData;
         }
 
         private static void GetSpeed(string speedData, int interval, bool imperial, ref double distanceLogged, ref Trackpoint_t trackData, ref double maxSpeed)
@@ -353,7 +504,7 @@ namespace PolarConverter.BLL.Services
             {
                 if (speedValue > 1400)
                 {
-                    speedValue = 200;                    
+                    speedValue = 200;
                 }
                 if (imperial && speedValue * Converters.MphToKmh > maxSpeed || speedValue > maxSpeed)
                 {
@@ -370,33 +521,30 @@ namespace PolarConverter.BLL.Services
             }
         }
 
-        private static void GetAltitude(string[] altitudeData, int j, ref Trackpoint_t trackData)
+        private static void GetAltitude(string altitudeData, ref Trackpoint_t trackData)
         {
             double altitudeValue;
-            if (altitudeData != null && j < altitudeData.Length && double.TryParse(altitudeData[j], out altitudeValue))
+            if (double.TryParse(altitudeData, out altitudeValue))
             {
                 trackData.AltitudeMetersSpecified = true;
                 trackData.AltitudeMeters = altitudeValue;
             }
         }
 
-        private static void GetCadence(string[] cadenceData, int j, ref Trackpoint_t trackData)
+        private static byte GetCadence(string cadenceData, ref Trackpoint_t trackData)
         {
             byte cadenceValue;
-            if (cadenceData != null && j < cadenceData.Length &&
-                byte.TryParse(cadenceData[j], out cadenceValue))
+            if (byte.TryParse(cadenceData, out cadenceValue))
             {
                 trackData.Cadence = cadenceValue;
                 trackData.CadenceSpecified = true;
             }
+            return cadenceValue;
         }
 
-        private static void GetHeartrate(HRData[] heartRateData, int j, ref Trackpoint_t trackData)
+        private static void GetHeartrate(HRData heartRateData, ref Trackpoint_t trackData)
         {
-            if (heartRateData != null && j < heartRateData.Length)
-            {
-                trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData[j].HjerteFrekvens };
-            }
+            trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData.HjerteFrekvens };
         }
 
         private PositionData[] CollectPositionData(PolarData polarData, ref Tuple<int, int> range)
@@ -409,180 +557,6 @@ namespace PolarConverter.BLL.Services
                 return positionData;
             }
             return null;
-        }
-
-        public ActivityLap_t CollectLapForHrmData(PolarData polarData, List<string> hrmVerdier, int antallTabs)
-        {
-            var lap = new ActivityLap_t();
-            var maximumDataLength = hrmVerdier.Count / antallTabs;
-            var range = new Tuple<int, int>(0, maximumDataLength);
-            var positionData = CollectPositionData(polarData, ref range);
-            lap.Track = new Trackpoint_t[maximumDataLength];
-            var meters = 0d;
-            var lapIndex = 0;
-            var heartRates = 0d;
-            var maxHr = 0d;
-            var maxSpeed = 0d;
-            var cadenceData = 0;
-            var duration = 0;
-            var startTime = new DateTime(polarData.StartDate.Year, polarData.StartDate.Month, polarData.StartDate.Day, polarData.StartTime.Hour, polarData.StartTime.Minute, polarData.StartTime.Second);
-            for (var i = 0; i < hrmVerdier.Count; i = i + antallTabs)
-            {
-                var lapTrackPoint = new Trackpoint_t
-                {
-                    Time = startTime.AddSeconds(lapIndex * polarData.Intervall)
-                };
-                if (positionData != null && i < positionData.Count())
-                {
-                    lapTrackPoint.Position = new Position_t { LatitudeDegrees = Convert.ToDouble(positionData[i].Lat), LongitudeDegrees = Convert.ToDouble(positionData[i].Lon) };
-                }
-                var hr = AddHeartRateData(ref lapTrackPoint, hrmVerdier[i], polarData.Intervall);
-                heartRates += hr;
-                if (hr > maxHr)
-                    maxHr = hr;
-                if (antallTabs > 4)
-                {
-                    if (polarData.HarSpeed && polarData.HarCadence && polarData.HarAltitude && polarData.HarPower)
-                    {
-                        GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref  meters, ref lapTrackPoint, ref maxSpeed);
-                        cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 3]);
-                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 4]);
-                    }
-                }
-                else if (antallTabs > 3)
-                {
-                    if (polarData.HarSpeed)
-                    {
-                        if (polarData.HarCadence && polarData.HarAltitude)
-                        {
-                            AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 3]);
-                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                        }
-                        else if (polarData.HarCadence && polarData.HarPower)
-                        {
-                            cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                            lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 3]);
-                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                        }
-                    }
-                    else
-                    {
-                        cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 1]);
-                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 3]);
-                    }
-                }
-                else if (antallTabs > 2)
-                {
-                    if (polarData.HarSpeed)
-                    {
-                        if (polarData.HarCadence)
-                        {
-                            cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                        }
-                        else if (polarData.HarAltitude)
-                        {
-                            AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                        }
-                        else if (polarData.HarPower)
-                        {
-                            lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
-                            GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                        }
-                    }
-                    else if (polarData.HarCadence && polarData.HarAltitude)
-                    {
-                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                        cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                    }
-                    else if (polarData.HarCadence && polarData.HarPower)
-                    {
-                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
-                        cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 2]);
-                    }
-                    else if (polarData.HarAltitude && polarData.HarPower)
-                    {
-                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[i + 2]);
-                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 1]);
-                    }
-                }
-                else if (antallTabs > 1)
-                {
-                    if (polarData.HarSpeed)
-                    {
-                        GetSpeed(hrmVerdier[i + 1], polarData.Intervall, polarData.ImperiskeEnheter, ref meters, ref lapTrackPoint, ref maxSpeed);
-                    }
-                    else if (polarData.HarCadence)
-                    {
-                        cadenceData += AddCadenceData(ref lapTrackPoint, hrmVerdier[i + 1]);
-                    }
-                    else if (polarData.HarAltitude)
-                    {
-                        AddAltitudeData(ref lapTrackPoint, hrmVerdier[i + 1]);
-                    }
-                    else if (polarData.HarPower)
-                    {
-                        lapTrackPoint.Extensions = DataHelper.WritePowerData(hrmVerdier[lapIndex]);
-                    }
-                }
-                lap.Track[lapIndex] = lapTrackPoint;
-                duration += polarData.Intervall;
-                lapIndex++;
-            }
-            lap.DistanceMeters = meters;
-            lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(heartRates / maximumDataLength) };
-            lap.CadenceSpecified = polarData.HarCadence;
-            if (lap.CadenceSpecified)
-            {
-                var avgCadence = cadenceData / maximumDataLength;
-                lap.Cadence = Convert.ToByte(avgCadence);
-            }
-            if (polarData.V02max > 0)
-            {
-                lap.Calories = Calculators.CalulateCalories(polarData.V02max, maxHr, lap.AverageHeartRateBpm.Value,
-                    duration);
-            }
-            else
-            {
-                lap.Calories = Calculators.CalulateCalories(polarData.UploadViewModel.Age, polarData.UploadViewModel.Weight, lap.AverageHeartRateBpm.Value, duration, isMale: polarData.UploadViewModel.Gender == "m");
-            }
-            lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(maxHr) };
-            lap.StartTime = startTime;
-            if (polarData.HarSpeed)
-            {
-                lap.MaximumSpeedSpecified = true;
-                lap.MaximumSpeed = maxSpeed * Converters.HmhToKmhMultiplicationFactor;
-            }
-            lap.TotalTimeSeconds = duration;
-            lap.TriggerMethod = TriggerMethod_t.Manual;
-            return lap;
-        }
-
-        public void AddAltitudeData(ref Trackpoint_t trackpoint, string value)
-        {
-            trackpoint.AltitudeMetersSpecified = true;
-            trackpoint.AltitudeMeters = Convert.ToDouble(value);
-        }
-
-        public byte AddCadenceData(ref Trackpoint_t trackpoint, string value)
-        {
-            var cadence = Convert.ToByte(value);
-            trackpoint.CadenceSpecified = true;
-            trackpoint.Cadence = cadence;
-            return cadence;
-        }
-
-        public double AddHeartRateData(ref Trackpoint_t trackpoint, string value, int interval)
-        {
-            var hr = KonverteringsHelper.BeregnHjerteFrekvense(interval, value);
-            trackpoint.HeartRateBpm = new HeartRateInBeatsPerMinute_t
-            {
-                Value = hr
-            };
-            return hr;
         }
     }
 }
