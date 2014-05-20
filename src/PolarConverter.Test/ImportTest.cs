@@ -24,7 +24,7 @@ namespace PolarConverter.Test
             };
             SetPolarFiles(polarFiles);
             var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
+            ZipFileReference = result.Reference;            
             var fileReferences = StorageHelper.Unzip(result.Reference);
             fileReferences.Count().ShouldEqual(1);
             foreach (var reference in fileReferences)

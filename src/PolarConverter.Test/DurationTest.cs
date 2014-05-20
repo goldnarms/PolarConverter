@@ -33,7 +33,7 @@ namespace PolarConverter.Test
                 firstLap.Track[0].CadenceSpecified.ShouldBeTrue();
                 TestHelper.AssertAvgAndMax(firstLap, 134, 158).ShouldBeTrue();
                 firstLap.StartTime.ShouldEqual(new DateTime(2012, 10, 16, 16, 57, 44));
-                firstLap.TotalTimeSeconds.ShouldEqual(3015);
+                firstLap.TotalTimeSeconds.ShouldEqual(3014);
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(30175.8);
             }
         }
@@ -57,7 +57,7 @@ namespace PolarConverter.Test
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
-                TestHelper.AssertAvgAndMax(firstLap, 124, 138).ShouldBeTrue();
+                TestHelper.AssertAvgAndMax(firstLap, 123, 138).ShouldBeTrue();
                 firstLap.StartTime.ShouldEqual(new DateTime(2012, 11, 25, 13, 19, 42));
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(159.3);
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(967.6);

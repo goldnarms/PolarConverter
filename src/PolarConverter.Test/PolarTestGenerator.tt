@@ -24,7 +24,18 @@ namespace PolarConverter.Test
 <# 
 string[] filePaths = Directory.GetFiles(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\", "*.hrm");
 foreach(var filePath in filePaths){
-var fileName = filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 5).Replace("(", "").Replace(")", "").Replace(" ", "");
+var fileName = filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 5)
+.Replace("(", "")
+.Replace(")", "")
+.Replace(" ", "")
+.Replace("-", "")
+.Replace("_", "")
+.Replace(".", "")
+.Replace("'", "")
+.Replace("+", "")
+.Replace(",", "")
+.Replace("&", "og")
+.Replace("–", "");
 var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 1);
 #>
 	
@@ -48,12 +59,13 @@ var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf(
             ZipFileReference = result.Reference;
             var fileReferences = StorageHelper.Unzip(result.Reference);
             fileReferences.Count().ShouldEqual(1);
+			result.ErrorMessages.Count.ShouldEqual(0);
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                //firstLap.Calories.ShouldBeGreaterThan(Zero);
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
                 firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
                 firstLap.StartTime.ShouldEqual(startTime);

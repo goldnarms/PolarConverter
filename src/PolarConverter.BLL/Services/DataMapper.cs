@@ -128,6 +128,10 @@ namespace PolarConverter.BLL.Services
         {
             int antallTabs;
             var hrmVerdier = StringHelper.LesLinjer(data.HrmData, "[HRData]", out antallTabs, true);
+            if (hrmVerdier.Count == 0)
+            {
+                throw new Exception("Heart rate data is empty, please check HRM file.");
+            }
             for (var i = 0; i < hrmVerdier.Count; i++)
             {
                 if (i % antallTabs == 0)
