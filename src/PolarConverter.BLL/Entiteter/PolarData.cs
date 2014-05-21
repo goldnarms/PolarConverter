@@ -47,7 +47,7 @@ namespace PolarConverter.BLL.Entiteter
                                                                 { 37, "Polar RS800" }, 
                                                                 { 38, "Polar RS800X" }
                                                             };
-        public int Intervall { get; set; }
+        public int RecordingRate { get; set; }
         public string XmlDoc { get { return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"; } }
         public string Header { get { return "<TrainingCenterDatabase xmlns=\"http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd\">"; } }
         public List<HRData> HrData { get; set; }
@@ -87,7 +87,7 @@ namespace PolarConverter.BLL.Entiteter
                         double.TryParse(speed.Replace('.', ','), out fart);
                     }
 
-                    AntallMeter.Add(AntallMeter.Count > 0 ? AntallMeter.Last() + (fart / 0.06 / 60 * Intervall) : (fart / 0.06 / 60 * Intervall));
+                    AntallMeter.Add(AntallMeter.Count > 0 ? AntallMeter.Last() + (fart / 0.06 / 60 * RecordingRate) : (fart / 0.06 / 60 * RecordingRate));
                 }
             }
         }

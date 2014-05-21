@@ -20,7 +20,6 @@ namespace PolarConverter.BLL.Helpers
                 rr = rr > 255 ? 255 : rr;
                 return Convert.ToByte(Math.Floor(rr));
             }
-
             return Convert.ToByte(verdi);
         }
 

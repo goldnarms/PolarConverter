@@ -100,11 +100,11 @@ namespace PolarConverter.BLL
                         {
                             dataSomSkalSkrives.Append(string.Format("<Time>{0}</Time>\n",
                                                                     lap.StartTime.AddSeconds(i*
-                                                                                             (data.Intervall ==
+                                                                                             (data.RecordingRate ==
                                                                                               238
                                                                                                   ? 5
                                                                                                   : data.
-                                                                                                        Intervall))
+                                                                                                        RecordingRate))
                                                                         .ToPolarTime()));
                         }
                         if (data.HarAltitude && lap.AltitudeData != null)
@@ -129,16 +129,16 @@ namespace PolarConverter.BLL
                 }
                 else
                 {
-                    if (data.Intervall == 0)
-                        data.Intervall = 5;
-                    for (var i = 0; i < lap.AntallSekunder/data.Intervall; i++)
+                    if (data.RecordingRate == 0)
+                        data.RecordingRate = 5;
+                    for (var i = 0; i < lap.AntallSekunder/data.RecordingRate; i++)
                     {
                         dataSomSkalSkrives.Append("<Trackpoint>\n");
                         dataSomSkalSkrives.Append(string.Format("<Time>{0}</Time>\n",
                                                                 lap.StartTime.AddSeconds(i*
-                                                                                         (data.Intervall == 238
+                                                                                         (data.RecordingRate == 238
                                                                                               ? 5
-                                                                                              : data.Intervall)).ToPolarTime()));
+                                                                                              : data.RecordingRate)).ToPolarTime()));
                         dataSomSkalSkrives.Append(string.Format("<HeartRateBpm>\n<Value>{0}</Value>\n</HeartRateBpm>\n",
                                                                 lap.SnittHjerteFrekvens));
                         dataSomSkalSkrives.Append("</Trackpoint>\n");

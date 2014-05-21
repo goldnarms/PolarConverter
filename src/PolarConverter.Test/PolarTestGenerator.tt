@@ -49,8 +49,9 @@ var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf(
             };
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"<#=filePath#>");
-            var hasAltitude = StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
-            var hasCadence = StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
+			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
+            var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
+			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
             var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
@@ -66,8 +67,10 @@ var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf(
                 //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 //firstLap.Calories.ShouldBeGreaterThan(Zero);
-                firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
-                firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
+				if(firstLap.Track.Count() > 0) {
+					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
+					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
+				}
                 firstLap.StartTime.ShouldEqual(startTime);
             }
 

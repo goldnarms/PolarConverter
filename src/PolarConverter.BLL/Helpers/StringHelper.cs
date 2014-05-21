@@ -25,6 +25,7 @@ namespace PolarConverter.BLL.Helpers
 
         public static TimeSpan ToTimeSpan(this string date)
         {
+            date = date.Trim();
             // Check for buggy time
             if (date.Length == 10 && date.Contains(":."))
             {
@@ -50,6 +51,16 @@ namespace PolarConverter.BLL.Helpers
                 Convert.ToInt32(date.Substring(9, 1) + "00") //mm
                 );
             }
+            if (date.Length == 9)
+            {
+                return new TimeSpan(
+0, //days
+                Convert.ToInt32(date.Substring(0, 1)), //hour
+                Convert.ToInt32(date.Substring(2, 2)), //minutes
+                Convert.ToInt32(date.Substring(5, 2)), //seconds
+                Convert.ToInt32(date.Substring(8, 1) + "00") //mm
+                );
+            }
             if (date.Length == 8)
             {
                 //hh:mm:ss
@@ -58,7 +69,16 @@ namespace PolarConverter.BLL.Helpers
                     Convert.ToInt32(date.Substring(3, 2)), //minutes
                     Convert.ToInt32(date.Substring(6, 2)) //seconds
                     );
-            }            
+            }
+            if (date.Length == 7)
+            {
+                //hh:mm:ss
+                return new TimeSpan(
+                    Convert.ToInt32(date.Substring(0, 1)), //hour
+                    Convert.ToInt32(date.Substring(2, 2)), //minutes
+                    Convert.ToInt32(date.Substring(5, 2)) //seconds
+                    );
+            }
             if (date.Length == 5)
             {
                 //hh:mm
@@ -126,7 +146,7 @@ namespace PolarConverter.BLL.Helpers
             }
         }
 
-        public static List<string> LesLinjer(string input, string nokkel, out int antallTabs, bool medTabs = false)
+        public static List<string> LesLinjer(string input, string nokkel, out int antallTabs, bool medTabs = false, bool replaceWhiteSpace = false)
         {
             antallTabs = 0;
             using (var reader = new StringReader(input))
@@ -141,6 +161,10 @@ namespace PolarConverter.BLL.Helpers
                         if (line.ErTomEllerNull())
                         {
                             break;
+                        }
+                        if (replaceWhiteSpace && line.Contains(" "))
+                        {
+                            line = line.Replace(" ", "\t");
                         }
                         if (medTabs)
                         {
