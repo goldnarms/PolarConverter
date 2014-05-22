@@ -48,7 +48,10 @@ namespace PolarConverter.BLL.Services
                         case "exercisedata":
                             {
                                 var data = calendaritem as exercisedata;
-                                var intervall = data.result.recordingrate == 238 ? 5 : data.result.recordingrate == 0 ? 5 : data.result.recordingrate;
+                                var recordingRate = data != null && data.result != null &&
+                                                    data.result.recordingrateSpecified
+                                    ? data.result.recordingrate
+                                    : 1;
                                 if (data != null && data.result != null)
                                 {
                                     var v02max = 0d;
@@ -57,11 +60,11 @@ namespace PolarConverter.BLL.Services
                                         v02max = data.result.usersettings.vo2max;
                                         if (data.result.usersettings.weightSpecified)
                                         {
-                                            v02max = v02max*data.result.usersettings.weight;
+                                            v02max = v02max * data.result.usersettings.weight;
                                         }
                                         else
                                         {
-                                            v02max = v02max*80;
+                                            v02max = v02max * 80;
                                         }
                                     }
                                     if (data.result.laps != null)
@@ -82,7 +85,7 @@ namespace PolarConverter.BLL.Services
                                         foreach (var t in activity.Lap)
                                         {
                                             t.Track = CollectSampleData(data.result.samples, startTime,
-                                                intervall, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)));
+                                                recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / recordingRate)));
                                             startRange += t.Track.Length;
                                         }
                                     }
@@ -92,9 +95,15 @@ namespace PolarConverter.BLL.Services
                                     var startRange = 0;
                                     foreach (var t in activity.Lap)
                                     {
+                                        var polardata = new PolarData
+                                        {
+                                            RecordingRate = recordingRate,
+                                            StartTime = startTime,
+                                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model)
+                                        };
                                         var gpsData =
-                                            _gpxService.CollectGpxData(_gpxService.MapGpxFile(xmlFile.GpxFile, model),
-                                                xmlFile.GpxFile.Version, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / intervall)), startTime, intervall);
+                                            _gpxService.CollectGpxData(polardata,
+                                                startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / recordingRate)));
                                         startRange += t.Track.Length;
                                         if (gpsData != null)
                                         {

@@ -13,43 +13,6 @@ namespace PolarConverter.Test
 	
 
         [TestMethod]
-        public void Hrm00011701Test() 
-        {
-            var polarFiles = new[]
-            {
-                TestHelper.GeneratePolarFile(@"PolarFiler\00011701.hrm", "00011701")
-            };
-            this.SetPolarFiles(polarFiles);
-            var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\00011701.hrm");
-			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
-            var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
-			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
-            var date = StringHelper.HentVerdi("Date=", 8, fileContent);
-            var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
-            var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
-            var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-			result.ErrorMessages.Count.ShouldEqual(0);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                //firstLap.Calories.ShouldBeGreaterThan(Zero);
-				if(firstLap.Track.Count() > 0) {
-					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
-					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
-				}
-                firstLap.StartTime.ShouldEqual(startTime);
-            }
-
-        }
-	
-
-        [TestMethod]
         public void Hrm00022701Test() 
         {
             var polarFiles = new[]
@@ -4490,43 +4453,6 @@ namespace PolarConverter.Test
 	
 
         [TestMethod]
-        public void Hrm1401290173996f3627a24a8aac31904f4dd85ae8Test() 
-        {
-            var polarFiles = new[]
-            {
-                TestHelper.GeneratePolarFile(@"PolarFiler\1401290173996f36-27a2-4a8a-ac31-904f4dd85ae8.hrm", "1401290173996f3627a24a8aac31904f4dd85ae8")
-            };
-            this.SetPolarFiles(polarFiles);
-            var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\1401290173996f36-27a2-4a8a-ac31-904f4dd85ae8.hrm");
-			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
-            var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
-			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
-            var date = StringHelper.HentVerdi("Date=", 8, fileContent);
-            var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
-            var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
-            var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-			result.ErrorMessages.Count.ShouldEqual(0);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                //firstLap.Calories.ShouldBeGreaterThan(Zero);
-				if(firstLap.Track.Count() > 0) {
-					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
-					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
-				}
-                firstLap.StartTime.ShouldEqual(startTime);
-            }
-
-        }
-	
-
-        [TestMethod]
         public void Hrm1401300111180a75b5024bf0b4ae632dd0b0e98dTest() 
         {
             var polarFiles = new[]
@@ -6311,43 +6237,6 @@ namespace PolarConverter.Test
             };
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\1402160173645fd4-f527-4aca-a293-4660ce1ba4e0.hrm");
-			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
-            var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
-			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
-            var date = StringHelper.HentVerdi("Date=", 8, fileContent);
-            var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
-            var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
-            var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-			result.ErrorMessages.Count.ShouldEqual(0);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                //firstLap.Calories.ShouldBeGreaterThan(Zero);
-				if(firstLap.Track.Count() > 0) {
-					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
-					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
-				}
-                firstLap.StartTime.ShouldEqual(startTime);
-            }
-
-        }
-	
-
-        [TestMethod]
-        public void Hrm1402160173996f3627a24a8aac31904f4dd85ae8Test() 
-        {
-            var polarFiles = new[]
-            {
-                TestHelper.GeneratePolarFile(@"PolarFiler\1402160173996f36-27a2-4a8a-ac31-904f4dd85ae8.hrm", "1402160173996f3627a24a8aac31904f4dd85ae8")
-            };
-            this.SetPolarFiles(polarFiles);
-            var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\1402160173996f36-27a2-4a8a-ac31-904f4dd85ae8.hrm");
 			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
             var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
@@ -13748,43 +13637,6 @@ namespace PolarConverter.Test
             };
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\bsho_Chris_Score_7-2-2014.hrm");
-			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
-            var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
-			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
-            var date = StringHelper.HentVerdi("Date=", 8, fileContent);
-            var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
-            var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
-            var result = ConversionService.Convert(ViewModel);
-            ZipFileReference = result.Reference;
-            var fileReferences = StorageHelper.Unzip(result.Reference);
-            fileReferences.Count().ShouldEqual(1);
-			result.ErrorMessages.Count.ShouldEqual(0);
-            foreach (var reference in fileReferences)
-            {
-                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                //trainingDoc.Activities.Activity[0].Lap.Sum(l => l.TotalTimeSeconds).ShouldEqual(duration);
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                //firstLap.Calories.ShouldBeGreaterThan(Zero);
-				if(firstLap.Track.Count() > 0) {
-					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
-					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
-				}
-                firstLap.StartTime.ShouldEqual(startTime);
-            }
-
-        }
-	
-
-        [TestMethod]
-        public void Hrmbteipen23012014exportTest() 
-        {
-            var polarFiles = new[]
-            {
-                TestHelper.GeneratePolarFile(@"PolarFiler\bteipen_23.01.2014_export.hrm", "bteipen23012014export")
-            };
-            this.SetPolarFiles(polarFiles);
-            var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\PolarFiler\bteipen_23.01.2014_export.hrm");
 			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
             var hasAltitude = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "1" : StringHelper.HentVerdi("SMode=", 1, fileContent, 2) == "1";
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";

@@ -130,7 +130,7 @@ namespace PolarConverter.Test
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 113, 127, new DateTime(2012, 8, 15, 19, 7, 18)).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(1410);
+                firstLap.TotalTimeSeconds.ShouldEqual(1410.7);
             }
         }
 
@@ -152,7 +152,7 @@ namespace PolarConverter.Test
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 108, 127, new DateTime(2012, 8, 15, 18, 14, 35)).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(1620);
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(1617.4);
             }
         }
 
@@ -221,7 +221,7 @@ namespace PolarConverter.Test
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 139, 165, new DateTime(2012, 8, 11, 5, 45, 14), true).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(11670);
+                firstLap.TotalTimeSeconds.ShouldEqual(11666);
             }
         }
 

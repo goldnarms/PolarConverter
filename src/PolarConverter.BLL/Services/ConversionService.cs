@@ -45,7 +45,8 @@ namespace PolarConverter.BLL.Services
                             try
                             {
                                 var hrmFileData = _dataMapper.MapData(hrmFile, model);
-                                zip.AddEntry(StringHelper.Filnavnfikser(hrmFile.Name, FilTyper.Tcx), hrmFileData);
+                                var fileName = string.Format("{0}.{1}", hrmFile.Name, Enum.GetName(typeof (FilTyper), FilTyper.Tcx).ToLower());
+                                zip.AddEntry(fileName, hrmFileData);
                             }
                             catch (Exception ex)
                             {

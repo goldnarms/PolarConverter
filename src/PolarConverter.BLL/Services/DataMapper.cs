@@ -76,7 +76,7 @@ namespace PolarConverter.BLL.Services
                 polardata.HarCadence = modusValue.Substring(0, 1) == "0";
                 polardata.HarAltitude = modusValue.Substring(0, 1) == "1";
                 polardata.ImperiskeEnheter = modusValue.Substring(2, 1) == "1";
-                polardata.HarSpeed = true;
+                polardata.HarSpeed = modusValue.Substring(1, 1) == "1";
                 polardata.HarPower = false;
             }
             else
@@ -406,8 +406,7 @@ namespace PolarConverter.BLL.Services
         {
             if (polarData.GpxData != null)
             {
-                var positionData = _gpxService.CollectGpxData(polarData.GpxData, polarData.GpxData.Version, range.Item1, range.Item2,
-                    polarData.StartTime, polarData.RecordingRate);
+                var positionData = _gpxService.CollectGpxData(polarData, range.Item1, range.Item2);
                 range = new Tuple<int, int>(range.Item1, positionData.Length);
                 return positionData;
             }

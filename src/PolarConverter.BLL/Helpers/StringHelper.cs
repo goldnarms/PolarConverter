@@ -193,7 +193,11 @@ namespace PolarConverter.BLL.Helpers
         {
             var keyIndex = data.IndexOf(key, StringComparison.Ordinal) + startIndex;
             var totalLength = keyIndex + key.Length + antallTegn;
-            return data.Length >= totalLength ? data.Substring(keyIndex + key.Length, antallTegn).Replace("\t", "") : String.Empty;
+            return data.Length >= totalLength ? data.Substring(keyIndex + key.Length, antallTegn)
+                .Replace("\t", "")
+                .Replace("\r", "")
+                .Trim()
+                : String.Empty;
         }
 
         public static List<string> HentValues(string inndata, string dataType)
