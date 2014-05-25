@@ -74,31 +74,10 @@ namespace PolarConverter.BLL.Services
                             if (firstPosition.Time.HasValue)
                             {
                                 var offset = CalculateOffset(polarData.StartTime, firstPosition.Time.Value, polarData.RecordingRate);
-                                if (offset > 0)
-                                {
-                                    if (startRange < offset)
-                                    {
-                                        for (int i = startRange; i < offset; i++)
-                                        {
-                                            positionData[i] = firstPosition;
-                                            arrayOffset++;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        startRange = startRange - offset;
-                                    }
-                                    endRange = endRange - offset;
-                                }
-                                // gpxtime is startet earlier, ignore irrelevant gpsdata
-                                else if (offset < 0)
-                                {
-                                    startRange = startRange + offset;
-                                    endRange = endRange + offset;
-                                }
+                                arrayOffset = AdjustForOffset(firstPosition, offset, startRange, endRange, ref positionData);
                             }
                         }
-                        if (gpx.trk != null && gpx.trk.Length > 0)
+                        if (gpx.trk != null && gpx.trk.Length > 0 && endRange > 0 && endRange > startRange)
                         {
                             SetPositionDataFromGpx(gpx.trk[0].trkseg, startRange, endRange, arrayOffset, ref positionData, polarData.UploadViewModel.TimeZoneOffset);
                         }
@@ -118,28 +97,7 @@ namespace PolarConverter.BLL.Services
                             if (firstPosition.Time.HasValue)
                             {
                                 offset = CalculateOffset(polarData.StartTime, firstPosition.Time.Value.AddMinutes(IntHelper.HentTidsKorreksjon(polarData.UploadViewModel.TimeZoneOffset)), polarData.RecordingRate);
-                                // if gpxtime is started later, fill inn missing gps data with data from firstposition
-                                if (offset > 0)
-                                {
-                                    if (startRange < offset)
-                                    {
-                                        for (int i = startRange; i < offset; i++)
-                                        {
-                                            positionData[i] = firstPosition;
-                                            arrayOffset++;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        startRange = startRange - offset;
-                                    }
-                                    endRange = endRange - offset;
-                                }
-                                // gpxtime is startet earlier, ignore irrelevant gpsdata
-                                else if (offset < 0)
-                                {
-                                    startRange = 0;
-                                }
+                                arrayOffset = AdjustForOffset(firstPosition, offset, startRange, endRange, ref positionData);
                             }
                         }
                         int destinationIndex = 0;
@@ -158,7 +116,11 @@ namespace PolarConverter.BLL.Services
                             Array.Copy(seg.trkpt, 0, combinedPoints, destinationPointIndex, arrayLength);
                             destinationPointIndex += arrayLength;
                         }
-                        SetPositionDataFromGpx(combinedPoints, startRange, endRange, arrayOffset, ref positionData, polarData.UploadViewModel.TimeZoneOffset);
+                        if (endRange > 0 && endRange > startRange)
+                        {
+                            SetPositionDataFromGpx(combinedPoints, startRange, endRange, arrayOffset, ref positionData,
+                                polarData.UploadViewModel.TimeZoneOffset);
+                        }
                         return positionData;
                     }
                 default:
@@ -166,6 +128,28 @@ namespace PolarConverter.BLL.Services
                         return null;
                     }
             }
+        }
+
+        private int AdjustForOffset(PositionData firstPosition, int offset, int startRange, int endRange, ref PositionData[] positionData)
+        {
+            int arrayOffset = 0;
+            // if gpxtime is started later, fill inn missing gps data with data from firstposition
+            if (offset > 0)
+            {
+                arrayOffset = offset;
+            }
+            // gpxtime is startet earlier, ignore irrelevant gpsdata
+            else if (offset < 0)
+            {
+                if (startRange < offset)
+                {
+                    for (int i = startRange; i < offset && i < positionData.Length; i++)
+                    {
+                        positionData[i] = firstPosition;
+                    }
+                }
+            }
+            return arrayOffset;
         }
 
         private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
@@ -190,20 +174,20 @@ namespace PolarConverter.BLL.Services
             var gpsData = RangeHelper.GetRange(pointData, start, end);
             for (int i = 0; i < end - start; i++)
             {
-                if (i < gpsData.Length)
+                if ((i + offset) < gpsData.Length)
                 {
-                    positionData[i + offset] = MapPositionData(gpsData[i], timezoneOffset);
+                    positionData[i] = MapPositionData(gpsData[i + offset], timezoneOffset);
                 }
                 else
                 {
-                    positionData[i + offset] = MapPositionData(gpsData.Last(), timezoneOffset);
+                    positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset);
                 }
             }
         }
 
         private int CalculateOffset(DateTime startTime, DateTime gpsTime, int interval)
         {
-            var offsetSpan = gpsTime - startTime;
+            var offsetSpan = startTime- gpsTime;
             var offset = (offsetSpan.TotalSeconds - offsetSpan.TotalSeconds % interval);
             offset = offset % 3600; // 
             if (offset > 2000)
