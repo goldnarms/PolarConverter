@@ -99,7 +99,8 @@ namespace PolarConverter.BLL.Services
                                         {
                                             RecordingRate = recordingRate,
                                             StartTime = startTime,
-                                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model)
+                                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model),
+                                            UploadViewModel = model
                                         };
                                         var gpsData =
                                             _gpxService.CollectGpxData(polardata,

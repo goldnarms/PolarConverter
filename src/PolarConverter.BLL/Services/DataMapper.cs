@@ -192,14 +192,14 @@ namespace PolarConverter.BLL.Services
             }
         }
 
-        private double GetDistanceForSpeed(List<string> values, int index, int interval,  bool isImperial)
+        private double GetDistanceForSpeed(List<string> values, int index, int interval, bool isImperial)
         {
             var speed = values[index].PolarConvertToDouble();
             if (speed > 1400)
             {
                 return index + 1 < values.Count ? GetDistanceForSpeed(values, index + 1, interval, isImperial) : 200;
             }
-            return speed*(isImperial ? Converters.MphToMs : Converters.HmhToMs)*interval;
+            return speed * (isImperial ? Converters.MphToMs : Converters.HmhToMs) * interval;
         }
 
         private void CollectHrmData(ref Activity_t activity, PolarData polarData)
@@ -310,14 +310,22 @@ namespace PolarConverter.BLL.Services
                         lap.MaximumSpeedSpecified = true;
                         lap.MaximumSpeed = maxSpeed;
                     }
-                    lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t
+                    if (heartRateData != null && heartRateData.Count() > 0)
                     {
-                        Value = heartRateData.Count() > 0 ? Convert.ToByte(heartRateData.Average(hr => hr.HjerteFrekvens)) : _zero
-                    };
-                    lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t
+                        lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t
+                        {
+                            Value = Convert.ToByte(heartRateData.Average(hr => hr.HjerteFrekvens))
+                        };
+                        lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t
+                        {
+                            Value = Convert.ToByte(heartRateData.Max(hr => hr.HjerteFrekvens))
+                        };
+                    }
+                    else
                     {
-                        Value = heartRateData.Count() > 0 ? Convert.ToByte(heartRateData.Max(hr => hr.HjerteFrekvens)) : _zero
-                    };
+                        lap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = _zero };
+                        lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = _zero };
+                    }
                     lap.DistanceMeters = lastDistance;
                     //runde.Distanse = polarData.ImperiskeEnheter ? Convert.ToDouble(rundeTid) / _imperial : Convert.ToDouble(rundeTid);
                 }
