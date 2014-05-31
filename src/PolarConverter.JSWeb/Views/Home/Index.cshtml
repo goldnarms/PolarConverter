@@ -144,6 +144,11 @@
                     <div class="alert alert-success" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">
                         <h3>Conversion successfull!</h3>
                         @Html.Partial("Plugins/_FacebookLike")
+                        <h6>Spread the word!</h6>
+                        <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="fa-facebook-square"></i>Share on Facebook</a>
+                        <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
+                        
+                        @Html.ActionLink("DONATE", "Donate", null, new { @class = "convertknappliten", style = "width: 200px; margin-left:0px" })<br />
                         <p>Click the link to download your files</p>
                         <ul>
                             <li data-ng-repeat="file in uc.convertedFiles">
@@ -182,10 +187,8 @@
         </div>
     </div>
     <div class="jumbotron">
-        @Html.Partial("Plugins/_FacebookLike")
-        <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="fa-facebook-square"></i>Share on Facebook</a>
-        <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet</a>
         <p class="lead">PolarConverter converts your .xml, .hrm and .gpx files from your Polar® watch to .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.</p>
+        @Html.Partial("Plugins/_FacebookLike")
         @*<p><a href="http://asp.net" class="btn btn-primary btn-large">Use Dropbox</a></p>
             <p><a href="http://asp.net" class="btn btn-primary btn-large">Upload yourself</a></p>*@
     </div>

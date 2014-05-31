@@ -28,5 +28,11 @@ namespace PolarConverter.JSWeb.Controllers
 
             return View();
         }
+
+        public ActionResult Donate()
+        {
+            return View();
+        }
+
     }
 }

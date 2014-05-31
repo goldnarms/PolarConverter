@@ -194,7 +194,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 .Replace("\\", "")
                 .Replace("\"", "")
                 .Trim();
-
         }
 
         private int GetFileExtension(string filenName)

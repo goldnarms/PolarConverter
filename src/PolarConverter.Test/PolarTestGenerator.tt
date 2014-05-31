@@ -13,8 +13,9 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PolarConverter.BLL.Helpers;
 using Should;
+using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.Test
 {
@@ -37,16 +38,70 @@ var fileName = filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length
 .Replace("&", "og")
 .Replace("–", "");
 var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 1);
+string gpxPath = filePath.ToLower().Contains(".hrm") ? filePath.Substring(0, filePath.ToLower().IndexOf(".hrm")) + ".gpx" : "";
+string gpxReference = filePath.ToLower().Contains(".hrm") ? filePath.Substring(0, filePath.ToLower().IndexOf(".hrm")) + ".gpx" : "";
 #>
 	
 
         [TestMethod]
         public void Hrm<#=fileName#>Test() 
         {
+			var polarFile = TestHelper.GeneratePolarFile(@"<#=adjustedFilepath#>", "<#=fileName#>");
+			<#
+			var temp = @"" + gpxPath;
+			var gpxVersion = "\"1.0\"";
+			if (File.Exists(temp))
+            {
+			#>
+            polarFile.GpxFile = new GpxFile()
+            {
+                Name = "<#=fileName#>",
+                Reference = @"<#=gpxReference#>",
+				<#
+                using (var textReader = new StreamReader(@gpxReference))
+                {
+                    var gpxNodeHit = false;
+                    while (!textReader.EndOfStream)
+                    {
+                        var line = textReader.ReadLine();
+						var key = "version=";
+                        if (line != null)
+                        {
+                            if (line.Contains("gpx") && line.Contains("version="))
+                            {
+								var keyIndex = line.IndexOf(key, StringComparison.Ordinal);
+								var totalLength = keyIndex + key.Length + 5;
+								var v = line.Length >= totalLength ? line.Substring(keyIndex + key.Length, 5) : "1.0";
+								gpxVersion = v.Replace("\t", "").Replace("\r", "").Trim();
+                                break;
+                            }
+                            if (line.Contains("gpx"))
+                            {
+                                gpxNodeHit = true;
+                            }
+                            // Can read version after xml
+                            else if (gpxNodeHit && line.Contains("version="))
+                            {
+								var keyIndex = line.IndexOf(key, StringComparison.Ordinal);
+								var totalLength = keyIndex + key.Length + 5;
+								var v = line.Length >= totalLength ? line.Substring(keyIndex + key.Length, 5) : "1.0";
+								gpxVersion = v.Replace("\t", "").Replace("\r", "").Trim();
+                            }
+                        }
+
+                    }
+                }
+				#>
+                Version = <#=gpxVersion#>
+            };
+			<#
+            }
+			#>
             var polarFiles = new[]
             {
-                TestHelper.GeneratePolarFile(@"<#=adjustedFilepath#>", "<#=fileName#>")
+                polarFile
             };
+
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"<#=filePath#>");
 			var version = StringHelper.HentVerdi("Version=", 3, fileContent);
@@ -78,7 +133,6 @@ var adjustedFilepath = "PolarFiler\\" + filePath.Substring(filePath.LastIndexOf(
 <#}#>
     }
 }
-
 <#
 
 #>

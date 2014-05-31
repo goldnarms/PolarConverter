@@ -25,6 +25,7 @@ namespace PolarConverter.BLL.Helpers
 
         public static TimeSpan ToTimeSpan(this string date)
         {
+            date = date.Replace("<", "").Replace("/", "").Replace("d", "").Replace("t", "");
             date = date.Trim();
             // Check for buggy time
             if (date.Length == 10 && date.Contains(":."))

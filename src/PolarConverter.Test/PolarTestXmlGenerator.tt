@@ -1,0 +1,73 @@
+<#@ template language="C#" debug="True" #>
+<#@ output extension="cs" #>
+<#@ include file="T4Toolbox.tt" #>
+<#
+// <copyright file="PolarTestXmlGenerator.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+
+#>
+<#@ import namespace="System.IO" #>
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolarConverter.BLL.Helpers;
+using Should;
+
+namespace PolarConverter.Test
+{
+    [TestClass]
+    public class GeneratedXmlTests : BaseTest
+    {
+<# 
+string[] filePaths = Directory.GetFiles(@"C:\Google Drive\Prosjekt\Polar\XmlFil\", "*.xml");
+foreach(var filePath in filePaths){
+var fileName = filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 5)
+.Replace("(", "")
+.Replace(")", "")
+.Replace(" ", "")
+.Replace("-", "")
+.Replace("_", "")
+.Replace(".", "")
+.Replace("'", "")
+.Replace("+", "")
+.Replace(",", "")
+.Replace("&", "og")
+.Replace("–", "");
+var adjustedFilepath = "XmlFil\\" + filePath.Substring(filePath.LastIndexOf("\\") +1, filePath.Length - filePath.LastIndexOf("\\") - 1);
+#>
+	
+
+        [TestMethod]
+        public void Xml<#=fileName#>Test() 
+        {
+            var polarFiles = new[]
+            {
+                TestHelper.GeneratePolarFile(@"<#=adjustedFilepath#>", "<#=fileName#>", fileType:"xml")
+            };
+            this.SetPolarFiles(polarFiles);
+            var fileContent = File.ReadAllText(@"<#=filePath#>");
+            var time = StringHelper.HentVerdi("<time>", 21, fileContent);
+            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+            var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
+			result.ErrorMessages.Count.ShouldEqual(0);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.StartTime.ShouldEqual(startTime);
+            }
+        }
+<#}#>
+    }
+}
+
+<#
+
+#>
