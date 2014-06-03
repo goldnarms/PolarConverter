@@ -177,15 +177,10 @@ namespace PolarConverter.BLL.Services
                 }
                 if (result.heartrate.maximumSpecified)
                 {
-                    lap.MaximumSpeedSpecified = true;
                     lap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t
                     {
                         Value = Convert.ToByte(result.heartrate.maximum)
                     };
-                }
-                else
-                {
-                    lap.MaximumSpeedSpecified = false;
                 }
             }
             if (result.distanceSpecified)
@@ -216,7 +211,8 @@ namespace PolarConverter.BLL.Services
                     if (result.speed.speed1.maximumSpecified)
                     {
                         lap.MaximumSpeedSpecified = result.speed.speed1.maximumSpecified;
-                        lap.MaximumSpeed = result.speed.speed1.maximum;
+                        var maximumSpeedKph = result.speed.speed1.maximum;
+                        lap.MaximumSpeed = maximumSpeedKph * 1000 / 60 / 60;
                     }
                     else
                     {
@@ -260,118 +256,6 @@ namespace PolarConverter.BLL.Services
             {
                 lapList.Add(GenerateLap(lap, lapStartTime, v02max));
                 lapStartTime = lapStartTime.Add(lap.duration.ToTimeSpan());
-            }
-            return lapList.ToArray();
-        }
-
-        private ActivityLap_t[] CollectLapsData(IEnumerable<Runde> laps, DateTime startTime, double v02max, int interval)
-        {
-            var lapList = new List<ActivityLap_t>();
-            var lapStartTime = startTime;
-            foreach (var lap in laps)
-            {
-                var lapDuration = lap.AntallSekunder;
-                var activityLap = new ActivityLap_t();
-                activityLap.StartTime = lapStartTime;
-
-                activityLap.AverageHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.SnittHjerteFrekvens) };
-                activityLap.MaximumHeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = Convert.ToByte(lap.MaksHjertefrekvens) };
-                if (v02max > 0 && lap.MaksHjertefrekvens > 0 && lap.SnittHjerteFrekvens > 0)
-                {
-                    activityLap.Calories = Calculators.CalulateCalories(v02max, lap.MaksHjertefrekvens, lap.SnittHjerteFrekvens, lapDuration);
-                }
-                if (lap.CadenseData != null)
-                {
-                    activityLap.CadenceSpecified = true;
-                    activityLap.Cadence = Convert.ToByte(lap.SnittCadense);
-                }
-                else
-                {
-                    activityLap.CadenceSpecified = false;
-                }
-
-                activityLap.DistanceMeters = lap.AntallMeterData.Last();
-                // TODO: Extensions
-                // TODO: Calculate intensity based on heartrate
-                activityLap.Intensity = Intensity_t.Active;
-
-                if (lap.SpeedData != null)
-                {
-                    activityLap.MaximumSpeedSpecified = true;
-                    activityLap.MaximumSpeed = lap.SpeedData.Max(sd => double.Parse(sd));
-                }
-                activityLap.TotalTimeSeconds = lapDuration;
-
-                var tracks = new List<Trackpoint_t>();
-
-                var maximumDataLength = lap.AntallMeterData.Count;
-                var trackPoints = new Trackpoint_t[maximumDataLength];
-                var meters = 0d;
-                for (int i = 0; i < maximumDataLength; i++)
-                {
-                    trackPoints[i] = new Trackpoint_t { Time = lapStartTime.AddSeconds(i * interval) };
-                    if (lap.AltitudeData != null)
-                    {
-                        trackPoints[i].AltitudeMetersSpecified = true;
-                        trackPoints[i].AltitudeMeters = Convert.ToDouble(lap.AltitudeData[i]);
-                    }
-                    else
-                    {
-                        trackPoints[i].AltitudeMetersSpecified = false;
-                    }
-                    if (lap.AntallMeterData != null)
-                    {
-                        trackPoints[i].DistanceMetersSpecified = true;
-                        trackPoints[i].DistanceMeters = lap.AntallMeterData[i];
-                    }
-                    else
-                    {
-                        trackPoints[i].DistanceMetersSpecified = false;
-                    }
-                    if (lap.CadenseData != null)
-                    {
-                        trackPoints[i].CadenceSpecified = true;
-                        trackPoints[i].Cadence = Convert.ToByte(lap.CadenseData[i]);
-                    }
-                    else
-                    {
-                        trackPoints[i].CadenceSpecified = false;
-                    }
-                    if (lap.HeartRateData != null)
-                    {
-                        trackPoints[i].HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = lap.HeartRateData[i].HjerteFrekvens };
-                    }
-                    if (lap.PowerData != null)
-                    {
-                        trackPoints[i].Extensions = DataHelper.WritePowerData(lap.PowerData[i]);
-                    }
-                    if (lap.SpeedData != null)
-                    {
-                        // Distance set by sample Distance
-                        if (trackPoints[i].DistanceMetersSpecified)
-                            break;
-                        meters = meters + (Convert.ToDouble(lap.SpeedData[i]) / 0.06d / 60 * interval);
-                        trackPoints[i].DistanceMetersSpecified = true;
-                        trackPoints[i].DistanceMeters = meters;
-                    }
-                }
-                //foreach (var sampleData in sampleDic)
-                //{
-                //    switch (sampleData.Key)
-                //    {
-                //        case sampleType.HEARTRATE:
-                //            for (int i = 0; i < sampleData.Value.Length; i++)
-                //            {
-                //                trackPoints[i].HeartRateBpm = new HeartRateInBeatsPerMinute_t
-                //                {
-                //                    Value = System.Convert.ToByte
-                //                }
-                //            }
-                //    }
-                //}
-                activityLap.Track = tracks.ToArray();
-                lapList.Add(activityLap);
-                lapStartTime = lapStartTime.AddSeconds(lapDuration);
             }
             return lapList.ToArray();
         }

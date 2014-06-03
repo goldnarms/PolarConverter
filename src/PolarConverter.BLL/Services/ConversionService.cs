@@ -45,7 +45,7 @@ namespace PolarConverter.BLL.Services
                             try
                             {
                                 var hrmFileData = _dataMapper.MapData(hrmFile, model);
-                                var fileName = string.Format("{0}.{1}", hrmFile.Name, Enum.GetName(typeof (FilTyper), FilTyper.Tcx).ToLower());
+                                var fileName = string.Format("{0}.{1}", RemoveFileExtension(hrmFile.Name), Enum.GetName(typeof (FilTyper), FilTyper.Tcx).ToLower());
                                 zip.AddEntry(fileName, hrmFileData);
                             }
                             catch (Exception ex)
@@ -96,6 +96,24 @@ namespace PolarConverter.BLL.Services
                 }
             });
             return new AnonymousPipeClientStream(pipeServer.GetClientHandleAsString());
+        }
+
+        private static string RemoveFileExtension(string filename)
+        {
+            if (filename.Length > 4)
+            {
+                if (filename.ToLower().Contains(".hrm") &&
+                    filename.Substring(filename.LastIndexOf(".hrm"), 4).ToLower() == ".hrm")
+                {
+                    return filename.Substring(0, filename.LastIndexOf(".hrm"));
+                }
+                else if (filename.ToLower().Contains(".xml") &&
+                    filename.Substring(filename.LastIndexOf(".xml"), 4).ToLower() == ".xml")
+                {
+                    return filename.Substring(0, filename.LastIndexOf(".xml"));
+                }
+            }
+            return filename;
         }
     }
 }
