@@ -17,7 +17,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public UploadController()
         {
-            _storageHelper = new BlobStorageHelper("polarfiles");
+            //_storageHelper = new BlobStorageHelper("polarfiles");
+            _storageHelper = new LocalStorageHelper();
         }
         public UploadController(IStorageHelper storageHelper)
         {

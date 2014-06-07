@@ -15,7 +15,8 @@ namespace PolarConverter.JSWeb
                         "~/Scripts/underscore.js",
                         "~/bower_components/angular-local-storage/angular-local-storage.js",
                         "~/bower_components/angular-promise-tracker/promise-tracker.js",
-                        "~/bower_components/angular-busy/angular-busy.js"
+                        "~/bower_components/angular-busy/angular-busy.js",
+                        "~/bower_components/angular-scroll/angular-scroll.js"
                         
                         )
                         .IncludeDirectory("~/App/Controllers/", "*.js")
@@ -41,8 +42,8 @@ namespace PolarConverter.JSWeb
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/font-awesome.css",
-                      "~/bower_components/angular-busy/angular-busy.css"));
+                      "~/bower_components/angular-busy/angular-busy.css")
+                      .IncludeDirectory("~/Content/css", "*.css"));
         }
     }
 }

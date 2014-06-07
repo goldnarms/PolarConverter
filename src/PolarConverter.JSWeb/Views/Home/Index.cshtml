@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "PolarConverter";
 }
-
+<a id="top"></a>
 <div data-ng-controller="uploadCtrl as uc">
     <div class="row" style="padding-top: 45px">
         <div class="col-md-12">
@@ -121,8 +121,7 @@
                                 Timezone
                             </label>
                             <div class="col-lg-10">
-                                <select data-ng-model="uc.selectedTimeZone" id="inputTimeZone" class="form-control" data-ng-options="tz.text for tz in uc.timeZones">
-                                </select>
+                                <select data-ng-model="uc.selectedTimeZone" id="inputTimeZone" class="form-control" data-ng-options="tz.text for tz in uc.timeZones"></select>
                             </div>
 
                         </div>
@@ -137,32 +136,39 @@
                                 <a class="btn btn-default btn-lg" data-ng-click="uc.reset(); cancel()">Cancel</a>
                                 <a class="btn btn-primary btn-lg" data-ng-click="uc.convert()" data-ng-disabled="uc.isConverting">Convert</a>
                             </div>
-                            <div cg-busy="{tracker:'convertdone'}"></div>
+                            <div cg-busy="{tracker:'convertdone', templateUrl:'../App/Template/angular-busy.html'}"></div>
                         </div>
 
                     </form>
+                    <a id="conversionResult"></a>
                     <div class="alert alert-success" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">
+
                         <h3>Conversion successfull!</h3>
-                        @Html.Partial("Plugins/_FacebookLike")
-                        <h6>Spread the word!</h6>
-                        <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="fa-facebook-square"></i>Share on Facebook</a>
-                        <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
-                        
-                        @Html.ActionLink("DONATE", "Donate", null, new { @class = "convertknappliten", style = "width: 200px; margin-left:0px" })<br />
+                        <h4>Spread the word!</h4>
+                        <ul class="social-list list-unstyled">
+                            <li>
+                                @Html.Partial("Plugins/_FacebookLike")
+                            </li>
+                            <li>
+                                <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="icon-facebook-squared"></i>Share on Facebook</a>
+                            </li>
+                            <li>
+                                <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com"><i class="icon-twitter-squared"></i>Tweet about #PolarConverter</a>
+                            </li>
+                            <li>
+                                <i class="icon-paypal"></i> @Html.ActionLink("Donate", "Donate")
+                            </li>
+                        </ul>
+                        <br />
                         <p>Click the link to download your files</p>
-                        <ul>
+                        <ul class="list-unstyled">
                             <li data-ng-repeat="file in uc.convertedFiles">
                                 <i class="glyphicon glyphicon-file"></i>
                                 <a data-ng-href="http://polarconverter.blob.core.windows.net/polarfiles/{{ file.reference }}">{{file.name}}</a>
                             </li>
                         </ul>
-                        @*
-                            Spread the word!<br />
-                            <ul>
-                                <li>Share on Facebook <i class="fa-facebook fa-2x"></i></li>
-                                <li>Tweet about it <i class="fa-twitter fa-2x"></i></li>
-                                <li></li>
-                            </ul>*@
+                        <p>More files to convert?</p>
+                        <a data-ng-click="uc.initPage()"><i class="icon-refresh"></i>Go back</a>
                         <br />
                     </div>
                     <div class="alert alert-error" data-ng-show="uc.errors.length > 0">

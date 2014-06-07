@@ -3,7 +3,7 @@ var PolarConverter;
 (function (PolarConverter) {
     "use strict";
 
-    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "ngAnimate", "ajoslin.promise-tracker", "cgBusy"]).config([
+    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "ngAnimate", "ajoslin.promise-tracker", "cgBusy", "duScroll"]).config([
         "$httpProvider", "fileUploadProvider",
         function ($httpProvider, fileUploadProvider) {
             delete $httpProvider.defaults.headers.common["X-Requested-With"];

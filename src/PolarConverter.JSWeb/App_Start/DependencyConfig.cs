@@ -16,8 +16,10 @@ namespace PolarConverter.JSWeb
         public static void RegisterDependencies()
         {
             var container = new UnityContainer();
-            container.RegisterType<IConversion, ConversionService>();
-            container.RegisterType<IStorageHelper, BlobStorageHelper>();
+            //container.RegisterType<IConversion, ConversionService>();
+            //container.RegisterType<IStorageHelper, BlobStorageHelper>();
+            container.RegisterType<IConversion, LocalConversionService>();
+            container.RegisterType<IStorageHelper, LocalStorageHelper>();
         }
     }
 }

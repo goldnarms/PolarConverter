@@ -351,7 +351,7 @@
     <Content Include="bower_components\angular-animate\angular-animate.js" />
     <Content Include="bower_components\angular-animate\angular-animate.min.js" />
     <Content Include="bower_components\angular-busy\angular-busy.css" />
-    <Content Include="bower_components\angular-busy\angular-busy.html" />
+    <Content Include="App\Template\angular-busy.html" />
     <Content Include="bower_components\angular-busy\angular-busy.js" />
     <Content Include="bower_components\angular-busy\dist\angular-busy.css" />
     <Content Include="bower_components\angular-busy\dist\angular-busy.js" />
@@ -366,6 +366,11 @@
     <Content Include="bower_components\angular-promise-tracker\.gitignore" />
     <Content Include="bower_components\angular-promise-tracker\promise-tracker.js" />
     <Content Include="bower_components\angular-promise-tracker\promise-tracker.min.js" />
+    <Content Include="bower_components\angular-scroll\angular-scroll.js" />
+    <Content Include="bower_components\angular-scroll\angular-scroll.min.js" />
+    <Content Include="bower_components\angular-scroll\example\container.html" />
+    <Content Include="bower_components\angular-scroll\example\index.html" />
+    <Content Include="bower_components\angular-scroll\gulpfile.js" />
     <Content Include="bower_components\angular\angular-csp.css" />
     <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
@@ -453,6 +458,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\animation.css" />
+    <Content Include="Content\css\fontello-codes.css" />
+    <Content Include="Content\css\fontello-embedded.css" />
+    <Content Include="Content\css\fontello-ie7-codes.css" />
+    <Content Include="Content\css\fontello-ie7.css" />
+    <Content Include="Content\css\fontello.css" />
     <Content Include="Content\FileUpload\cors\postmessage.html" />
     <Content Include="Content\FileUpload\cors\result.html" />
     <Content Include="Content\FileUpload\css\bootstrap\bootstrap-image-gallery.debug.css" />
@@ -469,6 +480,7 @@
     <Content Include="Content\FileUpload\img\progressblue.gif" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\font\fontello.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\polarLogo01.png" />
@@ -543,6 +555,15 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="bower_components\angular-scroll\.bower.json" />
+    <Content Include="bower_components\angular-scroll\angular-scroll.min.js.map" />
+    <Content Include="bower_components\angular-scroll\bower.json" />
+    <Content Include="bower_components\angular-scroll\CONTRIBUTING.md" />
+    <Content Include="bower_components\angular-scroll\LICENSE" />
+    <Content Include="bower_components\angular-scroll\README.md" />
+    <Content Include="Content\font\fontello.eot" />
+    <Content Include="Content\font\fontello.ttf" />
+    <Content Include="Content\font\fontello.woff" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
@@ -605,6 +626,7 @@
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Home\angular-busy.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -18,6 +18,7 @@ module PolarConverter {
         setWeightTypeBasedOnCountry(countryCode: string): void;
         setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void;
         reset(): void;
+        initPage(): void;
         convert(uploadViewModel: PolarConverter.UploadViewModel): void;
         removeGpxFile(polarFile: PolarConverter.PolarFile): void;
         isConverting: boolean;
@@ -28,8 +29,8 @@ module PolarConverter {
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService"];
+        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
@@ -47,7 +48,7 @@ module PolarConverter {
         public selectedTimeZone: PolarConverter.TimeZone;
         private initalized: boolean = false;
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private $document: any, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
             this.init();
             this.setupWatches();
         }
@@ -68,7 +69,7 @@ module PolarConverter {
             this.tweetText = "I have just converted my Polar files to Endomondo compatible files using#polarconverter at http://www.polarconverter.com";
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m"};
+            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m" };
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -170,12 +171,19 @@ module PolarConverter {
                 lat: lat,
                 lng: lng
             }, (data) => {
-                var timeZoneOffsetInHours = data.gmtOffset / 3600;
-                this.selectedTimeZone = _.find(this.timeZones, (tz: PolarConverter.TimeZone) => {
-                    return tz.offset === timeZoneOffsetInHours;
+                    var timeZoneOffsetInHours = data.gmtOffset / 3600;
+                    this.selectedTimeZone = _.find(this.timeZones, (tz: PolarConverter.TimeZone) => {
+                        return tz.offset === timeZoneOffsetInHours;
+                    });
+                    this.$scope.$apply();
                 });
-                this.$scope.$apply();
-            });
+        }
+
+        public initPage(): void {
+            this.reset();
+            this.$scope.$broadcast("clearFiles");
+            var top = angular.element(document.getElementById('top'));
+            this.$document.scrollTo(top, 0, 1000);
         }
 
         public reset(): void {
@@ -197,7 +205,7 @@ module PolarConverter {
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
-            this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone"}).then((response) => {
+            this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone" }).then((response) => {
                 this.onSuccesssfullConvert(response);
             });
         }
@@ -210,6 +218,8 @@ module PolarConverter {
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
+            var coversionResult = angular.element(document.getElementById('conversionResult'));
+            this.$document.scrollTo(coversionResult, 0, 1000);
         }
 
         private setTimeZones() {

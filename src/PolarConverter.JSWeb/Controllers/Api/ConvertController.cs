@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Reflection.Emit;
 using System.Web;
 using System.Web.Http;
 using PolarConverter.BLL.Entiteter;
@@ -14,7 +15,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public ConvertController()
         {
-            _conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
+            //_conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
+            _conversion = new LocalConversionService();
         }
 
         public ConvertController(IConversion conversion)

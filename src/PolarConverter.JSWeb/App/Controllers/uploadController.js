@@ -4,12 +4,13 @@ var PolarConverter;
     "use strict";
 
     var UploadController = (function () {
-        function UploadController($scope, $http, $filter, $window, $log, storage, facebookShareService) {
+        function UploadController($scope, $http, $filter, $window, $log, $document, storage, facebookShareService) {
             this.$scope = $scope;
             this.$http = $http;
             this.$filter = $filter;
             this.$window = $window;
             this.$log = $log;
+            this.$document = $document;
             this.storage = storage;
             this.facebookShareService = facebookShareService;
             this.initalized = false;
@@ -17,7 +18,7 @@ var PolarConverter;
             this.setupWatches();
         }
         UploadController.prototype.injection = function () {
-            return ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService", UploadController];
+            return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", UploadController];
         };
 
         UploadController.prototype.init = function () {
@@ -147,6 +148,13 @@ var PolarConverter;
             });
         };
 
+        UploadController.prototype.initPage = function () {
+            this.reset();
+            this.$scope.$broadcast("clearFiles");
+            var top = angular.element(document.getElementById('top'));
+            this.$document.scrollTo(top, 0, 1000);
+        };
+
         UploadController.prototype.reset = function () {
             this.gpxFiles = [];
             this.uploadedFiles = [];
@@ -182,6 +190,8 @@ var PolarConverter;
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
+            var coversionResult = angular.element(document.getElementById('conversionResult'));
+            this.$document.scrollTo(coversionResult, 0, 1000);
         };
 
         UploadController.prototype.setTimeZones = function () {
@@ -259,7 +269,7 @@ var PolarConverter;
                 { offset: 14, text: "(GMT +14:00) Pacific/Kiritimati" }
             ];
         };
-        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$log", "localStorageService", "facebookShareService"];
+        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService"];
         return UploadController;
     })();
     PolarConverter.UploadController = UploadController;
