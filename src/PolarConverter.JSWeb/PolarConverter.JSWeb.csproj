@@ -485,6 +485,9 @@
     <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\polarLogo01.png" />
     <Content Include="Content\polarLogo01_small.png" />
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -556,7 +559,6 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="bower_components\angular-scroll\.bower.json" />
-    <Content Include="bower_components\angular-scroll\angular-scroll.min.js.map" />
     <Content Include="bower_components\angular-scroll\bower.json" />
     <Content Include="bower_components\angular-scroll\CONTRIBUTING.md" />
     <Content Include="bower_components\angular-scroll\LICENSE" />
@@ -564,6 +566,7 @@
     <Content Include="Content\font\fontello.eot" />
     <Content Include="Content\font\fontello.ttf" />
     <Content Include="Content\font\fontello.woff" />
+    <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
@@ -659,6 +662,7 @@
     <Content Include="Views\Shared\Plugins\_FacebookLike.cshtml" />
     <Content Include="Views\Home\Donate.cshtml" />
     <Content Include="Views\Shared\_Donate2.cshtml" />
+    <Content Include="Views\Shared\Plugins\_GoogleAdsense.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>

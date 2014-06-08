@@ -1,4 +1,4 @@
-﻿/// <reference path="../_all.ts" />
+/// <reference path="../_all.ts" />
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
@@ -30,7 +30,7 @@ var PolarConverter;
                 };
             }
             this.$scope.$on("clearFiles", function () {
-                file.$destroy();
+                $scope.clear(file);
             });
         }
         FileDestroyController.prototype.injection = function () {

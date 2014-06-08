@@ -41,7 +41,7 @@ module PolarConverter {
                 };
             }
             this.$scope.$on("clearFiles", () => {
-                file.$destroy();
+                $scope.clear(file);
             });
         }
     }

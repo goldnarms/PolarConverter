@@ -14,6 +14,7 @@ var PolarConverter;
             this.storage = storage;
             this.facebookShareService = facebookShareService;
             this.initalized = false;
+            this.showFileTable = true;
             this.init();
             this.setupWatches();
         }
@@ -29,6 +30,8 @@ var PolarConverter;
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
+            this.showUploadedFiles = true;
+            this.showFileTable = true;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
@@ -108,6 +111,7 @@ var PolarConverter;
                     matchingGpxFile.matched = true;
                 }
             }
+            this.showFileTable = false;
         };
 
         UploadController.prototype.setupWatches = function () {
@@ -156,6 +160,8 @@ var PolarConverter;
         };
 
         UploadController.prototype.reset = function () {
+            this.showFileTable = true;
+            this.showUploadedFiles = true;
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
@@ -172,6 +178,7 @@ var PolarConverter;
 
         UploadController.prototype.convert = function (uploadViewModel) {
             var _this = this;
+            this.showUploadedFiles = false;
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
                 return uf.checked;

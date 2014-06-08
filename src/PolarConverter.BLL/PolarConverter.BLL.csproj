@@ -194,12 +194,10 @@
     <Compile Include="Services\Calculators.cs" />
     <Compile Include="Services\ConversionService.cs" />
     <Compile Include="Services\DataMapper.cs" />
-    <Compile Include="Services\FileService.cs" />
     <Compile Include="Entiteter\XmlPolarData.cs" />
     <Compile Include="Services\GpxService.cs" />
     <Compile Include="Services\LocalConversionService.cs" />
     <Compile Include="Services\LocalStorageHelper.cs" />
-    <Compile Include="Services\TcxService.cs" />
     <Compile Include="Services\XmlMapper.cs" />
   </ItemGroup>
   <ItemGroup>

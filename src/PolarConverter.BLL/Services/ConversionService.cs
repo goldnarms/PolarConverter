@@ -59,8 +59,8 @@ namespace PolarConverter.BLL.Services
                         {
                             try
                             {
-                                var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
                                 var stream = _xmlMapper.MapData(xmlFile, model);
+                                var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
                                 zip.AddEntry(fileName, stream);
                             }
                              catch (Exception ex)

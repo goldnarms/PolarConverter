@@ -1,1 +1,1 @@
-{"version":3,"file":"fileTypeEnum.js","sourceRoot":"","sources":["fileTypeEnum.ts"],"names":["PolarConverter","PolarConverter.fileType"],"mappings":"AAAA,IAAO,cAAc;AAOpB,CAPD,UAAO,cAAc;IACjBA,YAAYA;KACZA,UAAYA,QAAQA;QAChBC,qCAAGA;QACHA,qCAAGA;QACHA,qCAAGA;kEACND;2CAAAA;AACLA,CAACA,2CAAA"}
+{"version":3,"file":"FileTypeEnum.js","sourceRoot":"","sources":["FileTypeEnum.ts"],"names":["PolarConverter","PolarConverter.fileType"],"mappings":"AAAA,IAAO,cAAc;AAOpB,CAPD,UAAO,cAAc;IACjBA,YAAYA;KACZA,UAAYA,QAAQA;QAChBC,qCAAGA;QACHA,qCAAGA;QACHA,qCAAGA;kEACND;2CAAAA;AACLA,CAACA,2CAAA"}

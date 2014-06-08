@@ -15,8 +15,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public ConvertController()
         {
-            //_conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
-            _conversion = new LocalConversionService();
+            _conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
+            //_conversion = new LocalConversionService();
         }
 
         public ConvertController(IConversion conversion)

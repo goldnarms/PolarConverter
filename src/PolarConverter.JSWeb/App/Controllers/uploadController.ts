@@ -25,6 +25,8 @@ module PolarConverter {
         showExtraVariables: boolean;
         shareToFacebook(): void;
         tweetText: string;
+        showFileTable: boolean;
+        showUploadedFiles: boolean;
         selectedTimeZone: PolarConverter.TimeZone;
     }
 
@@ -47,6 +49,8 @@ module PolarConverter {
         public tweetText: string;
         public selectedTimeZone: PolarConverter.TimeZone;
         private initalized: boolean = false;
+        private showUploadedFiles: boolean;
+        private showFileTable: boolean = true;
 
         constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private $document: any, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
             this.init();
@@ -60,6 +64,8 @@ module PolarConverter {
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
+            this.showUploadedFiles = true;
+            this.showFileTable = true;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
@@ -141,6 +147,7 @@ module PolarConverter {
                     matchingGpxFile.matched = true;
                 }
             }
+            this.showFileTable = false;
         }
 
         private setupWatches(): void {
@@ -187,6 +194,8 @@ module PolarConverter {
         }
 
         public reset(): void {
+            this.showFileTable = true;
+            this.showUploadedFiles = true;
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
@@ -202,6 +211,7 @@ module PolarConverter {
         }
 
         public convert(uploadViewModel: PolarConverter.UploadViewModel): void {
+            this.showUploadedFiles = false;
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
