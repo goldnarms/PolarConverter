@@ -458,12 +458,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\css\animation.css" />
-    <Content Include="Content\css\fontello-codes.css" />
-    <Content Include="Content\css\fontello-embedded.css" />
-    <Content Include="Content\css\fontello-ie7-codes.css" />
-    <Content Include="Content\css\fontello-ie7.css" />
-    <Content Include="Content\css\fontello.css" />
+    <Content Include="Content\animation.css" />
+    <Content Include="Content\fontello-codes.css" />
+    <Content Include="Content\fontello-embedded.css" />
+    <Content Include="Content\fontello-ie7-codes.css" />
+    <Content Include="Content\fontello-ie7.css" />
+    <Content Include="Content\fontello.css" />
     <Content Include="Content\FileUpload\cors\postmessage.html" />
     <Content Include="Content\FileUpload\cors\result.html" />
     <Content Include="Content\FileUpload\css\bootstrap\bootstrap-image-gallery.debug.css" />
@@ -480,6 +480,9 @@
     <Content Include="Content\FileUpload\img\progressblue.gif" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fontello.min.css">
+      <DependentUpon>fontello.css</DependentUpon>
+    </Content>
     <Content Include="Content\font\fontello.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
