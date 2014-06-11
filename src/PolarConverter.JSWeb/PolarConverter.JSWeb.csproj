@@ -357,6 +357,13 @@
     <Content Include="bower_components\angular-busy\dist\angular-busy.js" />
     <Content Include="bower_components\angular-busy\dist\angular-busy.min.css" />
     <Content Include="bower_components\angular-busy\dist\angular-busy.min.js" />
+    <Content Include="bower_components\angular-loading-bar\build\loading-bar.css" />
+    <Content Include="bower_components\angular-loading-bar\build\loading-bar.js" />
+    <Content Include="bower_components\angular-loading-bar\build\loading-bar.min.css" />
+    <Content Include="bower_components\angular-loading-bar\build\loading-bar.min.js" />
+    <Content Include="bower_components\angular-loading-bar\Gruntfile.js" />
+    <Content Include="bower_components\angular-loading-bar\src\loading-bar.css" />
+    <Content Include="bower_components\angular-loading-bar\src\loading-bar.js" />
     <Content Include="bower_components\angular-local-storage\angular-local-storage.js" />
     <Content Include="bower_components\angular-local-storage\angular-local-storage.min.js" />
     <Content Include="bower_components\angular-local-storage\demo\demo-app.js" />
@@ -569,6 +576,12 @@
     <Content Include="Content\font\fontello.eot" />
     <Content Include="Content\font\fontello.ttf" />
     <Content Include="Content\font\fontello.woff" />
+    <Content Include="bower_components\angular-loading-bar\.bower.json" />
+    <Content Include="bower_components\angular-loading-bar\bower.json" />
+    <Content Include="bower_components\angular-loading-bar\CHANGELOG.md" />
+    <Content Include="bower_components\angular-loading-bar\LICENSE" />
+    <Content Include="bower_components\angular-loading-bar\package.json" />
+    <Content Include="bower_components\angular-loading-bar\README.md" />
     <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
@@ -666,6 +679,7 @@
     <Content Include="Views\Home\Donate.cshtml" />
     <Content Include="Views\Shared\_Donate2.cshtml" />
     <Content Include="Views\Shared\Plugins\_GoogleAdsense.cshtml" />
+    <Content Include="Views\Shared\Plugins\_Analytics.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
@@ -688,6 +702,7 @@
     <TypeScriptCompile Include="App\Directives\ShareOnFacebook.ts" />
     <TypeScriptCompile Include="App\Directives\ShareOnGooglePlus.ts" />
     <TypeScriptCompile Include="App\Directives\ShareOnTwitter.ts" />
+    <TypeScriptCompile Include="App\Interfaces\ILoadingBar.ts" />
     <TypeScriptCompile Include="App\Interfaces\IStorage.ts" />
     <TypeScriptCompile Include="App\Models\file.ts" />
     <TypeScriptCompile Include="App\Enums\fileTypeEnum.ts" />

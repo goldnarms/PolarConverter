@@ -15,7 +15,7 @@ namespace PolarConverter.JSWeb
                         "~/Scripts/underscore.js",
                         "~/bower_components/angular-local-storage/angular-local-storage.js",
                         "~/bower_components/angular-promise-tracker/promise-tracker.js",
-                        "~/bower_components/angular-busy/angular-busy.js",
+                        "~/bower_components/angular-loading-bar/src/loading-bar.js",
                         "~/bower_components/angular-scroll/angular-scroll.js"
                         
                         )
@@ -43,6 +43,7 @@ namespace PolarConverter.JSWeb
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/bower_components/angular-busy/angular-busy.css",
+                      "~/bower_components/angular-loading-bar/src/loading-bar.css",
                       "~/Content/fontello.css"));
         }
     }

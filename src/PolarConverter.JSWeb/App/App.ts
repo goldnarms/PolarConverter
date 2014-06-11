@@ -2,10 +2,10 @@
 module PolarConverter {
     "use strict";
 
-    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "ngAnimate", "ajoslin.promise-tracker", "cgBusy", "duScroll"])
+    angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "chieffancypants.loadingBar", "ngAnimate", "ajoslin.promise-tracker", "duScroll"])
         .config([
-            "$httpProvider", "fileUploadProvider",
-            ($httpProvider, fileUploadProvider) => {
+            "$httpProvider", "fileUploadProvider", "cfpLoadingBarProvider",
+            ($httpProvider, fileUploadProvider, cfpLoadingBarProvider) => {
                 delete $httpProvider.defaults.headers.common["X-Requested-With"];
                 fileUploadProvider.defaults.redirect = window.location.href.replace(
                     /\/[^\/]*$/,
@@ -15,6 +15,7 @@ module PolarConverter {
                     maxFileSize: 50000000,
                     acceptFileTypes: /(\.|\/)(hrm|xml|gpx)$/i
                 });
+                cfpLoadingBarProvider.includeSpinner = false;
             }])
         .controller("uploadCtrl", PolarConverter.UploadController.prototype.injection())
         .controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection())

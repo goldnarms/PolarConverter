@@ -1,3 +1,4 @@
+/// <reference path="interfaces/iloadingbar.ts" />
 /// <reference path="Interfaces/IStorage.ts" />
 /// <reference path="../Scripts/typings/underscore/underscore.d.ts" />
 /// <reference path="../Scripts/typings/angularjs/angular-resource.d.ts" />

@@ -1,3 +1,5 @@
+declare var cfpLoadingBar: PolarConverter.ILoadingBar;
+/// <reference path="interfaces/iloadingbar.ts" />
 /// <reference path="Interfaces/IStorage.ts" />
 
 /// <reference path="../Scripts/typings/underscore/underscore.d.ts" />

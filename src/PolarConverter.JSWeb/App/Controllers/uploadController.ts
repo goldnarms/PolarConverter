@@ -31,8 +31,8 @@ module PolarConverter {
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService"];
+        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
@@ -52,12 +52,13 @@ module PolarConverter {
         private showUploadedFiles: boolean;
         private showFileTable: boolean = true;
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private $document: any, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private $document: any, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService, private cfpLoadingBar: PolarConverter.ILoadingBar) {
             this.init();
             this.setupWatches();
         }
 
         private init(): void {
+            this.cfpLoadingBar.start();
             this.setTimeZones();
             this.uploadedFiles = [];
             this.convertedFiles = [];
@@ -72,7 +73,7 @@ module PolarConverter {
                 }
             }
 
-            this.tweetText = "I have just converted my Polar files to Endomondo compatible files using#polarconverter at http://www.polarconverter.com";
+            this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
             this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m" };
@@ -111,6 +112,7 @@ module PolarConverter {
                     });
                 this.initalized = true;
             }
+            this.cfpLoadingBar.complete();
         }
 
         public callback(data: any): void {
@@ -123,6 +125,7 @@ module PolarConverter {
 
         private onError(data: any): void {
             this.$log.error(data);
+            this.cfpLoadingBar.complete();
         }
 
         private onUpload(data: any): void {
@@ -147,6 +150,7 @@ module PolarConverter {
                     matchingGpxFile.matched = true;
                 }
             }
+            this.cfpLoadingBar.complete();
             this.showFileTable = false;
         }
 
@@ -178,7 +182,11 @@ module PolarConverter {
                 lat: lat,
                 lng: lng
             }, (data) => {
+                    var daylightSavings = data.dst;
                     var timeZoneOffsetInHours = data.gmtOffset / 3600;
+                    if (daylightSavings === "1") {
+                        timeZoneOffsetInHours--;
+                    }
                     this.selectedTimeZone = _.find(this.timeZones, (tz: PolarConverter.TimeZone) => {
                         return tz.offset === timeZoneOffsetInHours;
                     });
@@ -189,8 +197,8 @@ module PolarConverter {
         public initPage(): void {
             this.reset();
             this.$scope.$broadcast("clearFiles");
-            var top = angular.element(document.getElementById('top'));
-            this.$document.scrollTo(top, 0, 1000);
+            //var top = angular.element(document.getElementById('top'));
+            this.$document.scrollTop(0, 1000);
         }
 
         public reset(): void {
@@ -199,6 +207,7 @@ module PolarConverter {
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
+            this.cfpLoadingBar.complete();
         }
         public removeGpxFile(polarFile: PolarConverter.PolarFile) {
             polarFile.gpxFile.matched = false;
@@ -211,6 +220,7 @@ module PolarConverter {
         }
 
         public convert(uploadViewModel: PolarConverter.UploadViewModel): void {
+            this.cfpLoadingBar.start();
             this.showUploadedFiles = false;
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
@@ -228,8 +238,9 @@ module PolarConverter {
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
-            var coversionResult = angular.element(document.getElementById('conversionResult'));
-            this.$document.scrollTo(coversionResult, 0, 1000);
+            //var coversionResult = angular.element(document.getElementById('conversionResult'));
+            this.$document.scrollTop(350, 1000);
+            this.cfpLoadingBar.complete();
         }
 
         private setTimeZones() {

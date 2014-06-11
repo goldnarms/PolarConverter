@@ -136,7 +136,6 @@
                                 <a class="btn btn-default btn-lg" data-ng-click="uc.reset(); cancel()">Cancel</a>
                                 <a class="btn btn-primary btn-lg" data-ng-click="uc.convert()" data-ng-disabled="uc.isConverting">Convert</a>
                             </div>
-                            <div cg-busy="{tracker:'convertdone', templateUrl:'../App/Template/angular-busy.html'}"></div>
                         </div>
 
                     </form>
@@ -167,11 +166,11 @@
                                 <a data-ng-href="http://polarconverter.blob.core.windows.net/polarfiles/{{ file.reference }}">{{file.name}}</a>
                             </li>
                         </ul>
-                        <h3>More files to convert?</h3>
+                        <h5>More files to convert?</h5>
                         <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
                         <br />
                     </div>
-                    <div class="alert alert-error" data-ng-show="uc.errors.length > 0">
+                    <div class="alert alert-danger" data-ng-show="uc.errors.length > 0">
                         <h3>Oops, something went wrong ...</h3>
                         <p>See a list of errors below.</p>
                         <ul>
@@ -179,13 +178,13 @@
                                 {{error}}
                             </li>
                         </ul>
-
+                        <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Try again</a>
                         @*<p>
                                 The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
                                 <input type="email" value="" />
                             </p>
                             <p>Please take a look at the F.A.Q. for more information.</p>*@
-                        <p>Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a></p>
+                        <p>Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
                         <br />
                     </div>
                 </div>
@@ -212,11 +211,9 @@
             </p>
         </div>
         <div class="col-md-4">
-            <h3>Watches</h3>
+            <h3>Polar Pro Trainer&trade;</h3>
             <p>
-                Visit Polar's homepage to see a list of Polar Pro Trainer&trade; compatible Polar&reg;
-                products:<br>
-                <a target="_blank" href="http://www.polar.fi/en/support/Polar_Products_Compatible_with_Polar_ProTrainer_5?product_id=446&amp;category=faqs">Polar Pro Trainer&trade; compatible watches.</a>
+                Click <a target="_blank" href="http://www.polar.com/en/products/training_software/polar_protrainer_5">here</a> to read more about Polar Pro Trainer&trade;.
             </p>
         </div>
         <div class="col-md-4">

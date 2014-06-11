@@ -14,9 +14,9 @@ module PolarConverter {
 
         openDialogue(): string {
             return this.facebookShareUrl({
-                "name": "Test",
-                "caption": "Caption",
-                "description": "Description",
+                "name": "PolarConverter",
+                "caption": "Spread the word",
+                "description": "Convert your Polar files with PolarConverter",
                 "picture": "",
                 "link": ""
             });
