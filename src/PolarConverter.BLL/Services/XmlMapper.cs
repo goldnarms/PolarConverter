@@ -264,7 +264,7 @@ namespace PolarConverter.BLL.Services
         {
             var lapDuration = lap.duration.ToTimeSpan();
             var activityLap = new ActivityLap_t();
-            activityLap.StartTime = lapStartTime;
+            activityLap.StartTime = lapStartTime.ToUniversalTime();
 
             if (lap.heartrate != null)
             {
@@ -324,7 +324,10 @@ namespace PolarConverter.BLL.Services
             var trackPoints = new Trackpoint_t[endRange - startRange];
             for (int i = startRange; i < endRange; i++)
             {
-                trackPoints[i - startRange] = new Trackpoint_t { Time = starTime.AddSeconds(i * recordingRate) };
+                trackPoints[i - startRange] = new Trackpoint_t
+                {
+                    Time = starTime.AddSeconds(i * recordingRate).ToUniversalTime()
+                };
             }
             foreach (var sampleData in sampleDic)
             {
