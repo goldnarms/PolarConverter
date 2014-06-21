@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Glimpse.Mvc.AlternateType;
+﻿using System.Data.Entity;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
-using PolarConverter.BLL.Interfaces;
-using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Helpers;
+using PolarConverter.JSWeb.Models;
 
 namespace PolarConverter.JSWeb
 {
@@ -16,10 +14,10 @@ namespace PolarConverter.JSWeb
         public static void RegisterDependencies()
         {
             var container = new UnityContainer();
-            //container.RegisterType<IConversion, ConversionService>();
-            //container.RegisterType<IStorageHelper, BlobStorageHelper>();
-            container.RegisterType<IConversion, LocalConversionService>();
-            container.RegisterType<IStorageHelper, LocalStorageHelper>();
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+            container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
+            container.LoadConfiguration();
         }
     }
 }

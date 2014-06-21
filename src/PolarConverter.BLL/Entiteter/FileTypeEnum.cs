@@ -4,6 +4,7 @@
     {
         Gpx,
         Hrm,
-        Xml
+        Xml,
+        Tcx
     }
 }

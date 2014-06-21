@@ -1,8 +1,7 @@
-﻿using System.Web.Http;
-using Microsoft.Practices.Unity;
-using PolarConverter.JSWeb.Helpers;
+﻿using System.Linq;
+using System.Web.Http;
 
-namespace PolarConverter.JSWeb.App_Start
+namespace PolarConverter.JSWeb
 {
     public static class WebApiConfig
     {
@@ -14,6 +13,10 @@ namespace PolarConverter.JSWeb.App_Start
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // Remove XML formatting
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
         }
     }
 }

@@ -1,4 +1,5 @@
 declare var cfpLoadingBar: PolarConverter.ILoadingBar;
+declare var User: PolarConverter.User;
 /// <reference path="interfaces/iloadingbar.ts" />
 /// <reference path="Interfaces/IStorage.ts" />
 
@@ -19,10 +20,16 @@ declare var cfpLoadingBar: PolarConverter.ILoadingBar;
 /// <reference path="Models/polarFile.ts" />
 /// <reference path="Models/uploadViewModel.ts" />
 /// <reference path="Models/timeZone.ts" />
+/// <reference path="models/user.ts" />
+
+/// <reference path="viewmodels/userviewmodel.ts" />
 
 /// <reference path="Controllers/fileDestroyController.ts" />
 /// <reference path="Controllers/uploadController.ts" />
 /// <reference path="services/facebookshareurlservice.ts" />
+/// <reference path="services/userservice.ts" />
+/// <reference path="services/fileService.ts" />
+/// <reference path="services/common.ts" />
 
 /// <reference path="app.ts" />
 /// <reference path="config.ts" />

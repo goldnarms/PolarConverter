@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
 using Ionic.Zip;
@@ -11,7 +12,7 @@ namespace PolarConverter.BLL.Services
 {
     public class LocalStorageHelper : IStorageHelper
     {
-        private string _basePath;
+        private readonly string _basePath;
 
         public LocalStorageHelper()
         {
@@ -75,6 +76,17 @@ namespace PolarConverter.BLL.Services
                 }
             }
             return fileReferences;
+        }
+
+        public IEnumerable<PolarFile> GetFilesForUser(int id)
+        {
+            var files = Directory.GetFiles(_basePath, "*.zip");
+            return files.Select(f => new PolarFile
+            {
+                FileType = "zip",
+                Name = f,
+                Reference = string.Format("{0}.zip", f)
+            });
         }
     }
 }

@@ -4,28 +4,27 @@ var PolarConverter;
     "use strict";
 
     var UploadController = (function () {
-        function UploadController($scope, $http, $filter, $window, $log, $document, storage, facebookShareService, cfpLoadingBar) {
+        function UploadController($scope, $http, $filter, $window, $document, common, storage, facebookShareService) {
             this.$scope = $scope;
             this.$http = $http;
             this.$filter = $filter;
             this.$window = $window;
-            this.$log = $log;
             this.$document = $document;
+            this.common = common;
             this.storage = storage;
             this.facebookShareService = facebookShareService;
-            this.cfpLoadingBar = cfpLoadingBar;
             this.initalized = false;
             this.showFileTable = true;
             this.init();
             this.setupWatches();
         }
         UploadController.prototype.injection = function () {
-            return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar", UploadController];
+            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", UploadController];
         };
 
         UploadController.prototype.init = function () {
             var _this = this;
-            this.cfpLoadingBar.start();
+            this.common.loadingBar.start();
             this.setTimeZones();
             this.uploadedFiles = [];
             this.convertedFiles = [];
@@ -62,14 +61,14 @@ var PolarConverter;
             $.get("http://ipinfo.io", function (response) {
                 _this.setWeightTypeBasedOnCountry(response.country);
                 var loc = response.loc;
-                var lat = loc.substring(0, loc.indexOf(','));
-                var lng = loc.substring(loc.indexOf(',') + 1, loc.length);
+                var lat = loc.substring(0, loc.indexOf(","));
+                var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
                 _this.setTimeZoneOffsetBasedOnCountry(lat, lng);
             }, "jsonp");
 
             if (this.initalized) {
                 this.$http.get(url).then(function (response) {
-                    _this.$log.info(response);
+                    _this.common.log.info(response);
                     _this.loadingFiles = false;
                     _this.queue = response.data.files || [];
                 }, function () {
@@ -77,11 +76,11 @@ var PolarConverter;
                 });
                 this.initalized = true;
             }
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         };
 
         UploadController.prototype.callback = function (data) {
-            this.$log.info(data);
+            this.common.log.info(data);
         };
 
         UploadController.prototype.shareToFacebook = function () {
@@ -89,8 +88,8 @@ var PolarConverter;
         };
 
         UploadController.prototype.onError = function (data) {
-            this.$log.error(data);
-            this.cfpLoadingBar.complete();
+            this.common.log.error(data);
+            this.common.loadingBar.complete();
         };
 
         UploadController.prototype.onUpload = function (data) {
@@ -115,7 +114,7 @@ var PolarConverter;
                     matchingGpxFile.matched = true;
                 }
             }
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
             this.showFileTable = false;
         };
 
@@ -175,7 +174,7 @@ var PolarConverter;
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         };
         UploadController.prototype.removeGpxFile = function (polarFile) {
             polarFile.gpxFile.matched = false;
@@ -189,7 +188,7 @@ var PolarConverter;
 
         UploadController.prototype.convert = function (uploadViewModel) {
             var _this = this;
-            this.cfpLoadingBar.start();
+            this.common.loadingBar.start();
             this.showUploadedFiles = false;
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
@@ -212,7 +211,7 @@ var PolarConverter;
 
             //var coversionResult = angular.element(document.getElementById('conversionResult'));
             this.$document.scrollTop(350, 1000);
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         };
 
         UploadController.prototype.setTimeZones = function () {
@@ -290,7 +289,7 @@ var PolarConverter;
                 { offset: 14, text: "(GMT +14:00) Pacific/Kiritimati" }
             ];
         };
-        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar"];
+        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService"];
         return UploadController;
     })();
     PolarConverter.UploadController = UploadController;

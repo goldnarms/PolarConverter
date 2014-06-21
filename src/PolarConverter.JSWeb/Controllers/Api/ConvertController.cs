@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Reflection.Emit;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
@@ -15,8 +16,9 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public ConvertController()
         {
-            _conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
-            //_conversion = new LocalConversionService();
+            //_conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
+            //_conversion = DependencyResolver.Current.GetService<IConversion>();
+            _conversion = new LocalConversionService();
         }
 
         public ConvertController(IConversion conversion)
@@ -24,9 +26,9 @@ namespace PolarConverter.JSWeb.Controllers.Api
             _conversion = conversion;
         }
 
-        [Route("api/convert")]
-        [HttpPost]
-        [HttpGet]
+        [System.Web.Http.Route("api/convert")]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpGet]
         public HttpResponseMessage Convert(UploadViewModel uploadViewModel)
         {
             var result = _conversion.Convert(uploadViewModel);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using PolarConverter.BLL.Entiteter;
 
 namespace PolarConverter.BLL.Interfaces
 {
@@ -15,5 +16,6 @@ namespace PolarConverter.BLL.Interfaces
         string ReadFile(string fileReference);
         object ReadXmlDocument(string fileReference, Type xmlType);
         IEnumerable<string> Unzip(string fileReference);
+        IEnumerable<PolarFile> GetFilesForUser(int id);
     }
 }

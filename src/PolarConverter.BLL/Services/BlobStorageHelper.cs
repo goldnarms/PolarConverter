@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Serialization;
 using Microsoft.WindowsAzure.Storage;
+using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 using BlobContainerPermissions = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPermissions;
 using BlobContainerPublicAccessType = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPublicAccessType;
@@ -73,6 +74,11 @@ namespace PolarConverter.BLL.Services
         }
 
         public IEnumerable<string> Unzip(string fileReference)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<PolarFile> GetFilesForUser(int id)
         {
             throw new NotImplementedException();
         }

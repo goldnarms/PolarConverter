@@ -283,6 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\DependencyConfig.cs" />
+    <Compile Include="App_Start\ViewEngineConfig.cs" />
     <Compile Include="Controllers\Api\ConvertController.cs" />
     <Compile Include="App_Start\BackloadConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -291,8 +292,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\FileController.cs" />
     <Compile Include="Controllers\Api\UploadController.cs" />
     <Compile Include="Controllers\BackloadDemoController.cs" />
+    <Compile Include="Models\FrontPageModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JasmineController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -300,6 +303,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\UnityDependencyResolver.cs" />
+    <Compile Include="Migrations\201404270836271_InitialCreate.cs" />
+    <Compile Include="Migrations\201404270836271_InitialCreate.Designer.cs">
+      <DependentUpon>201404270836271_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406151715155_UserProfile.cs" />
+    <Compile Include="Migrations\201406151715155_UserProfile.Designer.cs">
+      <DependentUpon>201406151715155_UserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileType.cs" />
@@ -311,12 +323,17 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angular-busy.html" />
     <Content Include="App\app.js">
       <DependentUpon>app.ts</DependentUpon>
     </Content>
     <Content Include="App\Controllers\fileDestroyController.js">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Controllers\userfilesController.js">
+      <DependentUpon>userfilesController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Controllers\userProfileController.js">
+      <DependentUpon>userProfileController.ts</DependentUpon>
     </Content>
     <Content Include="App\Enums\FileTypeEnum.js">
       <DependentUpon>fileTypeEnum.ts</DependentUpon>
@@ -344,6 +361,12 @@
     </Content>
     <Content Include="App\Models\uploadViewModel.js">
       <DependentUpon>uploadViewModel.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\user.js">
+      <DependentUpon>user.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\FacebookShareUrlService.js">
+      <DependentUpon>FacebookShareUrlService.ts</DependentUpon>
     </Content>
     <Content Include="App\_all.js">
       <DependentUpon>_all.ts</DependentUpon>
@@ -582,7 +605,22 @@
     <Content Include="bower_components\angular-loading-bar\LICENSE" />
     <Content Include="bower_components\angular-loading-bar\package.json" />
     <Content Include="bower_components\angular-loading-bar\README.md" />
+    <Content Include="App_Start\Unity.config" />
+    <Content Include="App_Start\Unity.Release.config" />
+    <Content Include="App\Controllers\userfilesController.js.map">
+      <DependentUpon>userfilesController.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\FacebookShareUrlService.js.map">
+      <DependentUpon>FacebookShareUrlService.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Models\user.js.map">
+      <DependentUpon>user.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Controllers\userProfileController.js.map">
+      <DependentUpon>userProfileController.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\polarconverter__staging %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
@@ -680,6 +718,8 @@
     <Content Include="Views\Shared\_Donate2.cshtml" />
     <Content Include="Views\Shared\Plugins\_GoogleAdsense.cshtml" />
     <Content Include="Views\Shared\Plugins\_Analytics.cshtml" />
+    <Content Include="Views\Home\UserProfile.cshtml" />
+    <Content Include="Views\Home\Files.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
@@ -699,6 +739,8 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\config.ts" />
     <TypeScriptCompile Include="App\Controllers\fileDestroyController.ts" />
+    <TypeScriptCompile Include="App\Controllers\userfilesController.ts" />
+    <TypeScriptCompile Include="App\Controllers\userProfileController.ts" />
     <TypeScriptCompile Include="App\Directives\ShareOnFacebook.ts" />
     <TypeScriptCompile Include="App\Directives\ShareOnGooglePlus.ts" />
     <TypeScriptCompile Include="App\Directives\ShareOnTwitter.ts" />
@@ -712,7 +754,11 @@
     <TypeScriptCompile Include="App\Enums\sportEnum.ts" />
     <TypeScriptCompile Include="App\Models\timeZone.ts" />
     <TypeScriptCompile Include="App\Models\uploadViewModel.ts" />
+    <TypeScriptCompile Include="App\Services\Common.ts" />
     <TypeScriptCompile Include="App\Services\FacebookShareUrlService.ts" />
+    <TypeScriptCompile Include="App\Services\fileService.ts" />
+    <TypeScriptCompile Include="App\Services\userService.ts" />
+    <TypeScriptCompile Include="App\ViewModels\userViewModel.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
     <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>
@@ -723,6 +769,7 @@
     <TypeScriptCompile Include="Models\GpxFile.cs.d.ts">
       <DependentUpon>GpxFile.cs</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="App\Models\user.ts" />
     <TypeScriptCompile Include="Models\PolarFile.cs.d.ts">
       <DependentUpon>PolarFile.cs</DependentUpon>
     </TypeScriptCompile>
@@ -747,6 +794,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201404270836271_InitialCreate.resx">
+      <DependentUpon>201404270836271_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406151715155_UserProfile.resx">
+      <DependentUpon>201406151715155_UserProfile.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,4 @@
-declare module server {
+﻿declare module server {
 	interface externalLoginConfirmationViewModel {
 		userName: string;
 	}
@@ -16,5 +16,12 @@ declare module server {
 		userName: string;
 		password: string;
 		confirmPassword: string;
+		weight: number;
+		stravaEmail: string;
+		forceGarmin: boolean;
+		preferKg: boolean;
+		isMale: boolean;
+		timeZoneOffset: number;
+		birthDate: Date;
 	}
 }

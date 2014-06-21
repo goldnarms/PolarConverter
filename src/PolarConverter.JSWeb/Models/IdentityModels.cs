@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace PolarConverter.JSWeb.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    // You can add profile data for the user by adding more properties to your int  ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public double Weight { get; set; }
+        public string StravaEmail { get; set; }
+        public bool ForceGarmin { get; set; }
+        public bool PreferKg { get; set; }
+        public bool IsMale { get; set; }
+        public double TimeZoneOffset { get; set; }
+        public DateTime BirthDate { get; set; }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

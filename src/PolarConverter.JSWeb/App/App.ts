@@ -19,7 +19,12 @@ module PolarConverter {
             }])
         .controller("uploadCtrl", PolarConverter.UploadController.prototype.injection())
         .controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection())
+        .controller("userfilesCtrl", PolarConverter.UserFilesController.prototype.injection())
+        .controller("userProfileCtrl", PolarConverter.UserProfile.prototype.injection())
         .service("facebookShareService", PolarConverter.FacebookShareService.prototype.injection())
+        .service("fileService", PolarConverter.FileService.prototype.injection())
+        .service("userService", PolarConverter.UserService.prototype.injection())
+        .service("common", PolarConverter.CommonService.prototype.injection())
         .directive("shareOnGooglePlus", PolarConverter.ShareOnGooglePlus.prototype.injection())
         .directive("shareOnTwitter", PolarConverter.ShareOnTwitter.prototype.injection())
         .directive("shareOnFacebook", PolarConverter.ShareOnFacebook.prototype.injection());

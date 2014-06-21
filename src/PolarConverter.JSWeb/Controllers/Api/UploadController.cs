@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using System.Xml;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
@@ -17,17 +18,18 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public UploadController()
         {
-            _storageHelper = new BlobStorageHelper("polarfiles");
-            //_storageHelper = new LocalStorageHelper();
+            _storageHelper = new LocalStorageHelper();
+            //_storageHelper = new BlobStorageHelper("polarfiles");
+            //_storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
         }
         public UploadController(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
         }
 
-        [Route("api/upload")]
-        [HttpPost]
-        [HttpGet]
+        [System.Web.Http.Route("api/upload")]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpGet]
         public HttpResponseMessage Upload()
         {
             if (HttpContext.Current.Request.Files.Count > 0)

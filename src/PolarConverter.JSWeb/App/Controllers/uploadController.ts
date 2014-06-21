@@ -28,11 +28,12 @@ module PolarConverter {
         showFileTable: boolean;
         showUploadedFiles: boolean;
         selectedTimeZone: PolarConverter.TimeZone;
+        userProfileForm: ng.IFormController;
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$log", "$document", "localStorageService", "facebookShareService", "cfpLoadingBar"];
+        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
@@ -48,17 +49,18 @@ module PolarConverter {
         public errors: string[];
         public tweetText: string;
         public selectedTimeZone: PolarConverter.TimeZone;
+        public userProfileForm: ng.IFormController;
         private initalized: boolean = false;
         private showUploadedFiles: boolean;
         private showFileTable: boolean = true;
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $log: ng.ILogService, private $document: any, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService, private cfpLoadingBar: PolarConverter.ILoadingBar) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $document: any, private common: ICommonService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
             this.init();
             this.setupWatches();
         }
 
         private init(): void {
-            this.cfpLoadingBar.start();
+            this.common.loadingBar.start();
             this.setTimeZones();
             this.uploadedFiles = [];
             this.convertedFiles = [];
@@ -94,8 +96,8 @@ module PolarConverter {
             $.get("http://ipinfo.io", (response) => {
                 this.setWeightTypeBasedOnCountry(response.country);
                 var loc = response.loc;
-                var lat = loc.substring(0, loc.indexOf(','));
-                var lng = loc.substring(loc.indexOf(',') + 1, loc.length);
+                var lat = loc.substring(0, loc.indexOf(","));
+                var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
                 this.setTimeZoneOffsetBasedOnCountry(lat, lng);
             }, "jsonp");
 
@@ -103,7 +105,7 @@ module PolarConverter {
                 this.$http.get(url)
                     .then(
                     (response) => {
-                        this.$log.info(response);
+                        this.common.log.info(response);
                         this.loadingFiles = false;
                         this.queue = response.data.files || [];
                     },
@@ -112,11 +114,11 @@ module PolarConverter {
                     });
                 this.initalized = true;
             }
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         }
 
         public callback(data: any): void {
-            this.$log.info(data);
+            this.common.log.info(data);
         }
 
         public shareToFacebook(): void {
@@ -124,8 +126,8 @@ module PolarConverter {
         }
 
         private onError(data: any): void {
-            this.$log.error(data);
-            this.cfpLoadingBar.complete();
+            this.common.log.error(data);
+            this.common.loadingBar.complete();
         }
 
         private onUpload(data: any): void {
@@ -150,7 +152,7 @@ module PolarConverter {
                     matchingGpxFile.matched = true;
                 }
             }
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
             this.showFileTable = false;
         }
 
@@ -207,7 +209,7 @@ module PolarConverter {
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         }
         public removeGpxFile(polarFile: PolarConverter.PolarFile) {
             polarFile.gpxFile.matched = false;
@@ -220,7 +222,7 @@ module PolarConverter {
         }
 
         public convert(uploadViewModel: PolarConverter.UploadViewModel): void {
-            this.cfpLoadingBar.start();
+            this.common.loadingBar.start();
             this.showUploadedFiles = false;
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
@@ -240,7 +242,7 @@ module PolarConverter {
             this.gpxFiles = [];
             //var coversionResult = angular.element(document.getElementById('conversionResult'));
             this.$document.scrollTop(350, 1000);
-            this.cfpLoadingBar.complete();
+            this.common.loadingBar.complete();
         }
 
         private setTimeZones() {

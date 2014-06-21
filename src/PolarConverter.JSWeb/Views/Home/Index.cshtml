@@ -1,9 +1,10 @@
-﻿@{
+﻿@model PolarConverter.JSWeb.Models.FrontPageModel
+@{
     ViewBag.Title = "PolarConverter";
 }
 <a id="top"></a>
 <div data-ng-controller="uploadCtrl as uc">
-    <div class="row" style="padding-top: 45px">
+    <div class="row">
         <div class="col-md-12">
             <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
                 <!-- Redirect browsers with JavaScript disabled to the origin page -->
@@ -87,32 +88,32 @@
                     </tr>
                 </table>
                 <div class="well">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" name="uc.userProfileForm" novalidate="">
                         <legend>User profile</legend>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="inputWeight">Weight</label>
                             <div class="col-lg-10">
-                                <input type="number" step="0.1" min="1" max="600" value="" id="inputWeight" data-ng-model="uc.uploadViewModel.weight" />
+                                <input type="number" step="0.1" min="1" max="600" value="" id="inputWeight" data-ng-model="uc.uploadViewModel.weight" required />
                                 <label>
-                                    <input type="radio" value="kg" data-ng-model="uc.uploadViewModel.weightMode" />&nbsp;Kg
+                                    <input type="radio" value="kg" data-ng-model="uc.uploadViewModel.weightMode" required />&nbsp;Kg
                                 </label>
                                 <label>
-                                    <input type="radio" value="lbs" data-ng-model="uc.uploadViewModel.weightMode" />&nbsp;Lbs
+                                    <input type="radio" value="lbs" data-ng-model="uc.uploadViewModel.weightMode" required />&nbsp;Lbs
                                 </label>
                             </div>
                         </div>
                         <div class="form-group" data-ng-if="uc.showExtraVariables">
                             <label class="col-lg-2 control-label" for="inputAge">Age</label>
-                            <div class="col-lg-10"><input type="number" value="" id="inputAge" min="1" max="130" step="1" data-ng-model="uc.uploadViewModel.age" /></div>
+                            <div class="col-lg-10"><input type="number" value="" id="inputAge" min="1" max="130" step="1" data-ng-model="uc.uploadViewModel.age" required /></div>
                         </div>
                         <div class="form-group" data-ng-if="uc.showExtraVariables">
                             <label class="col-lg-2 control-label">Gender</label>
                             <div class="col-lg-10">
                                 <label>
-                                    <input type="radio" value="m" data-ng-model="uc.uploadViewModel.gender" />&nbsp;Male
+                                    <input type="radio" value="m" data-ng-model="uc.uploadViewModel.gender" required />&nbsp;Male
                                 </label>
                                 <label>
-                                    <input type="radio" value="f" data-ng-model="uc.uploadViewModel.gender" />&nbsp;Female
+                                    <input type="radio" value="f" data-ng-model="uc.uploadViewModel.gender" required />&nbsp;Female
                                 </label>
                             </div>
                         </div>
@@ -121,7 +122,7 @@
                                 Timezone
                             </label>
                             <div class="col-lg-10">
-                                <select data-ng-model="uc.selectedTimeZone" id="inputTimeZone" class="form-control" data-ng-options="tz.text for tz in uc.timeZones"></select>
+                                <select data-ng-model="uc.selectedTimeZone" id="inputTimeZone" class="form-control" data-ng-options="tz.text for tz in uc.timeZones" required></select>
                             </div>
 
                         </div>
@@ -134,7 +135,7 @@
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <a class="btn btn-default btn-lg" data-ng-click="uc.reset(); cancel()">Cancel</a>
-                                <a class="btn btn-primary btn-lg" data-ng-click="uc.convert()" data-ng-disabled="uc.isConverting">Convert</a>
+                                <a class="btn btn-primary btn-lg" data-ng-click="uc.convert()" data-ng-disabled="uc.isConverting || uc.userProfileForm.$invalid">Convert</a>
                             </div>
                         </div>
 
@@ -149,10 +150,10 @@
                                 @Html.Partial("Plugins/_FacebookLike")
                             </li>
                             <li>
-                                <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="icon-facebook-squared"></i>Share on Facebook</a>
+                                <i class="icon-facebook-squared"></i> <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl">Share on Facebook</a>
                             </li>
                             <li>
-                                <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com"><i class="icon-twitter-squared"></i>Tweet about #PolarConverter</a>
+                                <i class="icon-twitter-squared"></i> <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
                             </li>
                             <li>
                                 <i class="icon-paypal"></i> @Html.ActionLink("Donate", "Donate")
@@ -163,7 +164,7 @@
                         <ul class="list-unstyled download-list">
                             <li data-ng-repeat="file in uc.convertedFiles">
                                 <i class="glyphicon glyphicon-file"></i>
-                                <a data-ng-href="http://polarconverter.blob.core.windows.net/polarfiles/{{ file.reference }}">{{file.name}}</a>
+                                <a data-ng-href=@string.Format("{0}{1}", Model.BlobPath,"{{ file.reference }}")>{{file.name}}</a>
                             </li>
                         </ul>
                         <h5>More files to convert?</h5>
