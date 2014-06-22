@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.Xml.Serialization;
 using Ionic.Zip;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
@@ -13,15 +12,18 @@ namespace PolarConverter.BLL.Services
     public class LocalStorageHelper : IStorageHelper
     {
         private readonly string _basePath;
+        private GpxReader _gpxReader;
 
         public LocalStorageHelper()
         {
             _basePath = AppDomain.CurrentDomain.BaseDirectory + "ConvertedFiles\\";
+            _gpxReader = new GpxReader();
         }
 
         public LocalStorageHelper(string basePath)
         {
             _basePath = basePath;
+            _gpxReader = new GpxReader();
         }
 
         public string UploadFile(HttpPostedFile fileData)
@@ -50,17 +52,9 @@ namespace PolarConverter.BLL.Services
 
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
-            XmlSerializer ser = xmlType == typeof(gpx) ? new XmlSerializer(xmlType, "http://www.topografix.com/GPX/1/0") : new XmlSerializer(xmlType);
-            try
+            using (var reader = new StreamReader(fileReference))
             {
-                using (var reader = new StreamReader(fileReference))
-                {
-                    return ser.Deserialize(reader.BaseStream);
-                }
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw;
+                return _gpxReader.DeserializeFile(reader.BaseStream, xmlType);
             }
         }
 

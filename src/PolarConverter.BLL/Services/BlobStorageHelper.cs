@@ -18,6 +18,8 @@ namespace PolarConverter.BLL.Services
     public class BlobStorageHelper: IStorageHelper
     {
         private readonly CloudBlobContainer _container;
+        private GpxReader _gpxReader;
+
         public BlobStorageHelper(string containerName)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
@@ -33,6 +35,8 @@ namespace PolarConverter.BLL.Services
             BlobContainerPermissions permissions1 = _container.GetPermissions();
             permissions1.PublicAccess = BlobContainerPublicAccessType.Container;
             _container.SetPermissions(permissions1);
+
+            _gpxReader = new GpxReader();
         }
 
         public string UploadFile(HttpPostedFile fileData)
@@ -62,14 +66,12 @@ namespace PolarConverter.BLL.Services
 
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
-            var ser = new XmlSerializer(xmlType);            
             var blob = _container.GetBlockBlobReference(fileReference);
-
             using (var memoryStream = new MemoryStream())
             {
                 blob.DownloadToStream(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                return ser.Deserialize(memoryStream);
+                return _gpxReader.DeserializeFile(memoryStream, xmlType);
             }
         }
 

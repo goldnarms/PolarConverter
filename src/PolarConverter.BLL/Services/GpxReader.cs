@@ -1,0 +1,58 @@
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using PolarConverter.BLL.Entiteter;
+using PolarConverter.BLL.Helpers;
+
+namespace PolarConverter.BLL.Services
+{
+    public class GpxReader
+    {
+        public object DeserializeFile(Stream stream, Type xmlType, bool retry = true)
+        {
+            XmlSerializer ser = xmlType == typeof(gpx) ? new XmlSerializer(xmlType, "http://www.topografix.com/GPX/1/0") : new XmlSerializer(xmlType);
+            try
+            {
+                return ser.Deserialize(stream);
+            }
+            catch (InvalidOperationException exception)
+            {
+                //if (retry)
+                //{
+                //    // Might be because of invalid datetime, 60 minutes instead of 00, reformat and try again
+                //    // Should match: 2014-06-15T11:60:03Z
+                //    var sixtyMinutes = new Regex("[0-9]^4-[0-9]^2-[0-9]^2+T+[0-9]^2+/:[60]/:[0-9]^2+Z");
+                //    using (var reader = new StreamReader(stream))
+                //    {
+                //        while (!reader.EndOfStream)
+                //        {
+                //            var line = reader.ReadLine();
+                //            if (sixtyMinutes.IsMatch(line))
+                //            {
+                //                var validText = "";
+                //                var firstIndexOfSixty = line.IndexOf("60");
+                //                // remove time tags
+                //                var tempTime = line.Replace("<time>", "").Replace("</time>", "");
+                //                var validDate = string.Format("{0}{1}{2}", line.Substring(0, firstIndexOfSixty),
+                //                    line.Substring(firstIndexOfSixty, 2).Replace("60", "00"),
+                //                    line.Substring(firstIndexOfSixty + 2));
+                //                var dateValue = validDate.ToPolarDateTime();
+                //                if (dateValue.HasValue)
+                //                {
+                //                    validText = string.Format("<time>{0}</time>", dateValue.Value.AddHours(1));
+                //                }
+                //                // Update file with new values
+                //            }
+                //        }
+                //    }
+                //    // Make sure stream is updated with new values
+                //    DeserializeFile(stream, xmlType, false);
+                //}
+                // Retry didn't work, throw exception 
+                throw;
+            }
+
+        }
+    }
+}

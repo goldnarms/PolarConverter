@@ -158,7 +158,7 @@ namespace PolarConverter.BLL.Services
 
             for (int i = 0; i < end - start; i++)
             {
-                if (i >= gpsData.Length)
+                if (i + offset >= gpsData.Length)
                 {
                     positionData[i + offset] = MapPositionData(gpsData.Last(), timezoneOffset);
                 }
