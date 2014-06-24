@@ -155,16 +155,15 @@ namespace PolarConverter.BLL.Services
         private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
         {
             var gpsData = RangeHelper.GetRange(pointData, start, end);
-
-            for (int i = 0; i < end - start; i++)
+            for (int i = 0; i < end - start && i < positionData.Length; i++)
             {
-                if (i + offset >= gpsData.Length)
+                if ((i + offset) < gpsData.Length)
                 {
-                    positionData[i + offset] = MapPositionData(gpsData.Last(), timezoneOffset);
+                    positionData[i] = MapPositionData(gpsData[i + offset], timezoneOffset);
                 }
                 else
                 {
-                    positionData[i + offset] = MapPositionData(gpsData[i], timezoneOffset);
+                    positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset);
                 }
             }
         }
