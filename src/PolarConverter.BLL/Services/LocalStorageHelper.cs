@@ -20,11 +20,11 @@ namespace PolarConverter.BLL.Services
             _gpxReader = new GpxReader();
         }
 
-        public LocalStorageHelper(string basePath)
-        {
-            _basePath = basePath;
-            _gpxReader = new GpxReader();
-        }
+        //public LocalStorageHelper(string basePath)
+        //{
+        //    _basePath = basePath;
+        //    _gpxReader = new GpxReader();
+        //}
 
         public string UploadFile(HttpPostedFile fileData)
         {

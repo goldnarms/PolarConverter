@@ -297,7 +297,7 @@ namespace PolarConverter.BLL.Services
                     }
                     //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
                     intervalsPerLap.Add(range.Item2);
-                    if (cadenceData != null)
+                    if (cadenceData != null && cadenceData.Length > 0)
                     {
                         lap.CadenceSpecified = true;
                         var avgCadence = cadenceData.Average(cd => Convert.ToDouble(cd));

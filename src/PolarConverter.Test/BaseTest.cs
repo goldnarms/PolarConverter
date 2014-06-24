@@ -21,8 +21,8 @@ namespace PolarConverter.Test
         [TestInitialize]
         public void Init()
         {
-            var path = AppDomain.CurrentDomain.BaseDirectory + "\\ConvertedFiles\\";
-            StorageHelper = new LocalStorageHelper(path);
+            //var path = AppDomain.CurrentDomain.BaseDirectory + "\\ConvertedFiles\\";
+            StorageHelper = new LocalStorageHelper();
             ConversionService = new ConversionService(StorageHelper);
             DataMapper = new DataMapper(StorageHelper);
             ViewModel = new UploadViewModel

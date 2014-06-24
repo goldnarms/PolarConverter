@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
@@ -17,7 +18,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
         public FileController()
         {
             //_storageHelper = new BlobStorageHelper("/polarfiles");
-            _storageHelper = new LocalStorageHelper();
+            //_storageHelper = new LocalStorageHelper();
+            _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
         }
 
         public FileController(IStorageHelper storageHelper)
