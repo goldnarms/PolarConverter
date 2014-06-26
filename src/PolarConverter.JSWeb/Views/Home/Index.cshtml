@@ -62,7 +62,7 @@
                     </tr>
                 </table>
             </form>
-            <div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0">
+            <div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0 || uc.showErrors">
                 <table class="table table-striped table-hover" data-ng-show="uc.showUploadedFiles">
                     <thead>
                         <tr>
@@ -140,10 +140,9 @@
                         </div>
 
                     </form>
-                    <a id="conversionResult"></a>
                     <div class="alert alert-success" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">
 
-                        <h3>Conversion successfull!</h3>
+                        <h3>Conversion successful!</h3>
                         <h4>Spread the word!</h4>
                         <ul class="social-list list-unstyled">
                             <li>
@@ -171,7 +170,7 @@
                         <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
                         <br />
                     </div>
-                    <div class="alert alert-danger" data-ng-show="uc.errors.length > 0">
+                    <div data-ng-class="{'alert': true, 'alert-danger': uc.convertedFiles.length === 0, 'alert-warning': uc.convertedFiles.length > 0 }" data-ng-show="uc.showErrors">
                         <h3>Oops, something went wrong ...</h3>
                         <p>See a list of errors below.</p>
                         <ul>
@@ -179,12 +178,22 @@
                                 {{error}}
                             </li>
                         </ul>
+                        <br />
+                        <div data-ng-if="uc.convertedFiles.length > 0">
+                            <h4>Click the link to download the files without error</h4>
+                            <ul class="list-unstyled download-list">
+                                <li data-ng-repeat="file in uc.convertedFiles">
+                                    <i class="glyphicon glyphicon-file"></i>
+                                    <a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
                         <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Try again</a>
                         @*<p>
-                                The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
-                                <input type="email" value="" />
-                            </p>
-                            <p>Please take a look at the F.A.Q. for more information.</p>*@
+                The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
+                <input type="email" value="" />
+            </p>
+            <p>Please take a look at the F.A.Q. for more information.</p>*@
                         <p>Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
                         <br />
                     </div>

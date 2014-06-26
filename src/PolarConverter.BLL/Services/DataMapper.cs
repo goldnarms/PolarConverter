@@ -33,7 +33,9 @@ namespace PolarConverter.BLL.Services
         {
             var hrmData = _storageHelper.ReadFile(hrmFile.Reference);
             var startTime = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
+            var initialStartDate = startTime;
             startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
+            startTime = new DateTime(initialStartDate.Year, initialStartDate.Month, initialStartDate.Day, startTime.Hour, startTime.Minute, startTime.Second, startTime.Millisecond);
             var polarData = InitalizePolarData(hrmFile, model, hrmData, startTime);
             var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, startTime);
 

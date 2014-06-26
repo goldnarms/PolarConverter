@@ -33,6 +33,7 @@ var PolarConverter;
             this.errors = [];
             this.showUploadedFiles = true;
             this.showFileTable = true;
+            this.showErrors = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
@@ -174,6 +175,8 @@ var PolarConverter;
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
+            this.errors = [];
+            this.showErrors = false;
             this.common.loadingBar.complete();
         };
         UploadController.prototype.removeGpxFile = function (polarFile) {
@@ -203,13 +206,16 @@ var PolarConverter;
         UploadController.prototype.onSuccesssfullConvert = function (response) {
             if (response.data.ErrorMessages && response.data.ErrorMessages.length > 0) {
                 this.errors = response.data.ErrorMessages;
+                this.showErrors = true;
             }
-            this.convertedFiles.push({ name: response.data.FileName, reference: response.data.Reference });
+            if (response.data.Reference != null) {
+                this.convertedFiles.push({ name: response.data.FileName, reference: response.data.Reference });
+            } else {
+                this.showErrors = true;
+            }
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
-
-            //var coversionResult = angular.element(document.getElementById('conversionResult'));
             this.$document.scrollTop(350, 1000);
             this.common.loadingBar.complete();
         };

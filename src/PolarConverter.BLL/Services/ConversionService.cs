@@ -34,6 +34,7 @@ namespace PolarConverter.BLL.Services
         public ConversionResult Convert(UploadViewModel model)
         {
             var errorMessages = new List<string>();
+            var successfulFiles = 0;
             var readable =
                 GetPipedStream(output =>
                 {
@@ -47,10 +48,11 @@ namespace PolarConverter.BLL.Services
                                 var hrmFileData = _dataMapper.MapData(hrmFile, model);
                                 var fileName = string.Format("{0}.{1}", RemoveFileExtension(hrmFile.Name), Enum.GetName(typeof (FilTyper), FilTyper.Tcx).ToLower());
                                 zip.AddEntry(fileName, hrmFileData);
+                                successfulFiles++;
                             }
                             catch (Exception ex)
                             {
-                                errorMessages.Add(ex.Message);
+                                errorMessages.Add(string.Format("Error in file {0}: {1}", hrmFile.Name, ex.Message));
                             }
 
                         }
@@ -62,10 +64,11 @@ namespace PolarConverter.BLL.Services
                                 var stream = _xmlMapper.MapData(xmlFile, model);
                                 var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
                                 zip.AddEntry(fileName, stream);
+                                successfulFiles++;
                             }
                              catch (Exception ex)
                             {
-                                errorMessages.Add(ex.Message);
+                                errorMessages.Add(string.Format("Error in file {0}: {1}", xmlFile.Name, ex.Message));
                             }
 
                         }
@@ -79,8 +82,8 @@ namespace PolarConverter.BLL.Services
             return new ConversionResult
             {
                 ErrorMessages = errorMessages,
-                FileName = "TcxFiles.zip",
-                Reference = fileReference
+                FileName = successfulFiles > 0 ? "TcxFiles.zip" : "",
+                Reference = successfulFiles > 0 ? fileReference : null
             };
         }
 

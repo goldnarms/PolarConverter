@@ -25,6 +25,7 @@ module PolarConverter {
         showExtraVariables: boolean;
         shareToFacebook(): void;
         tweetText: string;
+        showErrors: boolean;
         showFileTable: boolean;
         showUploadedFiles: boolean;
         selectedTimeZone: PolarConverter.TimeZone;
@@ -48,6 +49,7 @@ module PolarConverter {
         public sports: any[];
         public errors: string[];
         public tweetText: string;
+        public showErrors: boolean;
         public selectedTimeZone: PolarConverter.TimeZone;
         public userProfileForm: ng.IFormController;
         private initalized: boolean = false;
@@ -69,6 +71,7 @@ module PolarConverter {
             this.errors = [];
             this.showUploadedFiles = true;
             this.showFileTable = true;
+            this.showErrors = false;
             for (var sport in PolarConverter.sportEnum) {
                 if (typeof PolarConverter.sportEnum[sport] === "number") {
                     this.sports.push(sport);
@@ -209,6 +212,8 @@ module PolarConverter {
             this.gpxFiles = [];
             this.uploadedFiles = [];
             this.convertedFiles = [];
+            this.errors = [];
+            this.showErrors = false;
             this.common.loadingBar.complete();
         }
         public removeGpxFile(polarFile: PolarConverter.PolarFile) {
@@ -235,12 +240,16 @@ module PolarConverter {
         private onSuccesssfullConvert(response): void {
             if (response.data.ErrorMessages && response.data.ErrorMessages.length > 0) {
                 this.errors = response.data.ErrorMessages;
+                this.showErrors = true;
             }
-            this.convertedFiles.push(<PolarConverter.File>{ name: response.data.FileName, reference: response.data.Reference });
+            if (response.data.Reference != null) {
+                this.convertedFiles.push(<PolarConverter.File>{ name: response.data.FileName, reference: response.data.Reference });
+            } else {
+                this.showErrors = true;
+            }
             this.isConverting = false;
             this.uploadedFiles = [];
             this.gpxFiles = [];
-            //var coversionResult = angular.element(document.getElementById('conversionResult'));
             this.$document.scrollTop(350, 1000);
             this.common.loadingBar.complete();
         }

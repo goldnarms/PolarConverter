@@ -60,3 +60,13 @@ input[type="checkbox"].input-validation-error {
 .ng-cloak {
     display: none;
 }
+.alert-success {
+    background-color: #85C99E;
+}
+.alert-danger {
+    background-color: #F58370;
+}
+
+.alert-warning {
+    background-color: #F0B75A;
+}
