@@ -1065,7 +1065,7 @@ namespace PolarConverter.BLL.Entiteter
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.topografix.com/GPX/1/0")]
-    public partial class gpxTrkTrksegTrkpt
+    public partial class gpxTrkTrksegTrkpt : ITrackPoint
     {
 
         private decimal eleField;

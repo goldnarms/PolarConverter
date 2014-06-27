@@ -349,11 +349,14 @@ namespace PolarConverter.BLL.Services
 
         private static void GetPosition(PositionData positionData, ref Trackpoint_t trackData)
         {
-            trackData.Position = new Position_t
+            if (positionData != null)
             {
-                LatitudeDegrees = Convert.ToDouble(positionData.Lat),
-                LongitudeDegrees = Convert.ToDouble(positionData.Lon)
-            };
+                trackData.Position = new Position_t
+                {
+                    LatitudeDegrees = Convert.ToDouble(positionData.Lat),
+                    LongitudeDegrees = Convert.ToDouble(positionData.Lon)
+                };
+            }
         }
 
         private static void GetDistance(double antallMeterData, ref Trackpoint_t trackData)

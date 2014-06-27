@@ -309,7 +309,7 @@ namespace PolarConverter.BLL.Entiteter.gpxver11
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.topografix.com/GPX/1/1")]
-    public partial class wptType
+    public partial class wptType : ITrackPoint
     {
 
         private decimal eleField;

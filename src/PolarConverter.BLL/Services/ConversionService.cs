@@ -17,14 +17,6 @@ namespace PolarConverter.BLL.Services
         private readonly DataMapper _dataMapper;
         private readonly XmlMapper _xmlMapper;
 
-        public ConversionService()
-        {
-            //_storageHelper = new BlobStorageHelper("polarfiles");
-            _storageHelper = new LocalStorageHelper();
-            _dataMapper = new DataMapper(_storageHelper);
-            _xmlMapper = new XmlMapper(_storageHelper);
-        }
-
         public ConversionService(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;

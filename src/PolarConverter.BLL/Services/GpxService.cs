@@ -10,13 +10,7 @@ namespace PolarConverter.BLL.Services
 {
     public class GpxService
     {
-        private IStorageHelper _storageHelper;
-
-        public GpxService()
-        {
-            //_storageHelper = new BlobStorageHelper("polarfiles");'
-            _storageHelper = new LocalStorageHelper();
-        }
+        private readonly IStorageHelper _storageHelper;
 
         public GpxService(IStorageHelper storageHelper)
         {
@@ -152,25 +146,54 @@ namespace PolarConverter.BLL.Services
             return arrayOffset;
         }
 
-        private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
-        {
-            var gpsData = RangeHelper.GetRange(pointData, start, end);
-            for (int i = 0; i < end - start && i < positionData.Length; i++)
-            {
-                if ((i + offset) < gpsData.Length)
-                {
-                    positionData[i] = MapPositionData(gpsData[i + offset], timezoneOffset);
-                }
-                else
-                {
-                    positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset);
-                }
-            }
-        }
+        //private void SetPositionDataFromGpx(gpxTrkTrksegTrkpt[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
+        //{
+        //    var gpsData = RangeHelper.GetRange(pointData, start, end);
+        //    if (gpsData == null)
+        //    {
+        //        return;
+        //    }
+        //    for (int i = 0; i < end - start && i < positionData.Length; i++)
+        //    {
+        //        if ((i + offset) < gpsData.Length)
+        //        {
+        //            positionData[i] = MapPositionData(gpsData[i + offset], timezoneOffset);
+        //        }
+        //        else
+        //        {
+        //            positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset);
+        //        }
+        //    }
+        //}
 
-        private void SetPositionDataFromGpx(wptType[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
+        //private void SetPositionDataFromGpx(wptType[] pointData, int start, int end, int offset, ref PositionData[] positionData, double timezoneOffset)
+        //{
+        //    var gpsData = RangeHelper.GetRange(pointData, start, end);
+        //    if (gpsData == null)
+        //    {
+        //        return;
+        //    }
+        //    for (int i = 0; i < end - start; i++)
+        //    {
+        //        if ((i + offset) < gpsData.Length)
+        //        {
+        //            positionData[i] = MapPositionData(gpsData[i + offset], timezoneOffset);
+        //        }
+        //        else
+        //        {
+        //            positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset);
+        //        }
+        //    }
+        //}
+
+        private void SetPositionDataFromGpx<T>(T[] pointData, int start, int end, int offset, ref PositionData[] positionData,
+            double timezoneOffset) where T :ITrackPoint
         {
             var gpsData = RangeHelper.GetRange(pointData, start, end);
+            if (gpsData == null)
+            {
+                return;
+            }
             for (int i = 0; i < end - start; i++)
             {
                 if ((i + offset) < gpsData.Length)
@@ -186,7 +209,7 @@ namespace PolarConverter.BLL.Services
 
         private int CalculateOffset(DateTime startTime, DateTime gpsTime, int interval)
         {
-            var offsetSpan = startTime- gpsTime;
+            var offsetSpan = startTime - gpsTime;
             var offset = (offsetSpan.TotalSeconds - offsetSpan.TotalSeconds % interval);
             offset = offset % 3600; // 
             if (offset > 2000)
@@ -197,7 +220,7 @@ namespace PolarConverter.BLL.Services
             return Convert.ToInt32(offset / interval);
         }
 
-        private PositionData MapPositionData(gpxTrkTrksegTrkpt trackPoint, double timezoneOffset)
+        private PositionData MapPositionData<T>(T trackPoint, double timezoneOffset) where T :ITrackPoint
         {
             var positionData = new PositionData { Lat = trackPoint.lat, Lon = trackPoint.lon };
             if (trackPoint.eleSpecified)
@@ -219,26 +242,48 @@ namespace PolarConverter.BLL.Services
             return positionData;
         }
 
-        private PositionData MapPositionData(wptType trackPoint, double timezoneOffset)
-        {
-            var positionData = new PositionData { Lat = trackPoint.lat, Lon = trackPoint.lon };
-            if (trackPoint.eleSpecified)
-            {
-                positionData.Altitude = trackPoint.ele;
-            }
-            else
-            {
-                positionData.Altitude = null;
-            }
-            if (trackPoint.timeSpecified)
-            {
-                positionData.Time = trackPoint.time.AddMinutes(IntHelper.HentTidsKorreksjon(timezoneOffset));
-            }
-            else
-            {
-                positionData.Time = null;
-            }
-            return positionData;
-        }
+        //private PositionData MapPositionData(gpxTrkTrksegTrkpt trackPoint, double timezoneOffset)
+        //{
+        //    var positionData = new PositionData { Lat = trackPoint.lat, Lon = trackPoint.lon };
+        //    if (trackPoint.eleSpecified)
+        //    {
+        //        positionData.Altitude = trackPoint.ele;
+        //    }
+        //    else
+        //    {
+        //        positionData.Altitude = null;
+        //    }
+        //    if (trackPoint.timeSpecified)
+        //    {
+        //        positionData.Time = trackPoint.time.AddMinutes(IntHelper.HentTidsKorreksjon(timezoneOffset));
+        //    }
+        //    else
+        //    {
+        //        positionData.Time = null;
+        //    }
+        //    return positionData;
+        //}
+
+        //private PositionData MapPositionData(wptType trackPoint, double timezoneOffset)
+        //{
+        //    var positionData = new PositionData { Lat = trackPoint.lat, Lon = trackPoint.lon };
+        //    if (trackPoint.eleSpecified)
+        //    {
+        //        positionData.Altitude = trackPoint.ele;
+        //    }
+        //    else
+        //    {
+        //        positionData.Altitude = null;
+        //    }
+        //    if (trackPoint.timeSpecified)
+        //    {
+        //        positionData.Time = trackPoint.time.AddMinutes(IntHelper.HentTidsKorreksjon(timezoneOffset));
+        //    }
+        //    else
+        //    {
+        //        positionData.Time = null;
+        //    }
+        //    return positionData;
+        //}
     }
 }

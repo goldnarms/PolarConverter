@@ -29,6 +29,11 @@ namespace PolarConverter.BLL.Helpers
             var length = range2 - range1;
             if (length > data.Length - range1)
                 length = data.Length - range1;
+            if (length < 1)
+            {
+                return null;
+            }
+
             var result = new T[length];
             Array.Copy(data, range1, result, 0, length);
             return result;

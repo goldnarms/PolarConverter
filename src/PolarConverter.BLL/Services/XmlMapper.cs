@@ -110,7 +110,7 @@ namespace PolarConverter.BLL.Services
                                         {
                                             for (int i = 0; i < t.Track.Length; i++)
                                             {
-                                                if (gpsData.Length > i)
+                                                if (gpsData.Length > i && gpsData[i] != null)
                                                 {
                                                     t.Track[i].Position = new Position_t
                                                     {
