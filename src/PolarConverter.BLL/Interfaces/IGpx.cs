@@ -10,6 +10,4 @@ namespace PolarConverter.BLL.Interfaces
     {
         string Version { get; set; }
     }
-
-
 }

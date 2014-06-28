@@ -82,18 +82,34 @@ namespace PolarConverter.BLL.Services
                                     if (data.result.samples != null)
                                     {
                                         var startRange = 0;
-                                        foreach (var t in activity.Lap)
+                                        foreach (var lap in activity.Lap)
                                         {
-                                            t.Track = CollectSampleData(data.result.samples, startTime,
-                                                recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / recordingRate)));
-                                            startRange += t.Track.Length;
+                                            lap.Track = CollectSampleData(data.result.samples, startTime,
+                                                recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+                                            startRange += lap.Track.Length;
+                                        }
+                                    }
+                                    else if (data.sportresults != null)
+                                    {
+                                        var startRange = 0;
+                                        foreach (var sportResult in data.sportresults)
+                                        {
+                                            if (sportResult.samples != null)
+                                            {
+                                                foreach (var lap in activity.Lap)
+                                                {
+                                                    lap.Track = CollectSampleData(sportResult.samples, startTime,
+                                                        recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+                                                    startRange += lap.Track.Length;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                                 if (xmlFile.GpxFile != null)
                                 {
                                     var startRange = 0;
-                                    foreach (var t in activity.Lap)
+                                    foreach (var lap in activity.Lap)
                                     {
                                         var polardata = new PolarData
                                         {
@@ -104,23 +120,28 @@ namespace PolarConverter.BLL.Services
                                         };
                                         var gpsData =
                                             _gpxService.CollectGpxData(polardata,
-                                                startRange, startRange + Convert.ToInt32(Math.Floor(t.TotalTimeSeconds / recordingRate)));
-                                        startRange += t.Track.Length;
+                                                startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+
+                                        if (lap.Track == null)
+                                        {
+                                            continue;
+                                        }
+                                        startRange += lap.Track.Length;
                                         if (gpsData != null)
                                         {
-                                            for (int i = 0; i < t.Track.Length; i++)
+                                            for (int i = 0; i < lap.Track.Length; i++)
                                             {
                                                 if (gpsData.Length > i && gpsData[i] != null)
                                                 {
-                                                    t.Track[i].Position = new Position_t
+                                                    lap.Track[i].Position = new Position_t
                                                     {
                                                         LatitudeDegrees = Convert.ToDouble(gpsData[i].Lat),
                                                         LongitudeDegrees = Convert.ToDouble(gpsData[i].Lon)
                                                     };
                                                     if (gpsData[i].Altitude.HasValue)
                                                     {
-                                                        t.Track[i].AltitudeMetersSpecified = true;
-                                                        t.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
+                                                        lap.Track[i].AltitudeMetersSpecified = true;
+                                                        lap.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
                                                     }
                                                 }
                                             }
@@ -265,7 +286,6 @@ namespace PolarConverter.BLL.Services
             var lapDuration = lap.duration.ToTimeSpan();
             var activityLap = new ActivityLap_t();
             activityLap.StartTime = lapStartTime.ToUniversalTime();
-
             if (lap.heartrate != null)
             {
                 if (lap.heartrate.averageSpecified)
