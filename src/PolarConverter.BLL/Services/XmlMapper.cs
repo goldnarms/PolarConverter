@@ -37,9 +37,8 @@ namespace PolarConverter.BLL.Services
                 var activites = new List<Activity_t>();
                 foreach (calendaritem calendaritem in polarExercise.calendaritems.Items)
                 {
-                    var offsetInMinutes = IntHelper.HentTidsKorreksjon(model.TimeZoneOffset);
                     var polarDateTime = calendaritem.time.ToPolarDateTime();
-                    var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(offsetInMinutes) : DateTime.Now;
+                    var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset)) : DateTime.Now;
                     var activity = ActivityFactory.CreateActivity(xmlFile.Sport, model.Notes, startTime);
 
                     var type = calendaritem.GetType();

@@ -6,6 +6,7 @@ namespace PolarConverter.BLL.Helpers
     {
         public static int HentTidsKorreksjon(double gmt)
         {
+            return 0;
             var minutes = gmt*60;
             return Convert.ToInt32(minutes);
         }

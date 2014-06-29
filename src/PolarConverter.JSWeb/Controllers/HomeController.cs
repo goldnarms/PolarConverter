@@ -18,7 +18,8 @@ namespace PolarConverter.JSWeb.Controllers
         {
             _blobPath = ConfigurationManager.AppSettings["BlobPath"].Contains("http")
                 ? ConfigurationManager.AppSettings["BlobPath"]
-                : AppDomain.CurrentDomain.BaseDirectory + ConfigurationManager.AppSettings["BlobPath"];
+                //: AppDomain.CurrentDomain.BaseDirectory + ConfigurationManager.AppSettings["BlobPath"];
+                : "";
         }
         public ActionResult Index()
         {

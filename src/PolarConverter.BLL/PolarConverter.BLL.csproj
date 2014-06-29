@@ -216,9 +216,7 @@
     <Content Include="App_Readme\Spring.Social.Core.txt" />
     <Content Include="App_Readme\Spring.Social.Dropbox.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PolarConverter\BLL\Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

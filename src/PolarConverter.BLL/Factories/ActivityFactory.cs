@@ -11,7 +11,7 @@ namespace PolarConverter.BLL.Factories
     {
         public static Activity_t CreateActivity(string sport, string notes, DateTime starTime)
         {
-            return new Activity_t { Id = starTime, Sport = SportHelper.SetSport(sport), Notes = notes };
+            return new Activity_t { Id = starTime.ToUniversalTime(), Sport = SportHelper.SetSport(sport), Notes = notes };
         }
     }
 }
