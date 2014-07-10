@@ -117,6 +117,8 @@ namespace PolarConverter.BLL.Services
                                             GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model),
                                             UploadViewModel = model
                                         };
+                                        //TODO: check for gpx length
+                                        //recordingRate = recordingRate == 0 ? 5 : recordingRate;
                                         var gpsData =
                                             _gpxService.CollectGpxData(polardata,
                                                 startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
@@ -284,7 +286,7 @@ namespace PolarConverter.BLL.Services
         {
             var lapDuration = lap.duration.ToTimeSpan();
             var activityLap = new ActivityLap_t();
-            activityLap.StartTime = lapStartTime.ToUniversalTime();
+            activityLap.StartTime = lapStartTime.ToUniversalTimeZone();
             if (lap.heartrate != null)
             {
                 if (lap.heartrate.averageSpecified)
@@ -345,7 +347,7 @@ namespace PolarConverter.BLL.Services
             {
                 trackPoints[i - startRange] = new Trackpoint_t
                 {
-                    Time = starTime.AddSeconds(i * recordingRate).ToUniversalTime()
+                    Time = starTime.AddSeconds(i * recordingRate).ToUniversalTimeZone()
                 };
             }
             foreach (var sampleData in sampleDic)

@@ -66,6 +66,7 @@ namespace PolarConverter.BLL.Entiteter
         public IGpx GpxData { get; set; }
         public double V02max { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime OriginalDate { get; set; }
         public double Weight { get; set; }
 
 

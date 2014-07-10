@@ -8,6 +8,7 @@ using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Factories;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
+using System.Globalization;
 
 namespace PolarConverter.BLL.Services
 {
@@ -34,7 +35,7 @@ namespace PolarConverter.BLL.Services
             var polarData = InitalizePolarData(hrmFile, model);
             var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, polarData.StartTime);
             VaskHrData(ref polarData);
-            CollectHrmData(ref activity, polarData);
+            CollectHrmData(ref activity, polarData, model.TimeZoneOffset);
             var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(new[] { activity });
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
 
@@ -108,14 +109,10 @@ namespace PolarConverter.BLL.Services
             polardata.HrmData = hrmData;
             polardata.Sport = file.Sport;
             polardata.Note = noteText.ToString();
-            polardata.StartDate = StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato();
-            // Remove timezoneadjustment
-            polardata.StartTime = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
-            //var startTime = Convert.ToDateTime(StringHelper.HentVerdi("StartTime=", 10, hrmData));
-
-            //startTime = startTime.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset));
-            //startTime = new DateTime(polardata.StartDate.Year, polardata.StartDate.Month, polardata.StartDate.Day, startTime.Hour, startTime.Minute, startTime.Second, startTime.Millisecond);
-            //polardata.StartTime = startTime;
+            var startTime = GetTime(hrmData);
+            polardata.OriginalDate = GetDate(hrmData);
+            polardata.StartDate = CalculateStartDate(polardata.OriginalDate, startTime, model.TimeZoneOffset);
+            polardata.StartTime = CalculateTimeForLap(polardata.OriginalDate, startTime, model.TimeZoneOffset);
             polardata.Device = Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim());
             polardata.RecordingRate = interval;
             polardata.HrData = new List<HRData>();
@@ -127,6 +124,33 @@ namespace PolarConverter.BLL.Services
             polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model) : null;
             polardata.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             return polardata;
+        }
+
+        private static DateTime GetTime(string hrmData)
+        {
+            return ConvertTimeToDate(StringHelper.HentVerdi("StartTime=", 10, hrmData));
+        }
+
+        private static DateTime GetDate(string hrmData)
+        {
+            return StringHelper.HentVerdi("Date=", 8, hrmData).KonverterTilDato();
+        }
+
+
+        private static DateTime CalculateStartDate(DateTime date, DateTime time, double timeOffsetInHours)
+        {
+            var timeWithOffset = (time.Hour * 60) + time.Minute + (timeOffsetInHours * 60);
+            if (timeWithOffset < 0)
+            {
+                // Need to substract a day
+                date = date.AddDays(-1);
+            }
+            else if (timeWithOffset >= 1440)
+            {
+                // Need to add a day
+                date = date.AddDays(1);
+            }
+            return date;
         }
 
         public void VaskHrData(ref PolarData data)
@@ -206,17 +230,18 @@ namespace PolarConverter.BLL.Services
             return speed * (isImperial ? Converters.MphToMs : Converters.HmhToMs) * interval;
         }
 
-        private void CollectHrmData(ref Activity_t activity, PolarData polarData)
+        private void CollectHrmData(ref Activity_t activity, PolarData polarData, double offsetInMinutes)
         {
-            activity.Lap = CalculateIntTimes(polarData);
+            activity.Lap = CalculateIntTimes(polarData, offsetInMinutes);
         }
 
-        public ActivityLap_t[] CalculateIntTimes(PolarData polarData)
+        public ActivityLap_t[] CalculateIntTimes(PolarData polarData, double offsetInHours)
         {
             var laps = new List<ActivityLap_t>();
             var intervalsPerLap = new List<double>();
             var lastDistance = 0d;
-            DateTime previouseLapEndtime = polarData.StartDate;
+            DateTime previouseLapEndtime = polarData.StartTime;
+            var previousDuration = new TimeSpan(0,0,0,0);
             var startTime = polarData.StartTime;
             var increment = polarData.Versjon == "102" || polarData.Versjon == "105" ? 16 : 28;
             for (var i = 0; i < polarData.RundeTider.Count; i = i + increment)
@@ -224,17 +249,18 @@ namespace PolarConverter.BLL.Services
                 var lap = new ActivityLap_t();
                 byte cadenceRecordings = 0;
                 var distanceLogged = 0d;
-                var lapTime = polarData.RundeTider[i];
-                lap.StartTime = startTime.ToUniversalTime();
-                var lapEndTime = GetEndTimeForLap(lapTime);
-                var lapDuration = GetDurationForLaptime(lapEndTime);
+                var lapTime = ConvertTimeToDate(polarData.RundeTider[i]);
+                lap.StartTime = startTime.ToUniversalTimeZone();
+                var lapEndTime = startTime.AddMilliseconds(GetMsForLap(lapTime));
+                var lapDuration = GetDurationForLaptime(lapEndTime, previouseLapEndtime);
                 startTime = startTime.AddMilliseconds(lapDuration.TotalMilliseconds);
                 lap.TotalTimeSeconds = lapDuration.TotalSeconds;
-
+                
                 var range = new Tuple<int, int>(
-                    GetFrequencyForDate(previouseLapEndtime, polarData.RecordingRate),
-                    GetFrequencyForDate(lapEndTime, polarData.RecordingRate)
+                    GetFrequencyForDate(previousDuration, polarData.RecordingRate),
+                    GetFrequencyForDate(previousDuration + lapDuration, polarData.RecordingRate)
                 );
+                previousDuration += lapDuration;
                 previouseLapEndtime = lapEndTime;
                 var positionData = CollectPositionData(polarData, ref range);
                 var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2);
@@ -292,7 +318,7 @@ namespace PolarConverter.BLL.Services
                     {
                         trackData.Extensions = DataHelper.WritePowerData(powerData[j]);
                     }
-                    trackData.Time = lap.StartTime.AddSeconds(polarData.RecordingRate * j).ToUniversalTime();
+                    trackData.Time = lap.StartTime.AddSeconds(polarData.RecordingRate * j).ToUniversalTimeZone();
                     lap.Track[j] = trackData;
                 }
                 //runde.PowerData = HentRange(polarData.PowerData, range.Item1, range.Item2);
@@ -340,12 +366,31 @@ namespace PolarConverter.BLL.Services
             return laps.ToArray();
         }
 
-        private static DateTime GetEndTimeForLap(string lapTime)
+        private int GetMsForLap(DateTime lapTime)
         {
-            var today = DateTime.Today.Date;
-            // Check for h:MM:ss format
+            return GetMsForSeconds(GetSecondsForMinutes(GetMinutesForHours(lapTime.Hour) + lapTime.Minute) + lapTime.Second) + lapTime.Millisecond;
+        }
+
+        private int GetMsForSeconds(int seconds)
+        {
+            return seconds*1000;
+        }
+
+        private int GetSecondsForMinutes(int minutes)
+        {
+            return minutes*60;
+        }
+
+        private int GetMinutesForHours(int hour)
+        {
+            return hour*60;
+        }
+
+        private static DateTime ConvertTimeToDate(string lapTime)
+        {
             int hourLength = lapTime[1] == ':' ? 1 : 2;
-            var lapDateTime = new DateTime(
+            DateTime today = DateTime.Today.Date;
+            return new DateTime(
                 today.Year,
                 today.Month,
                 today.Day,
@@ -354,18 +399,31 @@ namespace PolarConverter.BLL.Services
                 Convert.ToInt32(lapTime.Substring(hourLength + 4, 2)),
                 lapTime.Length > 8 ? Convert.ToInt32(lapTime.Substring(hourLength + 7, 1)) : 0
             );
-            return lapDateTime;
         }
 
-        private static TimeSpan GetDurationForLaptime(DateTime lapDateTime)
+        private static DateTime CalculateTimeForLap(DateTime exerciseDate, DateTime lapTime, double offsetInHours)
         {
-            var today = DateTime.Today.Date;
-            return lapDateTime - today;
+            // Check for h:MM:ss format
+            var lapDateTime = new DateTime(
+                exerciseDate.Year,
+                exerciseDate.Month,
+                exerciseDate.Day,
+                lapTime.Hour,
+                lapTime.Minute,
+                lapTime.Second,
+                lapTime.Millisecond
+            );
+            return lapDateTime.AddHours(offsetInHours);
         }
 
-        private static int GetFrequencyForDate(DateTime date, int recordingRate)
+        private static TimeSpan GetDurationForLaptime(DateTime lapDateTime, DateTime previousLapDateTime)
         {
-            return Convert.ToInt32(Math.Ceiling(date.AntallSekunder() / (recordingRate == 238 ? 5 : recordingRate)));
+            return lapDateTime - previousLapDateTime;
+        }
+
+        private static int GetFrequencyForDate(TimeSpan duration, int recordingRate)
+        {
+            return Convert.ToInt32(Math.Ceiling(duration.TotalSeconds / (recordingRate == 238 ? 5 : recordingRate)));
         }
 
         private static void GetPosition(PositionData positionData, ref Trackpoint_t trackData)

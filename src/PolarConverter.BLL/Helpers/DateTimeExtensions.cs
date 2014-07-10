@@ -31,9 +31,15 @@ namespace PolarConverter.BLL.Helpers
                 DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
             if (DateTime.TryParseExact(tekst, "yyyy-MM-dd HH:mm:ss.F", CultureInfo.InvariantCulture,
                 DateTimeStyles.AllowTrailingWhite, out dato)) return dato;
-
             return dato;
         }
 
+        public static DateTime ToUniversalTimeZone(this DateTime dateTime)
+        {
+            var currentTimezone = TimeZone.CurrentTimeZone;
+            var offset = currentTimezone.GetUtcOffset(dateTime);
+            dateTime = dateTime.AddMinutes(offset.TotalMinutes);
+            return dateTime.ToUniversalTime();
+        }
     }
 }
