@@ -14,49 +14,6 @@ namespace PolarConverter.BLL
 {
     public static class FilHandler
     {
-
-        public static string LesFraFil(string sti)
-        {
-            using (var sr = File.OpenText(sti))
-            {
-                var data = new StringBuilder();
-                string s;
-                while ((s = sr.ReadLine()) != null)
-                {
-                    data.AppendLine(s);
-                }
-
-                return data.ToString();
-            }
-        }
-
-        static Stream GetPipedStream(Action<Stream> writeAction)
-        {
-            var pipeServer = new AnonymousPipeServerStream();
-            ThreadPool.QueueUserWorkItem(s =>
-            {
-                using (pipeServer)
-                {
-                    writeAction(pipeServer);
-                    pipeServer.WaitForPipeDrain();
-                }
-            });
-            return new AnonymousPipeClientStream(pipeServer.GetClientHandleAsString());
-        }
-
-        public static MemoryStream SkrivTilFil(PolarData data, string sti)
-        {
-            using (var memStream = new MemoryStream())
-            {
-                using (var streamWriter = new StreamWriter(memStream))
-                {
-                    var dataSomSkalSkrives = DataSomSkalSkrives(data);
-                    streamWriter.Write(dataSomSkalSkrives);
-                    return memStream;
-                }
-            }
-        }
-
         public static StringBuilder DataSomSkalSkrives(PolarData data)
         {
             var dataSomSkalSkrives = new StringBuilder();

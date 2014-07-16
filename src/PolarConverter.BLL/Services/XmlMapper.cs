@@ -38,7 +38,7 @@ namespace PolarConverter.BLL.Services
                 foreach (calendaritem calendaritem in polarExercise.calendaritems.Items)
                 {
                     var polarDateTime = calendaritem.time.ToPolarDateTime();
-                    var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset)) : DateTime.Now;
+                    var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset * -1)) : DateTime.Now;
                     var activity = ActivityFactory.CreateActivity(xmlFile.Sport, model.Notes, startTime);
 
                     var type = calendaritem.GetType();
@@ -114,14 +114,15 @@ namespace PolarConverter.BLL.Services
                                         {
                                             RecordingRate = recordingRate,
                                             StartTime = startTime,
-                                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model),
+                                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.TimeZoneOffset * -1),
                                             UploadViewModel = model
                                         };
                                         //TODO: check for gpx length
                                         //recordingRate = recordingRate == 0 ? 5 : recordingRate;
-                                        var gpsData =
-                                            _gpxService.CollectGpxData(polardata,
-                                                startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+                                        var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds/recordingRate));
+                                        var gpsData = recordingRate > 0 ?
+                                            _gpxService.CollectGpxData(polardata, lap.StartTime,
+                                                startRange, startRange + length) : null;
 
                                         if (lap.Track == null)
                                         {
@@ -174,11 +175,11 @@ namespace PolarConverter.BLL.Services
         {
             var lap = new ActivityLap_t();
             int recordingLength = 0;
-            int interval = result.recordingrateSpecified && result.recordingrate > 0 ? result.recordingrate : 5;
+            int interval = result.recordingrateSpecified ? result.recordingrate : 0;
             var lapDuration = result.duration.ToTimeSpan();
             lap.StartTime = startTime;
             lap.TotalTimeSeconds = lapDuration.TotalSeconds;
-            recordingLength = Convert.ToInt32(Math.Floor(lapDuration.TotalSeconds / interval));
+            recordingLength = interval > 0 ? Convert.ToInt32(Math.Floor(lapDuration.TotalSeconds / interval)) : 0;
             lap.Track = new Trackpoint_t[recordingLength];
             for (int i = 0; i < lap.Track.Length; i++)
             {

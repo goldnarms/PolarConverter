@@ -35,7 +35,7 @@ namespace PolarConverter.BLL.Services
             var polarData = InitalizePolarData(hrmFile, model);
             var activity = ActivityFactory.CreateActivity(hrmFile.Sport, string.IsNullOrEmpty(model.Notes) ? polarData.Note : model.Notes, polarData.StartTime);
             VaskHrData(ref polarData);
-            CollectHrmData(ref activity, polarData, model.TimeZoneOffset);
+            CollectHrmData(ref activity, polarData);
             var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(new[] { activity });
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
 
@@ -103,7 +103,7 @@ namespace PolarConverter.BLL.Services
             {
                 noteText.AppendLine(notes);
             }
-
+            polardata.InvertedOffset = model.TimeZoneOffset*-1;
             polardata.UploadViewModel = model;
             polardata.V02max = v02Max;
             polardata.HrmData = hrmData;
@@ -111,8 +111,8 @@ namespace PolarConverter.BLL.Services
             polardata.Note = noteText.ToString();
             var startTime = GetTime(hrmData);
             polardata.OriginalDate = GetDate(hrmData);
-            polardata.StartDate = CalculateStartDate(polardata.OriginalDate, startTime, model.TimeZoneOffset);
-            polardata.StartTime = CalculateTimeForLap(polardata.OriginalDate, startTime, model.TimeZoneOffset);
+            polardata.StartDate = CalculateStartDate(polardata.OriginalDate, startTime, polardata.InvertedOffset);
+            polardata.StartTime = CalculateTimeForLap(polardata.OriginalDate, startTime, polardata.InvertedOffset);
             polardata.Device = Convert.ToInt32(StringHelper.HentVerdi("Monitor=", 2, hrmData).Trim());
             polardata.RecordingRate = interval;
             polardata.HrData = new List<HRData>();
@@ -121,7 +121,7 @@ namespace PolarConverter.BLL.Services
             polardata.CadenseData = new List<string>();
             polardata.SpeedData = new List<string>();
             polardata.AntallMeter = new List<double>();
-            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model) : null;
+            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model.TimeZoneOffset *-1) : null;
             polardata.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             return polardata;
         }
@@ -182,6 +182,7 @@ namespace PolarConverter.BLL.Services
                             data.AntallMeter.Add(GetDistanceForSpeed(hrmVerdier, i, data.RecordingRate,
                                 data.ImperiskeEnheter));
                         }
+                        data.SpeedData.Add(hrmVerdier[i]);
                     }
                     else if (data.HarCadence)
                         data.CadenseData.Add(hrmVerdier[i]);
@@ -230,17 +231,16 @@ namespace PolarConverter.BLL.Services
             return speed * (isImperial ? Converters.MphToMs : Converters.HmhToMs) * interval;
         }
 
-        private void CollectHrmData(ref Activity_t activity, PolarData polarData, double offsetInMinutes)
+        private void CollectHrmData(ref Activity_t activity, PolarData polarData)
         {
-            activity.Lap = CalculateIntTimes(polarData, offsetInMinutes);
+            activity.Lap = CalculateIntTimes(polarData);
         }
 
-        public ActivityLap_t[] CalculateIntTimes(PolarData polarData, double offsetInHours)
+        public ActivityLap_t[] CalculateIntTimes(PolarData polarData)
         {
             var laps = new List<ActivityLap_t>();
             var intervalsPerLap = new List<double>();
             var lastDistance = 0d;
-            DateTime previouseLapEndtime = polarData.StartTime;
             var previousDuration = new TimeSpan(0,0,0,0);
             var startTime = polarData.StartTime;
             var increment = polarData.Versjon == "102" || polarData.Versjon == "105" ? 16 : 28;
@@ -249,29 +249,29 @@ namespace PolarConverter.BLL.Services
                 var lap = new ActivityLap_t();
                 byte cadenceRecordings = 0;
                 var distanceLogged = 0d;
-                var lapTime = ConvertTimeToDate(polarData.RundeTider[i]);
                 lap.StartTime = startTime.ToUniversalTimeZone();
-                var lapEndTime = startTime.AddMilliseconds(GetMsForLap(lapTime));
-                var lapDuration = GetDurationForLaptime(lapEndTime, previouseLapEndtime);
-                startTime = startTime.AddMilliseconds(lapDuration.TotalMilliseconds);
-                lap.TotalTimeSeconds = lapDuration.TotalSeconds;
+
+                var lapDurationInMs = GetMsForDateTime(ConvertTimeToDate(polarData.RundeTider[i])) - previousDuration.TotalMilliseconds;
+                var lapEndTime = startTime.AddMilliseconds(lapDurationInMs);
+                var durationTimeSpan = GetDuration(startTime, lapEndTime);
+                startTime = lapEndTime;
+                lap.TotalTimeSeconds = durationTimeSpan.TotalSeconds;
                 
                 var range = new Tuple<int, int>(
                     GetFrequencyForDate(previousDuration, polarData.RecordingRate),
-                    GetFrequencyForDate(previousDuration + lapDuration, polarData.RecordingRate)
+                    GetFrequencyForDate(previousDuration + durationTimeSpan, polarData.RecordingRate)
                 );
-                previousDuration += lapDuration;
-                previouseLapEndtime = lapEndTime;
-                var positionData = CollectPositionData(polarData, ref range);
-                var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2);
-                var altitudeData = RangeHelper.GetRange(polarData.AltitudeData, range.Item1, range.Item2);
-                var antallMeterData = RangeHelper.GetRange(polarData.AntallMeter, range.Item1, range.Item2);
+                previousDuration = previousDuration + durationTimeSpan;
+                var positionData = CollectPositionData(polarData, lap.StartTime, range);
+                var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2 - range.Item1);
+                var altitudeData = RangeHelper.GetRange(polarData.AltitudeData, range.Item1, range.Item2 - range.Item1);
+                var antallMeterData = RangeHelper.GetRange(polarData.AntallMeter, range.Item1, range.Item2 - range.Item1);
                 var lastMeter = antallMeterData != null && antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
                 lap.DistanceMeters = lastMeter - lastDistance;
                 lastDistance = lastMeter;
-                var speedData = RangeHelper.GetRange(polarData.SpeedData, range.Item1, range.Item2);
-                var cadenceData = RangeHelper.GetRange(polarData.CadenseData, range.Item1, range.Item2);
-                var powerData = RangeHelper.GetRange(polarData.PowerData, range.Item1, range.Item2);
+                var speedData = RangeHelper.GetRange(polarData.SpeedData, range.Item1, range.Item2 - range.Item1);
+                var cadenceData = RangeHelper.GetRange(polarData.CadenseData, range.Item1, range.Item2 - range.Item1);
+                var powerData = RangeHelper.GetRange(polarData.PowerData, range.Item1, range.Item2 - range.Item1);
                 var lengths = new List<int>();
                 if (heartRateData != null)
                     lengths.Add(heartRateData.Length);
@@ -366,7 +366,7 @@ namespace PolarConverter.BLL.Services
             return laps.ToArray();
         }
 
-        private int GetMsForLap(DateTime lapTime)
+        private int GetMsForDateTime(DateTime lapTime)
         {
             return GetMsForSeconds(GetSecondsForMinutes(GetMinutesForHours(lapTime.Hour) + lapTime.Minute) + lapTime.Second) + lapTime.Millisecond;
         }
@@ -416,14 +416,14 @@ namespace PolarConverter.BLL.Services
             return lapDateTime.AddHours(offsetInHours);
         }
 
-        private static TimeSpan GetDurationForLaptime(DateTime lapDateTime, DateTime previousLapDateTime)
+        private static TimeSpan GetDuration(DateTime startTime, DateTime endTime)
         {
-            return lapDateTime - previousLapDateTime;
+            return endTime - startTime;
         }
 
         private static int GetFrequencyForDate(TimeSpan duration, int recordingRate)
         {
-            return Convert.ToInt32(Math.Ceiling(duration.TotalSeconds / (recordingRate == 238 ? 5 : recordingRate)));
+            return recordingRate > 0 ? Convert.ToInt32(Math.Ceiling(duration.TotalSeconds / (recordingRate == 238 ? 5 : recordingRate))) : 0;
         }
 
         private static void GetPosition(PositionData positionData, ref Trackpoint_t trackData)
@@ -494,12 +494,11 @@ namespace PolarConverter.BLL.Services
             trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData.HjerteFrekvens };
         }
 
-        private PositionData[] CollectPositionData(PolarData polarData, ref Tuple<int, int> range)
+        private PositionData[] CollectPositionData(PolarData polarData, DateTime starTime, Tuple<int, int> range)
         {
             if (polarData.GpxData != null)
             {
-                var positionData = _gpxService.CollectGpxData(polarData, range.Item1, range.Item2);
-                range = new Tuple<int, int>(range.Item1, positionData.Length);
+                var positionData = _gpxService.CollectGpxData(polarData, starTime, range.Item1, range.Item2);
                 return positionData;
             }
             return null;

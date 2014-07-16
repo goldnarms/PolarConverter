@@ -7,35 +7,34 @@ namespace PolarConverter.BLL.Helpers
     public static class RangeHelper
     {
 
-        public static List<GPSData> HentGpsRange(List<GPSData> data, int range1, int range2)
+        public static List<GPSData> HentGpsRange(List<GPSData> data, int startIndex, int length)
         {
-            return data.Count >= range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)) : null;
+            return data.Count >= startIndex ? (data.Count > startIndex + length ? data.GetRange(startIndex, length) : data.GetRange(startIndex, data.Count - startIndex)) : null;
         }
 
-        public static List<T> HentRange<T>(List<T> data, int range1, int range2)
+        public static List<T> HentRange<T>(List<T> data, int startIndex, int length)
         {
-            return data.Count > range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)) : null;
+            return data.Count > startIndex ? (data.Count > startIndex + length ? data.GetRange(startIndex, length) : data.GetRange(startIndex, data.Count - startIndex)) : null;
         }
 
-        public static T[] GetRange<T>(List<T> data, int range1, int range2)
+        public static T[] GetRange<T>(List<T> data, int startIndex, int length)
         {
-            return data.Count > range1 ? (data.Count > range1 + range2 ? data.GetRange(range1, range2) : data.GetRange(range1, data.Count - range1)).ToArray() : null;
+            return data.Count > startIndex ? (data.Count > startIndex + length ? data.GetRange(startIndex, length) : data.GetRange(startIndex, data.Count - startIndex)).ToArray() : null;
         }
 
 
         // Thanks to http://stackoverflow.com/questions/943635/c-sharp-arrays-getting-a-sub-array-from-an-existing-array
-        public static T[] GetRange<T>(T[] data, int range1, int range2)
+        public static T[] GetRange<T>(T[] data, int startIndex, int length)
         {
-            var length = range2 - range1;
-            if (length > data.Length - range1)
-                length = data.Length - range1;
+            if (length > data.Length - startIndex)
+                length = data.Length - startIndex;
             if (length < 1)
             {
                 return null;
             }
 
             var result = new T[length];
-            Array.Copy(data, range1, result, 0, length);
+            Array.Copy(data, startIndex, result, 0, length);
             return result;
         }
     }

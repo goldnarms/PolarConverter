@@ -108,3 +108,9 @@ Backup*/
 UpgradeLog*.XML
 src/PolarConverter.JSWeb/App/Models/PolarFile.js
 *.map
+*.gpx
+*.zip
+*.hrm
+*.xml
+*.chk
+*.ide

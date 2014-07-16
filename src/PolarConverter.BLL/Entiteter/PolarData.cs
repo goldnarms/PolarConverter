@@ -23,28 +23,28 @@ namespace PolarConverter.BLL.Entiteter
         public static Dictionary<int, string> Devices = new Dictionary<int, string>
                                                             {
                                                                 { 0, "Unknown" },
-                                                                { 1, "Polar Sport Tester / Vantage XL" }, 
-                                                                { 2, "Polar Vantage NV (VNV)" }, 
-                                                                { 3, "Polar Accurex Plus" }, 
-                                                                { 4, " Polar XTrainer Plus " }, 
-                                                                { 6, "Polar S520" }, 
-                                                                { 7, "Polar Coach" }, 
-                                                                { 8, "Polar S210" }, 
-                                                                { 9, "Polar S410" }, 
-                                                                { 10, "Polar S510" }, 
-                                                                { 11, "Polar S610 / S610i" }, 
-                                                                { 12, "Polar S710 / S710i / S720i" }, 
-                                                                { 13, "Polar S810 / S810i" }, 
-                                                                { 15, "Polar E600" }, 
-                                                                { 20, "Polar AXN500" }, 
-                                                                { 21, "Polar AXN700" }, 
-                                                                { 22, "Polar S625X / S725X" }, 
-                                                                { 23, "Polar S725" }, 
-                                                                { 33, "Polar CS400" }, 
-                                                                { 34, "Polar CS600X" }, 
-                                                                { 35, "Polar CS600" }, 
-                                                                { 36, "Polar RS400" }, 
-                                                                { 37, "Polar RS800" }, 
+                                                                { 1, "Polar Sport Tester / Vantage XL" },
+                                                                { 2, "Polar Vantage NV (VNV)" },
+                                                                { 3, "Polar Accurex Plus" },
+                                                                { 4, " Polar XTrainer Plus " },
+                                                                { 6, "Polar S520" },
+                                                                { 7, "Polar Coach" },
+                                                                { 8, "Polar S210" },
+                                                                { 9, "Polar S410" },
+                                                                { 10, "Polar S510" },
+                                                                { 11, "Polar S610 / S610i" },
+                                                                { 12, "Polar S710 / S710i / S720i" },
+                                                                { 13, "Polar S810 / S810i" },
+                                                                { 15, "Polar E600" },
+                                                                { 20, "Polar AXN500" },
+                                                                { 21, "Polar AXN700" },
+                                                                { 22, "Polar S625X / S725X" },
+                                                                { 23, "Polar S725" },
+                                                                { 33, "Polar CS400" },
+                                                                { 34, "Polar CS600X" },
+                                                                { 35, "Polar CS600" },
+                                                                { 36, "Polar RS400" },
+                                                                { 37, "Polar RS800" },
                                                                 { 38, "Polar RS800X" }
                                                             };
         public int RecordingRate { get; set; }
@@ -68,6 +68,7 @@ namespace PolarConverter.BLL.Entiteter
         public DateTime StartDate { get; set; }
         public DateTime OriginalDate { get; set; }
         public double Weight { get; set; }
+        public double InvertedOffset { get; set; }
 
 
         public void VaskXmlHrData(string innlestData)
@@ -83,12 +84,14 @@ namespace PolarConverter.BLL.Entiteter
                 foreach (var speed in SpeedData)
                 {
                     double fart;
-                    if(!double.TryParse(speed, out fart))
+                    if (!double.TryParse(speed, out fart))
                     {
                         double.TryParse(speed.Replace('.', ','), out fart);
                     }
-
-                    AntallMeter.Add(AntallMeter.Count > 0 ? AntallMeter.Last() + (fart / 0.06 / 60 * RecordingRate) : (fart / 0.06 / 60 * RecordingRate));
+                    if (RecordingRate > 0)
+                    {
+                        AntallMeter.Add(AntallMeter.Count > 0 ? AntallMeter.Last() + (fart / 0.06 / 60 * RecordingRate) : (fart / 0.06 / 60 * RecordingRate));
+                    }
                 }
             }
         }
