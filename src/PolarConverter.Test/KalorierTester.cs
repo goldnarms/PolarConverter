@@ -28,6 +28,24 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 0, maxHeartrate = 0;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+                firstLap.Calories.ShouldBeGreaterThan(Zero);
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(484.6);
+                const byte avgHeartrate2 = 130, maxHeartrate2 = 130;
+                var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
+                secondLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate2);
+                secondLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate2);
+                secondLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortDateString());
+                secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortTimeString());
+                secondLap.CadenceSpecified.ShouldBeTrue();
+                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+
                 TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 0, 0, new DateTime(2012, 10, 16, 18, 06, 08), false, true).ShouldBeTrue();
                 var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
                 TestHelper.AssertCadAltAvgMaxStarttime(secondLap, 147, 163, new DateTime(2012, 10, 16, 18, 06, 08),

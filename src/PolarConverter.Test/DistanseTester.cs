@@ -29,7 +29,7 @@ namespace PolarConverter.Test
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
                 TestHelper.AssertAvgAndMax(firstLap, 106, 149).ShouldBeTrue();
-                firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 17, 32, 27));
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 9, 30, 15, 32, 27));
                 firstLap.TotalTimeSeconds.ShouldEqual(4502);
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6852.4);
             }

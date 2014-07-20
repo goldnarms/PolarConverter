@@ -28,8 +28,12 @@ namespace PolarConverter.Test
                 var activityType = trainingDoc.Activities.Activity[0].Sport;
                 activityType.ToString().ShouldContain("Running");
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 153, 167, new DateTime(2012, 10, 1, 17, 58, 22), false,
-                    false).ShouldBeTrue();
+                const byte avgHeartrate = 153, maxHeartrate = 167;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 1, 21, 58, 22).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.TotalTimeSeconds.ShouldEqual(281.5);
             }
         }
@@ -55,10 +59,13 @@ namespace PolarConverter.Test
                 activityType.ToString().ShouldContain("Biking");
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(2);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                byte avgHr = 154;
-                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHr);
-                TestHelper.AssertStartTime(firstLap, new DateTime(2012, 11, 29, 3, 36, 52)).ShouldBeTrue();
-                firstLap.CadenceSpecified.ShouldBeTrue();
+                const byte avgHeartrate = 154, maxHeartrate = 167;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 byte cadence = 76;
                 firstLap.Cadence.ShouldEqual(cadence);
                 firstLap.TotalTimeSeconds.ShouldEqual(3380.0);
@@ -85,7 +92,7 @@ namespace PolarConverter.Test
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 TestHelper.AssertCadenceAltitude(firstLap, true, true).ShouldBeTrue();
-                TestHelper.AssertStartTime(firstLap, new DateTime(2012, 12, 8, 15, 02, 04)).ShouldBeTrue();
+                TestHelper.AssertStartTime(firstLap, new DateTime(2012, 12, 8, 19, 02, 04)).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(2520);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
                 firstLap.DistanceMeters.ShouldEqual(22124);

@@ -32,7 +32,7 @@ namespace PolarConverter.Test
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Track[0].CadenceSpecified.ShouldBeTrue();
                 TestHelper.AssertAvgAndMax(firstLap, 134, 158).ShouldBeTrue();
-                firstLap.StartTime.ShouldEqual(new DateTime(2012, 10, 16, 16, 57, 44));
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 10, 16, 20, 57, 44));
                 firstLap.TotalTimeSeconds.ShouldEqual(3014);
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(30175.8);
             }
@@ -58,9 +58,9 @@ namespace PolarConverter.Test
                 firstLap.Track[0].AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
                 TestHelper.AssertAvgAndMax(firstLap, 123, 138).ShouldBeTrue();
-                firstLap.StartTime.ShouldEqual(new DateTime(2012, 11, 25, 13, 19, 42));
-                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(159.3);
-                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(967.6);
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 11, 25, 17, 19, 42));
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(159);
+                Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(974.7);
             }
         }
 
@@ -85,15 +85,15 @@ namespace PolarConverter.Test
                 firstLap.Track[0].CadenceSpecified.ShouldBeFalse();
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(8);
                 TestHelper.AssertAvgAndMax(firstLap, 138, 153).ShouldBeTrue();
-                firstLap.StartTime.ShouldEqual(new DateTime(2012, 12, 8, 5, 14, 30));
-                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(4129.4);
+                firstLap.StartTime.ShouldEqual(new DateTime(2012, 12, 8, 9, 14, 30));
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(4129);
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(6906.2);
                 var lastLap = trainingDoc.Activities.Activity[0].Lap[7];
                 lastLap.Track[0].AltitudeMetersSpecified.ShouldBeTrue();
                 lastLap.Track[0].CadenceSpecified.ShouldBeFalse();
                 TestHelper.AssertAvgAndMax(lastLap, 145, 154).ShouldBeTrue();
-                lastLap.StartTime.ShouldEqual(new DateTime(2012, 12, 8, 11, 22, 20, 500));
-                Math.Round(lastLap.TotalTimeSeconds, 1).ShouldEqual(2382.6);
+                lastLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 12, 8, 15, 22, 20).ToShortTimeString());
+                Math.Round(lastLap.TotalTimeSeconds, 1).ShouldEqual(2383);
             }
         }
     }

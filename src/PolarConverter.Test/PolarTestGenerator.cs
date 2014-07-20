@@ -29,7 +29,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -46,7 +48,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -68,7 +70,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -85,7 +89,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -107,7 +111,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -124,7 +130,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -146,7 +152,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -163,7 +171,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -185,7 +193,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -202,7 +212,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -224,7 +234,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -241,7 +253,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -263,7 +275,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -280,7 +294,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -302,7 +316,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -319,7 +335,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -341,7 +357,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -358,7 +376,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -380,7 +398,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -397,7 +417,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -419,7 +439,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -436,7 +458,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -458,7 +480,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -475,7 +499,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -497,7 +521,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -514,7 +540,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -536,7 +562,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -553,7 +581,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -575,7 +603,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -592,7 +622,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -614,7 +644,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -631,7 +663,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -653,7 +685,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -670,7 +704,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -692,7 +726,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -709,7 +745,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -731,7 +767,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -748,7 +786,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -770,7 +808,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -787,7 +827,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -809,7 +849,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -826,7 +868,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -848,7 +890,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -865,7 +909,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -887,7 +931,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -904,7 +950,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -926,7 +972,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -943,7 +991,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -971,7 +1019,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -988,7 +1038,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1016,7 +1066,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1033,7 +1085,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1061,7 +1113,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1078,7 +1132,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1106,7 +1160,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1123,7 +1179,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1151,7 +1207,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1168,7 +1226,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1196,7 +1254,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1213,7 +1273,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1235,7 +1295,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1252,7 +1314,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1274,7 +1336,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1291,7 +1355,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1319,7 +1383,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1336,7 +1402,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1364,7 +1430,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1381,7 +1449,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1409,7 +1477,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1426,7 +1496,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1448,7 +1518,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1465,7 +1537,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1487,7 +1559,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1504,7 +1578,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1532,7 +1606,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1549,7 +1625,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1571,7 +1647,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1588,7 +1666,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1610,7 +1688,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1627,7 +1707,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1655,7 +1735,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1672,7 +1754,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1694,7 +1776,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1711,7 +1795,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1733,7 +1817,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1750,7 +1836,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1772,7 +1858,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1789,7 +1877,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1811,7 +1899,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1828,7 +1918,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1850,7 +1940,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1867,7 +1959,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1889,7 +1981,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1906,7 +2000,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1934,7 +2028,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1951,7 +2047,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -1979,7 +2075,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -1996,7 +2094,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2018,7 +2116,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2035,7 +2135,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2063,7 +2163,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2080,7 +2182,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2108,7 +2210,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2125,7 +2229,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2147,7 +2251,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2164,7 +2270,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2186,7 +2292,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2203,7 +2311,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2225,7 +2333,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2242,7 +2352,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2270,7 +2380,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2287,7 +2399,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2315,7 +2427,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2332,7 +2446,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2360,7 +2474,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2377,7 +2493,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2399,7 +2515,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2416,7 +2534,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2438,7 +2556,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2455,7 +2575,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2477,7 +2597,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2494,7 +2616,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2516,7 +2638,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2533,7 +2657,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2555,7 +2679,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2572,7 +2698,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2594,7 +2720,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2611,7 +2739,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2633,7 +2761,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2650,7 +2780,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2672,7 +2802,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2689,7 +2821,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2711,7 +2843,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2728,7 +2862,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2750,7 +2884,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2767,7 +2903,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2789,7 +2925,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2806,7 +2944,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2828,7 +2966,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2845,7 +2985,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2867,7 +3007,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2884,7 +3026,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2912,7 +3054,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2929,7 +3073,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2957,7 +3101,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -2974,7 +3120,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -2996,7 +3142,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3013,7 +3161,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3041,7 +3189,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3058,7 +3208,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3080,7 +3230,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3097,7 +3249,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3119,7 +3271,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3136,7 +3290,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3158,7 +3312,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3175,7 +3331,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3203,7 +3359,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3220,7 +3378,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3248,7 +3406,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3265,7 +3425,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3287,7 +3447,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3304,7 +3466,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3326,7 +3488,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3343,7 +3507,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3365,7 +3529,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3382,7 +3548,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3410,7 +3576,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3427,7 +3595,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3449,7 +3617,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3466,7 +3636,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3488,7 +3658,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3505,7 +3677,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3527,7 +3699,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3544,7 +3718,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3566,7 +3740,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3583,7 +3759,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3605,7 +3781,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3622,7 +3800,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3644,7 +3822,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3661,7 +3841,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3683,7 +3863,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3700,7 +3882,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3722,7 +3904,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3739,7 +3923,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3761,7 +3945,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3778,7 +3964,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3800,7 +3986,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3817,7 +4005,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3839,7 +4027,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3856,7 +4046,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3878,7 +4068,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3895,7 +4087,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3917,7 +4109,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3934,7 +4128,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -3956,7 +4150,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -3973,7 +4169,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4001,7 +4197,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4018,7 +4216,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4046,7 +4244,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4063,7 +4263,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4085,7 +4285,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4102,7 +4304,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4130,7 +4332,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4147,7 +4351,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4169,7 +4373,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4186,7 +4392,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4208,7 +4414,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4225,7 +4433,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4247,7 +4455,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4264,7 +4474,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4292,7 +4502,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4309,7 +4521,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4331,7 +4543,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4348,7 +4562,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4376,7 +4590,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4393,7 +4609,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4415,7 +4631,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4432,7 +4650,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4454,7 +4672,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4471,7 +4691,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4493,7 +4713,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4510,7 +4732,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4532,7 +4754,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4549,7 +4773,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4571,7 +4795,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4588,7 +4814,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4610,7 +4836,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4627,7 +4855,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4649,7 +4877,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4666,7 +4896,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4688,7 +4918,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4705,7 +4937,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4727,7 +4959,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4744,7 +4978,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4772,7 +5006,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4789,7 +5025,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4811,7 +5047,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4828,7 +5066,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4850,7 +5088,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4867,7 +5107,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4889,7 +5129,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4906,7 +5148,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4928,7 +5170,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4945,7 +5189,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -4973,7 +5217,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -4990,7 +5236,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5018,7 +5264,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5035,7 +5283,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5063,7 +5311,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5080,7 +5330,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5102,7 +5352,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5119,7 +5371,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5141,7 +5393,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5158,7 +5412,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5180,7 +5434,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5197,7 +5453,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5219,7 +5475,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5236,7 +5494,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5258,7 +5516,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5275,7 +5535,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5297,7 +5557,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5314,7 +5576,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5336,7 +5598,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5353,7 +5617,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5375,7 +5639,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5392,7 +5658,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5420,7 +5686,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5437,7 +5705,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5465,7 +5733,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5482,7 +5752,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5510,7 +5780,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5527,7 +5799,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5549,7 +5821,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5566,7 +5840,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5588,7 +5862,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5605,7 +5881,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5627,7 +5903,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5644,7 +5922,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5666,7 +5944,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5683,7 +5963,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5705,7 +5985,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5722,7 +6004,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5744,7 +6026,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5761,7 +6045,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5783,7 +6067,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5800,7 +6086,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5822,7 +6108,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5839,7 +6127,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5867,7 +6155,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5884,7 +6174,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5912,7 +6202,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5929,7 +6221,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -5957,7 +6249,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -5974,7 +6268,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6002,7 +6296,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6019,7 +6315,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6047,7 +6343,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6064,7 +6362,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6092,7 +6390,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6109,7 +6409,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6137,7 +6437,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6154,7 +6456,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6176,7 +6478,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6193,7 +6497,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6215,7 +6519,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6232,7 +6538,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6254,7 +6560,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6271,7 +6579,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6293,7 +6601,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6310,7 +6620,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6332,7 +6642,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6349,7 +6661,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6371,7 +6683,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6388,7 +6702,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6410,7 +6724,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6427,7 +6743,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6449,7 +6765,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6466,7 +6784,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6494,7 +6812,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6511,7 +6831,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6539,7 +6859,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6556,7 +6878,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6584,7 +6906,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6601,7 +6925,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6629,7 +6953,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6646,7 +6972,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6674,7 +7000,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6691,7 +7019,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6719,7 +7047,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6736,7 +7066,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6764,7 +7094,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6781,7 +7113,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6809,7 +7141,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6826,7 +7160,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6848,7 +7182,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6865,7 +7201,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6893,7 +7229,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6910,7 +7248,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6932,7 +7270,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6949,7 +7289,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -6977,7 +7317,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -6994,7 +7336,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7022,7 +7364,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7039,7 +7383,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7067,7 +7411,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7084,7 +7430,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7106,7 +7452,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7123,7 +7471,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7145,7 +7493,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7162,7 +7512,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7184,7 +7534,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7201,7 +7553,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7223,7 +7575,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7240,7 +7594,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7262,7 +7616,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7279,7 +7635,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7301,7 +7657,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7318,7 +7676,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7340,7 +7698,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7357,7 +7717,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7379,7 +7739,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7396,7 +7758,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7418,7 +7780,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7435,7 +7799,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7463,7 +7827,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7480,7 +7846,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7502,7 +7868,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7519,7 +7887,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7541,7 +7909,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7558,7 +7928,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7580,7 +7950,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7597,7 +7969,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7619,7 +7991,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7636,7 +8010,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7664,7 +8038,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7681,7 +8057,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7703,7 +8079,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7720,7 +8098,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7742,7 +8120,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7759,7 +8139,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7781,7 +8161,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7798,7 +8180,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7826,7 +8208,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7843,7 +8227,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7871,7 +8255,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7888,7 +8274,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7910,7 +8296,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7927,7 +8315,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7949,7 +8337,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -7966,7 +8356,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -7988,7 +8378,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8005,7 +8397,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8027,7 +8419,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8044,7 +8438,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8066,7 +8460,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8083,7 +8479,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8105,7 +8501,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8122,7 +8520,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8144,7 +8542,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8161,7 +8561,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8183,7 +8583,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8200,7 +8602,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8222,7 +8624,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8239,7 +8643,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8261,7 +8665,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8278,7 +8684,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8300,7 +8706,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8317,7 +8725,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8339,7 +8747,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8356,7 +8766,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8378,7 +8788,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8395,7 +8807,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8417,7 +8829,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8434,7 +8848,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8456,7 +8870,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8473,7 +8889,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8495,7 +8911,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8512,7 +8930,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8534,7 +8952,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8551,7 +8971,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8573,7 +8993,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8590,7 +9012,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8612,7 +9034,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8629,7 +9053,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8651,7 +9075,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8668,7 +9094,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8690,7 +9116,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8707,7 +9135,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8729,7 +9157,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8746,7 +9176,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8768,7 +9198,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8785,7 +9217,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8807,7 +9239,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8824,7 +9258,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8846,7 +9280,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8863,7 +9299,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8885,7 +9321,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8902,7 +9340,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8930,7 +9368,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8947,7 +9387,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -8969,7 +9409,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -8986,7 +9428,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9014,7 +9456,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9031,7 +9475,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9053,7 +9497,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9070,7 +9516,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9092,7 +9538,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9109,7 +9557,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9131,7 +9579,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9148,7 +9598,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9170,7 +9620,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9187,7 +9639,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9209,7 +9661,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9226,7 +9680,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9248,7 +9702,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9265,7 +9721,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9287,7 +9743,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9304,7 +9762,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9326,7 +9784,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9343,7 +9803,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9365,7 +9825,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9382,7 +9844,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9404,7 +9866,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9421,7 +9885,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9443,7 +9907,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9460,7 +9926,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9482,7 +9948,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9499,7 +9967,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9521,7 +9989,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9538,7 +10008,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9560,7 +10030,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9577,7 +10049,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9599,7 +10071,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9616,7 +10090,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9638,7 +10112,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9655,7 +10131,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9677,7 +10153,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9694,7 +10172,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9716,7 +10194,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9733,7 +10213,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9755,7 +10235,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9772,7 +10254,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9794,7 +10276,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9811,7 +10295,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9833,7 +10317,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9850,7 +10336,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9872,7 +10358,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9889,7 +10377,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9911,7 +10399,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9928,7 +10418,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9950,7 +10440,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -9967,7 +10459,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -9989,7 +10481,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10006,7 +10500,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10028,7 +10522,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10045,7 +10541,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10067,7 +10563,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10084,7 +10582,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10106,7 +10604,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10123,7 +10623,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10145,7 +10645,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10162,7 +10664,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10184,7 +10686,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10201,7 +10705,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10223,7 +10727,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10240,7 +10746,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10262,7 +10768,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10279,7 +10787,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10301,7 +10809,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10318,7 +10828,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10340,7 +10850,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10357,7 +10869,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10379,7 +10891,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10396,7 +10910,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10418,7 +10932,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10435,7 +10951,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10457,7 +10973,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10474,7 +10992,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10496,7 +11014,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10513,7 +11033,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10535,7 +11055,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10552,7 +11074,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10574,7 +11096,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10591,7 +11115,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10613,7 +11137,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10630,7 +11156,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10652,7 +11178,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10669,7 +11197,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10691,7 +11219,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10708,7 +11238,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10730,7 +11260,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10747,7 +11279,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10769,7 +11301,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10786,7 +11320,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10808,7 +11342,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10825,7 +11361,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10847,7 +11383,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10864,7 +11402,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10886,7 +11424,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10903,7 +11443,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10925,7 +11465,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10942,7 +11484,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -10964,7 +11506,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -10981,7 +11525,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11003,7 +11547,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11020,7 +11566,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11042,7 +11588,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11059,7 +11607,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11081,7 +11629,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11098,7 +11648,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11120,7 +11670,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11137,7 +11689,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11159,7 +11711,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11176,7 +11730,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11198,7 +11752,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11215,7 +11771,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11237,7 +11793,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11254,7 +11812,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11276,7 +11834,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11293,7 +11853,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11315,7 +11875,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11332,7 +11894,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11354,7 +11916,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11371,7 +11935,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11393,7 +11957,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11410,7 +11976,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11432,7 +11998,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11449,7 +12017,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11471,7 +12039,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11488,7 +12058,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11510,7 +12080,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11527,7 +12099,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11549,7 +12121,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11566,7 +12140,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11588,7 +12162,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11605,7 +12181,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11627,7 +12203,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11644,7 +12222,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11666,7 +12244,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11683,7 +12263,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11705,7 +12285,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11722,7 +12304,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11744,7 +12326,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11761,7 +12345,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11783,7 +12367,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11800,7 +12386,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11822,7 +12408,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11839,7 +12427,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11861,7 +12449,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11878,7 +12468,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11900,7 +12490,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11917,7 +12509,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11939,7 +12531,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11956,7 +12550,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -11978,7 +12572,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -11995,7 +12591,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12017,7 +12613,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12034,7 +12632,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12056,7 +12654,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12073,7 +12673,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12095,7 +12695,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12112,7 +12714,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12134,7 +12736,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12151,7 +12755,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12173,7 +12777,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12190,7 +12796,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12212,7 +12818,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12229,7 +12837,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12251,7 +12859,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12268,7 +12878,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12290,7 +12900,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12307,7 +12919,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12329,7 +12941,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12346,7 +12960,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12368,7 +12982,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12385,7 +13001,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12407,7 +13023,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12424,7 +13042,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12446,7 +13064,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12463,7 +13083,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12485,7 +13105,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12502,7 +13124,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12524,7 +13146,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12541,7 +13165,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12563,7 +13187,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12580,7 +13206,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12602,7 +13228,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12619,7 +13247,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12641,7 +13269,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12658,7 +13288,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12680,7 +13310,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12697,7 +13329,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12719,7 +13351,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12736,7 +13370,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12758,7 +13392,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12775,7 +13411,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12797,7 +13433,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12814,7 +13452,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12836,7 +13474,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12853,7 +13493,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12875,7 +13515,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12892,7 +13534,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12914,7 +13556,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12931,7 +13575,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12953,7 +13597,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -12970,7 +13616,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -12992,7 +13638,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13009,7 +13657,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13031,7 +13679,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13048,7 +13698,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13070,7 +13720,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13087,7 +13739,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13109,7 +13761,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13126,7 +13780,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13148,7 +13802,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13165,7 +13821,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13187,7 +13843,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13204,7 +13862,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13226,7 +13884,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13243,7 +13903,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13265,7 +13925,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13282,7 +13944,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13304,7 +13966,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13321,7 +13985,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13343,7 +14007,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13360,7 +14026,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13382,7 +14048,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13399,7 +14067,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13421,7 +14089,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13438,7 +14108,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13460,7 +14130,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13477,7 +14149,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13499,7 +14171,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13516,7 +14190,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13538,7 +14212,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13555,7 +14231,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13577,7 +14253,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13594,7 +14272,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13616,7 +14294,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13633,7 +14313,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13655,7 +14335,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13672,7 +14354,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13694,7 +14376,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13711,7 +14395,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13733,7 +14417,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13750,7 +14436,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13772,7 +14458,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13789,7 +14477,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13811,7 +14499,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13828,7 +14518,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13850,7 +14540,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13867,7 +14559,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13889,7 +14581,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13906,7 +14600,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13928,7 +14622,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13945,7 +14641,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -13967,7 +14663,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -13984,7 +14682,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14006,7 +14704,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14023,7 +14723,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14045,7 +14745,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14062,7 +14764,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14084,7 +14786,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14101,7 +14805,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14123,7 +14827,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14140,7 +14846,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14162,7 +14868,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14179,7 +14887,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14201,7 +14909,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14218,7 +14928,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14240,7 +14950,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14257,7 +14969,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14279,7 +14991,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14296,7 +15010,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14318,7 +15032,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14335,7 +15051,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14357,7 +15073,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14374,7 +15092,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14396,7 +15114,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14413,7 +15133,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14435,7 +15155,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14452,7 +15174,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14474,7 +15196,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14491,7 +15215,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14513,7 +15237,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14530,7 +15256,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14552,7 +15278,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14569,7 +15297,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14591,7 +15319,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14608,7 +15338,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14630,7 +15360,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14647,7 +15379,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14669,7 +15401,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14686,7 +15420,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14708,7 +15442,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14725,7 +15461,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14747,7 +15483,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14764,7 +15502,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14786,7 +15524,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14803,7 +15543,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14825,7 +15565,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14842,7 +15584,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14864,7 +15606,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14881,7 +15625,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14903,7 +15647,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14920,7 +15666,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14942,7 +15688,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14959,7 +15707,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -14981,7 +15729,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -14998,7 +15748,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15020,7 +15770,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15037,7 +15789,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15059,7 +15811,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15076,7 +15830,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15098,7 +15852,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15115,7 +15871,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15137,7 +15893,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15154,7 +15912,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15176,7 +15934,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15193,7 +15953,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15215,7 +15975,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15232,7 +15994,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15254,7 +16016,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15271,7 +16035,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15293,7 +16057,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15310,7 +16076,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15332,7 +16098,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15349,7 +16117,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15371,7 +16139,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15388,7 +16158,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15410,7 +16180,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15427,7 +16199,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15449,7 +16221,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15466,7 +16240,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15488,7 +16262,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15505,7 +16281,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15527,7 +16303,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15544,7 +16322,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15566,7 +16344,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15583,7 +16363,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15605,7 +16385,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15622,7 +16404,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15644,7 +16426,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15661,7 +16445,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15683,7 +16467,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15700,7 +16486,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15722,7 +16508,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15739,7 +16527,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15761,7 +16549,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15778,7 +16568,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15800,7 +16590,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15817,7 +16609,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15839,7 +16631,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15856,7 +16650,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15878,7 +16672,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15895,7 +16691,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15917,7 +16713,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15934,7 +16732,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15956,7 +16754,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -15973,7 +16773,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -15995,7 +16795,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16012,7 +16814,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16034,7 +16836,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16051,7 +16855,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16073,7 +16877,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16090,7 +16896,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16112,7 +16918,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16129,7 +16937,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16151,7 +16959,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16168,7 +16978,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16190,7 +17000,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16207,7 +17019,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16229,7 +17041,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16246,7 +17060,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16268,7 +17082,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16285,7 +17101,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16307,7 +17123,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16324,7 +17142,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16346,7 +17164,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16363,7 +17183,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16385,7 +17205,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16402,7 +17224,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16424,7 +17246,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16441,7 +17265,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16463,7 +17287,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16480,7 +17306,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16502,7 +17328,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16519,7 +17347,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16541,7 +17369,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16558,7 +17388,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16580,7 +17410,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16597,7 +17429,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }
@@ -16619,7 +17451,9 @@ namespace PolarConverter.Test
 			var hasCadence  = (version == "102" || version == "105") ? StringHelper.HentVerdi("Mode=", 1, fileContent, 1) == "0" : StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimeZone = ViewModel.TimeZoneOffset * -1;
+
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -16636,7 +17470,7 @@ namespace PolarConverter.Test
 					firstLap.Track[0].AltitudeMetersSpecified.ShouldEqual(hasAltitude);
 					firstLap.Track[0].CadenceSpecified.ShouldEqual(hasCadence);
 				}
-                firstLap.StartTime.ShouldEqual(startTime);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(startTime.ToShortTimeString());
             }
 
         }

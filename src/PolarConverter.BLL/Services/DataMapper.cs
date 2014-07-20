@@ -266,9 +266,16 @@ namespace PolarConverter.BLL.Services
                 var heartRateData = RangeHelper.GetRange(polarData.HrData, range.Item1, range.Item2 - range.Item1);
                 var altitudeData = RangeHelper.GetRange(polarData.AltitudeData, range.Item1, range.Item2 - range.Item1);
                 var antallMeterData = RangeHelper.GetRange(polarData.AntallMeter, range.Item1, range.Item2 - range.Item1);
-                var lastMeter = antallMeterData != null && antallMeterData.Length > 0 ? antallMeterData.Last() : 0;
-                lap.DistanceMeters = lastMeter - lastDistance;
-                lastDistance = lastMeter;
+                if (antallMeterData != null && antallMeterData.Length > 0)
+                {
+                    var lastMeter = antallMeterData.Last();
+                    lap.DistanceMeters = lastMeter - lastDistance;
+                    lastDistance = lastMeter;
+                }
+                else
+                {
+                    lap.DistanceMeters = 0;
+                }
                 var speedData = RangeHelper.GetRange(polarData.SpeedData, range.Item1, range.Item2 - range.Item1);
                 var cadenceData = RangeHelper.GetRange(polarData.CadenseData, range.Item1, range.Item2 - range.Item1);
                 var powerData = RangeHelper.GetRange(polarData.PowerData, range.Item1, range.Item2 - range.Item1);
@@ -397,7 +404,7 @@ namespace PolarConverter.BLL.Services
                 Convert.ToInt32(lapTime.Substring(0, hourLength)),
                 Convert.ToInt32(lapTime.Substring(hourLength + 1, 2)),
                 Convert.ToInt32(lapTime.Substring(hourLength + 4, 2)),
-                lapTime.Length > 8 ? Convert.ToInt32(lapTime.Substring(hourLength + 7, 1)) : 0
+                lapTime.Length > 8 ? Convert.ToInt32(lapTime.Substring(hourLength + 7, 1)) * 100 : 0
             );
         }
 

@@ -16,7 +16,7 @@ namespace PolarConverter.BLL.Services
 
         public LocalStorageHelper()
         {
-            _basePath = AppDomain.CurrentDomain.BaseDirectory + "ConvertedFiles\\";
+            _basePath = AppDomain.CurrentDomain.BaseDirectory + "\\ConvertedFiles\\";
             _gpxReader = new GpxReader();
         }
 

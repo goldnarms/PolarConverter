@@ -32,12 +32,22 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 144, 159, new DateTime(2012, 6, 3, 14, 50, 33)).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(661.4);
+                const byte avgHeartrate = 144, maxHeartrate = 159;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 6, 3, 18, 50, 33).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 6, 3, 18, 50, 33).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(661.0);
                 var lastLap = trainingDoc.Activities.Activity[0].Lap[1];
                 lastLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(lastLap, 166, 180, new DateTime(2012, 6, 3, 15, 1, 34, 400)).ShouldBeTrue();
-                lastLap.TotalTimeSeconds.ShouldEqual(529.4);
+                const byte lastAvgHeartrate = 166, lastMaxHeartrate = 180;
+                lastLap.AverageHeartRateBpm.Value.ShouldEqual(lastAvgHeartrate);
+                lastLap.MaximumHeartRateBpm.Value.ShouldEqual(lastMaxHeartrate);
+                lastLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 6, 3, 19, 1, 34, 400).ToShortDateString());
+                lastLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 6, 3, 19, 1, 34, 400).ToShortTimeString());
+                Math.Round(lastLap.TotalTimeSeconds, 1).ShouldEqual(529.0);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
             }
         }
@@ -59,9 +69,15 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 100, maxHeartrate = 128;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 22, 13, 55, 17).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 22, 13, 55, 17).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 100, 128, new DateTime(2012, 7, 22, 17, 55, 17), true, true).ShouldBeTrue();
-                firstLap.TotalTimeSeconds.ShouldEqual(8007.2);
+                Math.Round(firstLap.TotalTimeSeconds, 0).ShouldEqual(8007);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -83,7 +99,13 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 134, 167, new DateTime(2012, 7, 20, 12, 46, 45), true).ShouldBeTrue();
+                const byte avgHeartrate = 134, maxHeartrate = 167;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 20, 16, 46, 45).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 20, 16, 46, 45).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
         }
@@ -105,9 +127,21 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 119, 128, new DateTime(2012, 7, 6, 17, 38, 27), false, false).ShouldBeTrue();
+                const byte avgHeartrate = 119, maxHeartrate = 128, avgHeartrate2 = 119, maxHeartrate2 = 127;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 6, 21, 38, 27).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 6, 21, 38, 27).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(483.8);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 119, 127, new DateTime(2012, 7, 6, 17, 46, 30, 800), false, false).ShouldBeTrue();
+                var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
+                secondLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate2);
+                secondLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate2);
+                secondLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 6, 21, 46, 30).ToShortDateString());
+                secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 6, 21, 46, 30).ToShortTimeString());
+                secondLap.CadenceSpecified.ShouldBeFalse();
+                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
             }
         }
@@ -128,8 +162,14 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 113, maxHeartrate = 127;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 8, 15, 23, 7, 18).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 8, 15, 23, 7, 18).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 113, 127, new DateTime(2012, 8, 15, 19, 7, 18)).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(1410.7);
             }
         }
@@ -150,8 +190,14 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 108, maxHeartrate = 127;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 8, 15, 22, 14, 35).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 8, 15, 22, 14, 35).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 108, 127, new DateTime(2012, 8, 15, 18, 14, 35)).ShouldBeTrue();
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(1617.4);
             }
         }
@@ -172,11 +218,30 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 128, maxHeartrate = 143;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 6, 21, 48, 26).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 6, 21, 48, 26).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 128, 143, new DateTime(2012, 7, 6, 17, 48, 26), true).ShouldBeTrue();
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(484.6);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 130, 130, new DateTime(2012, 7, 6, 17, 56, 30, 600), true).ShouldBeTrue();
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[2], 129, 129, new DateTime(2012, 7, 6, 17, 56, 32, 400), true).ShouldBeTrue();
+                const byte avgHeartrate2 = 130, maxHeartrate2 = 130;
+                var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
+                secondLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate2);
+                secondLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate2);
+                secondLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 6, 21, 56, 30).ToShortDateString());
+                secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 6, 21, 56, 30).ToShortTimeString());
+                secondLap.CadenceSpecified.ShouldBeTrue();
+                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+                const byte avgHeartrate3 = 0, maxHeartrate3 = 0;
+                var thirdLap = trainingDoc.Activities.Activity[0].Lap[2];
+                thirdLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate3);
+                thirdLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate3);
+                thirdLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 6, 21, 56, 32).ToShortDateString());
+                thirdLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 6, 21, 56, 32).ToShortTimeString());
+                thirdLap.CadenceSpecified.ShouldBeFalse();
             }
         }
 
@@ -196,10 +261,23 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                const byte avgHeartrate = 138, maxHeartrate = 169;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 30, 21, 36, 25).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 30, 21, 36, 25).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.Calories.ShouldBeGreaterThan(Zero);
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 138, 169, new DateTime(2012, 7, 30, 17, 36, 25), true).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(4077.5);
-                TestHelper.AssertCadAltAvgMaxStarttime(trainingDoc.Activities.Activity[0].Lap[1], 0, 0, new DateTime(2012, 7, 30, 18, 44, 22, 500), true).ShouldBeTrue();
+                var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
+                const byte avgHeartrate2 = 0, maxHeartrate2 = 0;
+                secondLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate2);
+                secondLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate2);
+                secondLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 7, 30, 22, 44, 22).ToShortDateString());
+                secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 30, 22, 44, 22).ToShortTimeString());
+                secondLap.CadenceSpecified.ShouldBeTrue();
+                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
             }
         }
 
@@ -344,7 +422,12 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 127, 166, new DateTime(2012, 7, 14, 17, 7, 32), false, true).ShouldBeTrue();
+                const byte avgHeartrate = 127, maxHeartrate = 166;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 7, 14, 21, 7, 32).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
                 Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(1712.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
@@ -385,7 +468,7 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 140, 156, new DateTime(2012, 7, 25, 5, 15, 15), false, false).ShouldBeTrue();
+                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 140, 156, new DateTime(2012, 7, 25, 9, 15, 15), false, false).ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(3911.7);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }
@@ -407,7 +490,12 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 151, 163, new DateTime(2012, 8, 13, 17, 23, 7), true, true).ShouldBeTrue();
+                const byte avgHeartrate = 151, maxHeartrate = 163;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 8, 13, 21, 23, 7).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
                 firstLap.TotalTimeSeconds.ShouldEqual(374);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(3);
             }
@@ -430,7 +518,13 @@ namespace PolarConverter.Test
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 trainingDoc.Activities.Activity.Length.ShouldEqual(30);
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 114, 128, new DateTime(2012, 6, 25, 17, 17, 40), false, false).ShouldBeTrue();
+                const byte avgHeartrate = 114, maxHeartrate = 128;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 6, 25, 21, 17, 40).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 6, 25, 21, 17, 40).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.TotalTimeSeconds.ShouldEqual(771.5);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(1);
             }

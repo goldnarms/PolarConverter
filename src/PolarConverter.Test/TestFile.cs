@@ -32,7 +32,8 @@ namespace PolarConverter.Test
             var hasCadence = StringHelper.HentVerdi("SMode=", 1, fileContent, 1) == "1";
             var date = StringHelper.HentVerdi("Date=", 8, fileContent);
             var time = StringHelper.HentVerdi("StartTime=", 10, fileContent);
-            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+            var invertedTimeZone = ViewModel.TimeZoneOffset*-1;
+            var startTime = string.Format("{0} {1}", date, time).KonverterTilDato().AddHours(invertedTimeZone);
             var duration = StringHelper.HentVerdi("Length=", 10, fileContent).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;

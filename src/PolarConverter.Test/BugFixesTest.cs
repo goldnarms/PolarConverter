@@ -26,7 +26,12 @@ namespace PolarConverter.Test
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 123, 181, new DateTime(2011, 10, 15, 03, 48, 37), true, true).ShouldBeTrue();
+                const byte avgHr = 123, maxHr = 181;
+                firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHr);
+                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHr);
+                firstLap.StartTime.ShouldEqual(new DateTime(2011, 10, 15, 07, 48, 37));
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
                 Math.Round(firstLap.DistanceMeters, 1).ShouldEqual(73285.1);
                 firstLap.Calories.ShouldNotEqual(Zero);
             }
