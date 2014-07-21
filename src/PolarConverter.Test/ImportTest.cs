@@ -39,7 +39,7 @@ namespace PolarConverter.Test
                 firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 6, 3, 18, 50, 33).ToShortTimeString());
                 firstLap.CadenceSpecified.ShouldBeFalse();
                 firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
-                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(661.0);
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(661.4);
                 var lastLap = trainingDoc.Activities.Activity[0].Lap[1];
                 lastLap.Calories.ShouldBeGreaterThan(Zero);
                 const byte lastAvgHeartrate = 166, lastMaxHeartrate = 180;
@@ -47,7 +47,7 @@ namespace PolarConverter.Test
                 lastLap.MaximumHeartRateBpm.Value.ShouldEqual(lastMaxHeartrate);
                 lastLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 6, 3, 19, 1, 34, 400).ToShortDateString());
                 lastLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 6, 3, 19, 1, 34, 400).ToShortTimeString());
-                Math.Round(lastLap.TotalTimeSeconds, 1).ShouldEqual(529.0);
+                Math.Round(lastLap.TotalTimeSeconds, 1).ShouldEqual(529.4);
                 trainingDoc.Activities.Activity[0].Lap.Length.ShouldEqual(5);
             }
         }

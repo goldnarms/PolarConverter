@@ -22,7 +22,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\120820.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -48,7 +49,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\børge_18.10.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -74,7 +76,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\escalade_12.12.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -100,7 +103,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\escalade_29.11.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -126,7 +130,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Goldnarms_21.07.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -152,7 +157,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\inspiring_21.07.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -178,7 +184,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\jbnoon_30.09.2012_export (1).xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -204,7 +211,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Joerund_01.09.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -230,7 +238,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Mattias242_2012-07-30_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -256,7 +265,35 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Mattias242_2012-07-31_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
+            var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
+            var result = ConversionService.Convert(ViewModel);
+            ZipFileReference = result.Reference;
+            var fileReferences = StorageHelper.Unzip(result.Reference);
+            fileReferences.Count().ShouldEqual(1);
+			result.ErrorMessages.Count.ShouldEqual(0);
+            foreach (var reference in fileReferences)
+            {
+                var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
+                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
+                firstLap.StartTime.ShouldEqual(startTime);
+            }
+        }
+	
+
+        [TestMethod]
+        public void XmlOystein6924032014export1Test() 
+        {
+            var polarFiles = new[]
+            {
+                TestHelper.GeneratePolarFile(@"XmlFil\Oystein69_24.03.2014_export (1).xml", "Oystein6924032014export1", fileType:"xml")
+            };
+            this.SetPolarFiles(polarFiles);
+            var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Oystein69_24.03.2014_export (1).xml");
+            var time = StringHelper.HentVerdi("<time>", 21, fileContent);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -282,7 +319,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\Oystein69_24.03.2014_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -308,7 +346,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\sebnor_08-27-2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;
@@ -334,7 +373,8 @@ namespace PolarConverter.Test
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"C:\Google Drive\Prosjekt\Polar\XmlFil\ttfje_14.08.2012_export.xml");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;

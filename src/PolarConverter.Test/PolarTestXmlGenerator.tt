@@ -50,7 +50,8 @@ var adjustedFilepath = "XmlFil\\" + filePath.Substring(filePath.LastIndexOf("\\"
             this.SetPolarFiles(polarFiles);
             var fileContent = File.ReadAllText(@"<#=filePath#>");
             var time = StringHelper.HentVerdi("<time>", 21, fileContent);
-            var startTime = time.KonverterTilDato().AddHours(ViewModel.TimeZoneOffset);
+			var invertedTimezoneOffset = ViewModel.TimeZoneOffset * -1;
+            var startTime = time.KonverterTilDato().AddHours(invertedTimezoneOffset);
             var duration = StringHelper.HentVerdi("<duration>", 8, fileContent.Substring(fileContent.IndexOf("<result>"))).ToTimeSpan().TotalSeconds;
             var result = ConversionService.Convert(ViewModel);
             ZipFileReference = result.Reference;

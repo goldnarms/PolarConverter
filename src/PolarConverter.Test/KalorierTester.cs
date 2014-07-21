@@ -45,14 +45,6 @@ namespace PolarConverter.Test
                 secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortTimeString());
                 secondLap.CadenceSpecified.ShouldBeTrue();
                 secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
-
-                TestHelper.AssertCadAltAvgMaxStarttime(firstLap, 0, 0, new DateTime(2012, 10, 16, 18, 06, 08), false, true).ShouldBeTrue();
-                var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
-                TestHelper.AssertCadAltAvgMaxStarttime(secondLap, 147, 163, new DateTime(2012, 10, 16, 18, 06, 08),
-                    false, true).ShouldBeTrue();
-                ushort cal = 77;
-                secondLap.Calories.ShouldEqual(cal);
-                secondLap.TotalTimeSeconds.ShouldEqual(423.5);
             }
         }
     }

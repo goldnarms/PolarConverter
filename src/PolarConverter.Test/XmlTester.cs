@@ -33,7 +33,6 @@ namespace PolarConverter.Test
                 firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
                 firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 1, 21, 58, 22).ToShortTimeString());
                 firstLap.CadenceSpecified.ShouldBeFalse();
-                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
                 firstLap.TotalTimeSeconds.ShouldEqual(281.5);
             }
         }

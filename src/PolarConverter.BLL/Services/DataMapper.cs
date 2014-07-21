@@ -430,7 +430,7 @@ namespace PolarConverter.BLL.Services
 
         private static int GetFrequencyForDate(TimeSpan duration, int recordingRate)
         {
-            return recordingRate > 0 ? Convert.ToInt32(Math.Ceiling(duration.TotalSeconds / (recordingRate == 238 ? 5 : recordingRate))) : 0;
+            return recordingRate > 0 ? Convert.ToInt32(Math.Floor(duration.TotalSeconds / (recordingRate == 238 ? 5 : recordingRate))) : 0;
         }
 
         private static void GetPosition(PositionData positionData, ref Trackpoint_t trackData)
