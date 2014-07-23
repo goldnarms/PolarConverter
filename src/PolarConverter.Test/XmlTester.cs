@@ -60,11 +60,10 @@ namespace PolarConverter.Test
                 var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
                 const byte avgHeartrate = 154, maxHeartrate = 167;
                 firstLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate);
-                firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
-                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52).ToShortDateString());
-                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 11, 29, 3, 36, 52).ToShortTimeString());
-                firstLap.CadenceSpecified.ShouldBeFalse();
-                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+                firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 11, 29, 7, 36, 52).ToShortDateString());
+                firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 11, 29, 7, 36, 52).ToShortTimeString());
+                firstLap.CadenceSpecified.ShouldBeTrue();
+                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
                 byte cadence = 76;
                 firstLap.Cadence.ShouldEqual(cadence);
                 firstLap.TotalTimeSeconds.ShouldEqual(3380.0);

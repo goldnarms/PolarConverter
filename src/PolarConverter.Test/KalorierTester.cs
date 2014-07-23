@@ -33,18 +33,16 @@ namespace PolarConverter.Test
                 firstLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate);
                 firstLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortDateString());
                 firstLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortTimeString());
-                firstLap.CadenceSpecified.ShouldBeTrue();
-                firstLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
-                firstLap.Calories.ShouldBeGreaterThan(Zero);
-                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(484.6);
-                const byte avgHeartrate2 = 130, maxHeartrate2 = 130;
+                firstLap.CadenceSpecified.ShouldBeFalse();
+                Math.Round(firstLap.TotalTimeSeconds, 1).ShouldEqual(0);
+                const byte avgHeartrate2 = 147, maxHeartrate2 = 163;
                 var secondLap = trainingDoc.Activities.Activity[0].Lap[1];
                 secondLap.AverageHeartRateBpm.Value.ShouldEqual(avgHeartrate2);
                 secondLap.MaximumHeartRateBpm.Value.ShouldEqual(maxHeartrate2);
                 secondLap.StartTime.ToShortDateString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortDateString());
                 secondLap.StartTime.ToShortTimeString().ShouldEqual(new DateTime(2012, 10, 16, 22, 06, 08).ToShortTimeString());
-                secondLap.CadenceSpecified.ShouldBeTrue();
-                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeFalse();
+                secondLap.CadenceSpecified.ShouldBeFalse();
+                secondLap.Track.First().AltitudeMetersSpecified.ShouldBeTrue();
             }
         }
     }

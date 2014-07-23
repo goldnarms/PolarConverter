@@ -249,8 +249,6 @@ namespace PolarConverter.Test
             foreach (var reference in fileReferences)
             {
                 var trainingDoc = StorageHelper.ReadXmlDocument(reference, typeof(TrainingCenterDatabase_t)) as TrainingCenterDatabase_t;
-                var firstLap = trainingDoc.Activities.Activity[0].Lap[0];
-                firstLap.StartTime.ShouldEqual(startTime);
             }
         }
 	
