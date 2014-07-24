@@ -67,7 +67,7 @@ namespace PolarConverter.BLL.Services
                             var negateOffset = polarData.InvertedOffset * -1;
                             offsetInHours = FindHourDifference(gpx.trk[0].trkseg[0].time, polarData.StartTime.AddHours(negateOffset));
                             startTime = startTime.AddHours(offsetInHours + negateOffset);
-                            startIndex = FindStartIndexForGpx(gpx.trk[0], startTime, polarData.RecordingRate);
+                            startIndex = FindStartIndexForGpx(gpx.trk[0], startTime, polarData.RecordingRate, startRange);
                         }
                         if (gpx.trk != null && gpx.trk.Length > 0 && endRange > 0 && endRange > startRange)
                         {
@@ -92,7 +92,7 @@ namespace PolarConverter.BLL.Services
                             var negateOffset = polarData.InvertedOffset * -1;
                             offsetInHours = FindHourDifference(gpx.trk[0].trkseg[0].trkpt[0].time, polarData.StartTime.AddHours(negateOffset));
                             startTime = startTime.AddHours(offsetInHours + negateOffset);
-                            startIndex = FindStartIndexForGpx(combineSegments, startTime, polarData.RecordingRate);
+                            startIndex = FindStartIndexForGpx(combineSegments, startTime, polarData.RecordingRate, startRange);
                         }
 
                         var combinedPoints = new wptType[combineSegments.Sum(t => t.trkpt.Length)];
@@ -152,9 +152,9 @@ namespace PolarConverter.BLL.Services
                 Convert.ToInt32(Math.Ceiling(difference.TotalHours));
         }
 
-        private int FindStartIndexForGpx(gpxTrk gpxTrk, DateTime startTime, int recordingRate)
+        private int FindStartIndexForGpx(gpxTrk gpxTrk, DateTime startTime, int recordingRate, int startIndex)
         {
-            var firstGpxEntry = gpxTrk.trkseg.FirstOrDefault(seg => seg.timeSpecified && seg.time >= startTime);
+            var firstGpxEntry = gpxTrk.trkseg.Skip(startIndex).FirstOrDefault(seg => seg.timeSpecified && seg.time >= startTime);
             if (firstGpxEntry != null)
             {
                 // If index greater than 0, we need to ignore som gpxdata, if not, find negative index
@@ -164,10 +164,10 @@ namespace PolarConverter.BLL.Services
             return 0;
         }
 
-        private int FindStartIndexForGpx(IEnumerable<trksegType> wptType, DateTime startTime, int recordingRate)
+        private int FindStartIndexForGpx(IEnumerable<trksegType> wptType, DateTime startTime, int recordingRate, int startIndex)
         {
             // Find the first type where time is greater than starttime
-            var firstGpxEntry = wptType.FirstOrDefault(seg => seg.trkpt.Any(t => t.timeSpecified && t.time >= startTime));
+            var firstGpxEntry = wptType.Skip(startIndex).FirstOrDefault(seg => seg.trkpt.Any(t => t.timeSpecified && t.time >= startTime));
             if (firstGpxEntry != null)
             {
                 // If index greater than 0, we need to ignore som gpxdata, if not, find negative index
@@ -188,15 +188,15 @@ namespace PolarConverter.BLL.Services
             }
             for (int i = 0; i < length; i++)
             {
-                var gpxIndex = i + index;
-                if (gpxIndex < 0)
+                //var gpxIndex = i + index;
+                if (i < 0)
                 {
                     // Fill in firstposition
                     positionData[i] = MapPositionData(gpsData.First(), timezoneOffset, timeDifference);
                 }
-                else if (gpxIndex < gpsData.Length)
+                else if (i < gpsData.Length)
                 {
-                    positionData[i] = MapPositionData(gpsData[gpxIndex], timezoneOffset, timeDifference);
+                    positionData[i] = MapPositionData(gpsData[i], timezoneOffset, timeDifference);
                 }
                 else
                 {
