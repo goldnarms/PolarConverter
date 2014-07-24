@@ -196,6 +196,7 @@
     <Compile Include="Services\ConversionService.cs" />
     <Compile Include="Services\DataMapper.cs" />
     <Compile Include="Entiteter\XmlPolarData.cs" />
+    <Compile Include="Services\GeoCalculator.cs" />
     <Compile Include="Services\GpxReader.cs" />
     <Compile Include="Services\GpxService.cs" />
     <Compile Include="Services\LocalConversionService.cs" />
