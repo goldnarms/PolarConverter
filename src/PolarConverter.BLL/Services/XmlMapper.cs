@@ -81,6 +81,20 @@ namespace PolarConverter.BLL.Services
                                     if (data.result.samples != null)
                                     {
                                         var startRange = 0;
+                                        var totalLapDuration = activity.Lap.Sum(l => l.TotalTimeSeconds);
+                                        var lastIndex = Convert.ToInt32(Math.Floor(totalLapDuration/recordingRate));
+                                        var valueData = data.result.samples.FirstOrDefault();
+                                        if (valueData != null)
+                                        {
+                                            if (IsAbundantRemainingData(valueData.values.Count(c => c == ',') + 1, lastIndex))
+                                            {
+                                                var lapDuration = (valueData.values.Count(c => c == ',') + 1 - lastIndex)*recordingRate;
+                                                var laps = activity.Lap.ToList();
+                                                laps.Add(GenerateExtraLap(lapDuration, startTime.AddSeconds(totalLapDuration), v02max));
+                                                // use generateLapFromData to fill in values.
+                                                activity.Lap = laps.ToArray();
+                                            }
+                                        }
                                         foreach (var lap in activity.Lap)
                                         {
                                             lap.Track = CollectSampleData(data.result.samples, startTime,
@@ -169,6 +183,22 @@ namespace PolarConverter.BLL.Services
                 }
             }
             return null;
+        }
+
+        private static bool IsAbundantRemainingData(int valueLength, int startRange)
+        {
+            return valueLength > startRange + 10;
+        }
+
+        private ActivityLap_t GenerateExtraLap(int lapDurationInSeconds, DateTime starTime, double v02max)
+        {
+            var timeSpan = new TimeSpan(0, 0, lapDurationInSeconds);
+            var lap = new lap
+            {
+                duration = string.Format("{0}:{1}:{2}.000", timeSpan.Hours.ToString("00"), timeSpan.Minutes.ToString("00"),
+                    timeSpan.Seconds.ToString("00"))
+            };
+            return GenerateLap(lap, starTime, v02max);
         }
 
         private ActivityLap_t[] GenerateLapFromData(result result, DateTime startTime, double v02Max)
