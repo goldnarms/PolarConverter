@@ -159,9 +159,17 @@ namespace PolarConverter.BLL.Services
             {
                 // If index greater than 0, we need to ignore som gpxdata, if not, find negative index
                 var index = gpxTrk.trkseg.ToList().IndexOf(firstGpxEntry);
-                return index > 0 ? index : Convert.ToInt32(Math.Floor((startTime - firstGpxEntry.time).TotalSeconds / recordingRate));
+                return GetIndexForGpx(startTime - firstGpxEntry.time, recordingRate, index, startIndex);
             }
-            return 0;
+            return startIndex;
+        }
+
+        private static int GetIndexForGpx(TimeSpan timeDifference, int recordingRate, int index, int startIndex)
+        {
+            var tempIndex = index > 0
+                ? index
+                : Convert.ToInt32(Math.Floor(timeDifference.TotalSeconds/recordingRate));
+            return tempIndex + startIndex;
         }
 
         private int FindStartIndexForGpx(IEnumerable<trksegType> wptType, DateTime startTime, int recordingRate, int startIndex)
@@ -172,9 +180,9 @@ namespace PolarConverter.BLL.Services
             {
                 // If index greater than 0, we need to ignore som gpxdata, if not, find negative index
                 var index = firstGpxEntry.trkpt.ToList().FindIndex(seg => seg.timeSpecified && seg.time >= startTime);
-                return index > 0 ? index : Convert.ToInt32(Math.Floor((startTime - firstGpxEntry.trkpt.First().time).TotalSeconds / recordingRate));
+                return GetIndexForGpx(startTime - firstGpxEntry.trkpt.First().time, recordingRate, index, startIndex);
             }
-            return 0;
+            return startIndex;
         }
 
         private void SetPositionDataFromGpx<T>(T[] pointData, int index, int length, ref PositionData[] positionData,
