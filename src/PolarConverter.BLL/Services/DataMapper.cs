@@ -477,7 +477,7 @@ namespace PolarConverter.BLL.Services
                 if (imperial && speedValue * Converters.MphToKmh > maxSpeed || speedValue > maxSpeed)
                 {
                     maxSpeed = imperial ? speedValue * Converters.MphToKmh : speedValue;
-                    maxSpeed = maxSpeed*Converters.HmhToMs;
+                    maxSpeed = maxSpeed * 0.1;
                 }
                 // Calculate distanse
                 if (!trackData.DistanceMetersSpecified)
