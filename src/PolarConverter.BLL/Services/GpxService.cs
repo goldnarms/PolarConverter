@@ -169,7 +169,7 @@ namespace PolarConverter.BLL.Services
             var tempIndex = index > 0
                 ? index
                 : Convert.ToInt32(Math.Floor(timeDifference.TotalSeconds/recordingRate));
-            return tempIndex + startIndex;
+            return tempIndex;
         }
 
         private int FindStartIndexForGpx(IEnumerable<trksegType> wptType, DateTime startTime, int recordingRate, int startIndex)
