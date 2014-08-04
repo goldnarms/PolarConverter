@@ -18,8 +18,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public UploadController()
         {
-            //_storageHelper = new LocalStorageHelper();
-            //_storageHelper = new BlobStorageHelper("polarfiles");
             _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
         }
         public UploadController(IStorageHelper storageHelper)
@@ -38,8 +36,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
                 if (fileData.ContentLength > 0)
                 {
-                    //Save to blob storage
-                    //var blobStorageHelper = new BlobStorageHelper("polarfiles");
                     var fileReference = _storageHelper.UploadFile(fileData);
                     var showExtraVariables = false;
                     string sport;

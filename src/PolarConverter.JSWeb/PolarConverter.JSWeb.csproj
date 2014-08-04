@@ -619,7 +619,9 @@
     <Content Include="App\Controllers\userProfileController.js.map">
       <DependentUpon>userProfileController.ts</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging %283%29.pubxml" />
