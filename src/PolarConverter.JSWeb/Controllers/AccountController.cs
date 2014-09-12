@@ -78,12 +78,12 @@ namespace PolarConverter.JSWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser { UserName = model.UserName, PreferKg = model.PreferKg, BirthDate = model.BirthDate, IsMale = model.IsMale, Weight = model.Weight};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Paypal", "Account");
                 }
                 else
                 {
@@ -93,6 +93,11 @@ namespace PolarConverter.JSWeb.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public ActionResult Paypal()
+        {
+            return View();
         }
 
         private async void GetExternalInfo(string userId)

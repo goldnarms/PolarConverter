@@ -30,11 +30,11 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <a class="btn btn-default">Next</a>
         </div>
-    </div>
+    </div>*@
     //PART 2
     <div class="form-group">
         @Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
@@ -49,14 +49,22 @@
         </div>
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.RadioButtonFor(m => m.PreferKg, "true", new { @class = "form-control" }) Kg
+            @Html.RadioButtonFor(m => m.PreferKg, "false", new { @class = "form-control" }) Lbs
+        </div>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.IsMale, new { @class = "form-control" })
+            @Html.RadioButtonFor(m => m.IsMale, "false", new { @class = "form-control" }) Female
+            @Html.RadioButtonFor(m => m.IsMale, "true", new { @class = "form-control" }) Male
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-default" value="Register (1$/month)" />
         </div>
     </div>
 }
