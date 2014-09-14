@@ -22,6 +22,6 @@
 		preferKg: boolean;
 		isMale: boolean;
 		timeZoneOffset: number;
-		birthDate: Date;
+		birthDate: string;
 	}
 }

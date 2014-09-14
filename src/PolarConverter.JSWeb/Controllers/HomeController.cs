@@ -51,6 +51,11 @@ namespace PolarConverter.JSWeb.Controllers
             return View();
         }
 
+        public ActionResult Services()
+        {
+            return View();
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

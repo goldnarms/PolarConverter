@@ -17,7 +17,6 @@ namespace PolarConverter.JSWeb
                         "~/bower_components/angular-promise-tracker/promise-tracker.js",
                         "~/bower_components/angular-loading-bar/src/loading-bar.js",
                         "~/bower_components/angular-scroll/angular-scroll.js"
-                        
                         )
                         .IncludeDirectory("~/App/Controllers/", "*.js")
                         .IncludeDirectory("~/App/Directives/", "*.js")
@@ -36,10 +35,13 @@ namespace PolarConverter.JSWeb
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                        "~/bower_components/bootstrap/dist/js/bootstrap.js",
+                        "~/bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js",
+                        "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                        "~/bower_components/bootstrap/dist/css/bootstrap.css",
+                        "~/bower_components/bootstrap-datepicker/css/datepicker.css",
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/bower_components/angular-busy/angular-busy.css",

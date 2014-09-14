@@ -10,7 +10,7 @@
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
     <hr />
-    @Html.ValidationSummary()
+    @*@Html.ValidationSummary()*@
     //PART 1
     <div class="form-group">
         @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
@@ -31,10 +31,10 @@
         </div>
     </div>
     @*<div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <a class="btn btn-default">Next</a>
-        </div>
-    </div>*@
+            <div class="col-md-offset-2 col-md-10">
+                <a class="btn btn-default">Next</a>
+            </div>
+        </div>*@
     //PART 2
     <div class="form-group">
         @Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
@@ -45,21 +45,21 @@
     <div class="form-group">
         @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control date" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.PreferKg, "true", new { @class = "form-control" }) Kg
-            @Html.RadioButtonFor(m => m.PreferKg, "false", new { @class = "form-control" }) Lbs
+            @Html.RadioButtonFor(m => m.PreferKg, "true", new { @class = "form-control radio-inline" }) Kg
+            @Html.RadioButtonFor(m => m.PreferKg, "false", new { @class = "form-control radio-inline" }) Lbs
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.IsMale, "false", new { @class = "form-control" }) Female
-            @Html.RadioButtonFor(m => m.IsMale, "true", new { @class = "form-control" }) Male
+            @Html.RadioButtonFor(m => m.IsMale, "true", new { @class = "form-control radio-inline" }) Male
+            @Html.RadioButtonFor(m => m.IsMale, "false", new { @class = "form-control radio-inline" }) Female
         </div>
     </div>
     <div class="form-group">
@@ -71,4 +71,11 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+                $(".date").datepicker({                    
+                    format: 'mm/dd/yyyy',
+                });
+            });
+    </script>
 }

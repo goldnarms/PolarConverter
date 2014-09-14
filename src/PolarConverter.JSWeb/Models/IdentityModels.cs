@@ -7,11 +7,11 @@ namespace PolarConverter.JSWeb.Models
     public class ApplicationUser : IdentityUser
     {
         public double Weight { get; set; }
-        public string StravaEmail { get; set; }
-        public bool ForceGarmin { get; set; }
+        //public string StravaEmail { get; set; }
+        //public bool ForceGarmin { get; set; }
         public bool PreferKg { get; set; }
         public bool IsMale { get; set; }
-        public double TimeZoneOffset { get; set; }
+        //public double TimeZoneOffset { get; set; }
         public DateTime BirthDate { get; set; }
 
     }

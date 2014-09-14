@@ -63,7 +63,7 @@ namespace PolarConverter.JSWeb.Models
 
         [Required]
         [Display(Name = "Enter your weight")]
-        [MaxLength(3, ErrorMessage = "The {0} can not be longer than 3 characters")]
+        //[MaxLength(3, ErrorMessage = "The {0} can not be longer than 3 characters")]
         public double Weight { get; set; }
 
         [DataType(DataType.EmailAddress)]
@@ -73,6 +73,7 @@ namespace PolarConverter.JSWeb.Models
         [Display(Name = "Check if you want to the converted files to appear as they came from a Garmin watch.")]
         public bool ForceGarmin { get; set; }
 
+        [Required]
         [Display(Name="Kgs or Lbs")]
         public bool PreferKg { get; set; }
 
@@ -80,13 +81,14 @@ namespace PolarConverter.JSWeb.Models
         [Display(Name = "Select gender")]
         public bool IsMale { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Preferred timezone")]
         public double TimeZoneOffset { get; set; }
 
         [Required]
         [Display(Name = "Select your birthdate")]
         [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public string BirthDate { get; set; }
     }
 }

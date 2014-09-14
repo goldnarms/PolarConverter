@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -78,12 +79,23 @@ namespace PolarConverter.JSWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, PreferKg = model.PreferKg, BirthDate = model.BirthDate, IsMale = model.IsMale, Weight = model.Weight};
+                DateTime bdDate;
+                DateTime.TryParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out bdDate);
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    PreferKg = model.PreferKg,
+                    BirthDate = bdDate,
+                    IsMale = model.IsMale,
+                    Weight = model.Weight
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Paypal", "Account");
+                    //return RedirectToAction("Paypal", "Account");
+                    return RedirectToAction("Index", "Services");
                 }
                 else
                 {
@@ -95,6 +107,7 @@ namespace PolarConverter.JSWeb.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public ActionResult Paypal()
         {
             return View();
