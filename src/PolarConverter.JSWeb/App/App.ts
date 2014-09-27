@@ -6,6 +6,7 @@ module PolarConverter {
         .config([
             "$httpProvider", "fileUploadProvider", "cfpLoadingBarProvider",
             ($httpProvider, fileUploadProvider, cfpLoadingBarProvider) => {
+                $httpProvider.defaults.useXDomain = true;
                 delete $httpProvider.defaults.headers.common["X-Requested-With"];
                 fileUploadProvider.defaults.redirect = window.location.href.replace(
                     /\/[^\/]*$/,

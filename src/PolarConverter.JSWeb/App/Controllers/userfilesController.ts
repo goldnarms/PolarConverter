@@ -18,6 +18,10 @@ module PolarConverter {
             this.init();
         }
 
+        public exportToStrava(fileRef: string): void {
+            
+        }
+
         private init(): void {
             //this.fileList = [];
             this.cfpLoadingBar.start();

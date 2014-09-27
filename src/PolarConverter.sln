@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "PolarConverter.BLL\PolarConverter.BLL.csproj", "{B22CD80D-5630-44A6-87F4-1CBB8AD31275}"
 EndProject
@@ -69,7 +69,6 @@ Global
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Release|x86.Build.0 = Release|Any CPU
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|x86.ActiveCfg = Debug|Any CPU

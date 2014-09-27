@@ -1,4 +1,5 @@
-﻿@model PolarConverter.JSWeb.Models.FrontPageModel
+﻿@using PolarConverter.JSWeb.Models
+@model PolarConverter.JSWeb.ViewModels.UserViewModel
 @{
     ViewBag.Title = "PolarConverter";
 }
@@ -9,6 +10,7 @@
                 <th>#</th>
                 <th>Filename</th>
                 <th>Download</th>
+                <th>Export</th>
                 @*<th>Sport</th>
                 <th>Gpx file</th>
                 <th>Convert</th>*@
@@ -17,7 +19,17 @@
         <tr data-ng-repeat="file in ufc.fileList">
             <td>{{ $index + 1 }}</td>
             <td>{{ file.name }}</td>
-            <td><a data-ng-href="@Model.BlobPath{{ file.reference }}">Zip</a></td>
+            <td><a data-ng-href="@ViewData["BlobPath"]{{ file.reference }}">Zip</a></td>
+            <td>
+                @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
+                {
+                    using(Html.BeginForm("ExportToStrava", "Home", FormMethod.Post, new { }))
+                    {
+                        @Html.Hidden("hiReference", )
+                        <button class="btn btn-default" type="submit">Export to Strava</button>
+                    }
+                }
+            </td>
             @*<td>
                 <select data-ng-model="file.sport" data-ng-options="sport for sport in uc.sports"><option value="">Select sport</option></select>
             </td>

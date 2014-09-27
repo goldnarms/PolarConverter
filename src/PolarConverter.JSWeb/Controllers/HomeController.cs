@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PolarConverter.JSWeb.Models;
+using PolarConverter.JSWeb.ViewModels;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -30,18 +31,42 @@ namespace PolarConverter.JSWeb.Controllers
             return View(frontPageModel);
         }
 
-        public ActionResult UserProfile()
+        [Authorize]
+        public async Task<ActionResult> UserProfile()
         {
-            return View();
+            var userViewModel = await MappedUser();
+            return View(userViewModel);
         }
 
-        public ActionResult Files()
+        private async Task<UserViewModel> MappedUser()
         {
-            var frontPageModel = new FrontPageModel
+            var userId = User.Identity.GetUserId();
+            using (var db = new ApplicationDbContext())
             {
-                BlobPath = _blobPath
+                var applicationUser = await db.Users.Include(u => u.OauthTokens).FirstOrDefaultAsync(u => u.Id == userId);
+                var userViewModel = MapToViewModel(applicationUser);
+                return userViewModel;
+            }
+        }
+
+        private UserViewModel MapToViewModel(ApplicationUser applicationUser)
+        {
+            return new UserViewModel
+            {
+                BirthDate = applicationUser.BirthDate,
+                IsMale = applicationUser.IsMale,
+                PreferKg = applicationUser.PreferKg,
+                Weight = applicationUser.Weight,
+                RegisteredProviders = applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList()
             };
-            return View(frontPageModel);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Files()
+        {
+            ViewData["BlobPath"] = _blobPath;
+            var userViewModel = await MappedUser();
+            return View(userViewModel);
         }
 
         public ActionResult About()

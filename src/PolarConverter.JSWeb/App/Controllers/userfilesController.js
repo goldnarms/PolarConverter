@@ -16,6 +16,9 @@ var PolarConverter;
             return ["common", "fileService", "cfpLoadingBar", UserFilesController];
         };
 
+        UserFilesController.prototype.exportToStrava = function (fileRef) {
+        };
+
         UserFilesController.prototype.init = function () {
             var _this = this;
             //this.fileList = [];

@@ -15,6 +15,7 @@ namespace PolarConverter.JSWeb
             //config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             //WebApiConfig.Register(config);
             //app.UseWebApi(config);
+            ConfigureAuth(app);
         }
     }
 }

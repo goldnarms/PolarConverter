@@ -1,8 +1,26 @@
-﻿@{
+﻿@using PolarConverter.JSWeb.Models
+@model PolarConverter.JSWeb.ViewModels.UserViewModel
+@{
     ViewBag.Title = "UserProfile";
 }
 <div data-ng-controller="userProfileCtrl as up">
-    <div class="row" style="padding-top: 45px">
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Services</h4>
+            @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
+            {
+                <em>Strava connected</em>
+            }
+            else
+            {
+                using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new {}))
+                {
+                    <button type="submit">Connect to Strava</button>    
+                }
+            }
+        </div>
+    </div>
+    <div class="row" style="padding-top: 45px">        
         <div class="col-md-12">
             <div class="well">
                 <form class="form-horizontal" name="up.userProfileForm" novalidate="">
@@ -10,7 +28,7 @@
                     <div class="form-group">
                         <label class="col-lg-2 control-label" for="inputWeight">Weight</label>
                         <div class="col-lg-10">
-                            <input type="number" step="0.1" min="1" max="600" value="" id="inputWeight" data-ng-model="up.userViewModel.weight" required />
+                            <input type="number" step="0.1" min="1" max="600" value=@Model.Weight id="inputWeight" data-ng-model="up.userViewModel.weight" required />
                             <label>
                                 <input type="radio" value="kg" data-ng-model="up.userViewModel.weightMode" required />&nbsp;Kg
                             </label>

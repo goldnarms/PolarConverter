@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using System.Xml;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
-using PolarConverter.BLL.Services;
 using System.Web.Script.Serialization;
 
 namespace PolarConverter.JSWeb.Controllers.Api

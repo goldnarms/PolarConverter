@@ -1,11 +1,16 @@
-﻿@{
+﻿@model PolarConverter.JSWeb.Models.ApplicationUser
+@{
     ViewBag.Title = "Services";
-    Layout = "_Layout";
 }
 
 <h2>Services</h2>
 <h6>Connect to Strava</h6>
-@Html.BeginForm("ConnectToStrava", "Services")
-    
-<button type="submit">Connect</button>
-</form>
+@using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new {}))
+{
+    <button type="submit">Connect</button>    
+}
+
+@using (Html.BeginForm("GetUserData", "Services", FormMethod.Get, new { }))
+{
+    <button type="submit">Get user data</button>
+}

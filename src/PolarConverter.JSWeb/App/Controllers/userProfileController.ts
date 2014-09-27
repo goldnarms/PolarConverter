@@ -4,17 +4,38 @@ module PolarConverter {
         update(): void;
         userProfileForm: ng.IFormController;
         userViewModel: User;
+        connectToStrava():void;
     }
 
     export class UserProfile implements IUserProfile {
-        static $inject = ["common", "userService"];
+        static $inject = ["common", "userService", "$http"];
         public injection(): any[] {
-            return ["common", "userService", UserProfile];
+            return ["common", "userService", "$http", UserProfile];
         }
         public userProfileForm: ng.IFormController;
         public userViewModel: UserViewModel;
-        constructor(private common: ICommonService, private userService: IUserService) {
+        constructor(private common: ICommonService, private userService: IUserService, private $http: ng.IHttpService) {
             this.init();
+        }
+
+        public connectToStrava(): void {
+            console.log("Connecting to strava");
+            //this.$http.get("https://www.strava.com/oauth/authorize?client_id=2995&response_type=code&redirect_uri=http://localhost:50713/Services/ExternalLoginResult&scope=write&state=mystate&approval_prompt = force");
+            //this.$http.post("https://www.strava.com/oauth/token", {
+            //    client_id: "2995",
+            //    client_secret: "1210fbbd67f5e9b2f4978f3860b9634504035b3a",
+            //    code: "7619b27c962ea79b8de2964162ee65dd"
+            //});
+            this.$http({
+                url: "https://www.strava.com/oauth/token",
+                method: "POST",
+                data: JSON.stringify({
+                    client_id: "2995",
+                    client_secret: "1210fbbd67f5e9b2f4978f3860b9634504035b3a",
+                    code: "7619b27c962ea79b8de2964162ee65dd"
+                }),
+                withCredentials: false
+            });
         }
 
         public update(): void {
@@ -29,7 +50,7 @@ module PolarConverter {
         }
 
         private init(): void {
-            throw new Error("Not implemented");
+            console.log("UserProfile");
         }
     }
 }                                                                      
