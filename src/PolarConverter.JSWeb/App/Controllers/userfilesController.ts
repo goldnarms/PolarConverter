@@ -4,6 +4,7 @@ module PolarConverter {
 
     export interface IUserFilesController {
         fileList: PolarFile[];
+        exportToStrava(fileRef: string): void;
     }
 
     export class UserFilesController implements IUserFilesController {
@@ -18,8 +19,14 @@ module PolarConverter {
             this.init();
         }
 
-        public exportToStrava(fileRef: string): void {
-            
+        public exportToStrava(fileReference: string): void {
+            this.fileService.exportToService("Strava", fileReference)
+                .success(() => {
+                    this.common.log.info("File exported to Strava");
+                })
+                .catch((error) => {
+                    this.common.log.error("Error: " + error);
+            });
         }
 
         private init(): void {
@@ -27,7 +34,7 @@ module PolarConverter {
             this.cfpLoadingBar.start();
             this.fileService.getFilesForUser(1).then((data) => {
                 this.fileList = _.map(data.data, (pf: any) => {
-                    return <PolarFile> { name: pf.Name, reference: pf.Reference };
+                    return <PolarFile> { name: pf.name, reference: pf.reference };
                 });
                 this.cfpLoadingBar.complete();
             })

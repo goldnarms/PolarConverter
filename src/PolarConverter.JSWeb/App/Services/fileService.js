@@ -1,4 +1,4 @@
-﻿var PolarConverter;
+var PolarConverter;
 (function (PolarConverter) {
     "use strict";
 
@@ -17,13 +17,8 @@
         };
 
         FileService.prototype.exportToService = function (provider, fileReference) {
-            var data = $.param({
-                json: JSON.stringify({
-                    provider: provider,
-                    fileReference: fileReference
-                })
-            });
-            return this.$http.post("/api/services", data);
+            var exportData = { provider: provider, fileReference: fileReference };
+            return this.$http.post("/api/service/post/", exportData);
         };
         FileService.$inject = ["$http", "$log", "$q"];
         return FileService;

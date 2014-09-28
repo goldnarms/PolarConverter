@@ -20,13 +20,8 @@ module PolarConverter {
         }
 
         public exportToService(provider: string, fileReference: string): ng.IHttpPromise<any> {
-            var data = $.param({
-                json: JSON.stringify({
-                    provider: provider,
-                    fileReference: fileReference
-                })
-            });
-            return this.$http.post("/api/services", data);
+            var exportData = { provider: provider, fileReference: fileReference };
+            return this.$http.post("/api/service/post/", exportData);
         }
     }
 }

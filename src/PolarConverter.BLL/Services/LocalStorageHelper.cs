@@ -79,7 +79,7 @@ namespace PolarConverter.BLL.Services
             {
                 FileType = "zip",
                 Name = f,
-                Reference = string.Format("{0}.zip", f)
+                Reference = string.Format("{0}", f)
             });
         }
     }

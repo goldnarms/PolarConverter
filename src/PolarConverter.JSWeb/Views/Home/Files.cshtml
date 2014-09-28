@@ -23,11 +23,7 @@
             <td>
                 @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
                 {
-                    using(Html.BeginForm("ExportToStrava", "Home", FormMethod.Post, new { }))
-                    {
-                        @Html.Hidden("hiReference", )
-                        <button class="btn btn-default" type="submit">Export to Strava</button>
-                    }
+                    <a data-ng-click="ufc.exportToStrava(file)" href="" class="btn btn-default">Export</a>
                 }
             </td>
             @*<td>

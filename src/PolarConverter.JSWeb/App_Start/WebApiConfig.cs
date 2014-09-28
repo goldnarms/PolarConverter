@@ -12,7 +12,7 @@ namespace PolarConverter.JSWeb
         {
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
-            var cors = new EnableCorsAttribute("www.strava.com", "*", "*");
+            var cors = new EnableCorsAttribute("https://www.strava.com", "*", "*");
             config.EnableCors(cors);
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));

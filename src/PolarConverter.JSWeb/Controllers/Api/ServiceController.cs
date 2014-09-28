@@ -43,8 +43,10 @@ namespace PolarConverter.JSWeb.Controllers.Api
         }
 
         [HttpPost]
-        public IHttpActionResult Post(string provider, string fileReference)
+        //[Route("api/services/post/{data}")]
+        public IHttpActionResult Post([FromBody]ExportFileData data)
         {
+            //Test
             return Ok();
         }
 
@@ -83,5 +85,11 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 db.SaveChanges();
             }
         }
+    }
+
+    public class ExportFileData
+    {
+        public string Provider { get; set; }
+        public string FileReference { get; set; }
     }
 }

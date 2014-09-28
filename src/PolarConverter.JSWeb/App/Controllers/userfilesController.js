@@ -16,7 +16,13 @@ var PolarConverter;
             return ["common", "fileService", "cfpLoadingBar", UserFilesController];
         };
 
-        UserFilesController.prototype.exportToStrava = function (fileRef) {
+        UserFilesController.prototype.exportToStrava = function (fileReference) {
+            var _this = this;
+            this.fileService.exportToService("Strava", fileReference).success(function () {
+                _this.common.log.info("File exported to Strava");
+            }).catch(function (error) {
+                _this.common.log.error("Error: " + error);
+            });
         };
 
         UserFilesController.prototype.init = function () {
@@ -25,7 +31,7 @@ var PolarConverter;
             this.cfpLoadingBar.start();
             this.fileService.getFilesForUser(1).then(function (data) {
                 _this.fileList = _.map(data.data, function (pf) {
-                    return { name: pf.Name, reference: pf.Reference };
+                    return { name: pf.name, reference: pf.reference };
                 });
                 _this.cfpLoadingBar.complete();
             }).catch(function (error) {
