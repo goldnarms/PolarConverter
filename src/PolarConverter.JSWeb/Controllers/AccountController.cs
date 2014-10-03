@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PolarConverter.JSWeb.Models;
+using PolarConverter.JSWeb.ViewModels;
 
 namespace PolarConverter.JSWeb.Controllers
 {
