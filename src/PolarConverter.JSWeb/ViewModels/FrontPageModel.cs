@@ -1,4 +1,4 @@
-﻿namespace PolarConverter.JSWeb.Models
+﻿namespace PolarConverter.JSWeb.ViewModels
 {
     public class FrontPageModel
     {
