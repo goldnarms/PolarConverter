@@ -329,7 +329,12 @@
     <Compile Include="Migrations\201409171959055_oauthtoken.Designer.cs">
       <DependentUpon>201409171959055_oauthtoken.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\FrontPageModel.cs" />
+    <Compile Include="Migrations\201410022148563_UserFiles.cs" />
+    <Compile Include="Migrations\201410022148563_UserFiles.Designer.cs">
+      <DependentUpon>201410022148563_UserFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="ViewModels\FrontPageModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JasmineController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -346,7 +351,8 @@
       <DependentUpon>201406151715155_UserProfile.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\UserFile.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileType.cs" />
     <Compile Include="Models\GpxFile.cs" />
@@ -404,8 +410,17 @@
     <Content Include="App\Models\user.js">
       <DependentUpon>user.ts</DependentUpon>
     </Content>
+    <Content Include="App\Services\Common.js">
+      <DependentUpon>Common.ts</DependentUpon>
+    </Content>
     <Content Include="App\Services\FacebookShareUrlService.js">
       <DependentUpon>FacebookShareUrlService.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\fileService.js">
+      <DependentUpon>fileService.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\userService.js">
+      <DependentUpon>userService.ts</DependentUpon>
     </Content>
     <Content Include="App\_all.js">
       <DependentUpon>_all.ts</DependentUpon>
@@ -877,6 +892,15 @@
     <Content Include="bower_components\bootstrap\LICENSE" />
     <Content Include="bower_components\bootstrap\package.json" />
     <Content Include="bower_components\bootstrap\README.md" />
+    <Content Include="App\Services\Common.js.map">
+      <DependentUpon>Common.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\fileService.js.map">
+      <DependentUpon>fileService.ts</DependentUpon>
+    </Content>
+    <Content Include="App\Services\userService.js.map">
+      <DependentUpon>userService.ts</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %282%29.pubxml" />
@@ -1029,7 +1053,7 @@
     <TypeScriptCompile Include="App\Services\userService.ts" />
     <TypeScriptCompile Include="App\ViewModels\userViewModel.ts" />
     <TypeScriptCompile Include="App\_all.ts" />
-    <TypeScriptCompile Include="Models\AccountViewModels.cs.d.ts">
+    <TypeScriptCompile Include="ViewModels\AccountViewModels.cs.d.ts">
       <DependentUpon>AccountViewModels.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Models\File.cs.d.ts">
@@ -1076,6 +1100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409171959055_oauthtoken.resx">
       <DependentUpon>201409171959055_oauthtoken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410022148563_UserFiles.resx">
+      <DependentUpon>201410022148563_UserFiles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

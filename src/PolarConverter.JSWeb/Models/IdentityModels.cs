@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -28,22 +27,6 @@ namespace PolarConverter.JSWeb.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
-        }
-    }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("DefaultConnection")
-        {
-            
-        }
-
-        public DbSet<OauthToken> OauthTokens { get; set; }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
         }
     }
 }
