@@ -1,5 +1,6 @@
 ﻿declare module server {
 	interface uploadViewModel {
+		uid: string;
 		weight: number;
 		weightMode: string;
 		timeZoneOffset: number;
@@ -15,6 +16,7 @@
 			gpxFile: {
 				name: string;
 				reference: string;
+				version: string;
 			};
 			note: string;
 		}[];

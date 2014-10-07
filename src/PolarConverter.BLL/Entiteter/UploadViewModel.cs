@@ -2,6 +2,7 @@
 {
     public class UploadViewModel
     {
+        public string Uid { get; set; }
         public double Weight { get; set; }
         public string WeightMode { get; set; }
         public double TimeZoneOffset { get; set; }
