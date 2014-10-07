@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
-using com.strava.api.Authentication;
-using com.strava.api.Client;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PolarConverter.JSWeb.Models;
@@ -69,10 +67,10 @@ namespace PolarConverter.JSWeb.Controllers
                 var userToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == userId);
                 if (userToken != null)
                 {
-                    var auth = new StaticAuthentication(userToken.Token);
-                    var client = new StravaClient(auth);
-                    var athlete = await client.Athletes.GetAthleteAsync();
-                    return athlete.LastName;
+                    //var auth = new StaticAuthentication(userToken.Token);
+                    //var client = new StravaClient(auth);
+                    //var athlete = await client.Athletes.GetAthleteAsync();
+                    //return athlete.LastName;
                 }
             }
 
