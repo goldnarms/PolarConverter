@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Xml;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 using System.Web.Script.Serialization;
@@ -31,7 +32,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
         [System.Web.Http.Route("api/upload")]
         [System.Web.Http.HttpPost]
         [System.Web.Http.HttpGet]
-        public async Task<HttpResponseMessage> Upload()
+        public IHttpActionResult Upload()
         {
             if (HttpContext.Current.Request.Files.Count > 0)
             {
@@ -40,21 +41,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 if (fileData.ContentLength > 0)
                 {
                     var fileReference = _storageHelper.UploadFile(fileData);
-                    if (User.Identity.IsAuthenticated)
-                    {
-                        var userFile = new UserFile
-                        {
-                            Date = DateTime.UtcNow,
-                            FileRef = fileReference,
-                            UserId = User.Identity.GetUserId()
-                        };
-
-                        using (var db = new ApplicationDbContext())
-                        {
-                            db.UserFiles.Add(userFile);
-                            await db.SaveChangesAsync();
-                        }
-                    }
                     var showExtraVariables = false;
                     string sport;
                     double v02Max;
@@ -76,12 +62,13 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         weight,
                         gpxVersion
                     };
-                    HttpContext.Current.Response.Write(serializer.Serialize(result));
-                    HttpContext.Current.Response.StatusCode = 200;
-                    return new HttpResponseMessage(HttpStatusCode.OK);
+                    //HttpContext.Current.Response.Write(serializer.Serialize(result));
+                    //HttpContext.Current.Response.StatusCode = 200;
+                    //HttpContext.Current.Response.
+                    return Json(result);
                 }
             }
-            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            return BadRequest();
         }
 
         private void CheckForData(HttpPostedFile fileData, out string sport, out double v02Max, out double weight,
