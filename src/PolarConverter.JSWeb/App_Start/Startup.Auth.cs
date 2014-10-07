@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -13,9 +14,13 @@ namespace PolarConverter.JSWeb
     public partial class Startup
     {
         // Enable the application to use OAuthAuthorization. You can then secure your Web APIs
+        public static Func<UserManager<IdentityUser>> UserManagerFactory { get; set; }
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
         static Startup()
         {
             PublicClientId = "web";
+            UserManagerFactory = () => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new ApplicationDbContext()));
 
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
@@ -26,8 +31,6 @@ namespace PolarConverter.JSWeb
                 AllowInsecureHttp = true
             };
         }
-
-        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
         public static string PublicClientId { get; private set; }
 
