@@ -84,5 +84,16 @@ namespace PolarConverter.BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        public string DownloadFile(string fileRef, string fileName)
+        {
+            var blob = _container.GetBlockBlobReference(fileRef);
+            var filePath = string.Format("{0},{1}", HttpContext.Current.Server.MapPath("/Uploads/"), !string.IsNullOrEmpty(fileName) ? fileName : fileRef);
+            using (var fileStream = File.OpenWrite(filePath))
+            {
+                blob.DownloadToStream(fileStream);
+            }
+            return filePath;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -39,30 +40,37 @@ namespace PolarConverter.JSWeb.Controllers.Api
         public async Task<IHttpActionResult> Convert(UploadViewModel uploadViewModel)
         {
             var result = _conversion.Convert(uploadViewModel);
-
-            var logonUser = HttpContext.Current.Request.LogonUserIdentity;
-            var IsApproved = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type.Equals("IsApproved")).SingleOrDefault();
-            if (logonUser != null && logonUser.IsAuthenticated)
+            if (!string.IsNullOrEmpty(uploadViewModel.Uid) && result.TcxReferences.Count > 0)
             {
-                var userFile = new UserFile
-                {
-                    Date = DateTime.UtcNow,
-                    FileRef = result.Reference,
-                    UserId = logonUser.GetUserId()
-                };
-
                 using (var db = new ApplicationDbContext())
                 {
-                    db.UserFiles.Add(userFile);
-                    await db.SaveChangesAsync();
+                    foreach (var tcxFileReference in result.TcxReferences)
+                    {
+                        var userFile = new UserFile
+                        {
+                            Date = DateTime.UtcNow,
+                            FileRef = tcxFileReference.Key,
+                            Name = tcxFileReference.Value,
+                            UserId = uploadViewModel.Uid
+                        };
+
+                        db.UserFiles.Add(userFile);
+                    }
+                    try
+                    {
+                        await db.SaveChangesAsync();
+                    }
+                    catch (DbEntityValidationException dbException)
+                    {
+                        foreach (var dbValidationError in dbException.EntityValidationErrors.SelectMany(error => error.ValidationErrors))
+                        {
+                            result.ErrorMessages.Add(dbValidationError.ErrorMessage);
+                        }
+                    }
                 }
             }
 
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            HttpContext.Current.Response.Write(serializer.Serialize(result));
-            HttpContext.Current.Response.StatusCode = 200;
-            return Ok(serializer.Serialize(result));
-            //new HttpResponseMessage(HttpStatusCode.OK);
+            return Json(result);
         }
     }
 }

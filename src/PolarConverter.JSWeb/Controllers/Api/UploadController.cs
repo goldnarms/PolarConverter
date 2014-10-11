@@ -1,18 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Xml;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
-using System.Web.Script.Serialization;
-using PolarConverter.JSWeb.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -37,7 +29,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
             if (HttpContext.Current.Request.Files.Count > 0)
             {
                 var fileData = HttpContext.Current.Request.Files[0];
-
                 if (fileData.ContentLength > 0)
                 {
                     var fileReference = _storageHelper.UploadFile(fileData);
@@ -51,7 +42,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     {
                         showExtraVariables = true;
                     }
-                    var serializer = new JavaScriptSerializer();
                     var result = new
                     {
                         name = fileData.FileName,
@@ -62,9 +52,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         weight,
                         gpxVersion
                     };
-                    //HttpContext.Current.Response.Write(serializer.Serialize(result));
-                    //HttpContext.Current.Response.StatusCode = 200;
-                    //HttpContext.Current.Response.
                     return Json(result);
                 }
             }

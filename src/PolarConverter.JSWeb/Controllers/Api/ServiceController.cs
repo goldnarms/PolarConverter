@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using com.strava.api.Activities;
+using com.strava.api.Authentication;
+using com.strava.api.Upload;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PolarConverter.BLL.Interfaces;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.OauthClients;
+using com.strava.api;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
     public class ServiceController : ApiController
     {
+        private readonly IStorageHelper _storageHelper;
 
         private const string StravaUrl = "https://www.strava.com";
         private string _clientId;
-        private UserManager<ApplicationUser> _userManager;
 
         public ServiceController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
 
-        public ServiceController(UserManager<ApplicationUser> userManager)
+        public ServiceController(IStorageHelper storageHelper)
         {
-            _userManager = userManager;
+            _storageHelper = storageHelper;
             _clientId = ConfigurationManager.AppSettings["StravaClientId"];
-
-            var stravaClient = new StravaOauthClient(_clientId, ConfigurationManager.AppSettings["StravaClientSecret"]);            
         }
 
         [HttpGet]
@@ -85,11 +88,38 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 db.SaveChanges();
             }
         }
+
+        public async Task<IHttpActionResult> Export(ExportFileData exportFileData)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var userToken =
+                    await
+                        db.OauthTokens.FirstOrDefaultAsync(
+                            oa => oa.UserId == exportFileData.UserId && oa.ProviderType == ProviderType.Strava);
+                if (userToken != null)
+                {
+                    var token = userToken.Token;
+                    var auth = new StaticAuthentication(token);
+                    var client = new com.strava.api.Client.StravaClient(auth);
+                    var filepath = _storageHelper.DownloadFile(exportFileData.FileReference, exportFileData.FileName);
+                    var status = await client.Uploads.UploadActivityAsync(filepath, DataFormat.Tcx);
+                    //var s = await client.Uploads.CheckUploadStatusAsync(status.Id.ToString());
+                    //var check = new UploadStatusCheck(token, status.Id.ToString());
+                    //check.UploadChecked += (o, args) => Console.WriteLine(args.Status);
+                    //check.Start();
+                    return Ok();
+                }
+                return NotFound();
+            }
+        }
     }
 
     public class ExportFileData
     {
         public string Provider { get; set; }
         public string FileReference { get; set; }
+        public string FileName { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -4,7 +4,7 @@ var PolarConverter;
     "use strict";
 
     var UploadController = (function () {
-        function UploadController($scope, $http, $filter, $window, $document, common, storage, facebookShareService) {
+        function UploadController($scope, $http, $filter, $window, $document, common, storage, facebookShareService, userService) {
             this.$scope = $scope;
             this.$http = $http;
             this.$filter = $filter;
@@ -13,13 +13,14 @@ var PolarConverter;
             this.common = common;
             this.storage = storage;
             this.facebookShareService = facebookShareService;
+            this.userService = userService;
             this.initalized = false;
             this.showFileTable = true;
             this.init();
             this.setupWatches();
         }
         UploadController.prototype.injection = function () {
-            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", UploadController];
+            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", UploadController];
         };
 
         UploadController.prototype.init = function () {
@@ -198,8 +199,11 @@ var PolarConverter;
                 return uf.checked;
             });
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
-            this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone" }).then(function (response) {
-                _this.onSuccesssfullConvert(response);
+            this.userService.getUserId().then(function (userId) {
+                _this.uploadViewModel.uid = userId.data;
+                _this.$http.post("/api/convert", _this.uploadViewModel, { tracker: "convertDone" }).then(function (response) {
+                    _this.onSuccesssfullConvert(response);
+                });
             });
         };
 
@@ -295,7 +299,7 @@ var PolarConverter;
                 { offset: 14, text: "(GMT +14:00) Pacific/Kiritimati" }
             ];
         };
-        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService"];
+        UploadController.$inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService"];
         return UploadController;
     })();
     PolarConverter.UploadController = UploadController;

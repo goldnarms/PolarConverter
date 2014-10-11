@@ -26,6 +26,7 @@ namespace PolarConverter.BLL.Services
         public ConversionResult Convert(UploadViewModel model)
         {
             var errorMessages = new List<string>();
+            var tcxReferences = new Dictionary<string, string>();
             var successfulFiles = 0;
             var readable =
                 GetPipedStream(output =>
@@ -38,8 +39,13 @@ namespace PolarConverter.BLL.Services
                             try
                             {
                                 var hrmFileData = _dataMapper.MapData(hrmFile, model);
-                                var fileName = string.Format("{0}.{1}", RemoveFileExtension(hrmFile.Name), Enum.GetName(typeof (FilTyper), FilTyper.Tcx).ToLower());
+                                var shortFileName = RemoveFileExtension(hrmFile.Name);
+                                var fileName = string.Format("{0}.{1}", shortFileName, Enum.GetName(typeof(FilTyper), FilTyper.Tcx).ToLower());
                                 zip.AddEntry(fileName, hrmFileData);
+                                if (!string.IsNullOrEmpty(model.Uid))
+                                {
+                                    tcxReferences.Add(_storageHelper.SaveStream(new MemoryStream(hrmFileData), fileName, "application/xml", "tcx"), shortFileName);
+                                }
                                 successfulFiles++;
                             }
                             catch (Exception ex)
@@ -56,9 +62,14 @@ namespace PolarConverter.BLL.Services
                                 var stream = _xmlMapper.MapData(xmlFile, model);
                                 var fileName = StringHelper.Filnavnfikser(xmlFile.Name, FilTyper.Tcx);
                                 zip.AddEntry(fileName, stream);
+                                if (!string.IsNullOrEmpty(model.Uid))
+                                {
+                                    tcxReferences.Add(_storageHelper.SaveStream(new MemoryStream(stream), fileName, "application/xml", "tcx"), xmlFile.Name);
+                                }
+
                                 successfulFiles++;
                             }
-                             catch (Exception ex)
+                            catch (Exception ex)
                             {
                                 errorMessages.Add(string.Format("Error in file {0}: {1}", xmlFile.Name, ex.Message));
                             }
@@ -75,7 +86,8 @@ namespace PolarConverter.BLL.Services
             {
                 ErrorMessages = errorMessages,
                 FileName = successfulFiles > 0 ? "TcxFiles.zip" : "",
-                Reference = successfulFiles > 0 ? fileReference : null
+                Reference = successfulFiles > 0 ? fileReference : null,
+                TcxReferences = tcxReferences
             };
         }
 

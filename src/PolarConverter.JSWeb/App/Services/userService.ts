@@ -3,6 +3,7 @@ module PolarConverter {
 
     export interface IUserService {
         updateProfile(userId: number, user: User): void;
+        getUserId(): ng.IHttpPromise<string>;
     }
 
     export class UserService implements IUserService {
@@ -11,12 +12,16 @@ module PolarConverter {
             return ["$http", "$log", UserService];
         }
 
-        constructor($http: ng.IHttpService, $log: ng.ILogService) {
+        constructor(private $http: ng.IHttpService, private $log: ng.ILogService) {
             
         }
 
         public updateProfile(userId: number, user: User): void {
             
+        }
+
+        public getUserId(): ng.IHttpPromise<string> {
+            return this.$http.get("/account/CurrentUserId");
         }
     }
 }

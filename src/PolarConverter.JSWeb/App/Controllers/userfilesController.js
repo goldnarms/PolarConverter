@@ -4,19 +4,20 @@ var PolarConverter;
     "use strict";
 
     var UserFilesController = (function () {
-        function UserFilesController(common, fileService, cfpLoadingBar) {
+        function UserFilesController(common, fileService, cfpLoadingBar, userService) {
             this.common = common;
             this.fileService = fileService;
             this.cfpLoadingBar = cfpLoadingBar;
+            this.userService = userService;
             //User = new <User>;
             //User.id = 1;
             this.init();
         }
         UserFilesController.prototype.injection = function () {
-            return ["common", "fileService", "cfpLoadingBar", UserFilesController];
+            return ["common", "fileService", "cfpLoadingBar", "userService", UserFilesController];
         };
 
-        UserFilesController.prototype.exportToStrava = function (fileReference) {
+        UserFilesController.prototype.exportToStrava = function (fileReference, fileName) {
             var _this = this;
             this.fileService.exportToService("Strava", fileReference).success(function () {
                 _this.common.log.info("File exported to Strava");
@@ -29,14 +30,16 @@ var PolarConverter;
             var _this = this;
             //this.fileList = [];
             this.cfpLoadingBar.start();
-            this.fileService.getFilesForUser(1).then(function (data) {
-                _this.fileList = _.map(data.data, function (pf) {
-                    return { name: pf.name, reference: pf.reference };
+            this.userService.getUserId().then(function (userId) {
+                _this.fileService.getFilesForUser(userId.data).then(function (data) {
+                    _this.fileList = _.map(data.data, function (pf) {
+                        return { name: pf.name, reference: pf.reference };
+                    });
+                    _this.cfpLoadingBar.complete();
+                }).catch(function (error) {
+                    _this.cfpLoadingBar.complete();
+                    _this.common.log.error(error);
                 });
-                _this.cfpLoadingBar.complete();
-            }).catch(function (error) {
-                _this.cfpLoadingBar.complete();
-                _this.common.log.error(error);
             });
             //if (!!User) {
             //}

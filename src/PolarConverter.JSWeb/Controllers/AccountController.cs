@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -466,6 +467,12 @@ namespace PolarConverter.JSWeb.Controllers
             var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
+        }
+
+        [HttpGet]
+        public string CurrentUserId()
+        {
+            return User.Identity.IsAuthenticated ? User.Identity.GetUserId() : "";
         }
 
         protected override void Dispose(bool disposing)

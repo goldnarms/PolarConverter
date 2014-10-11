@@ -33,7 +33,8 @@ namespace PolarConverter.BLL.Services
 
         public string SaveStream(Stream stream, string fileName, string contentType, string extension)
         {
-            var fileReference = String.Format("{0}{1}.{2}", _basePath, Guid.NewGuid(), extension);
+            //var fileReference = String.Format("{0}{1}.{2}", _basePath, Guid.NewGuid(), extension);
+            var fileReference = String.Format("{0}.{1}", Guid.NewGuid(), extension);
             //stream.Seek(0, SeekOrigin.Begin);
             using (var fs = new FileStream(fileReference, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -81,6 +82,11 @@ namespace PolarConverter.BLL.Services
                 Name = f,
                 Reference = string.Format("{0}", f)
             });
+        }
+
+        public string DownloadFile(string fileRef, string fileName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

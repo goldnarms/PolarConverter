@@ -1,8 +1,8 @@
 module PolarConverter {
     "use strict";
     export interface IFileService {
-        getFilesForUser(userId: number): ng.IHttpPromise<any>;
-        exportToService(provider: string, fileReference: string): ng.IHttpPromise<any>;
+        getFilesForUser(userId: string): ng.IHttpPromise<any>;
+        exportToService(provider: string, fileReference: string, fileName: string): ng.IHttpPromise<any>;
     }
 
     export class FileService implements IFileService {
@@ -15,13 +15,13 @@ module PolarConverter {
             
         }
 
-        public getFilesForUser(userId: number): ng.IHttpPromise<any> {
+        public getFilesForUser(userId: string): ng.IHttpPromise<any> {
             return this.$http.get("/api/file?id=" + userId);
         }
 
-        public exportToService(provider: string, fileReference: string): ng.IHttpPromise<any> {
-            var exportData = { provider: provider, fileReference: fileReference };
-            return this.$http.post("/api/service/post/", exportData);
+        public exportToService(provider: string, fileReference: string, fileName: string): ng.IHttpPromise<any> {
+            var exportData = { provider: provider, fileReference: fileReference, fileName: fileName };
+            return this.$http.post("/api/service/export/", exportData);
         }
     }
 }

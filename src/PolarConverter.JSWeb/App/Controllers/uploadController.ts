@@ -33,8 +33,8 @@ module PolarConverter {
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService"];
+        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
@@ -56,7 +56,7 @@ module PolarConverter {
         private showUploadedFiles: boolean;
         private showFileTable: boolean = true;
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $document: any, private common: ICommonService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $document: any, private common: ICommonService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService, private userService: PolarConverter.IUserService) {
             this.init();
             this.setupWatches();
         }
@@ -81,7 +81,7 @@ module PolarConverter {
             this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m"};
+            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m" };
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -232,8 +232,11 @@ module PolarConverter {
             this.isConverting = true;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, (uf: PolarConverter.PolarFile) => { return uf.checked; });
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
-            this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone" }).then((response) => {
-                this.onSuccesssfullConvert(response);
+            this.userService.getUserId().then((userId) => {
+                this.uploadViewModel.uid = userId.data;
+                this.$http.post("/api/convert", this.uploadViewModel, { tracker: "convertDone" }).then((response) => {
+                    this.onSuccesssfullConvert(response);
+                });
             });
         }
 

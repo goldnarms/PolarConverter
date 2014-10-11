@@ -5,9 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
-using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
+using PolarConverter.JSWeb.Models;
+using PolarFile = PolarConverter.BLL.Entiteter.PolarFile;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -27,14 +28,18 @@ namespace PolarConverter.JSWeb.Controllers.Api
             _storageHelper = storageHelper;
         }
 
-        public HttpResponseMessage Get(int id)
+        public IHttpActionResult Get(string id)
         {
-            var files = _storageHelper.GetFilesForUser(id);
-            if (files == null)
+            if (!string.IsNullOrEmpty(id))
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                var files = new List<UserFile>();
+                using (var db = new ApplicationDbContext())
+                {
+                    files = db.UserFiles.Where(uf => uf.UserId == id).ToList();
+                }
+                return Ok(files);
             }
-            return Request.CreateResponse<IEnumerable<PolarFile>>(HttpStatusCode.OK, files);
+            return NotFound();
         }
     }
 }

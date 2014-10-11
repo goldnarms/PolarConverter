@@ -16,5 +16,6 @@ namespace PolarConverter.JSWeb.Models
         [Key, Column(Order = 1)]
         public string FileRef { get; set; }
         public DateTime Date { get; set; }
+        public string Name { get; set; }
     }
 }
