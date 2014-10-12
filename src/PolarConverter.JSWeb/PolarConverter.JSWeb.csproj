@@ -341,6 +341,10 @@
     <Compile Include="Migrations\201410102113339_userfiles2.Designer.cs">
       <DependentUpon>201410102113339_userfiles2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410122036324_userFileReference.cs" />
+    <Compile Include="Migrations\201410122036324_userFileReference.Designer.cs">
+      <DependentUpon>201410122036324_userFileReference.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="ViewModels\FrontPageModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1115,6 +1119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410102113339_userfiles2.resx">
       <DependentUpon>201410102113339_userfiles2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410122036324_userFileReference.resx">
+      <DependentUpon>201410122036324_userFileReference.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -88,7 +88,7 @@ namespace PolarConverter.BLL.Services
         public string DownloadFile(string fileRef, string fileName)
         {
             var blob = _container.GetBlockBlobReference(fileRef);
-            var filePath = string.Format("{0},{1}", HttpContext.Current.Server.MapPath("/Uploads/"), !string.IsNullOrEmpty(fileName) ? fileName : fileRef);
+            var filePath = string.Format("{0}{1}", HttpContext.Current.Server.MapPath("/Upload/"), !string.IsNullOrEmpty(fileName) ? fileName + ".tcx" : fileRef);
             using (var fileStream = File.OpenWrite(filePath))
             {
                 blob.DownloadToStream(fileStream);

@@ -16,8 +16,9 @@ var PolarConverter;
             return this.$http.get("/api/file?id=" + userId);
         };
 
-        FileService.prototype.exportToService = function (provider, fileReference, fileName) {
-            var exportData = { provider: provider, fileReference: fileReference, fileName: fileName };
+        FileService.prototype.exportToService = function (provider, fileReference, fileName, userId) {
+            console.log(fileReference);
+            var exportData = { provider: provider, reference: fileReference, name: fileName, userId: userId };
             return this.$http.post("/api/service/export/", exportData);
         };
         FileService.$inject = ["$http", "$log", "$q"];

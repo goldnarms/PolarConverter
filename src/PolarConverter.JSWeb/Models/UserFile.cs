@@ -14,8 +14,9 @@ namespace PolarConverter.JSWeb.Models
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
         [Key, Column(Order = 1)]
-        public string FileRef { get; set; }
+        public string Reference { get; set; }
         public DateTime Date { get; set; }
         public string Name { get; set; }
+        public Sport Activity { get; set; }
     }
 }

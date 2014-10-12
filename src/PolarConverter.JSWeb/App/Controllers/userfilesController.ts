@@ -4,7 +4,8 @@ module PolarConverter {
 
     export interface IUserFilesController {
         fileList: PolarFile[];
-        exportToStrava(fileRef: string, fileName: string): void;
+        exportToStrava(file: File): void;
+        userId: string;
     }
 
     export class UserFilesController implements IUserFilesController {
@@ -13,16 +14,15 @@ module PolarConverter {
             return ["common", "fileService", "cfpLoadingBar", "userService", UserFilesController];
         }
         static $inject = ["common", "fileService", "cfpLoadingBar"];
+
+        public userId: string;
         constructor(private common: ICommonService, private fileService: IFileService, private cfpLoadingBar: PolarConverter.ILoadingBar, private userService: PolarConverter.IUserService) {
-            //User = new <User>;
-            //User.id = 1;
             this.init();
         }
 
-        public exportToStrava(fileReference: string, fileName: string): void {
-            this.fileService.exportToService("Strava", fileReference)
+        public exportToStrava(file: File): void {
+            this.fileService.exportToService("Strava", file.reference, file.name, this.userId)
                 .success(() => {
-                    this.common.log.info("File exported to Strava");
                 })
                 .catch((error) => {
                     this.common.log.error("Error: " + error);
@@ -33,6 +33,7 @@ module PolarConverter {
             //this.fileList = [];
             this.cfpLoadingBar.start();
             this.userService.getUserId().then((userId) => {
+                this.userId = userId.data;
                 this.fileService.getFilesForUser(userId.data).then((data) => {
                     this.fileList = _.map(data.data, (pf: any) => {
                         return <PolarFile> { name: pf.name, reference: pf.reference };

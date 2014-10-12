@@ -9,18 +9,15 @@ var PolarConverter;
             this.fileService = fileService;
             this.cfpLoadingBar = cfpLoadingBar;
             this.userService = userService;
-            //User = new <User>;
-            //User.id = 1;
             this.init();
         }
         UserFilesController.prototype.injection = function () {
             return ["common", "fileService", "cfpLoadingBar", "userService", UserFilesController];
         };
 
-        UserFilesController.prototype.exportToStrava = function (fileReference, fileName) {
+        UserFilesController.prototype.exportToStrava = function (file) {
             var _this = this;
-            this.fileService.exportToService("Strava", fileReference).success(function () {
-                _this.common.log.info("File exported to Strava");
+            this.fileService.exportToService("Strava", file.reference, file.name, this.userId).success(function () {
             }).catch(function (error) {
                 _this.common.log.error("Error: " + error);
             });
@@ -31,6 +28,7 @@ var PolarConverter;
             //this.fileList = [];
             this.cfpLoadingBar.start();
             this.userService.getUserId().then(function (userId) {
+                _this.userId = userId.data;
                 _this.fileService.getFilesForUser(userId.data).then(function (data) {
                     _this.fileList = _.map(data.data, function (pf) {
                         return { name: pf.name, reference: pf.reference };

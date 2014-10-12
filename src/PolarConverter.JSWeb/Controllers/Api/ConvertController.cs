@@ -49,9 +49,10 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         var userFile = new UserFile
                         {
                             Date = DateTime.UtcNow,
-                            FileRef = tcxFileReference.Key,
+                            Reference = tcxFileReference.Key,
                             Name = tcxFileReference.Value,
-                            UserId = uploadViewModel.Uid
+                            UserId = uploadViewModel.Uid,
+                            Activity = Sport.Other
                         };
 
                         db.UserFiles.Add(userFile);

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Mvc;
 using com.strava.api.Activities;
 using com.strava.api.Authentication;
 using com.strava.api.Upload;
@@ -26,6 +27,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         public ServiceController()
         {
+            _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
         }
 
         public ServiceController(IStorageHelper storageHelper)
@@ -34,7 +36,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             _clientId = ConfigurationManager.AppSettings["StravaClientId"];
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public async Task<IHttpActionResult> Strava()
         {
             const string action = "/oauth/authorize";
@@ -45,7 +47,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             }
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         //[Route("api/services/post/{data}")]
         public IHttpActionResult Post([FromBody]ExportFileData data)
         {
@@ -89,8 +91,11 @@ namespace PolarConverter.JSWeb.Controllers.Api
             }
         }
 
+        [System.Web.Http.Route("api/service/export")]
         public async Task<IHttpActionResult> Export(ExportFileData exportFileData)
         {
+            if (string.IsNullOrEmpty(exportFileData.Reference))
+                return NotFound();
             using (var db = new ApplicationDbContext())
             {
                 var userToken =
@@ -102,7 +107,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     var token = userToken.Token;
                     var auth = new StaticAuthentication(token);
                     var client = new com.strava.api.Client.StravaClient(auth);
-                    var filepath = _storageHelper.DownloadFile(exportFileData.FileReference, exportFileData.FileName);
+                    var filepath = _storageHelper.DownloadFile(exportFileData.Reference, exportFileData.Name);
                     var status = await client.Uploads.UploadActivityAsync(filepath, DataFormat.Tcx);
                     //var s = await client.Uploads.CheckUploadStatusAsync(status.Id.ToString());
                     //var check = new UploadStatusCheck(token, status.Id.ToString());
@@ -118,8 +123,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
     public class ExportFileData
     {
         public string Provider { get; set; }
-        public string FileReference { get; set; }
-        public string FileName { get; set; }
+        public string Reference { get; set; }
+        public string Name { get; set; }
         public string UserId { get; set; }
     }
 }
