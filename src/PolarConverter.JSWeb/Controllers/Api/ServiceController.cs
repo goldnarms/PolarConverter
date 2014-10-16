@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using com.strava.api.Activities;
 using com.strava.api.Authentication;
 using com.strava.api.Upload;
+using HealthGraphNet;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PolarConverter.BLL.Interfaces;
@@ -23,36 +24,71 @@ namespace PolarConverter.JSWeb.Controllers.Api
         private readonly IStorageHelper _storageHelper;
 
         private const string StravaUrl = "https://www.strava.com";
-        private string _clientId;
+        private readonly string _stravaClientId;
+        private AccessTokenManager _tokenManager;
 
         public ServiceController()
         {
             _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
+            _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
+            InitTokenManager();
         }
 
         public ServiceController(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
-            _clientId = ConfigurationManager.AppSettings["StravaClientId"];
+            _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
+            InitTokenManager();
+        }
+
+        private void InitTokenManager()
+        {
+            _tokenManager = new AccessTokenManager(ConfigurationManager.AppSettings["RunkeeperClientId"],
+                ConfigurationManager.AppSettings["RunkeeperClientSecret"],
+                "http://localhost:50713/api/service/runkeeper");
         }
 
         [System.Web.Http.HttpGet]
         public async Task<IHttpActionResult> Strava()
         {
             const string action = "/oauth/authorize";
-            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", StravaUrl, action, _clientId, "code", "http://localhost:50713/api/service/StravaCode", "write", "connecting", "auto");
+            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", StravaUrl, action, _stravaClientId, "code", "http://localhost:50713/api/service/StravaCode", "write", "connecting", "auto");
             using (var client = new HttpClient())
             {
                 return Ok(await client.GetAsync(uri));
             }
         }
 
-        [System.Web.Http.HttpPost]
-        //[Route("api/services/post/{data}")]
-        public IHttpActionResult Post([FromBody]ExportFileData data)
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult Runkeeper(string code)
         {
-            //Test
-            return Ok();
+            if (!string.IsNullOrEmpty(code))
+            {
+                _tokenManager.InitAccessTokenAsync(RunkeeperSuccess, Failure, code);
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        private void Failure(HealthGraphException healthGraphException)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RunkeeperSuccess()
+        {
+            var userId = User.Identity.GetUserId();
+            using (var db = new ApplicationDbContext())
+            {
+                var oauth = new OauthToken
+                {
+                    ProviderType = ProviderType.Runkeeper,
+                    UserId = userId,
+                    Token = _tokenManager.Token.AccessToken
+                };
+                db.OauthTokens.Add(oauth);
+                db.SaveChanges();
+            }
         }
 
         public void StravaCode(string state, string code, string error = "")
@@ -65,7 +101,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 {
                     var content = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string, string>("client_id", _clientId),
+                        new KeyValuePair<string, string>("client_id", _stravaClientId),
                         new KeyValuePair<string, string>("client_secret", clientSecret),
                         new KeyValuePair<string, string>("code", code)
                     });
