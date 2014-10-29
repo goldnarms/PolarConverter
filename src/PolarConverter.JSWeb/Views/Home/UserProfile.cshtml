@@ -18,6 +18,17 @@
                     <button type="submit">Connect to Strava</button>    
                 }
             }
+            @if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
+            {
+                <em>Runkeeper connected</em>
+            }
+            else
+            {
+                using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new {}))
+                {
+                    <button type="submit">Connect to Runkeeper</button>
+                }
+            }
         </div>
     </div>
     <div class="row" style="padding-top: 45px">        

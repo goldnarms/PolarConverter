@@ -470,6 +470,7 @@ namespace PolarConverter.JSWeb.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public string CurrentUserId()
         {
             return User.Identity.IsAuthenticated ? User.Identity.GetUserId() : "";

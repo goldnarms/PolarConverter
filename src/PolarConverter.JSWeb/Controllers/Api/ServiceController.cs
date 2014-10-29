@@ -4,18 +4,15 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using com.strava.api.Activities;
 using com.strava.api.Authentication;
 using com.strava.api.Upload;
 using HealthGraphNet;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.JSWeb.Models;
-using PolarConverter.JSWeb.OauthClients;
-using com.strava.api;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -27,18 +24,26 @@ namespace PolarConverter.JSWeb.Controllers.Api
         private readonly string _stravaClientId;
         private AccessTokenManager _tokenManager;
 
+        public string Code
+        {
+            get
+            {
+                return HttpContext.Current.Request.QueryString["Code"];
+            }
+        }
+
         public ServiceController()
         {
             _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
             _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
-            InitTokenManager();
+            //InitTokenManager();
         }
 
         public ServiceController(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
             _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
-            InitTokenManager();
+            //InitTokenManager();
         }
 
         private void InitTokenManager()
@@ -60,11 +65,12 @@ namespace PolarConverter.JSWeb.Controllers.Api
         }
 
         [System.Web.Http.HttpGet]
-        public IHttpActionResult Runkeeper(string code)
+        public IHttpActionResult Runkeeper()
         {
-            if (!string.IsNullOrEmpty(code))
+
+            if (!string.IsNullOrEmpty(Code))
             {
-                _tokenManager.InitAccessTokenAsync(RunkeeperSuccess, Failure, code);
+                _tokenManager.InitAccessTokenAsync(RunkeeperSuccess, Failure, Code);
                 return Ok();
             }
             return NotFound();

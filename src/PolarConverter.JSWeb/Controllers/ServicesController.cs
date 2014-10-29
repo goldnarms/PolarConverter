@@ -4,8 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
+using HealthGraphNet;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PolarConverter.JSWeb.Models;
@@ -17,6 +19,28 @@ namespace PolarConverter.JSWeb.Controllers
     {
         private const string StravaUrl = "https://www.strava.com";
         private const string ClientId = "2995";
+        private AccessTokenManager _tokenManager;
+
+        public string Code
+        {
+            get
+            {
+                return System.Web.HttpContext.Current.Request.QueryString["Code"];
+            }
+        }
+
+        public ServicesController()
+        {
+            //InitTokenManager();
+        }
+
+        private void InitTokenManager()
+        {
+            _tokenManager = new AccessTokenManager(ConfigurationManager.AppSettings["RunkeeperClientId"],
+                ConfigurationManager.AppSettings["RunkeeperClientSecret"],
+                "http://localhost:50713/api/service/runkeeper");
+        }
+
 
         // GET: Services
         public ActionResult Index()
@@ -24,7 +48,7 @@ namespace PolarConverter.JSWeb.Controllers
             return View();
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult ConnectToStrava()
         {
             string returnUrl = Url.Action("ExternalLoginResult", "Services", null, null, Request.Url.Host);
@@ -34,7 +58,7 @@ namespace PolarConverter.JSWeb.Controllers
             return Redirect(uri);
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public async Task<ActionResult> ExternalLoginResult(string state, string code, string error = "")
         {
             if (string.IsNullOrEmpty(error))
@@ -57,8 +81,37 @@ namespace PolarConverter.JSWeb.Controllers
             return RedirectToAction("UserProfile", "Home");
         }
 
-        [Authorize]
-        [HttpGet]
+        [System.Web.Mvc.Authorize]
+        [System.Web.Http.HttpPost]
+        public void ConnectToRunkeeper()
+        {
+            InitTokenManager();
+        }
+
+        private void Failure(HealthGraphException healthGraphException)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RunkeeperSuccess()
+        {
+            var userId = User.Identity.GetUserId();
+            using (var db = new ApplicationDbContext())
+            {
+                var oauth = new OauthToken
+                {
+                    ProviderType = ProviderType.Runkeeper,
+                    UserId = userId,
+                    Token = _tokenManager.Token.AccessToken
+                };
+                db.OauthTokens.Add(oauth);
+                db.SaveChanges();
+            }
+        }
+
+
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpGet]
         public async Task<string> GetUserData()
         {
             using (var db = new ApplicationDbContext())

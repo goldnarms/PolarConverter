@@ -26,14 +26,19 @@ namespace PolarConverter.BLL.Helpers
         public static List<string> VaskIntTimes(string data)
         {
             int antallTabs;
-            var tmp = StringHelper.LesLinjer(data, "[IntTimes]", out antallTabs, true);
-            if (tmp.Count == 0)
+            var intTimeData = StringHelper.LesLinjer(data, "[IntTimes]", out antallTabs, true);
+            if (intTimeData.Count == 0)
             {
-                tmp = new List<string> { StringHelper.HentVerdi("Length=", 10, data) };
+                intTimeData = new List<string> { StringHelper.HentVerdi("Length=", 10, data) };
             }
-
-            return tmp;
+            //var hasUnallocatedData = CheckForUnallocatedLapdata(tmp, data);
+            return intTimeData;
         }
+
+        //private static bool CheckForUnallocatedLapdata(List<string> tmp, string data)
+        //{
+
+        //}
 
         public static DateTime HentStartDato(PolarData polarData)
         {

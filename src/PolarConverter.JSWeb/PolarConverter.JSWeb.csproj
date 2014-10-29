@@ -389,6 +389,9 @@
     <Content Include="App\app.js">
       <DependentUpon>app.ts</DependentUpon>
     </Content>
+    <Content Include="App\config.js">
+      <DependentUpon>config.ts</DependentUpon>
+    </Content>
     <Content Include="App\Controllers\fileDestroyController.js">
       <DependentUpon>fileDestroyController.ts</DependentUpon>
     </Content>
@@ -918,6 +921,9 @@
     </Content>
     <Content Include="App\Services\userService.js.map">
       <DependentUpon>userService.ts</DependentUpon>
+    </Content>
+    <Content Include="App\config.js.map">
+      <DependentUpon>config.ts</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
