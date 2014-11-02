@@ -254,8 +254,8 @@ namespace PolarConverter.BLL.Services
             if (polarData.HrData.Count - endRange > 10)
             {
                 // Add extra lap
-                double duration = (polarData.HrData.Count - endRange)*polarData.RecordingRate;
-                laps.Add(CreateLap(polarData, duration, out endRange, ref previousDuration, ref startTime, ref lastDistance));
+                double durationInMs = (polarData.HrData.Count - endRange)*polarData.RecordingRate * 1000;
+                laps.Add(CreateLap(polarData, durationInMs, out endRange, ref previousDuration, ref startTime, ref lastDistance));
             }
             return laps.ToArray();
         }

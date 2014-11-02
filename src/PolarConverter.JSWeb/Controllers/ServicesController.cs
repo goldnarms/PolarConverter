@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -18,7 +19,9 @@ namespace PolarConverter.JSWeb.Controllers
     public class ServicesController : Controller
     {
         private const string StravaUrl = "https://www.strava.com";
-        private const string ClientId = "2995";
+        private const string StravaClientId = "2995";
+        private const string RunkeeperUrl = "https://runkeeper.com";
+        private const string RunkeeperClientId = "aa628d46ca704d69964f19c993a25207";
         private AccessTokenManager _tokenManager;
 
         public string Code
@@ -53,7 +56,7 @@ namespace PolarConverter.JSWeb.Controllers
         {
             string returnUrl = Url.Action("ExternalLoginResult", "Services", null, null, Request.Url.Host);
             const string action = "/oauth/authorize";
-            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", StravaUrl, action, ClientId, "code", returnUrl, "write", User.Identity.Name, "auto");
+            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", StravaUrl, action, StravaClientId, "code", returnUrl, "write", User.Identity.Name, "auto");
 
             return Redirect(uri);
         }
@@ -68,7 +71,7 @@ namespace PolarConverter.JSWeb.Controllers
                 using (var client = new HttpClient { BaseAddress = new Uri(StravaUrl) })
                 {
                     var content = new Dictionary<string, string> {
-                        { "client_id", ClientId},
+                        { "client_id", StravaClientId},
                         { "client_secret", clientSecret},
                         { "code", code}
                     };
@@ -83,9 +86,13 @@ namespace PolarConverter.JSWeb.Controllers
 
         [System.Web.Mvc.Authorize]
         [System.Web.Http.HttpPost]
-        public void ConnectToRunkeeper()
+        public ActionResult ConnectToRunkeeper()
         {
-            InitTokenManager();
+            string returnUrl = Url.Action("RunkeeperSuccess", "Services", null, null, Request.Url.Host);
+            const string action = "/apps/authorize";
+            var uri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", RunkeeperUrl, action, RunkeeperClientId, returnUrl);
+
+            return Redirect(uri);
         }
 
         private void Failure(HealthGraphException healthGraphException)
@@ -93,20 +100,35 @@ namespace PolarConverter.JSWeb.Controllers
             throw new NotImplementedException();
         }
 
-        public void RunkeeperSuccess()
+        public async Task<ActionResult> RunkeeperSuccess(string code, string error)
         {
-            var userId = User.Identity.GetUserId();
-            using (var db = new ApplicationDbContext())
+            if (string.IsNullOrEmpty(error))
             {
-                var oauth = new OauthToken
+                string returnUrl = Url.Action("RunkeeperSuccess", "Services", null, null, Request.Url.Host);
+                const string authorizeAction = "/apps/authorize";
+                var redirectUri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", RunkeeperUrl, authorizeAction, RunkeeperClientId, returnUrl);
+
+                const string action = "/apps/token";
+                var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
+                using (var client = new HttpClient { BaseAddress = new Uri(RunkeeperUrl) })
                 {
-                    ProviderType = ProviderType.Runkeeper,
-                    UserId = userId,
-                    Token = _tokenManager.Token.AccessToken
-                };
-                db.OauthTokens.Add(oauth);
-                db.SaveChanges();
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                        new KeyValuePair<string, string>("code", code),
+                        new KeyValuePair<string, string>("client_id", RunkeeperClientId),
+                        new KeyValuePair<string, string>("client_secret", clientSecret),
+                        new KeyValuePair<string, string>("redirect_uri", redirectUri)
+                    });
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+                    content.Headers.ContentType.CharSet = "UTF-8";
+                    var runkeeperResult = await client.PostAsJsonAsync(action, content);
+                    var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
+                    SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+                }
             }
+            return RedirectToAction("UserProfile", "Home");
         }
 
 

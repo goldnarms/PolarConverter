@@ -67,7 +67,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
         [System.Web.Http.HttpGet]
         public IHttpActionResult Runkeeper()
         {
-
             if (!string.IsNullOrEmpty(Code))
             {
                 _tokenManager.InitAccessTokenAsync(RunkeeperSuccess, Failure, Code);

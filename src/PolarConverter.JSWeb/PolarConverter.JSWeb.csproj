@@ -352,6 +352,7 @@
       <DependentUpon>201410122036324_userFileReference.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\RunkeeperResult.cs" />
     <Compile Include="ViewModels\FrontPageModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JasmineController.cs" />
