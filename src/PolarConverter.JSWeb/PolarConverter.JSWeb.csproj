@@ -328,6 +328,7 @@
     <Compile Include="Controllers\Api\ServiceController.cs" />
     <Compile Include="Controllers\Api\UploadController.cs" />
     <Compile Include="Controllers\BackloadDemoController.cs" />
+    <Compile Include="Controllers\ProController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helpers\OAuth.cs" />
@@ -1038,6 +1039,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Pro\Index.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
