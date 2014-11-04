@@ -1,8 +1,7 @@
-﻿/// <reference path="../_all.ts" />
+/// <reference path="../_all.ts" />
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
-
     var UploadController = (function () {
         function UploadController($scope, $http, $filter, $window, $document, common, storage, facebookShareService, userService) {
             this.$scope = $scope;
@@ -22,7 +21,6 @@ var PolarConverter;
         UploadController.prototype.injection = function () {
             return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", UploadController];
         };
-
         UploadController.prototype.init = function () {
             var _this = this;
             this.common.loadingBar.start();
@@ -40,7 +38,6 @@ var PolarConverter;
                     this.sports.push(sport);
                 }
             }
-
             this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
@@ -53,7 +50,6 @@ var PolarConverter;
                 dataType: "json"
             };
             this.loadingFiles = true;
-
             //this.$http({ method: "jsonp", url: "http://ipinfo.io/?callback=callback"}).success((data, status, headers, config) => {
             //    this.setWeightTypeBasedOnCountry(data.country);
             //})
@@ -67,7 +63,6 @@ var PolarConverter;
                 var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
                 _this.setTimeZoneOffsetBasedOnCountry(lat, lng);
             }, "jsonp");
-
             if (this.initalized) {
                 this.$http.get(url).then(function (response) {
                     _this.common.log.info(response);
@@ -80,20 +75,16 @@ var PolarConverter;
             }
             this.common.loadingBar.complete();
         };
-
         UploadController.prototype.callback = function (data) {
             this.common.log.info(data);
         };
-
         UploadController.prototype.shareToFacebook = function () {
             this.facebookShareService.openDialogue();
         };
-
         UploadController.prototype.onError = function (data) {
             this.common.log.error(data);
             this.common.loadingBar.complete();
         };
-
         UploadController.prototype.onUpload = function (data) {
             this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
@@ -104,7 +95,8 @@ var PolarConverter;
                     gpxFile.matched = true;
                     matchingPolarFile.gpxFile = gpxFile;
                 }
-            } else {
+            }
+            else {
                 if (data.result.weight) {
                     this.uploadViewModel.weight = data.result.weight;
                 }
@@ -119,7 +111,6 @@ var PolarConverter;
             this.common.loadingBar.complete();
             this.showFileTable = false;
         };
-
         UploadController.prototype.setupWatches = function () {
             var _this = this;
             this.$scope.$on("fileuploadfail", function (event, data) {
@@ -129,19 +120,16 @@ var PolarConverter;
                 _this.onUpload(data);
             });
         };
-
         UploadController.prototype.checkForMatchingFile = function (list, fileName) {
             return _.find(list, function (file) {
                 return file.name.substring(0, file.name.length - 4) === fileName.substring(0, file.name.length - 4);
             });
         };
-
         UploadController.prototype.setWeightTypeBasedOnCountry = function (countryCode) {
             var imperialCountries = ["US", "GB", "LR", "MM"];
             this.isMetricWeight = !_.contains(imperialCountries, countryCode);
             this.uploadViewModel.weightMode = this.isMetricWeight ? "kg" : "lbs";
         };
-
         UploadController.prototype.setTimeZoneOffsetBasedOnCountry = function (lat, lng) {
             var _this = this;
             var tzDb = new TimeZoneDB;
@@ -161,15 +149,12 @@ var PolarConverter;
                 _this.$scope.$apply();
             });
         };
-
         UploadController.prototype.initPage = function () {
             this.reset();
             this.$scope.$broadcast("clearFiles");
-
             //var top = angular.element(document.getElementById('top'));
             this.$document.scrollTop(0, 1000);
         };
-
         UploadController.prototype.reset = function () {
             this.showFileTable = true;
             this.showUploadedFiles = true;
@@ -184,12 +169,10 @@ var PolarConverter;
             polarFile.gpxFile.matched = false;
             polarFile.gpxFile = null;
         };
-
         UploadController.prototype.setTimeZoneOffset = function (timeZone) {
             this.uploadViewModel.timeZoneOffset = timeZone.offset;
             this.storage.add("TimeZoneOffset", timeZone.offset);
         };
-
         UploadController.prototype.convert = function (uploadViewModel) {
             var _this = this;
             this.common.loadingBar.start();
@@ -206,7 +189,6 @@ var PolarConverter;
                 });
             });
         };
-
         UploadController.prototype.onSuccesssfullConvert = function (response) {
             if (response.data.ErrorMessages && response.data.ErrorMessages.length > 0) {
                 this.errors = response.data.ErrorMessages;
@@ -214,7 +196,8 @@ var PolarConverter;
             }
             if (response.data.Reference != null) {
                 this.convertedFiles.push({ name: response.data.FileName, reference: response.data.Reference });
-            } else {
+            }
+            else {
                 this.showErrors = true;
             }
             this.isConverting = false;
@@ -223,7 +206,6 @@ var PolarConverter;
             this.$document.scrollTop(350, 1000);
             this.common.loadingBar.complete();
         };
-
         UploadController.prototype.setTimeZones = function () {
             this.timeZones = [
                 { offset: -12, text: "(GMT -12:00) Etc/GMT" },

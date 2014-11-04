@@ -1,0 +1,18 @@
+﻿@model IEnumerable<FrequentlyAskedQuestion>
+@{
+    ViewBag.Title = "F.A.Q.";
+}
+<h2>@ViewBag.Title</h2>
+<br />
+<h3>Find answers for your questions here.</h3>
+<br />
+@foreach(var question in Model)
+{
+    <h4>@question.Question</h4>
+    <p>@question.Answer</p>
+}
+<br />
+<div class="alert alert-info">
+    <h4>Did not find the answer you were looking for?</h4>
+    <h5>Send me an <a href="mailto:polarconverter@gmail.com">email</a>.</h5>
+</div>

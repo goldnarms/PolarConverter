@@ -36,9 +36,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Upload", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Files", "Files", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Files", "Files", "Home")</li>
+                        <li>@Html.ActionLink("User profile", "UserProfile", "Home")</li>
+                    }
+                    <li>@Html.ActionLink("F.A.Q.", "Faq", "Home")</li>
+                    <li>@Html.ActionLink("Changelog", "Changelog", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

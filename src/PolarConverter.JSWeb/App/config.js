@@ -1,4 +1,4 @@
-﻿var PolarConverter;
+var PolarConverter;
 (function (PolarConverter) {
     var Config = (function () {
         function Config() {

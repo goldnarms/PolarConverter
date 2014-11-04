@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Change>
+@{
+    ViewBag.Title = "Changelog";
+}
+<h2>@ViewBag.Title</h2>
+<br />
+<h4>Latest updates</h4>
+<ul>
+    @foreach (var change in Model)
+    {
+        <li>
+            <strong>@change.Version</strong> (@change.PublishDate.ToString("d")) 
+            @foreach(var feature in @change.Features)
+            {
+                <p>@feature</p>
+            }
+    </li>
+    }
+</ul>

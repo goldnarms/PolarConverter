@@ -8,4 +8,4 @@ var PolarConverter;
     })(PolarConverter.fileType || (PolarConverter.fileType = {}));
     var fileType = PolarConverter.fileType;
 })(PolarConverter || (PolarConverter = {}));
-//# sourceMappingURL=FileTypeEnum.js.map
+//# sourceMappingURL=fileTypeEnum.js.map
