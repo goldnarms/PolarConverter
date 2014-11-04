@@ -26,7 +26,7 @@ namespace PolarConverter.JSWeb.Controllers
         {
             var frontPageModel = new FrontPageModel
             {
-                BlobPath = _blobPath                
+                BlobPath = _blobPath
             };
             return View(frontPageModel);
         }
@@ -69,11 +69,24 @@ namespace PolarConverter.JSWeb.Controllers
             return View(userViewModel);
         }
 
-        public ActionResult About()
+        public ActionResult Faq()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            var questions = new List<FrequentlyAskedQuestion>
+            {
+                new FrequentlyAskedQuestion
+                {
+                    TimeAdded = new System.DateTime(2014, 11, 15),
+                    Question = "I have attached a .gpx file, but I can’t see the track on map?",
+                    Answer = "Be sure to select the .gpx file in the 'Gpx file' dropdown next to 'Sport' for each activity."
+                },
+                new FrequentlyAskedQuestion
+                {
+                    TimeAdded = new System.DateTime(2014, 11, 15),
+                    Question = "How can i upload my training files from polar flow with my v800?",
+                    Answer = "As stated under Data transfer at Polar's own site: http://www.polar.com/en/products/maximize_performance/running_multisport/V800, export of files will come in september."
+                }
+            };
+            return View(questions);
         }
 
         public ActionResult Services()
@@ -81,17 +94,26 @@ namespace PolarConverter.JSWeb.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult ChangeLog()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            var changes = new List<Change>
+            {
+                {
+                    new Change {
+                        PublishDate = new System.DateTime(2014, 11, 15),
+                        Version = "1.1.0",
+                        Features = new List<string> { { "Activities with multiple laps might sometimes have a lot of data that is not part of any lap. Theese data is now assigned to a lap and converted over with the rest." },
+                            { "Removing Author tag as it was causing an issue with Garmin Connect." }
+                        }
+                    }
+                }
+            };
+            return View(changes.OrderByDescending(c => c.PublishDate));
         }
 
         public ActionResult Donate()
         {
             return View();
         }
-
     }
 }

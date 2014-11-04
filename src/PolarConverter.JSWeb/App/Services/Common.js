@@ -2,7 +2,6 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
-
     var CommonService = (function () {
         function CommonService(q, log, timeout, location, loadingBar) {
             this.q = q;
@@ -14,11 +13,9 @@ var PolarConverter;
         CommonService.prototype.injection = function () {
             return ["$q", "$log", "$timeout", "$location", "cfpLoadingBar", CommonService];
         };
-
         CommonService.prototype.containsString = function (textString, arg) {
             return textString.toString().toLowerCase().indexOf(arg.toString().toLowerCase()) !== -1;
         };
-
         CommonService.prototype.stringFormat = function (args) {
             var s = args[0];
             for (var i = 0; i < args.length - 1; i++) {
@@ -27,7 +24,6 @@ var PolarConverter;
             }
             return s;
         };
-
         //public now(): Date {
         //    return moment().utc().toDate();
         //}

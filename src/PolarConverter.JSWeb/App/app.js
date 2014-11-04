@@ -2,9 +2,10 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
-
     angular.module("polarApp", ["blueimp.fileupload", "LocalStorageModule", "chieffancypants.loadingBar", "ngAnimate", "ajoslin.promise-tracker", "duScroll"]).config([
-        "$httpProvider", "fileUploadProvider", "cfpLoadingBarProvider",
+        "$httpProvider",
+        "fileUploadProvider",
+        "cfpLoadingBarProvider",
         function ($httpProvider, fileUploadProvider, cfpLoadingBarProvider) {
             $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common["X-Requested-With"];
@@ -14,6 +15,7 @@ var PolarConverter;
                 acceptFileTypes: /(\.|\/)(hrm|xml|gpx)$/i
             });
             cfpLoadingBarProvider.includeSpinner = false;
-        }]).controller("uploadCtrl", PolarConverter.UploadController.prototype.injection()).controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection()).controller("userfilesCtrl", PolarConverter.UserFilesController.prototype.injection()).controller("userProfileCtrl", PolarConverter.UserProfile.prototype.injection()).service("facebookShareService", PolarConverter.FacebookShareService.prototype.injection()).service("fileService", PolarConverter.FileService.prototype.injection()).service("userService", PolarConverter.UserService.prototype.injection()).service("common", PolarConverter.CommonService.prototype.injection()).directive("shareOnGooglePlus", PolarConverter.ShareOnGooglePlus.prototype.injection()).directive("shareOnTwitter", PolarConverter.ShareOnTwitter.prototype.injection()).directive("shareOnFacebook", PolarConverter.ShareOnFacebook.prototype.injection());
+        }
+    ]).controller("uploadCtrl", PolarConverter.UploadController.prototype.injection()).controller("fileDestroyCtrl", PolarConverter.FileDestroyController.prototype.injection()).controller("userfilesCtrl", PolarConverter.UserFilesController.prototype.injection()).controller("userProfileCtrl", PolarConverter.UserProfile.prototype.injection()).service("facebookShareService", PolarConverter.FacebookShareService.prototype.injection()).service("fileService", PolarConverter.FileService.prototype.injection()).service("userService", PolarConverter.UserService.prototype.injection()).service("common", PolarConverter.CommonService.prototype.injection()).directive("shareOnGooglePlus", PolarConverter.ShareOnGooglePlus.prototype.injection()).directive("shareOnTwitter", PolarConverter.ShareOnTwitter.prototype.injection()).directive("shareOnFacebook", PolarConverter.ShareOnFacebook.prototype.injection());
 })(PolarConverter || (PolarConverter = {}));
 //# sourceMappingURL=app.js.map

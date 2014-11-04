@@ -24,31 +24,8 @@ namespace PolarConverter.JSWeb.Controllers
         private const string RunkeeperClientId = "aa628d46ca704d69964f19c993a25207";
         private AccessTokenManager _tokenManager;
 
-        public string Code
-        {
-            get
-            {
-                return System.Web.HttpContext.Current.Request.QueryString["Code"];
-            }
-        }
-
         public ServicesController()
         {
-            //InitTokenManager();
-        }
-
-        private void InitTokenManager()
-        {
-            _tokenManager = new AccessTokenManager(ConfigurationManager.AppSettings["RunkeeperClientId"],
-                ConfigurationManager.AppSettings["RunkeeperClientSecret"],
-                "http://localhost:50713/api/service/runkeeper");
-        }
-
-
-        // GET: Services
-        public ActionResult Index()
-        {
-            return View();
         }
 
         [System.Web.Mvc.HttpPost]
@@ -95,11 +72,6 @@ namespace PolarConverter.JSWeb.Controllers
             return Redirect(uri);
         }
 
-        private void Failure(HealthGraphException healthGraphException)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ActionResult> RunkeeperSuccess(string code, string error)
         {
             if (string.IsNullOrEmpty(error))
@@ -120,8 +92,8 @@ namespace PolarConverter.JSWeb.Controllers
                         new KeyValuePair<string, string>("client_secret", clientSecret),
                         new KeyValuePair<string, string>("redirect_uri", redirectUri)
                     });
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                    content.Headers.ContentType.CharSet = "UTF-8";
+                    //content.Headers.Add(.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+                    //content.Headers.ContentType.CharSet = "UTF-8";
                     var runkeeperResult = await client.PostAsJsonAsync(action, content);
                     var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
@@ -131,25 +103,9 @@ namespace PolarConverter.JSWeb.Controllers
             return RedirectToAction("UserProfile", "Home");
         }
 
-
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpGet]
-        public async Task<string> GetUserData()
+        public void DeauthRunkeeper()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                var userId = User.Identity.GetUserId();
-                var userToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == userId);
-                if (userToken != null)
-                {
-                    //var auth = new StaticAuthentication(userToken.Token);
-                    //var client = new StravaClient(auth);
-                    //var athlete = await client.Athletes.GetAthleteAsync();
-                    //return athlete.LastName;
-                }
-            }
-
-            return "";
+            // Url for deauthorizing Runkeeper
         }
 
         private void SaveTokenForUser(string accessToken, ProviderType providerType)
