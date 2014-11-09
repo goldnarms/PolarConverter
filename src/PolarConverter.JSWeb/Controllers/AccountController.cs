@@ -12,6 +12,7 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PayPal.Api.Payments;
+using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Helpers;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.ViewModels;
@@ -25,12 +26,14 @@ namespace PolarConverter.JSWeb.Controllers
 
         public AccountController()
         {
+            _payPalService = new PayPalService(PayPalHelper.GetAPIContext());
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _payPalService = new PayPalService(PayPalHelper.GetAPIContext());
         }
 
         public ApplicationUserManager UserManager
@@ -68,6 +71,7 @@ namespace PolarConverter.JSWeb.Controllers
         }
 
         private ApplicationSignInManager _signInManager;
+        private PayPalService _payPalService;
 
         public ApplicationSignInManager SignInManager
         {
@@ -142,24 +146,8 @@ namespace PolarConverter.JSWeb.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    var apiContext = PayPalHelper.GetAPIContext();
-                    var payer = new Payer { payment_method = "paypal" };
-                    var planList = Plan.List(apiContext);
-                    var plan = planList.plans.FirstOrDefault();
-                    if (plan != null)
-                    {
-                        var agreement = new Agreement
-                        {
-                            name = "Yearly subscription of Pro",
-                            description = "Agreement for Pro subscription",
-                            start_date = DateTime.Now.ToString("yyyy-MM-dd z"),
-                            payer = payer,
-                            plan = new Plan { id = ConfigurationManager.AppSettings["PayPal_YearlyPlanId"] }
-                        };
-                        var createdAgreement = agreement.Create(apiContext);
-                        var executedPlan = createdAgreement.Execute(apiContext);
-                        var response = JObject.Parse(executedPlan.ConvertToJson()).ToString(Formatting.Indented);
-                    }
+                    var agreement = _payPalService.PayForSubscription();
+
 
                     //var action = "/cgi-bin/webscr";
                     //using (var client = new HttpClient { BaseAddress = new Uri("https://www.paypal.com") })
