@@ -159,6 +159,7 @@
     <Compile Include="Entiteter\gpx.cs" />
     <Compile Include="Entiteter\gpxver11\gpx.cs" />
     <Compile Include="Entiteter\HRData.cs" />
+    <Compile Include="Entiteter\PayPalErrorMessage.cs" />
     <Compile Include="Entiteter\PolarData.cs" />
     <Compile Include="Entiteter\Koordinater.cs" />
     <Compile Include="Entiteter\PolarFile.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Interfaces\IConversion.cs" />
     <Compile Include="Interfaces\IFileMapper.cs" />
     <Compile Include="Interfaces\IGpx.cs" />
+    <Compile Include="Interfaces\IPaymentService.cs" />
     <Compile Include="Interfaces\IStorageHelper.cs" />
     <Compile Include="Interfaces\ITrackPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,6 +203,7 @@
     <Compile Include="Services\GpxService.cs" />
     <Compile Include="Services\LocalConversionService.cs" />
     <Compile Include="Services\LocalStorageHelper.cs" />
+    <Compile Include="Services\PayPalService.cs" />
     <Compile Include="Services\XmlMapper.cs" />
   </ItemGroup>
   <ItemGroup>

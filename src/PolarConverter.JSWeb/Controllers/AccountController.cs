@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http.Results;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PayPal.Api.Payments;
+using PolarConverter.JSWeb.Helpers;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.ViewModels;
 
@@ -124,7 +126,8 @@ namespace PolarConverter.JSWeb.Controllers
             if (ModelState.IsValid)
             {
                 DateTime bdDate;
-                DateTime.TryParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AllowTrailingWhite, out bdDate);
+                DateTime.TryParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+                    DateTimeStyles.AllowTrailingWhite, out bdDate);
 
                 var user = new ApplicationUser
                 {
@@ -139,6 +142,55 @@ namespace PolarConverter.JSWeb.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
+                    var apiContext = PayPalHelper.GetAPIContext();
+                    var payer = new Payer { payment_method = "paypal" };
+                    var planList = Plan.List(apiContext);
+                    var plan = planList.plans.FirstOrDefault();
+                    if (plan != null)
+                    {
+                        var agreement = new Agreement
+                        {
+                            name = "Yearly subscription of Pro",
+                            description = "Agreement for Pro subscription",
+                            start_date = DateTime.Now.ToString("yyyy-MM-dd z"),
+                            payer = payer,
+                            plan = new Plan { id = ConfigurationManager.AppSettings["PayPal_YearlyPlanId"] }
+                        };
+                        var createdAgreement = agreement.Create(apiContext);
+                        var executedPlan = createdAgreement.Execute(apiContext);
+                        var response = JObject.Parse(executedPlan.ConvertToJson()).ToString(Formatting.Indented);
+                    }
+
+                    //var action = "/cgi-bin/webscr";
+                    //using (var client = new HttpClient { BaseAddress = new Uri("https://www.paypal.com") })
+                    //{
+                    //    var content = new FormUrlEncodedContent(new[]
+                    //    {
+                    //        new KeyValuePair<string, string>("business", "arnstej@gmail.com"),
+                    //        new KeyValuePair<string, string>("item_name", "1 year subscription"),
+                    //        new KeyValuePair<string, string>("submit", "Subscribe!"),
+                    //        new KeyValuePair<string, string>("a3", "12.00"),
+                    //        new KeyValuePair<string, string>("p3", "1"),
+                    //        new KeyValuePair<string, string>("t3", "Y"),
+                    //        new KeyValuePair<string, string>("src", "1"),
+                    //        new KeyValuePair<string, string>("no_note", "1")
+                    //    });
+                    //content.Headers.Add(.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+                    //content.Headers.ContentType.CharSet = "UTF-8";
+                    //var runkeeperResult = await client.PostAsJsonAsync(action, content);
+                    //var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
+                    //var subscriptionResult = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
+                    //SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+                    //}
+
+                    //< form action = "https://www.paypal.com/cgi-bin/webscr" method = "post" >
+                    //                              < input type = "hidden" name = "t3" value = "M" />
+                    //                                   < input type = "hidden" name = "src" value = "1" />
+                    //                                        < input type = "hidden" name = "srt" value = "0" />
+                    //                                             < input type = "hidden" name = "sra" value = "1" />
+
+                    //                                              </ form >
+                    // TODO: Redirect to paypal, callback to success or canceled
                     //return RedirectToAction("Paypal", "Account");
                     return RedirectToAction("UserProfile", "Home");
                 }

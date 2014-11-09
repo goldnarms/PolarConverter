@@ -332,6 +332,7 @@
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helpers\OAuth.cs" />
+    <Compile Include="Helpers\PaypalHelper.cs" />
     <Compile Include="Migrations\201409141029536_user.cs" />
     <Compile Include="Migrations\201409141029536_user.Designer.cs">
       <DependentUpon>201409141029536_user.cs</DependentUpon>
@@ -1042,6 +1043,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Pro\Index.cshtml" />
+    <Content Include="Views\Pro\Plans.cshtml" />
+    <Content Include="Views\Pro\Activate.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
