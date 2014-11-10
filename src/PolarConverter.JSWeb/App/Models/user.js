@@ -1,4 +1,4 @@
-var PolarConverter;
+﻿var PolarConverter;
 (function (PolarConverter) {
     "use strict";
 })(PolarConverter || (PolarConverter = {}));

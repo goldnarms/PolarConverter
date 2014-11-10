@@ -2,6 +2,7 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
+
     var FileDestroyController = (function () {
         function FileDestroyController($scope, $http) {
             this.$scope = $scope;
@@ -23,8 +24,7 @@ var PolarConverter;
                         state = "rejected";
                     });
                 };
-            }
-            else if (!file.$cancel && !file._index) {
+            } else if (!file.$cancel && !file._index) {
                 file.$cancel = function () {
                     $scope.clear(file);
                 };

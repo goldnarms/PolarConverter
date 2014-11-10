@@ -1,6 +1,7 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
+
     var UserService = (function () {
         function UserService($http, $log) {
             this.$http = $http;
@@ -9,8 +10,10 @@ var PolarConverter;
         UserService.prototype.injection = function () {
             return ["$http", "$log", UserService];
         };
+
         UserService.prototype.updateProfile = function (userId, user) {
         };
+
         UserService.prototype.getUserId = function () {
             return this.$http.get("/account/CurrentUserId");
         };

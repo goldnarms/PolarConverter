@@ -90,14 +90,17 @@ namespace PolarConverter.JSWeb.Controllers
                         new KeyValuePair<string, string>("code", code),
                         new KeyValuePair<string, string>("client_id", RunkeeperClientId),
                         new KeyValuePair<string, string>("client_secret", clientSecret),
-                        new KeyValuePair<string, string>("redirect_uri", redirectUri)
+                        new KeyValuePair<string, string>("redirect_uri", returnUrl)
                     });
                     //content.Headers.Add(.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
                     //content.Headers.ContentType.CharSet = "UTF-8";
                     var runkeeperResult = await client.PostAsJsonAsync(action, content);
                     var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
-                    SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+                    if (result.access_token != null)
+                    {
+                        SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+                    }
                 }
             }
             return RedirectToAction("UserProfile", "Home");

@@ -1,6 +1,7 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
+
     var UserProfile = (function () {
         function UserProfile(common, userService, $http) {
             this.common = common;
@@ -11,8 +12,10 @@ var PolarConverter;
         UserProfile.prototype.injection = function () {
             return ["common", "userService", "$http", UserProfile];
         };
+
         UserProfile.prototype.connectToStrava = function () {
             console.log("Connecting to strava");
+
             //this.$http.get("https://www.strava.com/oauth/authorize?client_id=2995&response_type=code&redirect_uri=http://localhost:50713/Services/ExternalLoginResult&scope=write&state=mystate&approval_prompt = force");
             //this.$http.post("https://www.strava.com/oauth/token", {
             //    client_id: "2995",
@@ -30,15 +33,18 @@ var PolarConverter;
                 withCredentials: false
             });
         };
+
         UserProfile.prototype.update = function () {
             this.common.loadingBar.start();
             var userId = 1;
             this.userService.updateProfile(userId, this.userViewModel);
         };
+
         UserProfile.prototype.reset = function () {
             this.userViewModel = null;
             this.userProfileForm.$setPristine();
         };
+
         UserProfile.prototype.init = function () {
             console.log("UserProfile");
         };

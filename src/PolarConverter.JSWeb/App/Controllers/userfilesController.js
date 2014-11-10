@@ -2,6 +2,7 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
+
     var UserFilesController = (function () {
         function UserFilesController(common, fileService, cfpLoadingBar, userService) {
             this.common = common;
@@ -13,6 +14,7 @@ var PolarConverter;
         UserFilesController.prototype.injection = function () {
             return ["common", "fileService", "cfpLoadingBar", "userService", UserFilesController];
         };
+
         UserFilesController.prototype.exportToStrava = function (file) {
             var _this = this;
             this.fileService.exportToService("Strava", file.reference, file.name, this.userId).success(function () {
@@ -20,6 +22,7 @@ var PolarConverter;
                 _this.common.log.error("Error: " + error);
             });
         };
+
         UserFilesController.prototype.init = function () {
             var _this = this;
             //this.fileList = [];

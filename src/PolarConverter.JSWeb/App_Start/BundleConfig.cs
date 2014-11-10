@@ -13,6 +13,8 @@ namespace PolarConverter.JSWeb
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-animate.js",
                         "~/Scripts/underscore.js",
+                        "~/Scripts/angulartics.js",
+                        "~/Scripts/angulartics-ga.js",
                         "~/bower_components/angular-local-storage/angular-local-storage.js",
                         "~/bower_components/angular-promise-tracker/promise-tracker.js",
                         "~/bower_components/angular-loading-bar/src/loading-bar.js",

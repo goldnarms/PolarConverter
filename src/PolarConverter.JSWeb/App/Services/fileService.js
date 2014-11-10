@@ -1,6 +1,7 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
+
     var FileService = (function () {
         function FileService($http, $log, $q) {
             this.$http = $http;
@@ -10,9 +11,11 @@ var PolarConverter;
         FileService.prototype.injection = function () {
             return ["$http", "$log", "$q", FileService];
         };
+
         FileService.prototype.getFilesForUser = function (userId) {
             return this.$http.get("/api/file?id=" + userId);
         };
+
         FileService.prototype.exportToService = function (provider, fileReference, fileName, userId) {
             console.log(fileReference);
             var exportData = { provider: provider, reference: fileReference, name: fileName, userId: userId };

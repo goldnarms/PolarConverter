@@ -8,4 +8,4 @@ var PolarConverter;
     })(PolarConverter.sportEnum || (PolarConverter.sportEnum = {}));
     var sportEnum = PolarConverter.sportEnum;
 })(PolarConverter || (PolarConverter = {}));
-//# sourceMappingURL=sportEnum.js.map
+//# sourceMappingURL=SportEnum.js.map

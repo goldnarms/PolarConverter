@@ -1,9 +1,9 @@
-﻿@model PolarConverter.JSWeb.ViewModels.FrontPageModel
+﻿    @model PolarConverter.JSWeb.ViewModels.FrontPageModel
 @{
     ViewBag.Title = "PolarConverter";
 }
 <a id="top"></a>
-<div data-ng-controller="uploadCtrl as uc">
+<div data-ng-controller="uploadCtrl as uc" data-ng-cloak="">
     <div class="row">
         <div class="col-md-12">
             <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
@@ -166,6 +166,10 @@
                                 <a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
                             </li>
                         </ul>
+                        @if (!Request.IsAuthenticated)
+                        {
+                            @Html.Partial("Plugins/_GoogleAdLeader")
+                        }
                         <h5>More files to convert?</h5>
                         <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
                         <br />
@@ -225,13 +229,14 @@
             <p>
                 Click <a target="_blank" href="http://www.polar.com/en/products/training_software/polar_protrainer_5">here</a> to read more about Polar Pro Trainer&trade;.
             </p>
-        </div>
-        <div class="col-md-4">
             <h3>Questions?</h3>
             <p>
                 Any questions or comments?<br>
                 <a href="mailto:polarconverter@gmail.com">Contact me</a><br>
             </p>
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("Plugins/_GoogleAdsense")
         </div>
     </div>
 </div>
