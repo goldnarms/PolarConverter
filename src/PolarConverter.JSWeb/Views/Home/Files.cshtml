@@ -23,7 +23,11 @@
             <td>
                 @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
                 {
-                    <a data-ng-click="ufc.exportToStrava(file)" href="" class="btn btn-default">Export</a>
+                    <a data-ng-click="ufc.exportToStrava(file)" href="" class="btn btn-default">Strava</a>
+                }
+                @if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
+                {
+                    <a data-ng-click="ufc.exportToRunkeeper(file)" href="" class="btn btn-default">Runkeeper</a>
                 }
             </td>
             @*<td>

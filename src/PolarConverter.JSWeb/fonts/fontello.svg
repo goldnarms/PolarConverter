@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="dropbox" unicode="&#xe800;" d="m224 455l276-170-191-159-273 178z m551-309v-60l-274-164v-1l0 1-1-1v1l-273 164v60l82-54 191 159v1l1-1 0 1v-1l192-159z m-466 638l191-159-276-170-188 151z m467-329l188-151-273-178-191 159z m-85 329l273-178-188-151-276 170z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

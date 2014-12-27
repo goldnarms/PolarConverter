@@ -6,32 +6,66 @@
 <div data-ng-controller="userProfileCtrl as up">
     <div class="row">
         <div class="col-md-12">
-            <h4>Services</h4>
-            @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
-            {
-                <em>Strava connected</em>
-            }
-            else
-            {
-                using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new {}))
+            @if(Model.ActiveSubscription != null){
+                <strong>Pro Subscription</strong>
+                <p>
+                    Subscription will continue to run until canceled. Next charge will come on: @Model.ActiveSubscription.EndTime.ToString("d")
+                    @using (Html.BeginForm("AbortSubscription", "Account", new { id = @Model.ActiveSubscription.SubscriptionId}, FormMethod.Post, null))
+                    {
+                        <p><button type="submit" class="btn btn-primary btn-sm">Cancel subscription</button></p>
+                    }
+                </p>
+                <h4>Services</h4>
+                if (Model.RegisteredProviders.Any(p => p == ProviderType.Dropbox))
                 {
-                    <button type="submit">Connect to Strava</button>    
+                    <p><em>Dropbox connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 2 }, null)</p> 
+                }
+                else
+                {
+                    using (Html.BeginForm("ConnectToDropbox", "Services", FormMethod.Post, new {}))
+                    {
+                        <p><button type="submit" class="btn btn-primary btn-sm">Connect to Dropbox</button></p>
+                    }
+                }
+
+                if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
+                {
+                    <p><em>Strava connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
+                    using (Html.BeginForm("GetFiles", "Services", FormMethod.Post, new {}))
+                    {
+                        <p><button type="submit" class="btn btn-primary btn-sm">Get files</button></p>
+                    }
+
+                }
+                else
+                {
+                    using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new {}))
+                    {
+                        <p><button type="submit" class="btn btn-primary btn-sm">Connect to Strava</button></p>
+                    }
+                }
+                if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
+                {
+                    <p><em>Runkeeper connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
+                }
+                else
+                {
+                    using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new {}))
+                    {
+<button type="submit" class="btn btn-primary btn-sm">Connect to Runkeeper</button>
+                    }
                 }
             }
-            @if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
-            {
-                <em>Runkeeper connected</em>
-            }
-            else
-            {
-                using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new {}))
-                {
-                    <button type="submit">Connect to Runkeeper</button>
-                }
+            else{
+<h6>Order Pro subscription</h6>
+            using (Html.BeginForm("OrderSubscription", "Account", FormMethod.Post, new {}))
+                    {
+                        <button type="submit">Order (12$/yr)</button>
+                    }
             }
         </div>
     </div>
-    <div class="row" style="padding-top: 45px">        
+    <div class="row" style="padding-top: 45px">
         <div class="col-md-12">
             <div class="well">
                 <form class="form-horizontal" name="up.userProfileForm" novalidate="">

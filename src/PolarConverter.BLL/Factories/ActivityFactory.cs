@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Helpers;
 
 namespace PolarConverter.BLL.Factories

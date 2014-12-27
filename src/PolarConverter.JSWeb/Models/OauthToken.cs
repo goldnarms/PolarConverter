@@ -12,11 +12,13 @@ namespace PolarConverter.JSWeb.Models
         [Key, Column(Order = 1)]
         public ProviderType ProviderType { get; set; }
         public string Token { get; set; }
+        public string Secret { get; set; }
     }
 
     public enum ProviderType
     {
         Strava,
-        Runkeeper
+        Runkeeper,
+        Dropbox
     }
 }

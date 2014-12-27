@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -9,11 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PayPal.Api.Payments;
+using PayPal.Api;
 using PolarConverter.BLL.Services;
-using PolarConverter.JSWeb.Helpers;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.ViewModels;
 
@@ -23,17 +19,25 @@ namespace PolarConverter.JSWeb.Controllers
     public class AccountController : Controller
     {
         private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+        private PayPalService _payPalService;
 
         public AccountController()
         {
-            _payPalService = new PayPalService(PayPalHelper.GetAPIContext());
+            var config = ConfigManager.Instance.GetProperties();
+            var accessToken = new OAuthTokenCredential(config).GetAccessToken();
+            var apiContext = new APIContext(accessToken);
+            _payPalService = new PayPalService(apiContext);
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _payPalService = new PayPalService(PayPalHelper.GetAPIContext());
+            var config = ConfigManager.Instance.GetProperties();
+            var accessToken = new OAuthTokenCredential(config).GetAccessToken();
+            var apiContext = new APIContext(accessToken);
+            _payPalService = new PayPalService(apiContext);
         }
 
         public ApplicationUserManager UserManager
@@ -70,9 +74,6 @@ namespace PolarConverter.JSWeb.Controllers
             return View();
         }
 
-        private ApplicationSignInManager _signInManager;
-        private PayPalService _payPalService;
-
         public ApplicationSignInManager SignInManager
         {
             get
@@ -99,6 +100,21 @@ namespace PolarConverter.JSWeb.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    // check if user has a Pro subscription
+                    var userId = User.Identity.GetUserId();
+                    var today = DateTime.Today;
+                    using (var db = new ApplicationDbContext())
+                    {
+                        var hasValidSubscription = db.Subscriptions.Any(
+                            s =>
+                                s.UserId == userId && s.Paid == true &&
+                                s.StartTime <= today.AddDays(2) && s.EndTime < today.AddDays(-2));
+                        if (!hasValidSubscription)
+                        {
+                            AuthenticationManager.SignOut();
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -146,41 +162,8 @@ namespace PolarConverter.JSWeb.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    var agreement = _payPalService.PayForSubscription();
-
-
-                    //var action = "/cgi-bin/webscr";
-                    //using (var client = new HttpClient { BaseAddress = new Uri("https://www.paypal.com") })
-                    //{
-                    //    var content = new FormUrlEncodedContent(new[]
-                    //    {
-                    //        new KeyValuePair<string, string>("business", "arnstej@gmail.com"),
-                    //        new KeyValuePair<string, string>("item_name", "1 year subscription"),
-                    //        new KeyValuePair<string, string>("submit", "Subscribe!"),
-                    //        new KeyValuePair<string, string>("a3", "12.00"),
-                    //        new KeyValuePair<string, string>("p3", "1"),
-                    //        new KeyValuePair<string, string>("t3", "Y"),
-                    //        new KeyValuePair<string, string>("src", "1"),
-                    //        new KeyValuePair<string, string>("no_note", "1")
-                    //    });
-                    //content.Headers.Add(.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                    //content.Headers.ContentType.CharSet = "UTF-8";
-                    //var runkeeperResult = await client.PostAsJsonAsync(action, content);
-                    //var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
-                    //var subscriptionResult = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
-                    //SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
-                    //}
-
-                    //< form action = "https://www.paypal.com/cgi-bin/webscr" method = "post" >
-                    //                              < input type = "hidden" name = "t3" value = "M" />
-                    //                                   < input type = "hidden" name = "src" value = "1" />
-                    //                                        < input type = "hidden" name = "srt" value = "0" />
-                    //                                             < input type = "hidden" name = "sra" value = "1" />
-
-                    //                                              </ form >
-                    // TODO: Redirect to paypal, callback to success or canceled
-                    //return RedirectToAction("Paypal", "Account");
-                    return RedirectToAction("UserProfile", "Home");
+                    var agreementUrl = _payPalService.SetupSubscription();
+                    return Redirect(agreementUrl.First());
                 }
                 else
                 {
@@ -192,10 +175,54 @@ namespace PolarConverter.JSWeb.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
-        public ActionResult Paypal()
+        public ActionResult Cancel(string token)
         {
-            return View();
+            AuthenticationManager.SignOut();
+            return RedirectToAction("UserProfile", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult AbortSubscription([System.Web.Http.FromBody]string id)
+        {
+            _payPalService.CancelSubscription(id);
+            var userId = User.Identity.GetUserId();
+            using (var db = new ApplicationDbContext())
+            {
+                var activeSubscription = db.Subscriptions.Where(s => s.UserId == userId && s.Paid).OrderByDescending(s => s.Id).FirstOrDefault();
+                if(activeSubscription != null)
+                {
+                    activeSubscription.Paid = false;
+                }
+                db.SaveChanges();
+            }
+                return RedirectToAction("UserProfile", "Home");
+        }
+
+        public ActionResult OrderSubscription()
+        {
+            var agreementUrl = _payPalService.SetupSubscription();
+            return Redirect(agreementUrl.First());
+        }
+        
+        public ActionResult Payment(string token)
+        {
+            var agreement = _payPalService.ExecutePayment(token);
+            DateTime startDate = DateTime.Today;
+            var endDate = startDate.AddYears(1);
+            var subscription = new Subscription
+            {
+                SubscriptionId = agreement.id,
+                StartTime = startDate,
+                EndTime = endDate,
+                UserId = User.Identity.GetUserId(),
+                Paid = true
+            };
+            using (var db = new ApplicationDbContext())
+            {
+                db.Subscriptions.Add(subscription);
+                db.SaveChanges();
+            }
+            return RedirectToAction("UserProfile", "Home");
         }
 
         private async void GetExternalInfo(string userId)

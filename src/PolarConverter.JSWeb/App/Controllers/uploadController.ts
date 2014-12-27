@@ -7,20 +7,22 @@ module PolarConverter {
         options: any;
         loadingFiles: boolean;
         queue: any[];
-        uploadedFiles: PolarConverter.PolarFile[];
-        gpxFiles: PolarConverter.GpxFile[];
-        convertedFiles: PolarConverter.File[];
+        uploadedFiles: PolarFile[];
+        dropboxFiles: PolarFile[];
+        gpxFiles: GpxFile[];
+        convertedFiles: File[];
         sports: any[];
         isMetricWeight: boolean;
-        timeZones: PolarConverter.TimeZone[];
-        uploadViewModel: PolarConverter.UploadViewModel;
-        checkForMatchingFile(list: PolarConverter.File[], fileName: string): PolarConverter.File;
+        timeZones: TimeZone[];
+        uploadViewModel: UploadViewModel;
+        checkForMatchingFile(list: File[], fileName: string): File;
         setWeightTypeBasedOnCountry(countryCode: string): void;
-        setTimeZoneOffset(timeZone: PolarConverter.TimeZone): void;
+        setTimeZoneOffset(timeZone: TimeZone): void;
         reset(): void;
         initPage(): void;
-        convert(uploadViewModel: PolarConverter.UploadViewModel): void;
-        removeGpxFile(polarFile: PolarConverter.PolarFile): void;
+        convert(uploadViewModel: UploadViewModel): void;
+        removeGpxFile(polarFile: PolarFile): void;
+        getFilesFromDropbox(): void;
         isConverting: boolean;
         showExtraVariables: boolean;
         shareToFacebook(): void;
@@ -28,35 +30,37 @@ module PolarConverter {
         showErrors: boolean;
         showFileTable: boolean;
         showUploadedFiles: boolean;
-        selectedTimeZone: PolarConverter.TimeZone;
+        selectedTimeZone: TimeZone;
         userProfileForm: ng.IFormController;
     }
 
     export class UploadController {
-        public injection(): any[] { return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", UploadController]; }
-        static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService"];
+        public injection(): any[] {
+            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", "fileService", UploadController]; }
+        static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", "fileService"];
         public options: any;
         public loadingFiles: boolean;
         public queue: any[];
-        public uploadedFiles: PolarConverter.PolarFile[];
-        public gpxFiles: PolarConverter.GpxFile[];
-        public convertedFiles: PolarConverter.File[];
-        public uploadViewModel: PolarConverter.UploadViewModel;
+        public uploadedFiles: PolarFile[];
+        public dropboxFiles: PolarFile[];
+        public gpxFiles: GpxFile[];
+        public convertedFiles: File[];
+        public uploadViewModel: UploadViewModel;
         public isMetricWeight: boolean;
         public isConverting: boolean;
         public showExtraVariables: boolean;
-        public timeZones: PolarConverter.TimeZone[];
+        public timeZones: TimeZone[];
         public sports: any[];
         public errors: string[];
         public tweetText: string;
         public showErrors: boolean;
-        public selectedTimeZone: PolarConverter.TimeZone;
+        public selectedTimeZone: TimeZone;
         public userProfileForm: ng.IFormController;
         private initalized: boolean = false;
         private showUploadedFiles: boolean;
         private showFileTable: boolean = true;
 
-        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $document: any, private common: ICommonService, private storage: PolarConverter.IStorage, private facebookShareService: PolarConverter.IFacebookShareService, private userService: PolarConverter.IUserService) {
+        constructor(private $scope: ng.IScope, private $http: ng.IHttpService, private $filter: ng.IFilterService, private $window: ng.IWindowService, private $document: any, private common: ICommonService, private storage: IStorage, private facebookShareService: IFacebookShareService, private userService: IUserService, private fileService: IFileService) {
             this.init();
             this.setupWatches();
         }
@@ -66,6 +70,7 @@ module PolarConverter {
             this.setTimeZones();
             this.uploadedFiles = [];
             this.convertedFiles = [];
+            this.dropboxFiles = [];
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
@@ -126,6 +131,28 @@ module PolarConverter {
 
         public shareToFacebook(): void {
             this.facebookShareService.openDialogue();
+        }
+
+        public getFilesFromDropbox(): void {
+            this.userService.getUserId().then((userId) => {
+                this.common.log.info("Userid: " + userId.data);
+                this.fileService.getDropboxFilesForUser(userId.data)
+                    .success((data) => {
+                        this.common.log.info(JSON.stringify(data));
+                        this.dropboxFiles = _.map(data, (file: any) => {
+                            return <PolarFile>{
+                                name: file.name,
+                                reference: file.path,
+                                checked: false,
+
+                            };
+                        });
+                        this.common.log.info("Files: " + JSON.stringify(this.dropboxFiles));
+                    })
+                    .catch((error) => {
+                        this.common.log.error("Error: " + error);
+                    });
+            });
         }
 
         private onError(data: any): void {

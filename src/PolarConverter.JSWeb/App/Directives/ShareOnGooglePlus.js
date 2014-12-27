@@ -2,7 +2,6 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
-
     var ShareOnGooglePlus = (function () {
         function ShareOnGooglePlus($location) {
             var _this = this;
@@ -15,30 +14,24 @@ var PolarConverter;
                 shareUrl: "@url",
                 useCurrentUrl: "@"
             };
-            this.link = function (scope, element, attrs) {
-                return _this.linkFn(scope, element, attrs);
-            };
+            this.link = function (scope, element, attrs) { return _this.linkFn(scope, element, attrs); };
         }
         ShareOnGooglePlus.prototype.injection = function () {
             return ["$location", function ($location) {
-                    return new ShareOnGooglePlus($location);
-                }];
+                return new ShareOnGooglePlus($location);
+            }];
         };
-
         ShareOnGooglePlus.prototype.linkFn = function (scope, element, attrs) {
             var url = "https://plus.google.com/share";
             var parameters = this.getParameters(scope);
             scope.url = parameters === "" ? url : url + "?" + parameters;
-
             element.bind("click", function (event) {
                 window.open(scope.url, "google-plus-share-dialog", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=600,height=600");
                 event.preventDefault();
             });
         };
-
         ShareOnGooglePlus.prototype.getParameters = function (scope) {
             var parameters = "";
-
             if (scope.shareUrl) {
                 parameters += "url=" + this.encode(scope.shareUrl);
             }
@@ -47,11 +40,9 @@ var PolarConverter;
             }
             return parameters;
         };
-
         ShareOnGooglePlus.prototype.encode = function (value) {
             return encodeURIComponent(value);
         };
-
         ShareOnGooglePlus.prototype.getTemplate = function () {
             return '<a href="{{url}}" target="_blank" data-ng-transclude=""></a>';
         };

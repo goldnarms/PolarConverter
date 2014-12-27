@@ -47,6 +47,9 @@
     <Reference Include="Common.Logging.Core">
       <HintPath>..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DropNet">
+      <HintPath>..\packages\DropNet.1.9.6\lib\net40\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotNetZip.1.9.2\lib\net20\Ionic.Zip.dll</HintPath>
@@ -93,13 +96,13 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalCoreSDK">
-      <HintPath>..\packages\PayPalCoreSDK.1.5.2\lib\net45\PayPalCoreSDK.dll</HintPath>
+    <Reference Include="PayPal">
+      <HintPath>..\packages\PayPal.1.1.0\lib\net45\PayPal.dll</HintPath>
     </Reference>
-    <Reference Include="RestApiSDK">
-      <HintPath>..\packages\RestApiSDK.0.11.0\lib\net45\RestApiSDK.dll</HintPath>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="SendGrid.SmtpApi">
       <HintPath>..\packages\SendGrid.SmtpApiPlus.1.0.1\lib\portable-net4+sl5+wp8+win8+wpa81+monotouch+monoandroid\SendGrid.SmtpApi.dll</HintPath>
@@ -172,6 +175,7 @@
     <Compile Include="Entiteter\Polartrainer.cs" />
     <Compile Include="Entiteter\PositionData.cs" />
     <Compile Include="Entiteter\Runde.cs" />
+    <Compile Include="Entiteter\RunkeeperActivity.cs" />
     <Compile Include="Entiteter\Tid.cs" />
     <Compile Include="Entiteter\TrainingCenterDatabasev2.cs" />
     <Compile Include="Entiteter\UploadViewModel.cs" />
@@ -180,6 +184,7 @@
     <Compile Include="Factories\ActivityFactory.cs" />
     <Compile Include="Factories\TrainingCenterFactory.cs" />
     <Compile Include="Helpers\ByteExtension.cs" />
+    <Compile Include="Helpers\Common.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
@@ -189,6 +194,8 @@
     <Compile Include="Helpers\IntHelper.cs" />
     <Compile Include="Helpers\KonverteringsHelper.cs" />
     <Compile Include="Helpers\RangeHelper.cs" />
+    <Compile Include="Helpers\RequestFlow.cs" />
+    <Compile Include="Helpers\RequestFlowItem.cs" />
     <Compile Include="Helpers\SportHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="FilHandler.cs" />
@@ -197,6 +204,7 @@
     <Compile Include="Interfaces\IGpx.cs" />
     <Compile Include="Interfaces\IPaymentService.cs" />
     <Compile Include="Interfaces\IStorageHelper.cs" />
+    <Compile Include="Interfaces\IStorageService.cs" />
     <Compile Include="Interfaces\ITrackPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BlobStorageHelper.cs" />
@@ -204,12 +212,14 @@
     <Compile Include="Services\ConversionService.cs" />
     <Compile Include="Services\DataMapper.cs" />
     <Compile Include="Entiteter\XmlPolarData.cs" />
+    <Compile Include="Services\DropboxService.cs" />
     <Compile Include="Services\GeoCalculator.cs" />
     <Compile Include="Services\GpxReader.cs" />
     <Compile Include="Services\GpxService.cs" />
     <Compile Include="Services\LocalConversionService.cs" />
     <Compile Include="Services\LocalStorageHelper.cs" />
     <Compile Include="Services\PayPalService.cs" />
+    <Compile Include="Services\TcxReader.cs" />
     <Compile Include="Services\XmlMapper.cs" />
   </ItemGroup>
   <ItemGroup>

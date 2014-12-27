@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolarConverter.BLL.Entiteter;
 using Should;
 
 namespace PolarConverter.Test

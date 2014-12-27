@@ -2,14 +2,12 @@
 var PolarConverter;
 (function (PolarConverter) {
     "use strict";
-
     var FacebookShareService = (function () {
         function FacebookShareService() {
         }
         FacebookShareService.prototype.injection = function () {
             return [FacebookShareService];
         };
-
         FacebookShareService.prototype.openDialogue = function () {
             return this.facebookShareUrl({
                 "name": "PolarConverter",
@@ -19,7 +17,6 @@ var PolarConverter;
                 "link": ""
             });
         };
-
         FacebookShareService.prototype.facebookShareUrl = function (params) {
             return "https://www.facebook.com/dialog/feed?" + $.param($.extend({}, {
                 "app_id": PolarConverter.Config.FacebookId,

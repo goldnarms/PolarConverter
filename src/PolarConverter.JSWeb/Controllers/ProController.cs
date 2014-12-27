@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PayPal;
-using PayPal.Api.Payments;
 using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Helpers;
 
@@ -19,7 +18,7 @@ namespace PolarConverter.JSWeb.Controllers
 
         public ProController()
         {
-            _paypalService = new PayPalService(PayPalHelper.GetAPIContext());
+            //_paypalService = new PayPalService();
         }
 
         [HttpGet]
@@ -50,7 +49,7 @@ namespace PolarConverter.JSWeb.Controllers
         [HttpGet]
         public ActionResult OrderPro()
         {
-            _paypalService.SetupPlan();
+            //_paypalService.SetupPlan();
             return View("Index");
         }
     }

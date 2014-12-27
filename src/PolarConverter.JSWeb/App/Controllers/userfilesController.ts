@@ -5,6 +5,7 @@ module PolarConverter {
     export interface IUserFilesController {
         fileList: PolarFile[];
         exportToStrava(file: File): void;
+        exportToRunkeeper(file: File): void;
         userId: string;
     }
 
@@ -22,6 +23,15 @@ module PolarConverter {
 
         public exportToStrava(file: File): void {
             this.fileService.exportToService("Strava", file.reference, file.name, this.userId)
+                .success(() => {
+                })
+                .catch((error) => {
+                    this.common.log.error("Error: " + error);
+                });
+        }
+
+        public exportToRunkeeper(file: File): void {
+            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId)
                 .success(() => {
                 })
                 .catch((error) => {

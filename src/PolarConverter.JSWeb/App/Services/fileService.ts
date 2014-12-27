@@ -3,6 +3,7 @@ module PolarConverter {
     export interface IFileService {
         getFilesForUser(userId: string): ng.IHttpPromise<any>;
         exportToService(provider: string, fileReference: string, fileName: string, userId: string): ng.IHttpPromise<any>;
+        getDropboxFilesForUser(userId: string): ng.IHttpPromise<any>;
     }
 
     export class FileService implements IFileService {
@@ -17,6 +18,10 @@ module PolarConverter {
 
         public getFilesForUser(userId: string): ng.IHttpPromise<any> {
             return this.$http.get("/api/file?id=" + userId);
+        }
+
+        public getDropboxFilesForUser(userId: string): ng.IHttpPromise<any> {
+            return this.$http.get("/api/service/getFilesFromDropbox?id=" + userId);
         }
 
         public exportToService(provider: string, fileReference: string, fileName: string, userId: string): ng.IHttpPromise<any> {

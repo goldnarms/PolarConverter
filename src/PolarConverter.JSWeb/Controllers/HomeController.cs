@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.ViewModels;
+using System;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -43,21 +44,27 @@ namespace PolarConverter.JSWeb.Controllers
             var userId = User.Identity.GetUserId();
             using (var db = new ApplicationDbContext())
             {
-                var applicationUser = await db.Users.Include(u => u.OauthTokens).FirstOrDefaultAsync(u => u.Id == userId);
+                var applicationUser = await db.Users
+                    .Include(u => u.OauthTokens)
+                    .Include(u => u.Subscriptions)
+                    .FirstOrDefaultAsync(u => u.Id == userId);
                 var userViewModel = MapToViewModel(applicationUser);
+
                 return userViewModel;
             }
         }
 
         private UserViewModel MapToViewModel(ApplicationUser applicationUser)
         {
+            var today = DateTime.Today;
             return new UserViewModel
             {
                 BirthDate = applicationUser.BirthDate,
                 IsMale = applicationUser.IsMale,
                 PreferKg = applicationUser.PreferKg,
                 Weight = applicationUser.Weight,
-                RegisteredProviders = applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList()
+                RegisteredProviders = applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList(),
+                ActiveSubscription = applicationUser.Subscriptions.FirstOrDefault(s => s.Paid && s.StartTime <= today && s.EndTime >= today)
             };
         }
 

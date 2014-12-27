@@ -12,6 +12,7 @@ using HealthGraphNet;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PolarConverter.JSWeb.Models;
+using PolarConverter.BLL.Services;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -23,9 +24,11 @@ namespace PolarConverter.JSWeb.Controllers
         private const string RunkeeperUrl = "https://runkeeper.com";
         private const string RunkeeperClientId = "aa628d46ca704d69964f19c993a25207";
         private AccessTokenManager _tokenManager;
+        private DropboxService _dropboxService;
 
         public ServicesController()
         {
+            _dropboxService = new DropboxService();
         }
 
         [System.Web.Mvc.HttpPost]
@@ -84,19 +87,19 @@ namespace PolarConverter.JSWeb.Controllers
                 var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
                 using (var client = new HttpClient { BaseAddress = new Uri(RunkeeperUrl) })
                 {
-                    var content = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string, string>("grant_type", "authorization_code"),
-                        new KeyValuePair<string, string>("code", code),
-                        new KeyValuePair<string, string>("client_id", RunkeeperClientId),
-                        new KeyValuePair<string, string>("client_secret", clientSecret),
-                        new KeyValuePair<string, string>("redirect_uri", returnUrl)
-                    });
-                    //content.Headers.Add(.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                    //content.Headers.ContentType.CharSet = "UTF-8";
-                    var runkeeperResult = await client.PostAsJsonAsync(action, content);
-                    var responsContent = await runkeeperResult.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<RunkeeperResult>(responsContent);
+                    var postData = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                    new KeyValuePair<string, string>("code", code),
+                    new KeyValuePair<string, string>("client_id", RunkeeperClientId),
+                    new KeyValuePair<string, string>("client_secret", clientSecret),
+                    new KeyValuePair<string, string>("redirect_uri", returnUrl)
+                };
+                    var formContent = new FormUrlEncodedContent(postData);
+
+                    var response = await client.PostAsync("https://runkeeper.com/apps/token", formContent);
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<RunkeeperResult>(content);
                     if (result.access_token != null)
                     {
                         SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
@@ -106,9 +109,71 @@ namespace PolarConverter.JSWeb.Controllers
             return RedirectToAction("UserProfile", "Home");
         }
 
+        public ActionResult ConnectToDropbox()
+        {
+            Session["UserLogin"] = _dropboxService.GetToken();
+            var url = _dropboxService.GetAuthorizeUrl();
+            return Redirect(url);
+        }
+
+        public ActionResult DropboxCallback(string oauth_token, string uid)
+        {
+            string ot = oauth_token;
+            string u = uid;
+            //var userLogin = new DropNet.Models.UserLogin() { Token = oauth_token, Secret = uid };
+            //_dropboxService.VerifyToken(userLogin);
+            if (Session["UserLogin"] != null)
+            {
+                var userLogin = _dropboxService.GetUserToken(Session["UserLogin"] as DropNet.Models.UserLogin);
+                Session["UserLogin"] = userLogin;
+
+                using (var db = new ApplicationDbContext())
+                {
+                    var oauthToken = new OauthToken();
+                    oauthToken.UserId = User.Identity.GetUserId();
+                    oauthToken.ProviderType = ProviderType.Dropbox;
+                    oauthToken.Token = userLogin.Token;
+                    oauthToken.Secret = userLogin.Secret;
+                    db.OauthTokens.Add(oauthToken);
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("UserProfile", "Home");
+        }
+
         public void DeauthRunkeeper()
         {
             // Url for deauthorizing Runkeeper
+        }
+
+        public ActionResult RemoveProvider(int id)
+        {
+            var providerType = (ProviderType)id;
+            var userId = User.Identity.GetUserId();
+            using (var db = new ApplicationDbContext())
+            {
+                var oauth = db.OauthTokens.FirstOrDefault(oa => oa.ProviderType == providerType && oa.UserId == userId);
+                if(oauth != null)
+                {
+                    db.OauthTokens.Remove(oauth);
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("UserProfile", "Home");
+        }
+
+        public void GetFiles()
+        {
+            var userId = User.Identity.GetUserId();
+            using(var db = new ApplicationDbContext())
+            {
+                var dropboxToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Dropbox);
+                var userLogin = new DropNet.Models.UserLogin();
+                userLogin.Token = dropboxToken.Token;
+                userLogin.Secret = dropboxToken.Secret;
+                _dropboxService.GetFilesForUser(userLogin);
+            }
         }
 
         private void SaveTokenForUser(string accessToken, ProviderType providerType)
@@ -116,10 +181,10 @@ namespace PolarConverter.JSWeb.Controllers
             using (var db = new ApplicationDbContext())
             {
                 var userId = User.Identity.GetUserId();
-                var existingStravaToken =
+                var existingToken =
                     db.OauthTokens.FirstOrDefault(
-                        oa => oa.ProviderType == ProviderType.Strava && oa.UserId == userId);
-                if (existingStravaToken == null)
+                        oa => oa.ProviderType == providerType && oa.UserId == userId);
+                if (existingToken == null)
                 {
                     db.OauthTokens.Add(new OauthToken
                     {
@@ -130,7 +195,7 @@ namespace PolarConverter.JSWeb.Controllers
                 }
                 else
                 {
-                    existingStravaToken.Token = accessToken;
+                    existingToken.Token = accessToken;
                 }
                 db.SaveChanges();
             }

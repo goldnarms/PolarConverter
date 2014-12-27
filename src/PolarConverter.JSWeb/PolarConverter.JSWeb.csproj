@@ -73,6 +73,9 @@
       <HintPath>..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DropNet">
+      <HintPath>..\packages\DropNet.1.9.6\lib\net40\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -199,18 +202,14 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalCoreSDK">
-      <HintPath>..\packages\PayPalCoreSDK.1.5.2\lib\net45\PayPalCoreSDK.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PayPal">
+      <HintPath>..\packages\PayPal.1.1.0\lib\net45\PayPal.dll</HintPath>
     </Reference>
-    <Reference Include="RestApiSDK">
-      <HintPath>..\packages\RestApiSDK.0.11.0\lib\net45\RestApiSDK.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.103.4\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -327,6 +326,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\FileController.cs" />
+    <Compile Include="Controllers\Api\ServiceController.cs" />
     <Compile Include="Controllers\Api\UploadController.cs" />
     <Compile Include="Controllers\BackloadDemoController.cs" />
     <Compile Include="Controllers\ProController.cs" />
@@ -354,8 +354,22 @@
     <Compile Include="Migrations\201410122036324_userFileReference.Designer.cs">
       <DependentUpon>201410122036324_userFileReference.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412221411565_Subscriptions.cs" />
+    <Compile Include="Migrations\201412221411565_Subscriptions.Designer.cs">
+      <DependentUpon>201412221411565_Subscriptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412232131578_Subscription id.cs" />
+    <Compile Include="Migrations\201412232131578_Subscription id.Designer.cs">
+      <DependentUpon>201412232131578_Subscription id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412251147514_secret.cs" />
+    <Compile Include="Migrations\201412251147514_secret.Designer.cs">
+      <DependentUpon>201412251147514_secret.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\RunkeeperResult.cs" />
+    <Compile Include="Models\Subscription.cs" />
+    <Compile Include="ViewModels\CancelSubscriptionViewModel.cs" />
     <Compile Include="ViewModels\Change.cs" />
     <Compile Include="ViewModels\FrequentlyAskedQuestion.cs" />
     <Compile Include="ViewModels\FrontPageModel.cs" />
@@ -1151,6 +1165,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410122036324_userFileReference.resx">
       <DependentUpon>201410122036324_userFileReference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412221411565_Subscriptions.resx">
+      <DependentUpon>201412221411565_Subscriptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412232131578_Subscription id.resx">
+      <DependentUpon>201412232131578_Subscription id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412251147514_secret.resx">
+      <DependentUpon>201412251147514_secret.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

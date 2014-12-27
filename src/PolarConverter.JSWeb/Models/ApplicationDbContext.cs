@@ -13,6 +13,7 @@ namespace PolarConverter.JSWeb.Models
 
         public DbSet<OauthToken> OauthTokens { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         public static ApplicationDbContext Create()
         {

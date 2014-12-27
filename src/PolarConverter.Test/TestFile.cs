@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Helpers;
 using Should;
 
