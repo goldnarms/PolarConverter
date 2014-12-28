@@ -39,7 +39,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
         }
 
         [System.Web.Http.Route("api/service/getFilesFromDropbox")]
-        public IEnumerable<DropboxFile> GetFilesFromDropbox(string id)
+        public IEnumerable<DropboxResult> GetFilesFromDropbox(string id)
         {
             var dropboxService = new DropboxService();
             using (var db = new ApplicationDbContext())
@@ -48,8 +48,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 var userLogin = new DropNet.Models.UserLogin();
                 userLogin.Token = dropboxToken.Token;
                 userLogin.Secret = dropboxToken.Secret;
-                var files = dropboxService.GetFilesForUser(userLogin);
-                return files;
+                return dropboxService.GetFilesForUser(userLogin);
             }
         }
 

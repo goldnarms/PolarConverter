@@ -103,12 +103,14 @@ namespace PolarConverter.JSWeb.Controllers
                     // check if user has a Pro subscription
                     var userId = User.Identity.GetUserId();
                     var today = DateTime.Today;
+                    var startTime = today.AddDays(2);
+                    var endTime = today.AddDays(-2);
                     using (var db = new ApplicationDbContext())
                     {
                         var hasValidSubscription = db.Subscriptions.Any(
                             s =>
                                 s.UserId == userId && s.Paid == true &&
-                                s.StartTime <= today.AddDays(2) && s.EndTime < today.AddDays(-2));
+                                s.StartTime <= startTime && s.EndTime < endTime);
                         if (!hasValidSubscription)
                         {
                             AuthenticationManager.SignOut();

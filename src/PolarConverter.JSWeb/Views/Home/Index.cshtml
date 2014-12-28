@@ -81,27 +81,14 @@
                             <th>Convert</th>
                         </tr>
                     </thead>
-                    <tr data-ng-repeat="file in uc.dropboxFiles">
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ file.name }}</td>
-                        <td>
-                            <select data-ng-model="file.sport" data-ng-options="sport for sport in uc.sports"><option value="">Select sport</option></select>
-                        </td>
-                        <td>
-                            <span data-ng-show="file.gpxFile">{{ file.gpxFile.name}}<a href="" data-ng-click="uc.removeGpxFile(file)" title="Remove file">&nbsp;<i class="glyphicon glyphicon-remove"></i></a></span><span data-ng-hide="file.gpxFile">
-                                <select data-ng-model="file.gpxFile" data-ng-options="gpxFile.name for gpxFile in uc.gpxFiles | filter: { matched: false}"><option value="">Select Gpx file</option></select>
-                            </span>
-                        </td>
-                        <td><input type="checkbox" data-ng-checked="file.checked" /></td>
-                    </tr>
                     <tr data-ng-repeat="file in uc.uploadedFiles">
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ file.name }}</td>
+                        <td><span data-ng-bind="$index + 1"></span></td>
+                        <td><span data-ng-bind="file.name"></span></td>
                         <td>
                             <select data-ng-model="file.sport" data-ng-options="sport for sport in uc.sports"><option value="">Select sport</option></select>
                         </td>
                         <td>
-                            <span data-ng-show="file.gpxFile">{{ file.gpxFile.name}}<a href="" data-ng-click="uc.removeGpxFile(file)" title="Remove file">&nbsp;<i class="glyphicon glyphicon-remove"></i></a></span><span data-ng-hide="file.gpxFile">
+                            <span data-ng-show="file.gpxFile" data-ng-bind="file.gpxFile.name"><a href="#" data-ng-click="uc.removeGpxFile(file)" title="Remove file">&nbsp;<i class="glyphicon glyphicon-remove"></i></a></span><span data-ng-hide="file.gpxFile">
                                 <select data-ng-model="file.gpxFile" data-ng-options="gpxFile.name for gpxFile in uc.gpxFiles | filter: { matched: false}"><option value="">Select Gpx file</option></select>
                             </span>
                         </td>

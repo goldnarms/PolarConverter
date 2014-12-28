@@ -36,7 +36,8 @@ module PolarConverter {
 
     export class UploadController {
         public injection(): any[] {
-            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", "fileService", UploadController]; }
+            return ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", "fileService", UploadController];
+        }
         static $inject = ["$scope", "$http", "$filter", "$window", "$document", "common", "localStorageService", "facebookShareService", "userService", "fileService"];
         public options: any;
         public loadingFiles: boolean;
@@ -139,15 +140,31 @@ module PolarConverter {
                 this.fileService.getDropboxFilesForUser(userId.data)
                     .success((data) => {
                         this.common.log.info(JSON.stringify(data));
-                        this.dropboxFiles = _.map(data, (file: any) => {
-                            return <PolarFile>{
-                                name: file.name,
-                                reference: file.path,
-                                checked: false,
-
-                            };
+                        _.each(data, (dropboxFile: any) => {
+                            this.showExtraVariables = dropboxFile.showExtraVariables;
+                            if (dropboxFile.fileType === "gpx") {
+                                var gpxFile = this.mapGpxFile(dropboxFile);
+                                this.gpxFiles.push(gpxFile);
+                                var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
+                                if (matchingPolarFile) {
+                                    gpxFile.matched = true;
+                                    matchingPolarFile.gpxFile = gpxFile;
+                                }
+                            } else {
+                                if (dropboxFile.weight) {
+                                    this.uploadViewModel.weight = dropboxFile.weight;
+                                }
+                                var polarFile = this.mapPolarFile(dropboxFile, true);
+                                this.uploadedFiles.push(polarFile);
+                                var matchingGpxFile = <PolarConverter.GpxFile> this.checkForMatchingFile(this.gpxFiles, polarFile.name);
+                                if (matchingGpxFile) {
+                                    polarFile.gpxFile = matchingGpxFile;
+                                    matchingGpxFile.matched = true;
+                                }
+                            }
                         });
-                        this.common.log.info("Files: " + JSON.stringify(this.dropboxFiles));
+                        this.common.loadingBar.complete();
+
                     })
                     .catch((error) => {
                         this.common.log.error("Error: " + error);
@@ -163,7 +180,7 @@ module PolarConverter {
         private onUpload(data: any): void {
             this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
-                var gpxFile = <PolarConverter.GpxFile>{ name: data.result.name, reference: data.result.reference, matched: false, version: data.result.gpxVersion };
+                var gpxFile = this.mapGpxFile(data.result);
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -174,7 +191,7 @@ module PolarConverter {
                 if (data.result.weight) {
                     this.uploadViewModel.weight = data.result.weight;
                 }
-                var polarFile = <PolarConverter.PolarFile>{ fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true };
+                var polarFile = this.mapPolarFile(data.result, false);
                 this.uploadedFiles.push(polarFile);
                 var matchingGpxFile = <PolarConverter.GpxFile> this.checkForMatchingFile(this.gpxFiles, polarFile.name);
                 if (matchingGpxFile) {
@@ -184,6 +201,26 @@ module PolarConverter {
             }
             this.common.loadingBar.complete();
             this.showFileTable = false;
+        }
+
+        private mapPolarFile(file: any, fromDropbox: boolean): PolarFile {
+            return <PolarFile>{
+                fileType: file.fileType,
+                name: file.name,
+                reference: file.reference,
+                sport: file.sport,
+                checked: !fromDropbox,
+                fromDropbox: fromDropbox
+            };
+        }
+
+        private mapGpxFile(file: any): GpxFile {
+            return <GpxFile>{
+                name: file.name,
+                reference: file.reference,
+                matched: false,
+                version: file.gpxVersion
+            };
         }
 
         private setupWatches(): void {

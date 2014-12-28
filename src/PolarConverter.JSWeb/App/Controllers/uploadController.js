@@ -89,14 +89,31 @@ var PolarConverter;
                 _this.common.log.info("Userid: " + userId.data);
                 _this.fileService.getDropboxFilesForUser(userId.data).success(function (data) {
                     _this.common.log.info(JSON.stringify(data));
-                    _this.dropboxFiles = _.map(data, function (file) {
-                        return {
-                            name: file.name,
-                            reference: file.path,
-                            checked: false,
-                        };
+                    _.each(data, function (dropboxFile) {
+                        _this.showExtraVariables = dropboxFile.showExtraVariables;
+                        if (dropboxFile.fileType === "gpx") {
+                            var gpxFile = _this.mapGpxFile(dropboxFile);
+                            _this.gpxFiles.push(gpxFile);
+                            var matchingPolarFile = _this.checkForMatchingFile(_this.uploadedFiles, gpxFile.name);
+                            if (matchingPolarFile) {
+                                gpxFile.matched = true;
+                                matchingPolarFile.gpxFile = gpxFile;
+                            }
+                        }
+                        else {
+                            if (dropboxFile.weight) {
+                                _this.uploadViewModel.weight = dropboxFile.weight;
+                            }
+                            var polarFile = _this.mapPolarFile(dropboxFile, true);
+                            _this.uploadedFiles.push(polarFile);
+                            var matchingGpxFile = _this.checkForMatchingFile(_this.gpxFiles, polarFile.name);
+                            if (matchingGpxFile) {
+                                polarFile.gpxFile = matchingGpxFile;
+                                matchingGpxFile.matched = true;
+                            }
+                        }
                     });
-                    _this.common.log.info("Files: " + JSON.stringify(_this.dropboxFiles));
+                    _this.common.loadingBar.complete();
                 }).catch(function (error) {
                     _this.common.log.error("Error: " + error);
                 });
@@ -109,7 +126,7 @@ var PolarConverter;
         UploadController.prototype.onUpload = function (data) {
             this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
-                var gpxFile = { name: data.result.name, reference: data.result.reference, matched: false, version: data.result.gpxVersion };
+                var gpxFile = this.mapGpxFile(data.result);
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -121,7 +138,7 @@ var PolarConverter;
                 if (data.result.weight) {
                     this.uploadViewModel.weight = data.result.weight;
                 }
-                var polarFile = { fileType: data.result.fileType, name: data.result.name, reference: data.result.reference, sport: data.result.sport, checked: true };
+                var polarFile = this.mapPolarFile(data.result, false);
                 this.uploadedFiles.push(polarFile);
                 var matchingGpxFile = this.checkForMatchingFile(this.gpxFiles, polarFile.name);
                 if (matchingGpxFile) {
@@ -131,6 +148,24 @@ var PolarConverter;
             }
             this.common.loadingBar.complete();
             this.showFileTable = false;
+        };
+        UploadController.prototype.mapPolarFile = function (file, fromDropbox) {
+            return {
+                fileType: file.fileType,
+                name: file.name,
+                reference: file.reference,
+                sport: file.sport,
+                checked: !fromDropbox,
+                fromDropbox: fromDropbox
+            };
+        };
+        UploadController.prototype.mapGpxFile = function (file) {
+            return {
+                name: file.name,
+                reference: file.reference,
+                matched: false,
+                version: file.gpxVersion
+            };
         };
         UploadController.prototype.setupWatches = function () {
             var _this = this;

@@ -191,6 +191,7 @@
     <Compile Include="Helpers\DoubleExtensions.cs" />
     <Compile Include="Helpers\DropboxHelper.cs" />
     <Compile Include="Helpers\EpostHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\IntHelper.cs" />
     <Compile Include="Helpers\KonverteringsHelper.cs" />
     <Compile Include="Helpers\RangeHelper.cs" />
