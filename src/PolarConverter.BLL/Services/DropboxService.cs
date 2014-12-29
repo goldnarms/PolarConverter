@@ -1,20 +1,25 @@
 ﻿using DropNet;
 using PolarConverter.BLL.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 
 namespace PolarConverter.BLL.Services
 {
     public class DropboxService
     {
         private DropNetClient _client;
+        private GpxReader _gpxReader;
 
         public DropboxService()
         {
             _client = new DropNetClient(ConfigurationManager.AppSettings["Dropbox_Key"], ConfigurationManager.AppSettings["Dropbox_Secret"]);
             _client.UseSandbox = true;
+            _gpxReader = new GpxReader();
         }
 
         public DropNet.Models.UserLogin GetToken()
@@ -87,6 +92,44 @@ namespace PolarConverter.BLL.Services
             return _client.GetAccessToken();
         }
 
+        public string ReadFile(string fileReference)
+        {
+            using (var memoryStream = new MemoryStream(_client.GetFile(fileReference)))
+            {
+                return Encoding.UTF8.GetString(memoryStream.ToArray());
+            }
+        }
+
+        public object ReadXmlDocument(string fileReference, Type xmlType)
+        {
+            using (var memoryStream = new MemoryStream(_client.GetFile(fileReference)))
+            {
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return _gpxReader.DeserializeFile(memoryStream, xmlType);
+            }
+        }
+
+        public string DownloadFile(string fileRef, string fileName)
+        {
+            var fileBytes = _client.GetFile(fileRef);
+            var filePath = string.Format("{0}{1}", HttpContext.Current.Server.MapPath("/Upload/"), !string.IsNullOrEmpty(fileName) ? fileName + ".tcx" : fileRef);
+            using (var fileStream = File.OpenWrite(filePath))
+            {
+                for (int i = 0; i < fileBytes.Length; i++)
+                {
+                    fileStream.WriteByte(fileBytes[i]);
+                }
+                fileStream.Seek(0, SeekOrigin.Begin);
+                for (int i = 0; i < fileBytes.Length; i++)
+                {
+                    if (fileBytes[i] != fileStream.ReadByte())
+                    {
+                        break;
+                    }
+                }
+            }
+            return filePath;
+        }
     }
 
 

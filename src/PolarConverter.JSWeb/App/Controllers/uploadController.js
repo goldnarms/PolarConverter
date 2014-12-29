@@ -92,7 +92,7 @@ var PolarConverter;
                     _.each(data, function (dropboxFile) {
                         _this.showExtraVariables = dropboxFile.showExtraVariables;
                         if (dropboxFile.fileType === "gpx") {
-                            var gpxFile = _this.mapGpxFile(dropboxFile);
+                            var gpxFile = _this.mapGpxFile(dropboxFile, true);
                             _this.gpxFiles.push(gpxFile);
                             var matchingPolarFile = _this.checkForMatchingFile(_this.uploadedFiles, gpxFile.name);
                             if (matchingPolarFile) {
@@ -126,7 +126,7 @@ var PolarConverter;
         UploadController.prototype.onUpload = function (data) {
             this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
-                var gpxFile = this.mapGpxFile(data.result);
+                var gpxFile = this.mapGpxFile(data.result, false);
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -159,12 +159,13 @@ var PolarConverter;
                 fromDropbox: fromDropbox
             };
         };
-        UploadController.prototype.mapGpxFile = function (file) {
+        UploadController.prototype.mapGpxFile = function (file, fromDropbox) {
             return {
                 name: file.name,
                 reference: file.reference,
                 matched: false,
-                version: file.gpxVersion
+                version: file.gpxVersion,
+                fromDropbox: fromDropbox
             };
         };
         UploadController.prototype.setupWatches = function () {

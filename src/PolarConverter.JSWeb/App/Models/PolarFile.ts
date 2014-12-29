@@ -6,6 +6,5 @@ module PolarConverter {
         sport: PolarConverter.sportEnum;
         checked: boolean;
         gpxFile: PolarConverter.GpxFile;
-        fromDropbox: boolean;
     }
 }

@@ -10,6 +10,7 @@ namespace PolarConverter.BLL.Entiteter
         public string Sport { get; set; }
         public GpxFile GpxFile { get; set; }
         public string Note { get; set; }
+        public bool FromDropbox { get; set; }
     }
 
     public class GpxFile
@@ -17,5 +18,6 @@ namespace PolarConverter.BLL.Entiteter
         public string Name { get; set; }
         public string Reference { get; set; }
         public string Version { get; set; }
+        public bool FromDropbox { get; set; }
     }
 }

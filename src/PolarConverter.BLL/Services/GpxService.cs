@@ -11,30 +11,53 @@ namespace PolarConverter.BLL.Services
     public class GpxService
     {
         private readonly IStorageHelper _storageHelper;
+        private readonly DropboxService _dropboxService;
 
         public GpxService(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
+            _dropboxService = new DropboxService();
         }
 
-        public IGpx ReadGpxFile(string fileReference, string version, int timeOffset)
+        public IGpx ReadGpxFile(string fileReference, bool fromDropbox, string version, int timeOffset)
         {
             IGpx xml;
             switch (version)
             {
                 case "1.0":
                     {
-                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        if (fromDropbox)
+                        {
+                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        }
+                        else
+                        {
+                            xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        }
                         break;
                     }
                 case "1.1":
                     {
-                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
+                        if (fromDropbox)
+                        {
+                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
+                        }
+                        else
+                        {
+                            xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
+                        }
                         break;
                     }
                 default:
                     {
-                        xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        if (fromDropbox)
+                        {
+                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        }
+                        else
+                        {
+                            xml = _storageHelper.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                        }
                         break;
                     }
             }
@@ -48,7 +71,7 @@ namespace PolarConverter.BLL.Services
         public IGpx MapGpxFile(GpxFile gpxFile, double invertedOffset)
         {
             var timeKorreksjon = IntHelper.HentTidsKorreksjon(invertedOffset);
-            return ReadGpxFile(gpxFile.Reference, gpxFile.Version, timeKorreksjon);
+            return ReadGpxFile(gpxFile.Reference, gpxFile.FromDropbox, gpxFile.Version, timeKorreksjon);
         }
 
 
@@ -168,7 +191,7 @@ namespace PolarConverter.BLL.Services
         {
             var tempIndex = index > 0
                 ? index
-                : Convert.ToInt32(Math.Floor(timeDifference.TotalSeconds/recordingRate));
+                : Convert.ToInt32(Math.Floor(timeDifference.TotalSeconds / recordingRate));
             return tempIndex;
         }
 

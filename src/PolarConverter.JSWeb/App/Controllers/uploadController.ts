@@ -143,7 +143,7 @@ module PolarConverter {
                         _.each(data, (dropboxFile: any) => {
                             this.showExtraVariables = dropboxFile.showExtraVariables;
                             if (dropboxFile.fileType === "gpx") {
-                                var gpxFile = this.mapGpxFile(dropboxFile);
+                                var gpxFile = this.mapGpxFile(dropboxFile, true);
                                 this.gpxFiles.push(gpxFile);
                                 var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                                 if (matchingPolarFile) {
@@ -180,7 +180,7 @@ module PolarConverter {
         private onUpload(data: any): void {
             this.showExtraVariables = data.result.showExtraVariables;
             if (data.result.fileType === "gpx") {
-                var gpxFile = this.mapGpxFile(data.result);
+                var gpxFile = this.mapGpxFile(data.result, false);
                 this.gpxFiles.push(gpxFile);
                 var matchingPolarFile = <PolarConverter.PolarFile> this.checkForMatchingFile(this.uploadedFiles, gpxFile.name);
                 if (matchingPolarFile) {
@@ -214,12 +214,13 @@ module PolarConverter {
             };
         }
 
-        private mapGpxFile(file: any): GpxFile {
+        private mapGpxFile(file: any, fromDropbox: boolean): GpxFile {
             return <GpxFile>{
                 name: file.name,
                 reference: file.reference,
                 matched: false,
-                version: file.gpxVersion
+                version: file.gpxVersion,
+                fromDropbox: fromDropbox
             };
         }
 

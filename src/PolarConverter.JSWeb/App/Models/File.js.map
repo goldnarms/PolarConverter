@@ -1,1 +1,1 @@
-{"version":3,"file":"file.js","sourceRoot":"","sources":["file.ts"],"names":["PolarConverter"],"mappings":"AAAA,IAAO,cAAc,CAMpB;AAND,WAAO,cAAc,EAAC,CAAC;IACnBA,YAAYA,CAACA;IAIZA,JACLA,CAACA,EANM,cAAc,KAAd,cAAc,QAMpB"}
+{"version":3,"file":"file.js","sourceRoot":"","sources":["file.ts"],"names":["PolarConverter"],"mappings":"AAAA,IAAO,cAAc,CAOpB;AAPD,WAAO,cAAc,EAAC,CAAC;IACnBA,YAAYA,CAACA;IAKZA,JACLA,CAACA,EAPM,cAAc,KAAd,cAAc,QAOpB"}

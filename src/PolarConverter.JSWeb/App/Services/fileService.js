@@ -16,9 +16,9 @@ var PolarConverter;
         FileService.prototype.getDropboxFilesForUser = function (userId) {
             return this.$http.get("/api/service/getFilesFromDropbox?id=" + userId);
         };
-        FileService.prototype.exportToService = function (provider, fileReference, fileName, userId) {
+        FileService.prototype.exportToService = function (provider, fileReference, fileName, userId, fromDropbox) {
             console.log(fileReference);
-            var exportData = { provider: provider, reference: fileReference, name: fileName, userId: userId };
+            var exportData = { provider: provider, reference: fileReference, name: fileName, userId: userId, fromDropbox: fromDropbox };
             return this.$http.post("/api/service/export/", exportData);
         };
         FileService.$inject = ["$http", "$log", "$q"];

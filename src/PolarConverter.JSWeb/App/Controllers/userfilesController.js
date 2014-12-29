@@ -15,14 +15,14 @@ var PolarConverter;
         };
         UserFilesController.prototype.exportToStrava = function (file) {
             var _this = this;
-            this.fileService.exportToService("Strava", file.reference, file.name, this.userId).success(function () {
+            this.fileService.exportToService("Strava", file.reference, file.name, this.userId, file.fromDropbox).success(function () {
             }).catch(function (error) {
                 _this.common.log.error("Error: " + error);
             });
         };
         UserFilesController.prototype.exportToRunkeeper = function (file) {
             var _this = this;
-            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId).success(function () {
+            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId, file.fromDropbox).success(function () {
             }).catch(function (error) {
                 _this.common.log.error("Error: " + error);
             });

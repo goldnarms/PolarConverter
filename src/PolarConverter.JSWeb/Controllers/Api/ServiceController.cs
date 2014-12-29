@@ -21,6 +21,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
     {
         private readonly IStorageHelper _storageHelper;
         private AccessTokenManager _tokenManager;
+        private DropboxService _dropboxService;
 
         private const string StravaUrl = "https://www.strava.com";
         private const string RunkeeperUrl = "https://api.runkeeper.com";
@@ -31,24 +32,25 @@ namespace PolarConverter.JSWeb.Controllers.Api
         public ServiceController()
         {
             _storageHelper = DependencyResolver.Current.GetService<IStorageHelper>();
+            _dropboxService = new DropboxService();
         }
 
         public ServiceController(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
+            _dropboxService = new DropboxService();
         }
 
         [System.Web.Http.Route("api/service/getFilesFromDropbox")]
         public IEnumerable<DropboxResult> GetFilesFromDropbox(string id)
         {
-            var dropboxService = new DropboxService();
             using (var db = new ApplicationDbContext())
             {
                 var dropboxToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == id && oa.ProviderType == ProviderType.Dropbox);
                 var userLogin = new DropNet.Models.UserLogin();
                 userLogin.Token = dropboxToken.Token;
                 userLogin.Secret = dropboxToken.Secret;
-                return dropboxService.GetFilesForUser(userLogin);
+                return _dropboxService.GetFilesForUser(userLogin);
             }
         }
 
@@ -104,8 +106,15 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
         private IEnumerable<FitnessActivitiesNewModel> ConvertFileToRunkeeperActivity(ExportFileData exportFileData)
         {
-            var trainingCenterDatabase = (TrainingCenterDatabase_t)_storageHelper.ReadXmlDocument(exportFileData.Reference,
-                typeof(TrainingCenterDatabase_t));
+            TrainingCenterDatabase_t trainingCenterDatabase;
+            if (exportFileData.FromDropbox)
+            {
+                trainingCenterDatabase = (TrainingCenterDatabase_t)_dropboxService.ReadXmlDocument(exportFileData.Reference, typeof(TrainingCenterDatabase_t));
+            }
+            else
+            {
+                trainingCenterDatabase = (TrainingCenterDatabase_t)_storageHelper.ReadXmlDocument(exportFileData.Reference, typeof(TrainingCenterDatabase_t));
+            }
             var runkeeperList = new List<FitnessActivitiesNewModel>();
             foreach (var activity in trainingCenterDatabase.Activities.Activity)
             {
@@ -165,8 +174,16 @@ namespace PolarConverter.JSWeb.Controllers.Api
         {
             var auth = new StaticAuthentication(token);
             var client = new com.strava.api.Client.StravaClient(auth);
-            var filepath = _storageHelper.DownloadFile(exportFileData.Reference, exportFileData.Name);
-            var status = await client.Uploads.UploadActivityAsync(filepath, DataFormat.Tcx);
+            string filePath;
+            if (exportFileData.FromDropbox)
+            {
+                filePath = _dropboxService.DownloadFile(exportFileData.Reference, exportFileData.Name);
+            }
+            else
+            {
+                filePath = _storageHelper.DownloadFile(exportFileData.Reference, exportFileData.Name);
+            }
+            var status = await client.Uploads.UploadActivityAsync(filePath, DataFormat.Tcx);
             //var s = await client.Uploads.CheckUploadStatusAsync(status.Id.ToString());
             //var check = new UploadStatusCheck(token, status.Id.ToString());
             //check.UploadChecked += (o, args) => Console.WriteLine(args.Status);
@@ -179,6 +196,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             public string Reference { get; set; }
             public string Name { get; set; }
             public string UserId { get; set; }
+            public bool FromDropbox{ get; set; }
         }
     }
 }

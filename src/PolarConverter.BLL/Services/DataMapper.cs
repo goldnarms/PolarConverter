@@ -16,18 +16,21 @@ namespace PolarConverter.BLL.Services
     {
         private readonly IStorageHelper _storageHelper;
         private readonly GpxService _gpxService;
+        private readonly DropboxService _dropboxService;
         private readonly byte _zero = 0;
 
         public DataMapper()
         {
             _storageHelper = new BlobStorageHelper("polarfiles");
             _gpxService = new GpxService(_storageHelper);
+            _dropboxService = new DropboxService();
         }
 
         public DataMapper(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
             _gpxService = new GpxService(storageHelper);
+            _dropboxService = new DropboxService();
         }
 
         public byte[] MapData(PolarFile hrmFile, UploadViewModel model)
@@ -60,8 +63,16 @@ namespace PolarConverter.BLL.Services
         public PolarData InitalizePolarData(PolarFile file, UploadViewModel model)
         {
             var polardata = new PolarData();
+            string hrmData;
+            if (file.FromDropbox)
+            {
+                hrmData = _dropboxService.ReadFile(file.Reference);
+            }
+            else
+            {
+                hrmData = _storageHelper.ReadFile(file.Reference);
+            }
 
-            var hrmData = _storageHelper.ReadFile(file.Reference);
             polardata.Versjon = StringHelper.HentVerdi("Version=", 3, hrmData);
             var v02Max = Calculators.CalculateVo2Max(hrmData, model.Weight);
             var modus = hrmData.Contains("SMode") ? "SMode" : "Mode";

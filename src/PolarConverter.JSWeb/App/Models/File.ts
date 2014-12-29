@@ -3,5 +3,6 @@ module PolarConverter {
     export interface File {
         name: string;
         reference: string;
+        fromDropbox: boolean;
     }
 }

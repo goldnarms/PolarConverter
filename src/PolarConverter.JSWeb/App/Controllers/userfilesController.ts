@@ -22,7 +22,7 @@ module PolarConverter {
         }
 
         public exportToStrava(file: File): void {
-            this.fileService.exportToService("Strava", file.reference, file.name, this.userId)
+            this.fileService.exportToService("Strava", file.reference, file.name, this.userId, file.fromDropbox)
                 .success(() => {
                 })
                 .catch((error) => {
@@ -31,7 +31,7 @@ module PolarConverter {
         }
 
         public exportToRunkeeper(file: File): void {
-            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId)
+            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId, file.fromDropbox)
                 .success(() => {
                 })
                 .catch((error) => {

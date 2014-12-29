@@ -16,22 +16,33 @@ namespace PolarConverter.BLL.Services
     {
         private readonly IStorageHelper _storageHelper;
         private readonly GpxService _gpxService;
+        private readonly DropboxService _dropboxService;
 
         public XmlMapper()
         {
             _storageHelper = new BlobStorageHelper("polarfiles");
             _gpxService = new GpxService(_storageHelper);
+            _dropboxService = new DropboxService();
         }
 
         public XmlMapper(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
             _gpxService = new GpxService(_storageHelper);
+            _dropboxService = new DropboxService();
         }
 
         public byte[] MapData(PolarFile xmlFile, UploadViewModel model)
         {
-            var polarExercise = _storageHelper.ReadXmlDocument(xmlFile.Reference, typeof(polarexercisedata)) as polarexercisedata;
+            polarexercisedata polarExercise;
+            if (xmlFile.FromDropbox)
+            {
+                polarExercise = _dropboxService.ReadXmlDocument(xmlFile.Reference, typeof(polarexercisedata)) as polarexercisedata;
+            }
+            else
+            {
+                polarExercise = _storageHelper.ReadXmlDocument(xmlFile.Reference, typeof(polarexercisedata)) as polarexercisedata;
+            }
             if (polarExercise != null && polarExercise.calendaritems != null)
             {
                 var activites = new List<Activity_t>();
