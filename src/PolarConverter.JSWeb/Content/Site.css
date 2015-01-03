@@ -70,3 +70,17 @@ input[type="checkbox"].input-validation-error {
 .alert-warning {
     background-color: #F0B75A;
 }
+
+.strava-logo{
+    background-color: #FC4C02;
+    color: white;
+    width: 26px;
+    height: 29px;
+}
+
+.runkeeper-logo{
+    background-color: #1596D2;
+    width: 26px;
+    height: 29px;
+    color: white;
+}

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using DropNet.Models;
 
 namespace PolarConverter.BLL.Services
 {
@@ -22,7 +23,13 @@ namespace PolarConverter.BLL.Services
             _gpxReader = new GpxReader();
         }
 
-        public DropNet.Models.UserLogin GetToken()
+        public void Init(UserLogin userLogin)
+        {
+            _client.GetToken();
+            _client.UserLogin = userLogin;
+        }
+
+        public UserLogin GetToken()
         {
             return _client.GetToken();
         }
@@ -32,12 +39,8 @@ namespace PolarConverter.BLL.Services
             return _client.BuildAuthorizeUrl(ConfigurationManager.AppSettings["Dropbox_Callback"]);
         }
 
-        public IEnumerable<DropboxResult> GetFilesForUser(DropNet.Models.UserLogin userLogin)
+        public IEnumerable<DropboxResult> GetFilesForUser()
         {
-            _client.GetToken();
-            _client.UserLogin = userLogin;
-
-            //_client.GetAccessToken();
             var baseMeta = _client.GetMetaData();
             if (!baseMeta.Contents.Any(md => md.Is_Dir && md.Name == "Upload"))
             {
@@ -82,11 +85,11 @@ namespace PolarConverter.BLL.Services
             return result;
         }
 
-        public void VerifyToken(DropNet.Models.UserLogin userLogin)
+        public void VerifyToken(UserLogin userLogin)
         {
             _client.UserLogin = userLogin;
         }
-        public DropNet.Models.UserLogin GetUserToken(DropNet.Models.UserLogin userLogin)
+        public UserLogin GetUserToken(UserLogin userLogin)
         {
             _client.UserLogin = userLogin;
             return _client.GetAccessToken();
@@ -111,6 +114,7 @@ namespace PolarConverter.BLL.Services
 
         public string DownloadFile(string fileRef, string fileName)
         {
+
             var fileBytes = _client.GetFile(fileRef);
             var filePath = string.Format("{0}{1}", HttpContext.Current.Server.MapPath("/Upload/"), !string.IsNullOrEmpty(fileName) ? fileName + ".tcx" : fileRef);
             using (var fileStream = File.OpenWrite(filePath))
@@ -129,6 +133,23 @@ namespace PolarConverter.BLL.Services
                 }
             }
             return filePath;
+        }
+
+        public string UploadFile(Stream filedata, string path, string fileName)
+        {
+            _client.UploadFile("/" + path, fileName, filedata);
+            return fileName;
+        }
+
+        public string SaveStream(Stream stream, string fileName, string contentType, string extension)
+        {
+            var fileReference = String.Format("{0}.{1}", Guid.NewGuid(), extension);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                _client.UploadFile("/Converted", fileReference, ms.ToArray());
+            }
+            return fileReference;
         }
     }
 

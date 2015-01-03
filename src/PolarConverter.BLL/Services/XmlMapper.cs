@@ -138,7 +138,7 @@ namespace PolarConverter.BLL.Services
                                     {
                                         RecordingRate = recordingRate,
                                         StartTime = startTime,
-                                        GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.TimeZoneOffset * -1),
+                                        GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.TimeZoneOffset * -1, model.Uid),
                                         UploadViewModel = model
                                     };
                                     foreach (var lap in activity.Lap.Where(l => l != null))

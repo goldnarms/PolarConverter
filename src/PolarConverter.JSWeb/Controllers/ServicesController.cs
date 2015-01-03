@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.BLL.Services;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -172,7 +173,8 @@ namespace PolarConverter.JSWeb.Controllers
                 var userLogin = new DropNet.Models.UserLogin();
                 userLogin.Token = dropboxToken.Token;
                 userLogin.Secret = dropboxToken.Secret;
-                _dropboxService.GetFilesForUser(userLogin);
+                _dropboxService.Init(userLogin);
+                _dropboxService.GetFilesForUser();
             }
         }
 

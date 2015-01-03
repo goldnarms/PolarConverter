@@ -70,8 +70,8 @@
                 </table>
             </form>
 
-            <div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0 || uc.showErrors || uc.dropboxFiles.length > 0">
-                <table class="table table-striped table-hover" data-ng-show="uc.showUploadedFiles || uc.dropboxFiles.length > 0">
+            <div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0 || uc.showErrors">
+                <table class="table table-striped table-hover" data-ng-show="uc.showUploadedFiles">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -92,7 +92,7 @@
                                 <select data-ng-model="file.gpxFile" data-ng-options="gpxFile.name for gpxFile in uc.gpxFiles | filter: { matched: false}"><option value="">Select Gpx file</option></select>
                             </span>
                         </td>
-                        <td><input type="checkbox" data-ng-checked="file.checked" /></td>
+                        <td><input type="checkbox" data-ng-model="file.checked" /></td>
                     </tr>
                 </table>
                 <div class="well">

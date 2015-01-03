@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using PolarConverter.JSWeb.Models;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.JSWeb.ViewModels
 {

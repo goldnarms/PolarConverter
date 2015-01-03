@@ -28,7 +28,6 @@ var PolarConverter;
             this.setTimeZones();
             this.uploadedFiles = [];
             this.convertedFiles = [];
-            this.dropboxFiles = [];
             this.gpxFiles = [];
             this.sports = [];
             this.errors = [];
@@ -209,7 +208,6 @@ var PolarConverter;
         UploadController.prototype.initPage = function () {
             this.reset();
             this.$scope.$broadcast("clearFiles");
-            //var top = angular.element(document.getElementById('top'));
             this.$document.scrollTop(0, 1000);
         };
         UploadController.prototype.reset = function () {
@@ -238,6 +236,7 @@ var PolarConverter;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
                 return uf.checked;
             });
+            this.common.log.info("Sent to uplpoad: " + JSON.stringify(this.uploadViewModel));
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
             this.userService.getUserId().then(function (userId) {
                 _this.uploadViewModel.uid = userId.data;

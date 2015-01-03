@@ -1,4 +1,5 @@
 ﻿@using PolarConverter.JSWeb.Models
+@using PolarConverter.DAL.Models
 @model PolarConverter.JSWeb.ViewModels.UserViewModel
 @{
     ViewBag.Title = "UserProfile";
@@ -31,11 +32,6 @@
                 if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
                 {
                     <p><em>Strava connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
-                    using (Html.BeginForm("GetFiles", "Services", FormMethod.Post, new {}))
-                    {
-                        <p><button type="submit" class="btn btn-primary btn-sm">Get files</button></p>
-                    }
-
                 }
                 else
                 {

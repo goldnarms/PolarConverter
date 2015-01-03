@@ -14,6 +14,7 @@ using PolarConverter.BLL.Interfaces;
 using PolarConverter.JSWeb.Models;
 using DataFormat = com.strava.api.Upload.DataFormat;
 using PolarConverter.BLL.Services;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
@@ -50,7 +51,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
                 var userLogin = new DropNet.Models.UserLogin();
                 userLogin.Token = dropboxToken.Token;
                 userLogin.Secret = dropboxToken.Secret;
-                return _dropboxService.GetFilesForUser(userLogin);
+                _dropboxService.Init(userLogin);
+                return _dropboxService.GetFilesForUser();
             }
         }
 

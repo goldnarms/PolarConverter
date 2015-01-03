@@ -689,6 +689,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\animation.css" />
+    <Content Include="Content\ConnectWithStrava%402x.png" />
+    <Content Include="Content\ConnectWithStrava.png" />
     <Content Include="Content\fontello-codes.css" />
     <Content Include="Content\fontello-embedded.css" />
     <Content Include="Content\fontello-ie7-codes.css" />
@@ -716,11 +718,15 @@
     <Content Include="Content\font\fontello.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="Content\LogInWithStrava%402x.png" />
+    <Content Include="Content\LogInWithStrava.png" />
     <Content Include="Content\polarLogo01.png" />
     <Content Include="Content\polarLogo01_small.png" />
     <Content Include="Content\Site.min.css">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
+    <Content Include="Content\strava_logo.png" />
+    <Content Include="Content\top_nav_logo_icon.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -945,6 +951,8 @@
     <Content Include="App\config.js.map">
       <DependentUpon>config.ts</DependentUpon>
     </Content>
+    <Content Include="Content\bootswatch.less" />
+    <Content Include="Content\variables.less" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %282%29.pubxml" />
@@ -1139,6 +1147,10 @@
     <ProjectReference Include="..\PolarConverter.BLL\PolarConverter.BLL.csproj">
       <Project>{b22cd80d-5630-44a6-87f4-1cbb8ad31275}</Project>
       <Name>PolarConverter.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PolarConverter.DAL\PolarConverter.DAL.csproj">
+      <Project>{4ac1fcf8-392b-4a57-a40e-8996dbaffe47}</Project>
+      <Name>PolarConverter.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

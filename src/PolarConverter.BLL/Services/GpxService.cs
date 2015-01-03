@@ -5,6 +5,8 @@ using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Entiteter.gpxver11;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
+using DropNet.Models;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.BLL.Services
 {
@@ -19,16 +21,18 @@ namespace PolarConverter.BLL.Services
             _dropboxService = new DropboxService();
         }
 
-        public IGpx ReadGpxFile(string fileReference, bool fromDropbox, string version, int timeOffset)
+        public IGpx ReadGpxFile(string fileReference, bool fromDropbox, string version, int timeOffset, string userId)
         {
-            IGpx xml;
+            IGpx xml = null;
             switch (version)
             {
                 case "1.0":
                     {
-                        if (fromDropbox)
+                        if (fromDropbox && !string.IsNullOrEmpty(userId))
                         {
-                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                            var userLogin = GetUserLogin(userId);
+                            if(userLogin != null)
+                                xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
                         }
                         else
                         {
@@ -38,9 +42,11 @@ namespace PolarConverter.BLL.Services
                     }
                 case "1.1":
                     {
-                        if (fromDropbox)
+                        if (fromDropbox && !string.IsNullOrEmpty(userId))
                         {
-                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
+                            var userLogin = GetUserLogin(userId);
+                            if (userLogin != null)
+                                xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpxType)) as gpxType;
                         }
                         else
                         {
@@ -50,9 +56,11 @@ namespace PolarConverter.BLL.Services
                     }
                 default:
                     {
-                        if (fromDropbox)
+                        if (fromDropbox && !string.IsNullOrEmpty(userId))
                         {
-                            xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
+                            var userLogin = GetUserLogin(userId);
+                            if (userLogin != null)
+                                xml = _dropboxService.ReadXmlDocument(fileReference, typeof(gpx)) as gpx;
                         }
                         else
                         {
@@ -68,10 +76,10 @@ namespace PolarConverter.BLL.Services
             return xml;
         }
 
-        public IGpx MapGpxFile(GpxFile gpxFile, double invertedOffset)
+        public IGpx MapGpxFile(GpxFile gpxFile, double invertedOffset, string userId)
         {
             var timeKorreksjon = IntHelper.HentTidsKorreksjon(invertedOffset);
-            return ReadGpxFile(gpxFile.Reference, gpxFile.FromDropbox, gpxFile.Version, timeKorreksjon);
+            return ReadGpxFile(gpxFile.Reference, gpxFile.FromDropbox, gpxFile.Version, timeKorreksjon, userId);
         }
 
 
@@ -139,6 +147,23 @@ namespace PolarConverter.BLL.Services
                     }
             }
             return positionData;
+        }
+
+        private UserLogin GetUserLogin(string userId)
+        {
+            using (var db = new DAL.Context())
+            {
+                var dropboxToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == userId && oa.ProviderType == (int)ProviderType.Dropbox);
+                if (dropboxToken != null)
+                {
+                    var userLogin = new DropNet.Models.UserLogin();
+                    userLogin.Token = dropboxToken.Token;
+                    userLogin.Secret = dropboxToken.Secret;
+                    return userLogin;
+                }
+            }
+
+            return null;
         }
 
         private static bool IsGpxTimeSpecified(gpxType gpx)

@@ -15,23 +15,28 @@ using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
 using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Models;
+using System.IO;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.JSWeb.Controllers.Api
 {
     public class ConvertController : ApiController
     {
         private readonly IConversion _conversion;
+        private readonly DropboxService _dropboxService;
 
         public ConvertController()
         {
             //_conversion = new ConversionService(new BlobStorageHelper("polarfiles"));
             _conversion = DependencyResolver.Current.GetService<IConversion>();
+            _dropboxService = new DropboxService();
             //_conversion = new LocalConversionService();
         }
 
         public ConvertController(IConversion conversion)
         {
             _conversion = conversion;
+            _dropboxService = new DropboxService();
         }
 
         [System.Web.Http.Route("api/convert")]
@@ -70,7 +75,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     }
                 }
             }
-
             return Json(result);
         }
     }

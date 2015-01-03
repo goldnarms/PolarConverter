@@ -8,6 +8,7 @@ using Ionic.Zip;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.BLL.Services
 {
@@ -16,12 +17,14 @@ namespace PolarConverter.BLL.Services
         private readonly IStorageHelper _storageHelper;
         private readonly DataMapper _dataMapper;
         private readonly XmlMapper _xmlMapper;
+        private readonly DropboxService _dropboxService;
 
         public ConversionService(IStorageHelper storageHelper)
         {
             _storageHelper = storageHelper;
             _dataMapper = new DataMapper(_storageHelper);
             _xmlMapper = new XmlMapper(_storageHelper);
+            _dropboxService = new DropboxService();
         }
         public ConversionResult Convert(UploadViewModel model)
         {
@@ -44,6 +47,19 @@ namespace PolarConverter.BLL.Services
                                 zip.AddEntry(fileName, hrmFileData);
                                 if (!string.IsNullOrEmpty(model.Uid))
                                 {
+                                    using(var db = new DAL.Context())
+                                    {
+                                        DropNet.Models.UserLogin userLogin = null;
+                                        var dropboxToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == model.Uid && oa.ProviderType == (int)ProviderType.Dropbox);
+                                        if (dropboxToken != null)
+                                        {
+                                            userLogin = new DropNet.Models.UserLogin();
+                                            userLogin.Token = dropboxToken.Token;
+                                            userLogin.Secret = dropboxToken.Secret;
+                                            _dropboxService.Init(userLogin);
+                                            _dropboxService.SaveStream(new MemoryStream(hrmFileData), fileName, "application/xml", "tcx");
+                                        }
+                                    }
                                     tcxReferences.Add(_storageHelper.SaveStream(new MemoryStream(hrmFileData), fileName, "application/xml", "tcx"), shortFileName);
                                 }
                                 successfulFiles++;

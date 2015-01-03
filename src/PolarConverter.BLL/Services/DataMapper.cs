@@ -9,6 +9,7 @@ using PolarConverter.BLL.Factories;
 using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 using System.Globalization;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.BLL.Services
 {
@@ -63,10 +64,21 @@ namespace PolarConverter.BLL.Services
         public PolarData InitalizePolarData(PolarFile file, UploadViewModel model)
         {
             var polardata = new PolarData();
-            string hrmData;
-            if (file.FromDropbox)
+            string hrmData = "";
+            if (file.FromDropbox && !string.IsNullOrEmpty(model.Uid))
             {
-                hrmData = _dropboxService.ReadFile(file.Reference);
+                using (var db = new DAL.Context())
+                {
+                    var dropboxToken = db.OauthTokens.FirstOrDefault(oa => oa.UserId == model.Uid && oa.ProviderType == (int)ProviderType.Dropbox);
+                    if (dropboxToken != null)
+                    {
+                        var userLogin = new DropNet.Models.UserLogin();
+                        userLogin.Token = dropboxToken.Token;
+                        userLogin.Secret = dropboxToken.Secret;
+                        _dropboxService.Init(userLogin);
+                        hrmData = _dropboxService.ReadFile(file.Reference);
+                    }
+                }
             }
             else
             {
@@ -132,7 +144,7 @@ namespace PolarConverter.BLL.Services
             polardata.CadenseData = new List<string>();
             polardata.SpeedData = new List<string>();
             polardata.AntallMeter = new List<double>();
-            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model.TimeZoneOffset * -1) : null;
+            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model.TimeZoneOffset * -1, model.Uid) : null;
             polardata.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             return polardata;
         }
@@ -265,7 +277,7 @@ namespace PolarConverter.BLL.Services
             if (polarData.HrData.Count - endRange > 10)
             {
                 // Add extra lap
-                double durationInMs = (polarData.HrData.Count - endRange)*polarData.RecordingRate * 1000;
+                double durationInMs = (polarData.HrData.Count - endRange) * polarData.RecordingRate * 1000;
                 laps.Add(CreateLap(polarData, durationInMs, out endRange, ref previousDuration, ref startTime, ref lastDistance));
             }
             return laps.ToArray();
@@ -280,7 +292,7 @@ namespace PolarConverter.BLL.Services
             var distanceLogged = 0d;
             lap.StartTime = startTime.ToUniversalTimeZone();
 
-            
+
             var lapEndTime = startTime.AddMilliseconds(durationInMs);
             var durationTimeSpan = GetDuration(startTime, lapEndTime);
             startTime = lapEndTime;

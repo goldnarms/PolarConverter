@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PolarConverter.DAL.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PolarConverter.JSWeb.Models
@@ -13,12 +14,5 @@ namespace PolarConverter.JSWeb.Models
         public ProviderType ProviderType { get; set; }
         public string Token { get; set; }
         public string Secret { get; set; }
-    }
-
-    public enum ProviderType
-    {
-        Strava,
-        Runkeeper,
-        Dropbox
     }
 }
