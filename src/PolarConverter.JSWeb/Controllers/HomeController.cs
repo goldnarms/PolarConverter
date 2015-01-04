@@ -25,10 +25,20 @@ namespace PolarConverter.JSWeb.Controllers
         }
         public ActionResult Index()
         {
-            var frontPageModel = new FrontPageModel
+            var hasDropbox = false;
+            if (User.Identity.IsAuthenticated)
             {
-                BlobPath = _blobPath
-            };
+                var userId = User.Identity.GetUserId();
+                using (var context = new ApplicationDbContext())
+                {
+                    hasDropbox = context.OauthTokens.Any(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Dropbox);
+                }
+            }
+                var frontPageModel = new FrontPageModel
+                {
+                    BlobPath = _blobPath,
+                    HasDropbox = hasDropbox
+                };
             return View(frontPageModel);
         }
 

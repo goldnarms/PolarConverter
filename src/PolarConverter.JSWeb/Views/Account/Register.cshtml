@@ -1,14 +1,22 @@
 ﻿@model PolarConverter.JSWeb.ViewModels.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Go Pro";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title!</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    <h4>By going Pro, you will have access to these features:</h4>
+    <ul>
+        <li>All your converted files are stored for easy retrieval.</li>
+        <li>You can upload files directly from your Dropbox account.</li>
+        <li>Easy export to Strava.</li>
+        <li>Easy export to Runkeeper.</li>
+    </ul>
+    <small>More features will be added over time, feel free to send suggestions to <a href="mailto:polarconverter@gmail.com">me.</a></small><br />
+    <small>Support for export to Endomondo and Garmin Connect are not available at this time due to lack of open API (Endomondo) and high cost for API access (Garmin Connect).</small>
     <hr />
     @Html.ValidationSummary()
     //PART 1
@@ -51,16 +59,24 @@
     <div class="form-group">
         @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.PreferKg, "true", new { @class = "form-control radio-inline" }) Kg
-            @Html.RadioButtonFor(m => m.PreferKg, "false", new { @class = "form-control radio-inline" }) Lbs
+            <label>
+                @Html.RadioButtonFor(m => m.PreferKg, "true") Kg
+            </label>
+            <label>
+                @Html.RadioButtonFor(m => m.PreferKg, "false") Lbs
+            </label>
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.IsMale, "true", new { @class = "form-control radio-inline" }) Male
-            @Html.RadioButtonFor(m => m.IsMale, "false", new { @class = "form-control radio-inline" }) Female
-        </div>
+            <label>
+                @Html.RadioButtonFor(m => m.IsMale, "true") Male
+                </label>
+            <label>
+                @Html.RadioButtonFor(m => m.IsMale, "false") Female
+                </label>
+</div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -72,10 +88,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" language="javascript">
-        $(document).ready(function() {
-                $(".date").datepicker({                    
-                    format: 'dd/mm/yyyy',
-                });
+        $(document).ready(function () {
+            $(".date").datepicker({
+                format: 'dd/mm/yyyy',
             });
+        });
     </script>
 }
