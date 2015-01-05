@@ -121,8 +121,6 @@ namespace PolarConverter.JSWeb.Controllers
         {
             string ot = oauth_token;
             string u = uid;
-            //var userLogin = new DropNet.Models.UserLogin() { Token = oauth_token, Secret = uid };
-            //_dropboxService.VerifyToken(userLogin);
             if (Session["UserLogin"] != null)
             {
                 var userLogin = _dropboxService.GetUserToken(Session["UserLogin"] as DropNet.Models.UserLogin);

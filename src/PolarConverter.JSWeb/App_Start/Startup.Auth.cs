@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.Providers;
+using Microsoft.Owin.Security.Google;
 
 namespace PolarConverter.JSWeb
 {
@@ -75,19 +76,19 @@ namespace PolarConverter.JSWeb
             //    clientId: "",
             //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
-            //    consumerKey: "",
-            //    consumerSecret: "");
+            app.UseTwitterAuthentication(
+                consumerKey: "f71KbP2XU14rVeH2h5NxDvqLK",
+                consumerSecret: "8kvkrx3KxZoAynMMcjor76hxEuxGiEmjHTvYNDJCEFExFt2ZGh");
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
+            app.UseFacebookAuthentication(
+                appId: "128362510636193",
+                appSecret: "14b9e0999d5338185d26551cf09d674f");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "323230180928-b3nogpucorjpd68qnrbr67nd150flbh9.apps.googleusercontent.com",
+                ClientSecret = "9x6wjqPHYz7LJvFMaMVsPkHN "
+            });
         }
     }
 }
