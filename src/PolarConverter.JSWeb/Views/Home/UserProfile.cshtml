@@ -37,7 +37,7 @@
                 {
                     using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new {}))
                     {
-                        <p><button type="submit" class="btn btn-primary btn-sm">Connect to Strava</button></p>
+                        <p><button type="submit" class="btn btn-provider btn-strava btn-sm">Connect to Strava</button></p>
                     }
                 }
                 if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
@@ -48,7 +48,7 @@
                 {
                     using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new {}))
                     {
-<button type="submit" class="btn btn-primary btn-sm">Connect to Runkeeper</button>
+<button type="submit" class="btn btn-provider btn-runkeeper btn-sm">Connect to Runkeeper</button>
                     }
                 }
             }

@@ -84,3 +84,69 @@ input[type="checkbox"].input-validation-error {
     height: 29px;
     color: white;
 }
+
+.btn-provider{
+    border: none;
+    padding: 12px 18px;
+}
+
+.btn-facebook{
+    color:white;
+    background-color: #3B5998;
+}
+
+.btn-facebook:hover{
+    color:white;
+    background-color: #8B9DC3;
+}
+
+.btn-twitter{
+    color:white;
+    background-color: #3BCAFF;
+}
+
+.btn-twitter:hover{
+    color:white;
+    background-color: #c0deed;
+}
+
+.btn-strava{
+    color:white;
+    background-color: #FC4C02;
+}
+
+.btn-strava:hover{
+    color:white;
+    background-color: #fd7840;
+}
+
+
+.btn-runkeeper{
+    color:white;
+    background-color: #1596D2;
+}
+
+.btn-runkeeper:hover{
+    color:white;
+    background-color: #35b1ea;
+}
+
+.btn-google{
+    color:white;
+    background-color: #D34836;
+}
+
+.btn-google:hover{
+    color:white;
+    background-color: #de796c;
+}
+
+.btn-dropbox{
+    color:white;
+    background-color: #3d9ae8;
+}
+
+.btn-dropbox:hover{
+    color:white;
+    background-color: #7ebcef;
+}

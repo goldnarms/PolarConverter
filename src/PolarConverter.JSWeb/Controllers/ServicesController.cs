@@ -59,6 +59,7 @@ namespace PolarConverter.JSWeb.Controllers
                     var stravaResult = await client.PostAsJsonAsync(action, content);
                     var responseContent = await stravaResult.Content.ReadAsStringAsync();
                     var athleteResult = JsonConvert.DeserializeObject<Rootobject>(responseContent);
+
                     SaveTokenForUser(athleteResult.access_token, ProviderType.Strava);
                 }
             }
