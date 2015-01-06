@@ -176,20 +176,52 @@ namespace PolarConverter.JSWeb.Controllers
                     var stravaResult = await client.PostAsJsonAsync(action, content);
                     var responseContent = await stravaResult.Content.ReadAsStringAsync();
                     var athleteResult = JsonConvert.DeserializeObject<Rootobject>(responseContent);
-
-
-                    SaveTokenForUser(athleteResult.access_token, ProviderType.Strava);
-
+                    using(var db = new ApplicationDbContext())
+                    {
+                        var dbOathEntry = db.OauthTokens.Include("User").SingleOrDefault(oa => oa.Token == athleteResult.access_token && oa.ProviderType == ProviderType.Strava);
+                        if(dbOathEntry != null)
+                        {
+                            await SignInAsync(dbOathEntry.User, false);
+                            return RedirectToAction("UserProfile", "Home");
+                        }
+                        else
+                        {
+                            return await CreateUser(athleteResult);
+                        }
+                    }
                 }
             }
-            return RedirectToAction("UserProfile", "Home");
+            return View();
         }
 
-        private void SaveTokenForUser(string accessToken, ProviderType providerType)
+        private async Task<ActionResult> CreateUser(Rootobject athleteInfo)
+        {
+                var user = new ApplicationUser
+                {
+                    Email = athleteInfo.athlete.email,
+                    UserName = athleteInfo.athlete.email,
+                    PreferKg = athleteInfo.athlete.measurement_preference == "meters",
+                    IsMale = athleteInfo.athlete.sex == null || (string)athleteInfo.athlete.sex == "M"
+                };
+                var result = await UserManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    SaveTokenForUser(athleteInfo.access_token, ProviderType.Strava, user.Id);
+                    await SignInAsync(user, isPersistent: false);
+                    var agreementUrl = _payPalService.SetupSubscription();
+                    return Redirect(agreementUrl.First());
+                }
+                else
+                {
+                    AddErrors(result);
+                    return View();
+                }
+        }
+
+        private void SaveTokenForUser(string accessToken, ProviderType providerType, string userId)
         {
             using (var db = new ApplicationDbContext())
             {
-                var userId = User.Identity.GetUserId();
                 var existingToken =
                     db.OauthTokens.FirstOrDefault(
                         oa => oa.ProviderType == providerType && oa.UserId == userId);

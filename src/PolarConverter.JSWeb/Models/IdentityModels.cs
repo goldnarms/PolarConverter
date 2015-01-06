@@ -18,7 +18,7 @@ namespace PolarConverter.JSWeb.Models
         public bool PreferKg { get; set; }
         public bool IsMale { get; set; }
         //public double TimeZoneOffset { get; set; }
-        public DateTime BirthDate { get; set; }
+        public Nullable<DateTime> BirthDate { get; set; }
         public ICollection<OauthToken> OauthTokens { get; set; }
 
         public ICollection<Subscription> Subscriptions { get; set; }

@@ -366,6 +366,10 @@
     <Compile Include="Migrations\201412251147514_secret.Designer.cs">
       <DependentUpon>201412251147514_secret.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501062224392_BD.cs" />
+    <Compile Include="Migrations\201501062224392_BD.Designer.cs">
+      <DependentUpon>201501062224392_BD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\RunkeeperResult.cs" />
     <Compile Include="Models\Subscription.cs" />
@@ -1186,6 +1190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412251147514_secret.resx">
       <DependentUpon>201412251147514_secret.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501062224392_BD.resx">
+      <DependentUpon>201501062224392_BD.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

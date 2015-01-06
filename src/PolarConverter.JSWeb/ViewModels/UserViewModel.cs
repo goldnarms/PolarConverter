@@ -10,7 +10,7 @@ namespace PolarConverter.JSWeb.ViewModels
         public double Weight { get; set; }
         public bool PreferKg { get; set; }
         public bool IsMale { get; set; }
-        public DateTime BirthDate { get; set; }
+        public Nullable<DateTime> BirthDate { get; set; }
         public List<ProviderType> RegisteredProviders { get; set; }
         public Subscription ActiveSubscription { get; set; }
     }
