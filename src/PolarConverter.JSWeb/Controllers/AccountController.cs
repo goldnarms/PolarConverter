@@ -12,6 +12,11 @@ using PayPal.Api;
 using PolarConverter.BLL.Services;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.ViewModels;
+using System.Configuration;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using PolarConverter.DAL.Models;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -21,6 +26,11 @@ namespace PolarConverter.JSWeb.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationSignInManager _signInManager;
         private PayPalService _payPalService;
+        private DropboxService _dropboxService;
+        private string _stravaUrl;
+        private string _stravaClientId;
+        private string _runkeeperUrl;
+        private string _runkeeperClientId;
 
         public AccountController()
         {
@@ -28,6 +38,11 @@ namespace PolarConverter.JSWeb.Controllers
             var accessToken = new OAuthTokenCredential(config).GetAccessToken();
             var apiContext = new APIContext(accessToken);
             _payPalService = new PayPalService(apiContext);
+            _dropboxService = new DropboxService();
+            _stravaUrl = ConfigurationManager.AppSettings["StravaUrl"];
+            _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
+            _runkeeperUrl = ConfigurationManager.AppSettings["RunkeeperUrl"];
+            _runkeeperClientId = ConfigurationManager.AppSettings["RunkeeperClientId"];
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -38,6 +53,11 @@ namespace PolarConverter.JSWeb.Controllers
             var accessToken = new OAuthTokenCredential(config).GetAccessToken();
             var apiContext = new APIContext(accessToken);
             _payPalService = new PayPalService(apiContext);
+            _dropboxService = new DropboxService();
+            _stravaUrl = ConfigurationManager.AppSettings["StravaUrl"];
+            _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
+            _runkeeperUrl = ConfigurationManager.AppSettings["RunkeeperUrl"];
+            _runkeeperClientId = ConfigurationManager.AppSettings["RunkeeperClientId"];
         }
 
         public ApplicationUserManager UserManager
@@ -129,7 +149,66 @@ namespace PolarConverter.JSWeb.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult RegisterWithStrava()
+        {
+            string returnUrl = Url.Action("StravaResult", "Account", null, null, Request.Url.Host);
+            const string action = "/oauth/authorize";
+            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", _stravaUrl, action, _stravaClientId, "code", returnUrl, "write", User.Identity.Name, "auto");
 
+            return Redirect(uri);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> StravaResult(string state, string code, string error = "")
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+                const string action = "/oauth/token";
+                var clientSecret = ConfigurationManager.AppSettings["StravaClientSecret"];
+                using (var client = new HttpClient { BaseAddress = new Uri(_stravaUrl) })
+                {
+                    var content = new Dictionary<string, string> {
+                        { "client_id", _stravaClientId},
+                        { "client_secret", clientSecret},
+                        { "code", code}
+                    };
+                    var stravaResult = await client.PostAsJsonAsync(action, content);
+                    var responseContent = await stravaResult.Content.ReadAsStringAsync();
+                    var athleteResult = JsonConvert.DeserializeObject<Rootobject>(responseContent);
+
+
+                    SaveTokenForUser(athleteResult.access_token, ProviderType.Strava);
+
+                }
+            }
+            return RedirectToAction("UserProfile", "Home");
+        }
+
+        private void SaveTokenForUser(string accessToken, ProviderType providerType)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var userId = User.Identity.GetUserId();
+                var existingToken =
+                    db.OauthTokens.FirstOrDefault(
+                        oa => oa.ProviderType == providerType && oa.UserId == userId);
+                if (existingToken == null)
+                {
+                    db.OauthTokens.Add(new OauthToken
+                    {
+                        ProviderType = providerType,
+                        UserId = userId,
+                        Token = accessToken
+                    });
+                }
+                else
+                {
+                    existingToken.Token = accessToken;
+                }
+                db.SaveChanges();
+            }
+        }
         //
         // GET: /Account/Register
         [AllowAnonymous]

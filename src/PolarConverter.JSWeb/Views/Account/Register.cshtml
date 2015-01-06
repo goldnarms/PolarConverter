@@ -30,7 +30,7 @@
         @Html.AntiForgeryToken()
         <div id="socialLoginList">
             <p>
-                @Html.ActionLink("Strava", "ConnectToStrava", "Services", null, new { @class = "btn btn-provider btn-strava", title = "Log in using your Strava account" })
+                @Html.ActionLink("Strava", "RegisterWithStrava", null, new { @class = "btn btn-provider btn-strava", title = "Log in using your Strava account" })
                 @Html.ActionLink("Runkeeper", "RegisterRunkeeper", null, new { @class = "btn btn-provider btn-runkeeper", title = "Log in using your Runkeeper account" })
                 <button type="submit" class="btn btn-provider btn-facebook" id="Facebook" name="provider" value="Facebook" title="Log in using your Facebook account">Facebook</button>
                 <button type="submit" class="btn btn-provider btn-twitter" id="Twitter" name="provider" value="Twitter" title="Log in using your Twitter account">Twitter</button>

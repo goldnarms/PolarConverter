@@ -20,16 +20,20 @@ namespace PolarConverter.JSWeb.Controllers
     [EnableCors(origins: "https://www.strava.com", headers: "*", methods: "*")]
     public class ServicesController : Controller
     {
-        private const string StravaUrl = "https://www.strava.com";
-        private const string StravaClientId = "2995";
-        private const string RunkeeperUrl = "https://runkeeper.com";
-        private const string RunkeeperClientId = "aa628d46ca704d69964f19c993a25207";
         private AccessTokenManager _tokenManager;
         private DropboxService _dropboxService;
+        private string _stravaUrl;
+        private string _stravaClientId;
+        private string _runkeeperUrl;
+        private string _runkeeperClientId;
 
         public ServicesController()
         {
             _dropboxService = new DropboxService();
+            _stravaUrl = ConfigurationManager.AppSettings["StravaUrl"];
+            _stravaClientId = ConfigurationManager.AppSettings["StravaClientId"];
+            _runkeeperUrl = ConfigurationManager.AppSettings["RunkeeperUrl"];
+            _runkeeperClientId = ConfigurationManager.AppSettings["RunkeeperClientId"];
         }
 
         [System.Web.Mvc.HttpPost]
@@ -37,7 +41,7 @@ namespace PolarConverter.JSWeb.Controllers
         {
             string returnUrl = Url.Action("ExternalLoginResult", "Services", null, null, Request.Url.Host);
             const string action = "/oauth/authorize";
-            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", StravaUrl, action, StravaClientId, "code", returnUrl, "write", User.Identity.Name, "auto");
+            var uri = string.Format("{0}{1}?client_id={2}&response_type={3}&redirect_uri={4}&scope={5}&state={6}&approval_prompt={7}", _stravaUrl, action, _stravaClientId, "code", returnUrl, "write", User.Identity.Name, "auto");
 
             return Redirect(uri);
         }
@@ -49,10 +53,10 @@ namespace PolarConverter.JSWeb.Controllers
             {
                 const string action = "/oauth/token";
                 var clientSecret = ConfigurationManager.AppSettings["StravaClientSecret"];
-                using (var client = new HttpClient { BaseAddress = new Uri(StravaUrl) })
+                using (var client = new HttpClient { BaseAddress = new Uri(_stravaUrl) })
                 {
                     var content = new Dictionary<string, string> {
-                        { "client_id", StravaClientId},
+                        { "client_id", _stravaClientId},
                         { "client_secret", clientSecret},
                         { "code", code}
                     };
@@ -72,7 +76,7 @@ namespace PolarConverter.JSWeb.Controllers
         {
             string returnUrl = Url.Action("RunkeeperSuccess", "Services", null, null, Request.Url.Host);
             const string action = "/apps/authorize";
-            var uri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", RunkeeperUrl, action, RunkeeperClientId, returnUrl);
+            var uri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", _runkeeperUrl, action, _runkeeperClientId, returnUrl);
 
             return Redirect(uri);
         }
@@ -83,17 +87,17 @@ namespace PolarConverter.JSWeb.Controllers
             {
                 string returnUrl = Url.Action("RunkeeperSuccess", "Services", null, null, Request.Url.Host);
                 const string authorizeAction = "/apps/authorize";
-                var redirectUri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", RunkeeperUrl, authorizeAction, RunkeeperClientId, returnUrl);
+                var redirectUri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", _runkeeperUrl, authorizeAction, _runkeeperClientId, returnUrl);
 
                 const string action = "/apps/token";
                 var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
-                using (var client = new HttpClient { BaseAddress = new Uri(RunkeeperUrl) })
+                using (var client = new HttpClient { BaseAddress = new Uri(_runkeeperUrl) })
                 {
                     var postData = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("grant_type", "authorization_code"),
                     new KeyValuePair<string, string>("code", code),
-                    new KeyValuePair<string, string>("client_id", RunkeeperClientId),
+                    new KeyValuePair<string, string>("client_id", _runkeeperClientId),
                     new KeyValuePair<string, string>("client_secret", clientSecret),
                     new KeyValuePair<string, string>("redirect_uri", returnUrl)
                 };
