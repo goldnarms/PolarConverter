@@ -17,6 +17,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using PolarConverter.DAL.Models;
+using HealthGraphNet;
 
 namespace PolarConverter.JSWeb.Controllers
 {
@@ -192,6 +193,87 @@ namespace PolarConverter.JSWeb.Controllers
                 }
             }
             return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult LoginRunkeeper() {
+            string returnUrl = Url.Action("RunkeeperSuccess", "Account", null, null, Request.Url.Host);
+            const string action = "/apps/authorize";
+            var uri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", _runkeeperUrl, action, _runkeeperClientId, returnUrl);
+
+            return Redirect(uri);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> RunkeeperSuccess(string code, string error)
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+                string returnUrl = Url.Action("RunkeeperSuccess", "Account", null, null, Request.Url.Host);
+                const string authorizeAction = "/apps/authorize";
+                var redirectUri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", _runkeeperUrl, authorizeAction, _runkeeperClientId, returnUrl);
+
+                const string action = "/apps/token";
+                var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
+                using (var client = new HttpClient { BaseAddress = new Uri(_runkeeperUrl) })
+                {
+                    var postData = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                    new KeyValuePair<string, string>("code", code),
+                    new KeyValuePair<string, string>("client_id", _runkeeperClientId),
+                    new KeyValuePair<string, string>("client_secret", clientSecret),
+                    new KeyValuePair<string, string>("redirect_uri", returnUrl)
+                };
+                    var formContent = new FormUrlEncodedContent(postData);
+
+                    var response = await client.PostAsync("https://runkeeper.com/apps/token", formContent);
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<RunkeeperResult>(content);
+                    if (result.access_token != null)
+                    {
+                        //SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+
+                        var tokenManager = new AccessTokenManager(_runkeeperClientId, clientSecret, returnUrl, result.access_token);
+                        var userRequest = new UsersEndpoint(tokenManager);
+                        var user = userRequest.GetUser();
+                        var weight = user.Weight;
+
+                        var profileRequest = new ProfileEndpoint(tokenManager, user);
+                        var profile = profileRequest.GetProfile();
+                        var name = !string.IsNullOrEmpty(profile.Name) ? profile.Name : "N/A";
+                        var gender = !string.IsNullOrEmpty(profile.Gender) ? profile.Gender : "N/A";
+                        var birthDate = profile.Birthday.HasValue ? profile.Birthday.Value.ToShortDateString() : "N/A";
+
+                    }
+                }
+            }
+            return RedirectToAction("UserProfile", "Home");
+        }
+
+        private void SaveTokenForUser(string accessToken, ProviderType providerType)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var userId = User.Identity.GetUserId();
+                var existingToken =
+                    db.OauthTokens.FirstOrDefault(
+                        oa => oa.ProviderType == providerType && oa.UserId == userId);
+                if (existingToken == null)
+                {
+                    db.OauthTokens.Add(new OauthToken
+                    {
+                        ProviderType = providerType,
+                        UserId = userId,
+                        Token = accessToken
+                    });
+                }
+                else
+                {
+                    existingToken.Token = accessToken;
+                }
+                db.SaveChanges();
+            }
         }
 
         private async Task<ActionResult> CreateUser(Rootobject athleteInfo)
