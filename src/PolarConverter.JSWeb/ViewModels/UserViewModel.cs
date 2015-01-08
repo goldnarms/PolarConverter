@@ -7,7 +7,8 @@ namespace PolarConverter.JSWeb.ViewModels
 {
     public class UserViewModel
     {
-        public double Weight { get; set; }
+        public string Email { get; set; }
+        public Nullable<double> Weight { get; set; }
         public bool PreferKg { get; set; }
         public bool IsMale { get; set; }
         public Nullable<DateTime> BirthDate { get; set; }

@@ -69,6 +69,7 @@ namespace PolarConverter.JSWeb.Controllers
             var today = DateTime.Today;
             return new UserViewModel
             {
+                Email = applicationUser.Email,
                 BirthDate = applicationUser.BirthDate,
                 IsMale = applicationUser.IsMale,
                 PreferKg = applicationUser.PreferKg,

@@ -187,7 +187,14 @@ namespace PolarConverter.JSWeb.Controllers
                         }
                         else
                         {
-                            return await CreateUser(athleteResult);
+                            var user = new ApplicationUser
+                            {
+                                Email = athleteResult.athlete.email,
+                                UserName = athleteResult.athlete.email,
+                                PreferKg = athleteResult.athlete.measurement_preference == "meters",
+                                IsMale = athleteResult.athlete.sex == null || (string)athleteResult.athlete.sex == "M"
+                            };
+                            return await CreateUser(user, athleteResult.access_token, ProviderType.Strava);
                         }
                     }
                 }
@@ -236,11 +243,24 @@ namespace PolarConverter.JSWeb.Controllers
 
                         var tokenManager = new AccessTokenManager(_runkeeperClientId, clientSecret, returnUrl, result.access_token);
                         var userRequest = new UsersEndpoint(tokenManager);
-                        var user = userRequest.GetUser();
-                        var weight = user.Weight;
-
-                        var profileRequest = new ProfileEndpoint(tokenManager, user);
+                        var userResult = userRequest.GetUser();
+                        var profileRequest = new ProfileEndpoint(tokenManager, userResult);
                         var profile = profileRequest.GetProfile();
+
+                        var settingsRequest = new SettingsEndpoint(tokenManager, userResult);
+                        var settings = settingsRequest.GetSettings();
+                        var weightRequest = new WeightEndpoint(tokenManager, userResult);
+                        var weightFeed = weightRequest.GetFeedPage(pageIndex: 1, pageSize: 1);
+                        var weight = weightFeed.Items.Count == 1 ? weightFeed.Items[0].Weight : null;
+
+                        var user = new ApplicationUser
+                        {
+                            PreferKg = settings.WeightUnits == "kg",
+                            IsMale = profile.Gender == null || profile.Gender == "M",
+                            BirthDate = profile.Birthday,
+                            Weight = weight
+                        };
+                        return await CreateUser(user, result.access_token, ProviderType.Runkeeper);
                         var name = !string.IsNullOrEmpty(profile.Name) ? profile.Name : "N/A";
                         var gender = !string.IsNullOrEmpty(profile.Gender) ? profile.Gender : "N/A";
                         var birthDate = profile.Birthday.HasValue ? profile.Birthday.Value.ToShortDateString() : "N/A";
@@ -276,19 +296,12 @@ namespace PolarConverter.JSWeb.Controllers
             }
         }
 
-        private async Task<ActionResult> CreateUser(Rootobject athleteInfo)
+        private async Task<ActionResult> CreateUser(ApplicationUser user, string token, ProviderType providerType)
         {
-                var user = new ApplicationUser
-                {
-                    Email = athleteInfo.athlete.email,
-                    UserName = athleteInfo.athlete.email,
-                    PreferKg = athleteInfo.athlete.measurement_preference == "meters",
-                    IsMale = athleteInfo.athlete.sex == null || (string)athleteInfo.athlete.sex == "M"
-                };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    SaveTokenForUser(athleteInfo.access_token, ProviderType.Strava, user.Id);
+                    SaveTokenForUser(token, providerType, user.Id);
                     await SignInAsync(user, isPersistent: false);
                     var agreementUrl = _payPalService.SetupSubscription();
                     return Redirect(agreementUrl.First());

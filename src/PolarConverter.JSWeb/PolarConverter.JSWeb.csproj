@@ -370,6 +370,10 @@
     <Compile Include="Migrations\201501062224392_BD.Designer.cs">
       <DependentUpon>201501062224392_BD.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501081226119_WeightNull.cs" />
+    <Compile Include="Migrations\201501081226119_WeightNull.Designer.cs">
+      <DependentUpon>201501081226119_WeightNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\RunkeeperResult.cs" />
     <Compile Include="Models\Subscription.cs" />
@@ -1193,6 +1197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501062224392_BD.resx">
       <DependentUpon>201501062224392_BD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501081226119_WeightNull.resx">
+      <DependentUpon>201501081226119_WeightNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
