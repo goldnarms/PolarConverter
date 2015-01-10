@@ -1,5 +1,4 @@
 ﻿@using Microsoft.Owin.Security
-@model PolarConverter.JSWeb.ViewModels.RegisterViewModel
 @{
     ViewBag.Title = "Go Pro";
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
@@ -7,110 +6,30 @@
 
 <h2>@ViewBag.Title!</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
+<h4>By going Pro, you will have access to these features:</h4>
+<ul>
+    <li>All your converted files are stored for easy retrieval.</li>
+    <li>You can upload files directly from your Dropbox account.</li>
+    <li>Easy export to Strava.</li>
+    <li>Easy export to Runkeeper.</li>
+</ul>
+<small>More features will be added over time, feel free to send suggestions to <a href="mailto:polarconverter@gmail.com">me.</a></small><br />
+<small>Support for export to Endomondo and Garmin Connect are not available at this time due to lack of open API (Endomondo) and high cost for API access (Garmin Connect).</small>
+<hr />
+<h3>Register with external providers:</h3>
+    @using (Html.BeginForm("ExternalLogin", "Account"))
+    {
     @Html.AntiForgeryToken()
-    <h4>By going Pro, you will have access to these features:</h4>
-    <ul>
-        <li>All your converted files are stored for easy retrieval.</li>
-        <li>You can upload files directly from your Dropbox account.</li>
-        <li>Easy export to Strava.</li>
-        <li>Easy export to Runkeeper.</li>
-    </ul>
-    <small>More features will be added over time, feel free to send suggestions to <a href="mailto:polarconverter@gmail.com">me.</a></small><br />
-    <small>Support for export to Endomondo and Garmin Connect are not available at this time due to lack of open API (Endomondo) and high cost for API access (Garmin Connect).</small>
-    <hr />
-    @Html.ValidationSummary()
-    //PART 1
-
-    <h3>Register with external providers:</h3>
-        string action = "ExternalLogin";
-        using (Html.BeginForm(action, "Account"))
-        {
-        @Html.AntiForgeryToken()
-        <div id="socialLoginList">
-            <p>
-                @Html.ActionLink("Strava", "RegisterWithStrava", null, new { @class = "btn btn-provider btn-strava", title = "Log in using your Strava account" })
-                @Html.ActionLink("Runkeeper", "RegisterRunkeeper", null, new { @class = "btn btn-provider btn-runkeeper", title = "Log in using your Runkeeper account" })
-                <button type="submit" class="btn btn-provider btn-facebook" id="Facebook" name="provider" value="Facebook" title="Log in using your Facebook account">Facebook</button>
-                <button type="submit" class="btn btn-provider btn-twitter" id="Twitter" name="provider" value="Twitter" title="Log in using your Twitter account">Twitter</button>
-                <button type="submit" class="btn btn-provider btn-google" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
-            </p>
-        </div>
-        }
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
+    <div id="socialLoginList">
+        <p>
+            @Html.ActionLink("Strava", "RegisterWithStrava", null, new { @class = "btn btn-provider btn-strava", title = "Log in using your Strava account" })
+            @Html.ActionLink("Runkeeper", "LoginRunkeeper", null, new { @class = "btn btn-provider btn-runkeeper", title = "Log in using your Runkeeper account" })
+            <button type="submit" class="btn btn-provider btn-facebook" id="Facebook" name="provider" value="Facebook" title="Log in using your Facebook account">Facebook</button>
+            <button type="submit" class="btn btn-provider btn-twitter" id="Twitter" name="provider" value="Twitter" title="Log in using your Twitter account">Twitter</button>
+            <button type="submit" class="btn btn-provider btn-google" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
+        </p>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <a class="btn btn-default">Next</a>
-            </div>
-        </div>*@
-    //PART 2
-    <div class="form-group">
-        @Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control date" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            <label>
-                @Html.RadioButtonFor(m => m.PreferKg, "true") Kg
-            </label>
-            <label>
-                @Html.RadioButtonFor(m => m.PreferKg, "false") Lbs
-            </label>
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            <label>
-                @Html.RadioButtonFor(m => m.IsMale, "true") Male
-                </label>
-            <label>
-                @Html.RadioButtonFor(m => m.IsMale, "false") Female
-                </label>
-</div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register (1$/month)" />
-        </div>
-    </div>
-}
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript" language="javascript">
-        $(document).ready(function () {
-            $(".date").datepicker({
-                format: 'dd/mm/yyyy',
-            });
-        });
-    </script>
-}
+    }
+<hr />
+<h3>Or register with a local account:</h3>
+    @Html.ActionLink("Register", "RegisterUser", new { providerType = PolarConverter.DAL.Models.ProviderType.Local }, new { @class = "btn btn-primary", title = "Register with a local account" })

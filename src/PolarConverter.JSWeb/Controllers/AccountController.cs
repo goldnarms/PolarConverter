@@ -187,14 +187,14 @@ namespace PolarConverter.JSWeb.Controllers
                         }
                         else
                         {
-                            var user = new ApplicationUser
+                            TempData["AccessToken"] = athleteResult.access_token;
+                            return RedirectToAction("RegisterUser", new
                             {
-                                Email = athleteResult.athlete.email,
-                                UserName = athleteResult.athlete.email,
-                                PreferKg = athleteResult.athlete.measurement_preference == "meters",
-                                IsMale = athleteResult.athlete.sex == null || (string)athleteResult.athlete.sex == "M"
-                            };
-                            return await CreateUser(user, athleteResult.access_token, ProviderType.Strava);
+                                providerType = ProviderType.Runkeeper,
+                                preferKg = athleteResult.athlete.measurement_preference == "meters",
+                                isMale = athleteResult.athlete.sex == null || (string)athleteResult.athlete.sex == "M",
+                                email = athleteResult.athlete.email,
+                            });
                         }
                     }
                 }
@@ -220,7 +220,6 @@ namespace PolarConverter.JSWeb.Controllers
                 const string authorizeAction = "/apps/authorize";
                 var redirectUri = string.Format("{0}{1}?client_id={2}&response_type=code&redirect_uri={3}", _runkeeperUrl, authorizeAction, _runkeeperClientId, returnUrl);
 
-                const string action = "/apps/token";
                 var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
                 using (var client = new HttpClient { BaseAddress = new Uri(_runkeeperUrl) })
                 {
@@ -239,36 +238,88 @@ namespace PolarConverter.JSWeb.Controllers
                     var result = JsonConvert.DeserializeObject<RunkeeperResult>(content);
                     if (result.access_token != null)
                     {
-                        //SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
-
-                        var tokenManager = new AccessTokenManager(_runkeeperClientId, clientSecret, returnUrl, result.access_token);
-                        var userRequest = new UsersEndpoint(tokenManager);
-                        var userResult = userRequest.GetUser();
-                        var profileRequest = new ProfileEndpoint(tokenManager, userResult);
-                        var profile = profileRequest.GetProfile();
-
-                        var settingsRequest = new SettingsEndpoint(tokenManager, userResult);
-                        var settings = settingsRequest.GetSettings();
-                        var weightRequest = new WeightEndpoint(tokenManager, userResult);
-                        var weightFeed = weightRequest.GetFeedPage(pageIndex: 1, pageSize: 1);
-                        var weight = weightFeed.Items.Count == 1 ? weightFeed.Items[0].Weight : null;
-
-                        var user = new ApplicationUser
+                        using (var db = new ApplicationDbContext())
                         {
-                            PreferKg = settings.WeightUnits == "kg",
-                            IsMale = profile.Gender == null || profile.Gender == "M",
-                            BirthDate = profile.Birthday,
-                            Weight = weight
-                        };
-                        return await CreateUser(user, result.access_token, ProviderType.Runkeeper);
-                        var name = !string.IsNullOrEmpty(profile.Name) ? profile.Name : "N/A";
-                        var gender = !string.IsNullOrEmpty(profile.Gender) ? profile.Gender : "N/A";
-                        var birthDate = profile.Birthday.HasValue ? profile.Birthday.Value.ToShortDateString() : "N/A";
+                            var dbOathEntry = db.OauthTokens.Include("User").SingleOrDefault(oa => oa.Token == result.access_token && oa.ProviderType == ProviderType.Runkeeper);
+                            if (dbOathEntry != null)
+                            {
+                                await SignInAsync(dbOathEntry.User, false);
+                                return RedirectToAction("UserProfile", "Home");
+                            }
+                            else
+                            {
+                                var tokenManager = new AccessTokenManager(_runkeeperClientId, clientSecret, returnUrl, result.access_token);
+                                var userRequest = new UsersEndpoint(tokenManager);
+                                var userResult = userRequest.GetUser();
+                                var profileRequest = new ProfileEndpoint(tokenManager, userResult);
+                                var profile = profileRequest.GetProfile();
 
+                                var settingsRequest = new SettingsEndpoint(tokenManager, userResult);
+                                var settings = settingsRequest.GetSettings();
+                                var weightRequest = new WeightEndpoint(tokenManager, userResult);
+                                var weightFeed = weightRequest.GetFeedPage();
+                                var weight = weightFeed.Items.Count > 0 ? weightFeed.Items.First().Weight : null;
+                                TempData["AccessToken"] = result.access_token;
+                                return RedirectToAction("RegisterUser", new
+                                {
+                                    providerType = ProviderType.Runkeeper,
+                                    weight = weight.HasValue ? Math.Round(weight.Value, 1) : 0,
+                                    preferKg = settings.WeightUnits == "kg",
+                                    isMale = profile.Gender == null || profile.Gender == "M",
+                                    birthdate = profile.Birthday.HasValue ? profile.Birthday.Value.ToString("dd/MM/yyyy") : ""
+                                });
+                            }
+                        }
                     }
                 }
             }
             return RedirectToAction("UserProfile", "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult RegisterUser(ProviderType providerType, double? weight=null, bool? preferKg=null, bool? isMale=null, string email = "", string birthdate = "")
+        {
+            object accessToken;
+            if(!TempData.TryGetValue("AccessToken", out accessToken))
+            {
+                accessToken = null;
+            }
+            var model = new RegisterViewModel
+            {
+                Weight = weight.HasValue ? Math.Round(weight.Value, 1) : 0,
+                Email = email,
+                BirthDate = birthdate.Replace(".", "/"),
+                PreferKg = preferKg ?? true,
+                IsMale = isMale ?? true,
+                AccessToken = accessToken != null ? accessToken.ToString() : "",
+                ProviderType = providerType
+            };
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> RegisterUser(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DateTime bd;
+                DateTime.TryParse(model.BirthDate, out bd);
+                var user = new ApplicationUser
+                {
+                    PreferKg = model.PreferKg,
+                    IsMale = model.IsMale,
+                    BirthDate = bd,
+                    Weight = model.Weight,
+                    Email = model.Email,
+                    UserName = model.Email
+                };
+                return await CreateUser(user, model.AccessToken, model.ProviderType);
+            }
+
+            return View(model);
         }
 
         private void SaveTokenForUser(string accessToken, ProviderType providerType)
@@ -301,7 +352,10 @@ namespace PolarConverter.JSWeb.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    SaveTokenForUser(token, providerType, user.Id);
+                    if(providerType != ProviderType.Local && !string.IsNullOrEmpty(token))
+                    {
+                        SaveTokenForUser(token, providerType, user.Id);
+                    }
                     await SignInAsync(user, isPersistent: false);
                     var agreementUrl = _payPalService.SetupSubscription();
                     return Redirect(agreementUrl.First());
@@ -309,7 +363,16 @@ namespace PolarConverter.JSWeb.Controllers
                 else
                 {
                     AddErrors(result);
-                    return View();
+                    return View(new RegisterViewModel
+                    {
+                        ProviderType = providerType,
+                        AccessToken = token,
+                        BirthDate = user.BirthDate.ToString(),
+                        Email = user.Email,
+                        IsMale = user.IsMale,
+                        PreferKg = user.PreferKg,
+                        Weight = user.Weight.HasValue ? user.Weight.Value : 0
+                    });
                 }
         }
 
@@ -563,9 +626,27 @@ namespace PolarConverter.JSWeb.Controllers
             else
             {
                 // If the user does not have an account, then prompt the user to create an account
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
+                var routeValues = new object { };
+                if(loginInfo.Login.LoginProvider == "Facebook")
+                {
+                    bool? isMale = loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("gender")) != null ? loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("gender")).Value == "male" : (bool?)null;
+                    string email = loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("emailaddress")) != null ? loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("emailaddress")).Value : "";
+                    string birthdate = loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("dateofbirth")) != null ? loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("dateofbirth")).Value : ""; // in mm/dd/yyyy
+                    var formattedBd = string.Format("{0}/{1}/{2}", birthdate.Substring(3, 2), birthdate.Substring(0, 2), birthdate.Substring(6, 4)); // in dd/mm/yyyy
+                    routeValues = new { providerType = ProviderType.Facebook, isMale = isMale, email = email, birthdate = formattedBd };
+                    TempData["AccessToken"] = loginInfo.Login.ProviderKey;
+                }
+                else if(loginInfo.Login.LoginProvider == "Twitter")
+                {
+                    string email = loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("emailaddress")) != null ? loginInfo.ExternalIdentity.Claims.SingleOrDefault(ei => ei.Type.Contains("emailaddress")).Value : "";
+                    routeValues = new { providerType = ProviderType.Twitter, email = email };
+                    TempData["AccessToken"] = loginInfo.Login.ProviderKey;
+                }
+                return RedirectToAction("RegisterUser", routeValues);
+
+                //ViewBag.ReturnUrl = returnUrl;
+                //ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
             }
         }
 

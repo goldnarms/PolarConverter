@@ -35,6 +35,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
                     double v02Max;
                     double weight;
                     string gpxVersion;
+                    
                     var extension = fileData.FileName.Substring(fileData.FileName.Length - 3, 3).ToLower();
                     FileHelper.CheckForData(fileData.InputStream, extension, out sport, out v02Max, out weight, out gpxVersion);
                     if (v02Max < 1)

@@ -14,7 +14,6 @@
 		email: string;
 	}
 	interface registerViewModel {
-		userName: string;
 		email: string;
 		password: string;
 		confirmPassword: string;
@@ -25,6 +24,8 @@
 		isMale: boolean;
 		timeZoneOffset: number;
 		birthDate: string;
+		accessToken: string;
+		providerType: any;
 	}
 	interface sendCodeViewModel {
 		selectedProvider: string;

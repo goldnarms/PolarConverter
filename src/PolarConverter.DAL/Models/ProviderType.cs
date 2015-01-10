@@ -10,6 +10,9 @@ namespace PolarConverter.DAL.Models
     {
         Strava,
         Runkeeper,
-        Dropbox
+        Dropbox,
+        Local,
+        Facebook,
+        Twitter
     }
 }

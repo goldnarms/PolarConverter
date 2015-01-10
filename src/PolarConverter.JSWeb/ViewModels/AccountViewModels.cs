@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Foolproof;
+using PolarConverter.DAL.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PolarConverter.JSWeb.ViewModels
@@ -48,14 +50,11 @@ namespace PolarConverter.JSWeb.ViewModels
 
     public class RegisterViewModel
     {
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
-
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [RequiredIf("ProviderType", Operator.EqualTo, ProviderType.Local)]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -95,6 +94,10 @@ namespace PolarConverter.JSWeb.ViewModels
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public string BirthDate { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public ProviderType ProviderType { get; set; }
     }
 
     public class SendCodeViewModel

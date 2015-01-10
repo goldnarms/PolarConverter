@@ -9,6 +9,9 @@ using Owin;
 using PolarConverter.JSWeb.Models;
 using PolarConverter.JSWeb.Providers;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Facebook;
+using System.Security.Claims;
+using System.Configuration;
 
 namespace PolarConverter.JSWeb
 {
@@ -80,15 +83,35 @@ namespace PolarConverter.JSWeb
                 consumerKey: "f71KbP2XU14rVeH2h5NxDvqLK",
                 consumerSecret: "8kvkrx3KxZoAynMMcjor76hxEuxGiEmjHTvYNDJCEFExFt2ZGh");
 
-            app.UseFacebookAuthentication(
-                appId: "128362510636193",
-                appSecret: "14b9e0999d5338185d26551cf09d674f");
+            app.UseFacebookAuthentication(SetupFacebookAuth());
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = "323230180928-b3nogpucorjpd68qnrbr67nd150flbh9.apps.googleusercontent.com",
                 ClientSecret = "9x6wjqPHYz7LJvFMaMVsPkHN "
             });
+        }
+
+        private FacebookAuthenticationOptions SetupFacebookAuth()
+        {
+            var options = new FacebookAuthenticationOptions
+            {
+                AppId = ConfigurationManager.AppSettings["FacebookId"],
+                AppSecret = ConfigurationManager.AppSettings["FacebookSecret"],
+                AuthenticationType = "Facebook",
+                SignInAsAuthenticationType = "ExternalCookie",
+                Provider = new FacebookAuthenticationProvider
+                {
+                    OnAuthenticated = async ctx =>
+                    {
+                        ctx.Identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, ctx.User["birthday"].ToString()));
+                        ctx.Identity.AddClaim(new Claim(ClaimTypes.Gender, ctx.User["gender"].ToString()));
+                    }
+                }
+            };
+
+            options.Scope.Add("user_birthday");
+            return options;
         }
     }
 }
