@@ -80,8 +80,9 @@ namespace PolarConverter.JSWeb
             //    clientSecret: "");
 
             app.UseTwitterAuthentication(
-                consumerKey: "f71KbP2XU14rVeH2h5NxDvqLK",
-                consumerSecret: "8kvkrx3KxZoAynMMcjor76hxEuxGiEmjHTvYNDJCEFExFt2ZGh");
+                consumerKey: ConfigurationManager.AppSettings["TwitterKey"],
+                consumerSecret: ConfigurationManager.AppSettings["TwitterSecret"]
+            );
 
             app.UseFacebookAuthentication(SetupFacebookAuth());
 

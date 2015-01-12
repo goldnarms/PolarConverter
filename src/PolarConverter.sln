@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "Polar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Test", "PolarConverter.Test\PolarConverter.Test.csproj", "{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.MVC", "PolarConverter.MVC\PolarConverter.MVC.csproj", "{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{95B62956-C539-4DD6-864C-72B0F5210887}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.exe = .nuget\NuGet.exe
@@ -16,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{95B629
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Win", "PolarConverter.Win\PolarConverter.Win.csproj", "{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Web", "PolarConverter.Web\PolarConverter.Web.csproj", "{4020A9EF-5541-4E8B-8E18-245B98C40236}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSWeb", "PolarConverter.JSWeb\PolarConverter.JSWeb.csproj", "{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}"
 EndProject
@@ -70,17 +66,6 @@ Global
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Release|x64.ActiveCfg = Release|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Release|x86.Build.0 = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Debug|x86.Build.0 = Debug|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|ARM.ActiveCfg = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|x64.ActiveCfg = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|x86.ActiveCfg = Release|Any CPU
-		{CC943D5E-ED2B-49A6-B8B9-96DF66BDFB9C}.Release|x86.Build.0 = Release|Any CPU
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.ActiveCfg = Debug|ARM
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.Build.0 = Debug|ARM
@@ -101,15 +86,6 @@ Global
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.Build.0 = Release|x64
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.Deploy.0 = Release|x64
 		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x86.ActiveCfg = Release|x86
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|ARM.ActiveCfg = Release|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|x64.ActiveCfg = Release|Any CPU
-		{4020A9EF-5541-4E8B-8E18-245B98C40236}.Release|x86.ActiveCfg = Release|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|ARM.ActiveCfg = Debug|Any CPU
