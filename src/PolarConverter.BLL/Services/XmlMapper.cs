@@ -53,7 +53,7 @@ namespace PolarConverter.BLL.Services
                     var activity = ActivityFactory.CreateActivity(xmlFile.Sport, model.Notes, startTime);
 
                     var type = calendaritem.GetType();
-                    switch (type.FullName)
+                    switch (type.Name)
                     {
                         case "exercisedata":
                             {

@@ -19,6 +19,9 @@
     <meta name="description" content="Convert your Polar files to Endomondo and Strava compatible files." />
 </head>
 <body data-ng-app="polarApp">
+    @{
+        var showUpdate = false;
+    }
     @Html.Partial("Plugins/_FacebookSdk")
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -44,7 +47,10 @@
                     <li>@Html.ActionLink("F.A.Q.", "Faq", "Home")</li>
                     <li>@Html.ActionLink("Changelog", "Changelog", "Home")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                @if (showUpdate)
+                {
+                    @Html.Partial("_LoginPartial")
+                }
             </div>
         </div>
     </div>

@@ -70,12 +70,6 @@
                     <fieldset>
                         <legend>User profile</legend>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            </div>
-                        </div>
-                           <div class="form-group">
                             @Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
                                 @Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
@@ -88,24 +82,43 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
+                            @Html.LabelFor(m => m.TimeZoneOffset, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
-                                <label>
-                                    @Html.RadioButtonFor(m => m.PreferKg, "true") Kg
-                                </label>
-                                <label>
-                                    @Html.RadioButtonFor(m => m.PreferKg, "false") Lbs
-                                </label>
+                                @Html.DropDownListFor(m => m.TimeZoneOffset, ViewBag.TimeZones)
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
+                            @Html.HiddenFor(m => m.IsMale)
                             <div class="col-md-10">
                                 <label>
-                                    @Html.RadioButtonFor(m => m.IsMale, "true") Male
+                                    @Html.RadioButtonFor(m => m.IsMale, "true", Model.IsMale ? new { Checked = "checked" } : null) Male
                                 </label>
                                 <label>
-                                    @Html.RadioButtonFor(m => m.IsMale, "false") Female
+                                    @Html.RadioButtonFor(m => m.IsMale, "false", !Model.IsMale ? new { Checked = "checked" } : null) Female
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
+                            @Html.HiddenFor(m => m.PreferKg)
+                            <div class="col-md-10">
+                                <label>
+                                    @Html.RadioButtonFor(m => m.PreferKg, "true", Model.PreferKg ? new { Checked = "checked" } : null) Kg
+                                </label>
+                                <label>
+                                    @Html.RadioButtonFor(m => m.PreferKg, "false", !Model.PreferKg ? new { Checked = "checked" } : null) Lbs
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ForceGarmin, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                <label>
+                                    @Html.RadioButtonFor(m => m.ForceGarmin, "true") Male
+                                </label>
+                                <label>
+                                    @Html.RadioButtonFor(m => m.ForceGarmin, "false") Female
                                 </label>
                             </div>
                         </div>

@@ -14,5 +14,9 @@ namespace PolarConverter.JSWeb.ViewModels
         public Nullable<DateTime> BirthDate { get; set; }
         public List<ProviderType> RegisteredProviders { get; set; }
         public Subscription ActiveSubscription { get; set; }
+
+        public double TimezoneOffset { get; set; }
+
+        public bool ForceGarmin { get; set; }
     }
 }

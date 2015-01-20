@@ -79,12 +79,12 @@ namespace PolarConverter.JSWeb
             //    clientId: "",
             //    clientSecret: "");
 
+            app.UseFacebookAuthentication(SetupFacebookAuth());
+
             app.UseTwitterAuthentication(
                 consumerKey: ConfigurationManager.AppSettings["TwitterKey"],
                 consumerSecret: ConfigurationManager.AppSettings["TwitterSecret"]
             );
-
-            app.UseFacebookAuthentication(SetupFacebookAuth());
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {

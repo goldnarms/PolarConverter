@@ -1,6 +1,7 @@
 ﻿@model PolarConverter.JSWeb.ViewModels.FrontPageModel
 @{
     ViewBag.Title = "PolarConverter";
+    var showUpdate = false;
 }
 <a id="top"></a>
 <div data-ng-controller="uploadCtrl as uc" data-ng-cloak="">
@@ -132,7 +133,6 @@
                             <div class="col-lg-10">
                                 <select data-ng-model="uc.selectedTimeZone" id="inputTimeZone" class="form-control" data-ng-options="tz.text for tz in uc.timeZones" required></select>
                             </div>
-
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="inputForceGarmin">
@@ -174,7 +174,7 @@
                                 <a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
                             </li>
                         </ul>
-                        @if (!Request.IsAuthenticated)
+                        @if (!Request.IsAuthenticated && showUpdate)
                         {
                             @Html.Partial("Plugins/_GoogleAdLeader")
                             <h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
