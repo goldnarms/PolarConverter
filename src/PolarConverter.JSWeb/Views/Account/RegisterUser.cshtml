@@ -39,6 +39,17 @@
         </div>
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <label>
+                @Html.RadioButtonFor(m => m.PreferKg, "true", Model.PreferKg ? new { Checked = "checked" } : null) Kg
+            </label>
+            <label>
+                @Html.RadioButtonFor(m => m.PreferKg, "false", !Model.PreferKg ? new { Checked = "checked" } : null) Lbs
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control date" })
@@ -52,25 +63,12 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
-        @Html.HiddenFor(m => m.IsMale)
         <div class="col-md-10">
             <label>
                 @Html.RadioButtonFor(m => m.IsMale, "true", Model.IsMale ? new { Checked = "checked" } : null) Male
             </label>
             <label>
                 @Html.RadioButtonFor(m => m.IsMale, "false", !Model.IsMale ? new { Checked = "checked" } : null) Female
-            </label>
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
-        @Html.HiddenFor(m => m.PreferKg)
-        <div class="col-md-10">
-            <label>
-                @Html.RadioButtonFor(m => m.PreferKg, "true", Model.PreferKg ? new { Checked = "checked" } : null) Kg
-            </label>
-            <label>
-                @Html.RadioButtonFor(m => m.PreferKg, "false", !Model.PreferKg ? new { Checked = "checked" } : null) Lbs
             </label>
         </div>
     </div>
