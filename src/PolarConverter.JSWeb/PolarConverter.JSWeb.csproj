@@ -337,6 +337,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helpers\OAuth.cs" />
     <Compile Include="Helpers\PaypalHelper.cs" />
+    <Compile Include="Helpers\TimeZoneHelper.cs" />
     <Compile Include="Migrations\201409141029536_user.cs" />
     <Compile Include="Migrations\201409141029536_user.Designer.cs">
       <DependentUpon>201409141029536_user.cs</DependentUpon>

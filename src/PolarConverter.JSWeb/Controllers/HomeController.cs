@@ -24,21 +24,25 @@ namespace PolarConverter.JSWeb.Controllers
                 //: AppDomain.CurrentDomain.BaseDirectory + ConfigurationManager.AppSettings["BlobPath"];
                 : "";
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             var hasDropbox = false;
+            UserViewModel user = null;
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Identity.GetUserId();
                 using (var context = new ApplicationDbContext())
                 {
-                    hasDropbox = context.OauthTokens.Any(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Dropbox);
+                    hasDropbox = await context.OauthTokens.AnyAsync(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Dropbox);
+                    var applicationUser = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                    user = applicationUser != null ? MapToViewModel(applicationUser) : null;
                 }
             }
                 var frontPageModel = new FrontPageModel
                 {
                     BlobPath = _blobPath,
-                    HasDropbox = hasDropbox
+                    HasDropbox = hasDropbox,
+                    User = user
                 };
             return View(frontPageModel);
         }
@@ -111,8 +115,8 @@ namespace PolarConverter.JSWeb.Controllers
                 Weight = applicationUser.Weight,
                 ForceGarmin = applicationUser.ForceGarmin,
                 TimezoneOffset = applicationUser.TimeZoneOffset,
-                RegisteredProviders = applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList(),
-                ActiveSubscription = applicationUser.Subscriptions.FirstOrDefault(s => s.Paid && s.StartTime <= today && s.EndTime >= today)
+                RegisteredProviders = applicationUser.OauthTokens != null ? applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList() : null,
+                ActiveSubscription = applicationUser.Subscriptions != null ? applicationUser.Subscriptions.FirstOrDefault(s => s.Paid && s.StartTime <= today && s.EndTime >= today) : null
             };
         }
 

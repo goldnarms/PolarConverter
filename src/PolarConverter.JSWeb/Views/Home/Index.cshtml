@@ -3,8 +3,14 @@
     ViewBag.Title = "PolarConverter";
     var showUpdate = false;
 }
+
 <a id="top"></a>
 <div data-ng-controller="uploadCtrl as uc" data-ng-cloak="">
+    @if (Model.User != null)
+    {
+        @Html.HiddenFor(m => m.User.Weight, new { data_ng_model = "uc.uploadViewModel.weight" })
+    }
+
     <div class="row">
         <div class="col-md-12">
             <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
