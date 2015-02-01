@@ -45,7 +45,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
         public async Task<IHttpActionResult> Convert(UploadViewModel uploadViewModel)
         {
             var result = _conversion.Convert(uploadViewModel);
-            if (!string.IsNullOrEmpty(uploadViewModel.Uid) && result.TcxReferences.Count > 0)
+            if (!string.IsNullOrEmpty(uploadViewModel.Uid) && result.TcxReferences != null && result.TcxReferences.Count > 0)
             {
                 using (var db = new ApplicationDbContext())
                 {
