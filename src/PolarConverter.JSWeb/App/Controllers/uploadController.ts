@@ -86,7 +86,7 @@ module PolarConverter {
             this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = <PolarConverter.UploadViewModel>{ polarFiles: [], forceGarmin: false, gender: "m",  };
+            
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -95,19 +95,6 @@ module PolarConverter {
                 dataType: "json"
             };
             this.loadingFiles = true;
-            //this.$http({ method: "jsonp", url: "http://ipinfo.io/?callback=callback"}).success((data, status, headers, config) => {
-            //    this.setWeightTypeBasedOnCountry(data.country);
-            //})
-            //.error((data, status, headers, config) => {
-            //    this.$log.error(status);
-            //});
-            $.get("http://ipinfo.io", (response) => {
-                this.setWeightTypeBasedOnCountry(response.country);
-                var loc = response.loc;
-                var lat = loc.substring(0, loc.indexOf(","));
-                var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
-                this.setTimeZoneOffsetBasedOnCountry(lat, lng);
-            }, "jsonp");
 
             if (this.initalized) {
                 this.$http.get(url)
@@ -122,6 +109,43 @@ module PolarConverter {
                     });
                 this.initalized = true;
             }
+
+			(<any>this.$scope).$safeApply(() => {
+				var birthdate = $("#uv_birthDate") ? moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss") : moment().subtract("years", 33);
+				console.log("Kg: " + $("#uv_preferKg").val());
+				console.log("Sex: " + $("#uv_isMale").val());
+				if ($("#uv_preferKg").val() === "False") {
+					console.log("Working");
+				} else {
+					console.log("Not Working");
+				}
+
+				this.uploadViewModel = <PolarConverter.UploadViewModel>{
+					polarFiles: [],
+					forceGarmin: $("#uv_forceGarmin") ? ($("#uv_forceGarmin").val() === "True" ? true : false) : false,
+					gender: $("#uv_isMale") ? ($("#uv_isMale").val() === "True" ? "M" : "F") : "M",
+					weight: $("#uv_weight") ? parseFloat($("#uv_weight").val()) : 0,
+					weightMode: $("#uv_preferKg") ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : "kg",
+					age: Math.floor(moment().diff(birthdate, 'years', true))
+				};
+				console.log("ViewModel: " + JSON.stringify(this.uploadViewModel));
+				if ($("#uv_timezoneOffset")) {
+					this.selectedTimeZone = _.find(this.timeZones,(tz: PolarConverter.TimeZone) => {
+						return tz.offset === parseFloat($("#uv_timezoneOffset").val());
+					});
+				} else {
+					$.get("http://ipinfo.io",(response) => {
+						if (!$("#uv_preferKg")) {
+							this.setWeightTypeBasedOnCountry(response.country);
+						}
+						var loc = response.loc;
+						var lat = loc.substring(0, loc.indexOf(","));
+						var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
+						this.setTimeZoneOffsetBasedOnCountry(lat, lng);
+					}, "jsonp");
+				}
+			});
+			
             this.common.loadingBar.complete();
         }
 
@@ -259,7 +283,6 @@ module PolarConverter {
                     this.selectedTimeZone = _.find(this.timeZones, (tz: PolarConverter.TimeZone) => {
                         return tz.offset === timeZoneOffsetInHours;
                     });
-                    this.$scope.$apply();
                 });
         }
 

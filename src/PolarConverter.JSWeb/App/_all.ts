@@ -11,6 +11,7 @@ declare var User: PolarConverter.User;
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../Scripts/typings/bootstrap/bootstrap.d.ts" />
 /// <reference path="../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../scripts/typings/moment/moment.d.ts" />
 
 /// <reference path="Enums/fileTypeEnum.ts" />
 /// <reference path="Enums/sportEnum.ts" />

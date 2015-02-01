@@ -9,5 +9,6 @@ module PolarConverter {
         timeZoneOffset?: number;
         forceGarmin: boolean;
         polarFiles: PolarConverter.PolarFile[];
+		age: number;
     }
 }

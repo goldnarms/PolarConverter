@@ -18,8 +18,10 @@ namespace PolarConverter.JSWeb
                         "~/bower_components/angular-local-storage/angular-local-storage.js",
                         "~/bower_components/angular-promise-tracker/promise-tracker.js",
                         "~/bower_components/angular-loading-bar/src/loading-bar.js",
-                        "~/bower_components/angular-scroll/angular-scroll.js"
-                        )
+                        "~/bower_components/angular-scroll/angular-scroll.js",
+						"~/bower_components/AngularJS-Scope.SafeApply/src/Scope.SafeApply.min.js",
+						"~/bower_components/moment/min/moment.min.js"
+						)
                         .IncludeDirectory("~/App/Controllers/", "*.js")
                         .IncludeDirectory("~/App/Directives/", "*.js")
                         .IncludeDirectory("~/App/Enums/", "*.js")

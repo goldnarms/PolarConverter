@@ -42,7 +42,6 @@ var PolarConverter;
             this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
-            this.uploadViewModel = { polarFiles: [], forceGarmin: false, gender: "m", };
             var url = "/api/upload";
             this.options = {
                 autoUpload: true,
@@ -51,19 +50,6 @@ var PolarConverter;
                 dataType: "json"
             };
             this.loadingFiles = true;
-            //this.$http({ method: "jsonp", url: "http://ipinfo.io/?callback=callback"}).success((data, status, headers, config) => {
-            //    this.setWeightTypeBasedOnCountry(data.country);
-            //})
-            //.error((data, status, headers, config) => {
-            //    this.$log.error(status);
-            //});
-            $.get("http://ipinfo.io", function (response) {
-                _this.setWeightTypeBasedOnCountry(response.country);
-                var loc = response.loc;
-                var lat = loc.substring(0, loc.indexOf(","));
-                var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
-                _this.setTimeZoneOffsetBasedOnCountry(lat, lng);
-            }, "jsonp");
             if (this.initalized) {
                 this.$http.get(url).then(function (response) {
                     _this.common.log.info(response);
@@ -74,6 +60,42 @@ var PolarConverter;
                 });
                 this.initalized = true;
             }
+            this.$scope.$safeApply(function () {
+                var birthdate = $("#uv_birthDate") ? moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss") : moment().subtract("years", 33);
+                console.log("Kg: " + $("#uv_preferKg").val());
+                console.log("Sex: " + $("#uv_isMale").val());
+                if ($("#uv_preferKg").val() === "False") {
+                    console.log("Working");
+                }
+                else {
+                    console.log("Not Working");
+                }
+                _this.uploadViewModel = {
+                    polarFiles: [],
+                    forceGarmin: $("#uv_forceGarmin") ? ($("#uv_forceGarmin").val() === "True" ? true : false) : false,
+                    gender: $("#uv_isMale") ? ($("#uv_isMale").val() === "True" ? "M" : "F") : "M",
+                    weight: $("#uv_weight") ? parseFloat($("#uv_weight").val()) : 0,
+                    weightMode: $("#uv_preferKg") ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : "kg",
+                    age: Math.floor(moment().diff(birthdate, 'years', true))
+                };
+                console.log("ViewModel: " + JSON.stringify(_this.uploadViewModel));
+                if ($("#uv_timezoneOffset")) {
+                    _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
+                        return tz.offset === parseFloat($("#uv_timezoneOffset").val());
+                    });
+                }
+                else {
+                    $.get("http://ipinfo.io", function (response) {
+                        if (!$("#uv_preferKg")) {
+                            _this.setWeightTypeBasedOnCountry(response.country);
+                        }
+                        var loc = response.loc;
+                        var lat = loc.substring(0, loc.indexOf(","));
+                        var lng = loc.substring(loc.indexOf(",") + 1, loc.length);
+                        _this.setTimeZoneOffsetBasedOnCountry(lat, lng);
+                    }, "jsonp");
+                }
+            });
             this.common.loadingBar.complete();
         };
         UploadController.prototype.callback = function (data) {
@@ -202,7 +224,6 @@ var PolarConverter;
                 _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
                     return tz.offset === timeZoneOffsetInHours;
                 });
-                _this.$scope.$apply();
             });
         };
         UploadController.prototype.initPage = function () {
