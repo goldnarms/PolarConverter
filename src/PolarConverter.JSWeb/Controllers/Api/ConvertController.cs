@@ -47,7 +47,8 @@ namespace PolarConverter.JSWeb.Controllers.Api
             var result = _conversion.Convert(uploadViewModel);
             if (!string.IsNullOrEmpty(uploadViewModel.Uid) && result.TcxReferences != null && result.TcxReferences.Count > 0)
             {
-                using (var db = new ApplicationDbContext())
+				var serviceController = new ServiceController();
+				using (var db = new ApplicationDbContext())
                 {
                     foreach (var tcxFileReference in result.TcxReferences)
                     {
@@ -61,6 +62,29 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         };
 
                         db.UserFiles.Add(userFile);
+
+
+						var userId = uploadViewModel.Uid;
+						var exportFileData = new ServiceController.ExportFileData
+						{
+							FromDropbox = false,
+							Name = tcxFileReference.Value,
+							Provider = "Runkeeper",
+							Reference = tcxFileReference.Key,
+							UserId = userId
+						};
+
+						var runkeeperToken = db.OauthTokens.SingleOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Runkeeper);
+						if (runkeeperToken != null) {
+							serviceController.ExportToRunkeeper(runkeeperToken.Token, exportFileData);
+                        }
+
+						var stravaToken = db.OauthTokens.SingleOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Strava);
+						if (stravaToken != null)
+						{
+							exportFileData.Provider = "Strava";
+							serviceController.ExportToStrava(stravaToken.Token, exportFileData);
+						}
                     }
                     try
                     {

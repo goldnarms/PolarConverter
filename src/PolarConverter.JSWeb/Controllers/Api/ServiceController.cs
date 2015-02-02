@@ -89,7 +89,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             }
         }
 
-        private void ExportToRunkeeper(string token, ExportFileData exportFileData)
+        public void ExportToRunkeeper(string token, ExportFileData exportFileData)
         {
             var activities = ConvertFileToRunkeeperActivity(exportFileData);
             var clientSecret = ConfigurationManager.AppSettings["RunkeeperClientSecret"];
@@ -172,7 +172,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
             }
         }
 
-        private async void ExportToStrava(string token, ExportFileData exportFileData)
+        public async void ExportToStrava(string token, ExportFileData exportFileData)
         {
             var auth = new StaticAuthentication(token);
             var client = new com.strava.api.Client.StravaClient(auth);
