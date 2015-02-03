@@ -1081,8 +1081,10 @@
     <Content Include="bower_components\moment\README.md" />
     <Content Include="bower_components\moment\scripts\npm_prepublish.sh" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging %283%29.pubxml" />
@@ -1211,6 +1213,9 @@
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1335,6 +1340,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
