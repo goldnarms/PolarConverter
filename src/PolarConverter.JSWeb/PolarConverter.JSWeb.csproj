@@ -837,9 +837,7 @@
     <Content Include="Content\LogInWithStrava.png" />
     <Content Include="Content\polarLogo01.png" />
     <Content Include="Content\polarLogo01_small.png" />
-    <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.css</DependentUpon>
-    </Content>
+    <Content Include="Content\Site.min.css" />
     <Content Include="Content\strava_logo.png" />
     <Content Include="Content\top_nav_logo_icon.png" />
     <Content Include="favicon.ico" />
@@ -1080,14 +1078,6 @@
     <Content Include="bower_components\moment\Moment.js.nuspec" />
     <Content Include="bower_components\moment\README.md" />
     <Content Include="bower_components\moment\scripts\npm_prepublish.sh" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - FTP %283%29.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy %283%29.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\polarconverter__staging %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
@@ -1130,7 +1120,6 @@
     <Content Include="Scripts\FileUpload\tmpl.debug.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
-    <None Include="Properties\PublishProfiles\polarconverttest - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverttest - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jasmine-samples\Player.js" />

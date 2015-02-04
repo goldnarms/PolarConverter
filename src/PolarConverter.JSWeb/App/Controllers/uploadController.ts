@@ -112,13 +112,6 @@ module PolarConverter {
 
 			(<any>this.$scope).$safeApply(() => {
 				var birthdate = $("#uv_birthDate") ? moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss") : moment().subtract("years", 33);
-				console.log("Kg: " + $("#uv_preferKg").val());
-				console.log("Sex: " + $("#uv_isMale").val());
-				if ($("#uv_preferKg").val() === "False") {
-					console.log("Working");
-				} else {
-					console.log("Not Working");
-				}
 
 				this.uploadViewModel = <PolarConverter.UploadViewModel>{
 					polarFiles: [],
@@ -128,8 +121,8 @@ module PolarConverter {
 					weightMode: $("#uv_preferKg") ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : "kg",
 					age: Math.floor(moment().diff(birthdate, 'years', true))
 				};
-				console.log("ViewModel: " + JSON.stringify(this.uploadViewModel));
-				if ($("#uv_timezoneOffset")) {
+                if ($("#uv_timezoneOffset") && $("#uv_timezoneOffset").val()) {
+                    console.log("Timezone not null: " + $("#uv_timezoneOffset").val())
 					this.selectedTimeZone = _.find(this.timeZones,(tz: PolarConverter.TimeZone) => {
 						return tz.offset === parseFloat($("#uv_timezoneOffset").val());
 					});
@@ -159,7 +152,6 @@ module PolarConverter {
 
         public getFilesFromDropbox(): void {
             this.userService.getUserId().then((userId) => {
-                this.common.log.info("Userid: " + userId.data);
                 this.fileService.getDropboxFilesForUser(userId.data)
                     .success((data) => {
                         this.common.log.info(JSON.stringify(data));

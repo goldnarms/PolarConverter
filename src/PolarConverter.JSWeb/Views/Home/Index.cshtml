@@ -1,7 +1,7 @@
 ﻿@model PolarConverter.JSWeb.ViewModels.FrontPageModel
 @{
     ViewBag.Title = "PolarConverter";
-    var showUpdate = false;
+    var showUpdate = true;
 }
 
 <a id="top"></a>
@@ -188,20 +188,20 @@
                         </ul>
                         @if (!Request.IsAuthenticated && showUpdate)
                         {
-                        @Html.Partial("Plugins/_GoogleAdLeader")
-                        <h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
+                            @Html.Partial("Plugins/_GoogleAdLeader")
+                            <h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
                         }
-                        else
+                        else if(Request.IsAuthenticated)
                         {
-                        <strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
-                        if(Model.HasDropbox)
-                        {
-                        <strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
-                        }
-                        else
-                        {
-                        <strong><span>.</span></strong>
-                        }
+                            <strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
+                            if(Model.HasDropbox)
+                            {
+                                <strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
+                            }
+                            else
+                            {
+                                <strong><span>.</span></strong>
+                            }
                         }
                         <h5>More files to convert?</h5>
                         <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
@@ -229,9 +229,9 @@
                         @*<p>
                             The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
                             <input type="email" value="" />
-                        </p>
-                        <p>Please take a look at the F.A.Q. for more information.</p>*@
-                        <p>Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
+                        </p>*@
+                        <p>Please take a look at the <a href="/Home/Faq">F.A.Q.</a> for more information.</p>
+                        <p>Still stuck? Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
                         <br />
                     </div>
                 </div>
@@ -263,7 +263,7 @@
             <h3>Questions?</h3>
             <p>
                 Any questions or comments?<br>
-                <a href="mailto:polarconverter@gmail.com">Contact me</a><br>
+                Check out the <a href="/Home/Faq">F.A.Q.</a> or you can <a href="mailto:polarconverter@gmail.com">contact me</a>.<br>
             </p>
         </div>
         <div class="col-md-4">

@@ -136,13 +136,19 @@ namespace PolarConverter.JSWeb.Controllers
                 {
                     TimeAdded = new System.DateTime(2014, 11, 15),
                     Question = "I have attached a .gpx file, but I can’t see the track on map?",
-                    Answer = "Be sure to select the .gpx file in the 'Gpx file' dropdown next to 'Sport' for each activity."
+                    Answer = "Be sure to select the .gpx file in the 'Gpx file' dropdown next to 'Sport' for each activity. Note that .gpx files that match the name of the .hrm / .xml file is automatically selected."
                 },
                 new FrequentlyAskedQuestion
                 {
                     TimeAdded = new System.DateTime(2014, 11, 15),
                     Question = "How can i upload my training files from polar flow with my v800?",
                     Answer = "As stated under Data transfer at Polar's own site: http://www.polar.com/en/products/maximize_performance/running_multisport/V800, export of files will come in september."
+                },
+                new FrequentlyAskedQuestion
+                {
+                    TimeAdded = new System.DateTime(2015, 4, 2),
+                    Question = "My map file is not accepted?",
+                    Answer = "Only map files ending with .gpx is accepted, if you have a file with a .gpx.xml ending, just remove .xml and try again."
                 }
             };
             return View(questions);
@@ -161,8 +167,11 @@ namespace PolarConverter.JSWeb.Controllers
                     new Change {
                         PublishDate = new System.DateTime(2014, 11, 15),
                         Version = "1.1.0",
-                        Features = new List<string> { { "Activities with multiple laps might sometimes have a lot of data that is not part of any lap. Theese data is now assigned to a lap and converted over with the rest." },
-                            { "Removing Author tag as it was causing an issue with Garmin Connect." }
+                        Features = new List<string> {
+                            { "Activities with multiple laps might sometimes have a lot of data that is not part of any lap. Theese data is now assigned to a lap and converted over with the rest." },
+                            { "Removing Author tag as it was causing an issue with Garmin Connect." },
+                            { "Allow for large file uploads." },
+                            { "Added Pro features: export to Strava and Runkeeper, integration with Dropbox and saving userprofiles and files uploaded." }
                         }
                     }
                 }

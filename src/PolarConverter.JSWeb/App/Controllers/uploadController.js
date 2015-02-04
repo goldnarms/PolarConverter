@@ -62,14 +62,6 @@ var PolarConverter;
             }
             this.$scope.$safeApply(function () {
                 var birthdate = $("#uv_birthDate") ? moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss") : moment().subtract("years", 33);
-                console.log("Kg: " + $("#uv_preferKg").val());
-                console.log("Sex: " + $("#uv_isMale").val());
-                if ($("#uv_preferKg").val() === "False") {
-                    console.log("Working");
-                }
-                else {
-                    console.log("Not Working");
-                }
                 _this.uploadViewModel = {
                     polarFiles: [],
                     forceGarmin: $("#uv_forceGarmin") ? ($("#uv_forceGarmin").val() === "True" ? true : false) : false,
@@ -78,8 +70,8 @@ var PolarConverter;
                     weightMode: $("#uv_preferKg") ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : "kg",
                     age: Math.floor(moment().diff(birthdate, 'years', true))
                 };
-                console.log("ViewModel: " + JSON.stringify(_this.uploadViewModel));
-                if ($("#uv_timezoneOffset")) {
+                if ($("#uv_timezoneOffset") && $("#uv_timezoneOffset").val()) {
+                    console.log("Timezone not null: " + $("#uv_timezoneOffset").val());
                     _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
                         return tz.offset === parseFloat($("#uv_timezoneOffset").val());
                     });
@@ -107,7 +99,6 @@ var PolarConverter;
         UploadController.prototype.getFilesFromDropbox = function () {
             var _this = this;
             this.userService.getUserId().then(function (userId) {
-                _this.common.log.info("Userid: " + userId.data);
                 _this.fileService.getDropboxFilesForUser(userId.data).success(function (data) {
                     _this.common.log.info(JSON.stringify(data));
                     _.each(data, function (dropboxFile) {

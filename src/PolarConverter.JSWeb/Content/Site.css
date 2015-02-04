@@ -25,6 +25,35 @@
 .download-list > li {
     font-size: 1.6rem;
 }
+
+.navbar-nav > li > a.upgrade-link{
+    font-weight: 600;
+    font-size: 1.625em;
+    font-size: 1.625rem;
+}
+
+.navbar-header{
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-right: 15px;
+}
+
+.navbar-nav > li > a{
+    line-height: 30px;
+    font-size: 1.5em;
+    font-size: 1.5rem;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .logo {
+    margin-left: 15px;
+  }
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
