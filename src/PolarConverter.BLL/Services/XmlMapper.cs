@@ -191,6 +191,7 @@ namespace PolarConverter.BLL.Services
         private ActivityLap_t GenerateExtraLap(IEnumerable<sample> samples, int lapDurationInSeconds, DateTime starTime, double v02max, int recordingRate, int valuesToskip)
         {
             var timeSpan = new TimeSpan(0, 0, lapDurationInSeconds);
+            short zero = 0;
             var lap = new lap
             {
                 duration = string.Format("{0}:{1}:{2}.000", timeSpan.Hours.ToString("00"), timeSpan.Minutes.ToString("00"),
@@ -206,13 +207,13 @@ namespace PolarConverter.BLL.Services
                             lap.heartrate = new heartraterange
                             {
                                 averageSpecified = true,
-                                average = (short)values.Average(),
+                                average = values.Count() > 0 ? (short)values.Average() : zero,
                                 endingSpecified = true,
-                                ending = (short)values.Last(),
+                                ending = values.Count() > 0 ? (short)values.Last() : zero,
                                 maximumSpecified = true,
-                                maximum = (short)values.Max(),
+                                maximum = values.Count() > 0 ? (short)values.Max() : zero,
                                 minimumSpecified = true,
-                                minimum = (short)values.Min(),
+                                minimum = values.Count() > 0 ? (short)values.Min() : zero,
                                 restingSpecified = false
                             };
                             break;
@@ -223,15 +224,15 @@ namespace PolarConverter.BLL.Services
                             lap.speed = new floatrange
                             {
                                 averageSpecified = true,
-                                average = (float)values.Average(),
+                                average = values.Count() > 0 ? (float)values.Average() : 0,
                                 maximumSpecified = true,
-                                maximum = (float)values.Max(),
+                                maximum = values.Count() > 0 ? (float)values.Max() : 0,
                                 minimumSpecified = true,
-                                minimum = (float)values.Min()
+                                minimum = values.Count() > 0 ? (float)values.Min() : 0
                             };
                             if (!samples.Any(s => s.type == sampleType.DISTANCE))
                             {
-                                var meters = values.Sum() / 0.06f / 60 * recordingRate;
+                                var meters = values.Count() > 0 ? values.Sum() / 0.06f / 60 * recordingRate : 0;
                                 lap.distanceSpecified = true;
                                 lap.distance = (float)meters;
                             }
@@ -243,11 +244,11 @@ namespace PolarConverter.BLL.Services
                             lap.cadence = new shortrange
                             {
                                 averageSpecified = true,
-                                average = (short)values.Average(),
+                                average = values.Count() > 0 ? (short)values.Average() : zero,
                                 maximumSpecified = true,
-                                maximum = (short)values.Max(),
+                                maximum = values.Count() > 0 ? (short)values.Max() : zero,
                                 minimumSpecified = true,
-                                minimum = (short)values.Min()
+                                minimum = values.Count() > 0 ? (short)values.Min() : zero
                             };
                             break;
                         }
