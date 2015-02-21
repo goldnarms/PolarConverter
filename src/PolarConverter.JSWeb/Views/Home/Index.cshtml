@@ -6,108 +6,108 @@
 
 <a id="top"></a>
 <div data-ng-controller="uploadCtrl as uc" data-ng-cloak="">
-    @if (Model.User != null)
+	@if (Model.User != null)
     {
-        @Html.HiddenFor(m => m.User.Weight, new { id = "uv_weight" })
-        @Html.HiddenFor(m => m.User.IsMale, new { id = "uv_isMale" })
-        @Html.HiddenFor(m => m.User.PreferKg, new { id = "uv_preferKg" })
-        @Html.HiddenFor(m => m.User.BirthDate, new { id = "uv_birthDate" })
-        @Html.HiddenFor(m => m.User.TimezoneOffset, new { id = "uv_timezoneOffset"})
-        @Html.HiddenFor(m => m.User.ForceGarmin, new { id = "uv_forceGarmin" })
+		@Html.HiddenFor(m => m.User.Weight, new { id = "uv_weight" })
+		@Html.HiddenFor(m => m.User.IsMale, new { id = "uv_isMale" })
+		@Html.HiddenFor(m => m.User.PreferKg, new { id = "uv_preferKg" })
+		@Html.HiddenFor(m => m.User.BirthDate, new { id = "uv_birthDate" })
+		@Html.HiddenFor(m => m.User.TimezoneOffset, new { id = "uv_timezoneOffset"})
+		@Html.HiddenFor(m => m.User.ForceGarmin, new { id = "uv_forceGarmin" })
     }
 
-    <div class="row">
-        <div class="col-md-12">
-            <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
-                <!-- Redirect browsers with JavaScript disabled to the origin page -->
-                <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
-                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-                <div class="row fileupload-buttonbar">
-                    <div class="col-lg-7">
-                        <!-- The fileinput-button span is used to style the file input field as button -->
-                        <span class="btn btn-success fileinput-button btn-sm" ng-class="{disabled: disabled}">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span>Upload files...</span>
-                            <input type="file" name="files[]" multiple ng-disabled="disabled">
-                        </span>
-                        @if (Request.IsAuthenticated && Model.HasDropbox)
+	<div class="row">
+		<div class="col-md-12">
+			<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+				<!-- Redirect browsers with JavaScript disabled to the origin page -->
+				<noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+				<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+				<div class="row fileupload-buttonbar">
+					<div class="col-lg-7">
+						<!-- The fileinput-button span is used to style the file input field as button -->
+						<span class="btn btn-success fileinput-button btn-sm" ng-class="{disabled: disabled}">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>Upload files...</span>
+							<input type="file" name="files[]" multiple ng-disabled="disabled">
+						</span>
+						@if (Request.IsAuthenticated && Model.HasDropbox)
                         {
-                        <span class="btn btn-sm" data-ng-click="uc.getFilesFromDropbox()" style="background-color: #1081DE; color: white" ng-class="{disabled: disabled}">
-                            <i class="icon-dropbox"></i>
-                            <span>Get from Dropbox</span>
-                        </span>
+							<span class="btn btn-sm" data-ng-click="uc.getFilesFromDropbox()" style="background-color: #1081DE; color: white" ng-class="{disabled: disabled}">
+								<i class="icon-dropbox"></i>
+								<span>Get from Dropbox</span>
+							</span>
                         }
-                        <button type="button" class="btn btn-warning cancel btn-sm" data-ng-disabled="uc.uploadedFiles.length == 0" data-ng-click="uc.initPage()">
-                            <i class="glyphicon glyphicon-ban-circle"></i>
-                            <span>Cancel upload</span>
-                        </button>
-                        <!-- The global file processing state -->
-                        <span class="fileupload-process"></span>
-                    </div>
-                    <!-- The global progress state -->
-                    <div class="col-lg-5 fade" data-ng-class="{in: active()}">
-                        <!-- The global progress bar -->
-                        <div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
-                        <!-- The extended global progress state -->
-                        <div class="progress-extended">&nbsp;</div>
-                    </div>
-                </div>
-                <!-- The table listing the files available for upload/download -->
-                <table class="table table-striped files ng-cloak" data-ng-show="uc.showFileTable">
-                    <tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
-                        <td>
-                            <p class="name" data-ng-switch data-on="!!file.url">
-                                <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
-                                    <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
-                                    <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
-                                </span>
-                                <span data-ng-switch-default>{{file.name}}</span>
-                            </p>
-                            <strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
-                        </td>
-                        <td>
-                            <p class="size">{{file.size | formatFileSize}}</p>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-warning cancel btn-xs" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
-                                <i class="glyphicon glyphicon-ban-circle"></i>
-                                <span>Cancel</span>
-                            </button>
-                            <button data-ng-controller="fileDestroyCtrl" type="button" class="btn btn-danger destroy" data-ng-click="file.$destroy()" data-ng-hide="!file.$destroy">
-                                <i class="glyphicon glyphicon-trash"></i>
-                                <span>Delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+						<button type="button" class="btn btn-warning cancel btn-sm" data-ng-disabled="uc.uploadedFiles.length == 0" data-ng-click="uc.initPage()">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>Cancel upload</span>
+						</button>
+						<!-- The global file processing state -->
+						<span class="fileupload-process"></span>
+					</div>
+					<!-- The global progress state -->
+					<div class="col-lg-5 fade" data-ng-class="{in: active()}">
+						<!-- The global progress bar -->
+						<div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+						<!-- The extended global progress state -->
+						<div class="progress-extended">&nbsp;</div>
+					</div>
+				</div>
+				<!-- The table listing the files available for upload/download -->
+				<table class="table table-striped files ng-cloak" data-ng-show="uc.showFileTable">
+					<tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+						<td>
+							<p class="name" data-ng-switch data-on="!!file.url">
+								<span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+									<a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
+									<a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+								</span>
+								<span data-ng-switch-default>{{file.name}}</span>
+							</p>
+							<strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+						</td>
+						<td>
+							<p class="size">{{file.size | formatFileSize}}</p>
+						</td>
+						<td>
+							<button type="button" class="btn btn-warning cancel btn-xs" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
+								<i class="glyphicon glyphicon-ban-circle"></i>
+								<span>Cancel</span>
+							</button>
+							<button data-ng-controller="fileDestroyCtrl" type="button" class="btn btn-danger destroy" data-ng-click="file.$destroy()" data-ng-hide="!file.$destroy">
+								<i class="glyphicon glyphicon-trash"></i>
+								<span>Delete</span>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</form>
 
-            <div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0 || uc.showErrors">
-                <table class="table table-striped table-hover" data-ng-show="uc.showUploadedFiles">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Filename</th>
-                            <th>Sport</th>
-                            <th>Gpx file</th>
-                            <th>Convert</th>
-                        </tr>
-                    </thead>
-                    <tr data-ng-repeat="file in uc.uploadedFiles">
-                        <td><span data-ng-bind="$index + 1"></span></td>
-                        <td><span data-ng-bind="file.name"></span></td>
-                        <td>
-                            <select data-ng-model="file.sport" data-ng-options="sport for sport in uc.sports"><option value="">Select sport</option></select>
-                        </td>
-                        <td>
-                            <span data-ng-show="file.gpxFile" data-ng-bind="file.gpxFile.name"><a href="#" data-ng-click="uc.removeGpxFile(file)" title="Remove file">&nbsp;<i class="glyphicon glyphicon-remove"></i></a></span><span data-ng-hide="file.gpxFile">
-                                <select data-ng-model="file.gpxFile" data-ng-options="gpxFile.name for gpxFile in uc.gpxFiles | filter: { matched: false}"><option value="">Select Gpx file</option></select>
-                            </span>
-                        </td>
-                        <td><input type="checkbox" data-ng-model="file.checked" /></td>
-                    </tr>
-                </table>
-                <div class="well">
+			<div class="table-responsive" data-ng-show="uc.uploadedFiles.length > 0 || uc.convertedFiles.length > 0 || uc.showErrors">
+				<table class="table table-striped table-hover" data-ng-show="uc.showUploadedFiles">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Filename</th>
+							<th>Sport</th>
+							<th>Gpx file</th>
+							<th>Convert</th>
+						</tr>
+					</thead>
+					<tr data-ng-repeat="file in uc.uploadedFiles">
+						<td><span data-ng-bind="$index + 1"></span></td>
+						<td><span data-ng-bind="file.name"></span></td>
+						<td>
+							<select data-ng-model="file.sport" data-ng-options="sport for sport in uc.sports"><option value="">Select sport</option></select>
+						</td>
+						<td>
+							<span data-ng-show="file.gpxFile" data-ng-bind="file.gpxFile.name"><a href="#" data-ng-click="uc.removeGpxFile(file)" title="Remove file">&nbsp;<i class="glyphicon glyphicon-remove"></i></a></span><span data-ng-hide="file.gpxFile">
+								<select data-ng-model="file.gpxFile" data-ng-options="gpxFile.name for gpxFile in uc.gpxFiles | filter: { matched: false}"><option value="">Select Gpx file</option></select>
+							</span>
+						</td>
+						<td><input type="checkbox" data-ng-model="file.checked" /></td>
+					</tr>
+				</table>
+				<div class="well">
 					<form class="form-horizontal" name="uc.userProfileForm" novalidate="">
 						<legend>User profile</legend>
 						<div class="form-group">
@@ -160,114 +160,125 @@
 							</div>
 						</div>
 					</form>
-                    <div class="alert alert-success" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">
 
-                        <h3>Conversion successful!</h3>
-                        <h4>Spread the word!</h4>
-                        <ul class="social-list list-unstyled">
-                            <li>
-                                @Html.Partial("Plugins/_FacebookLike")
-                            </li>
-                            <li>
-                                <i class="icon-facebook-squared"></i> <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl">Share on Facebook</a>
-                            </li>
-                            <li>
-                                <i class="icon-twitter-squared"></i> <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
-                            </li>
-                            <li>
-                                <i class="icon-paypal"></i> @Html.ActionLink("Donate", "Donate")
-                            </li>
-                        </ul>
-                        <br />
-                        <h4>Click the link to download your files</h4>
-                        <ul class="list-unstyled download-list">
-                            <li data-ng-repeat="file in uc.convertedFiles">
-                                <i class="glyphicon glyphicon-file"></i>
-                                <a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
-                            </li>
-                        </ul>
-                        @if (!Request.IsAuthenticated && showUpdate)
-                        {
-                            @Html.Partial("Plugins/_GoogleAdLeader")
-                            <h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
-                        }
-                        else if(Request.IsAuthenticated)
-                        {
-                            <strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
-                            if(Model.HasDropbox)
-                            {
-                                <strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
-                            }
-                            else
-                            {
-                                <strong><span>.</span></strong>
-                            }
-                        }
-                        <h5>More files to convert?</h5>
-                        <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
-                        <br />
-                    </div>
-                    <div data-ng-class="{'alert': true, 'alert-danger': uc.convertedFiles.length === 0, 'alert-warning': uc.convertedFiles.length > 0 }" data-ng-show="uc.showErrors">
-                        <h3>Oops, something went wrong ...</h3>
-                        <p>See a list of errors below.</p>
-                        <ul>
-                            <li data-ng-repeat="error in uc.errors">
-                                {{error}}
-                            </li>
-                        </ul>
-                        <br />
-                        <div data-ng-if="uc.convertedFiles.length > 0">
-                            <h4>Click the link to download the files without error</h4>
-                            <ul class="list-unstyled download-list">
-                                <li data-ng-repeat="file in uc.convertedFiles">
-                                    <i class="glyphicon glyphicon-file"></i>
-                                    <a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Try again</a>
-                        @*<p>
-                            The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
-                            <input type="email" value="" />
-                        </p>*@
-                        <p>Please take a look at the <a href="/Home/Faq">F.A.Q.</a> for more information.</p>
-                        <p>Still stuck? Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
-                        <br />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="jumbotron">
-        <p class="lead">PolarConverter converts your .xml, .hrm and .gpx files from your Polar® watch to .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.</p>
-        @Html.Partial("Plugins/_FacebookLike")
-    </div>
+					@*Success*@
+					@*<div class="alert alert-success success-dialogue" data-ng-show="uc.errors.length == 0 && uc.convertedFiles.length > 0">*@
+						<div class="alert alert-success success-dialogue">
 
-    <div class="row">
-        <div class="col-md-4">
-            <h3>Upload</h3>
-            <p>
-                In order to get your .hrm and .gpx files you need to have a Polar&reg; watch that
-                is compatible with Polar Pro Trainer&trade;. Export your files from the watch to
-                your computer with Polar Pro Trainer&trade;, and use those files to convert with
-                PolarConverter. You'll usually find your .hrm and .gpx files under C:\Users\{user}\AppData\Local\VirtualStore\Program
-                Files (x86)\Polar\Polar ProTrainer\{polar user}. Xml files can be downloaded from
-                your account at <a target="_blank" href="https://www.polarpersonaltrainer.com/">https://www.polarpersonaltrainer.com/.</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h3>Polar Pro Trainer&trade;</h3>
-            <p>
-                Click <a target="_blank" href="http://www.polar.com/en/products/training_software/polar_protrainer_5">here</a> to read more about Polar Pro Trainer&trade;.
-            </p>
-            <h3>Questions?</h3>
-            <p>
-                Any questions or comments?<br>
-                Check out the <a href="/Home/Faq">F.A.Q.</a> or you can <a href="mailto:polarconverter@gmail.com">contact me</a>.<br>
-            </p>
-        </div>
-        <div class="col-md-4">
-            @Html.Partial("Plugins/_GoogleAdsense")
-        </div>
-    </div>
-</div>
+							<div class="row">
+								<div class="col-sm-9">
+									<h3>Conversion successful!</h3>
+									<br />
+									<h4>Click the link to download your files</h4>
+									<ul class="list-unstyled download-list">
+										<li data-ng-repeat="file in uc.convertedFiles">
+											<i class="glyphicon glyphicon-file"></i>
+											<a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
+										</li>
+									</ul>
+									@if (!Request.IsAuthenticated && showUpdate)
+								{
+										@Html.Partial("Plugins/_GoogleAdLeader")
+										<h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
+								}
+								else if(Request.IsAuthenticated)
+								{
+										<strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
+									if(Model.HasDropbox)
+									{
+										<strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
+									}
+									else
+									{
+										<strong><span>.</span></strong>
+									}
+								}
+									<h5>More files to convert?</h5>
+									<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
+									<br />
+								</div>
+								<div class="col-sm-3">
+									<h4>Spread the word!</h4>
+									<ul class="social-list list-unstyled">
+										<li>
+											@Html.Partial("Plugins/_FacebookLike")
+										</li>
+										<li>
+											<i class="icon-facebook-squared"></i> <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl">Share on Facebook</a>
+										</li>
+										<li>
+											<i class="icon-twitter-squared"></i> <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
+										</li>
+										<li>
+											<i class="icon-paypal"></i> @Html.ActionLink("Donate", "Donate")
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						@*Error*@
+						<div data-ng-class="{'alert': true, 'alert-danger': uc.convertedFiles.length === 0, 'alert-warning': uc.convertedFiles.length > 0 }" data-ng-show="uc.showErrors">
+							<h3>Oops, something went wrong ...</h3>
+							<p>See a list of errors below.</p>
+							<ul>
+								<li data-ng-repeat="error in uc.errors">
+									{{error}}
+								</li>
+							</ul>
+							<br />
+							<div data-ng-if="uc.convertedFiles.length > 0">
+								<h4>Click the link to download the files without error</h4>
+								<ul class="list-unstyled download-list">
+									<li data-ng-repeat="file in uc.convertedFiles">
+										<i class="glyphicon glyphicon-file"></i>
+										<a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
+									</li>
+								</ul>
+							</div>
+							<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Try again</a>
+							@*<p>
+									The error and your files has been reported and will be investigated, but I need your e-mail so that I can give you an update when it is fixed:
+									<input type="email" value="" />
+								</p>*@
+							<p>Please take a look at the <a href="/Home/Faq">F.A.Q.</a> for more information.</p>
+							<p>Still stuck? Feel free to contact me at <a href="mailto:polarconverter@gmail.com" style="color:black">polarconverter@gmail.com</a>. Remember to attach the files that you tried to upload.</p>
+							<br />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron">
+			<p class="lead">PolarConverter converts your .xml, .hrm and .gpx files from your Polar® watch to .tcx files that can easily be imported into fitness apps such as Endomondo or Strava.</p>
+			@Html.Partial("Plugins/_FacebookLike")
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<h3>Upload</h3>
+				<p>
+					In order to get your .hrm and .gpx files you need to have a Polar&reg; watch that
+					is compatible with Polar Pro Trainer&trade;. Export your files from the watch to
+					your computer with Polar Pro Trainer&trade;, and use those files to convert with
+					PolarConverter. You'll usually find your .hrm and .gpx files under C:\Users\{user}\AppData\Local\VirtualStore\Program
+					Files (x86)\Polar\Polar ProTrainer\{polar user}. Xml files can be downloaded from
+					your account at <a target="_blank" href="https://www.polarpersonaltrainer.com/">https://www.polarpersonaltrainer.com/.</a>
+				</p>
+			</div>
+			<div class="col-md-4">
+				<h3>Polar Pro Trainer&trade;</h3>
+				<p>
+					Click <a target="_blank" href="http://www.polar.com/en/products/training_software/polar_protrainer_5">here</a> to read more about Polar Pro Trainer&trade;.
+				</p>
+				<h3>Questions?</h3>
+				<p>
+					Any questions or comments?<br>
+					Check out the <a href="/Home/Faq">F.A.Q.</a> or you can <a href="mailto:polarconverter@gmail.com">contact me</a>.<br>
+				</p>
+			</div>
+			<div class="col-md-4">
+				@Html.Partial("Plugins/_GoogleAdsense")
+			</div>
+		</div>
+	</div>
