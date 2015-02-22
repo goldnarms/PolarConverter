@@ -168,8 +168,7 @@
 							<div class="row">
 								<div class="col-sm-9">
 									<h3>Conversion successful!</h3>
-									<br />
-									<h4>Click the link to download your files</h4>
+									<h4><i class="icon-download"></i> Click the links below to download your files:</h4>
 									<ul class="list-unstyled download-list">
 										<li data-ng-repeat="file in uc.convertedFiles">
 											<i class="glyphicon glyphicon-file"></i>
@@ -179,11 +178,11 @@
 									@if (!Request.IsAuthenticated && showUpdate)
 								{
 										@Html.Partial("Plugins/_GoogleAdLeader")
-										<h4>@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
+										<h4 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
 								}
 								else if(Request.IsAuthenticated)
 								{
-										<strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
+									<strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
 									if(Model.HasDropbox)
 									{
 										<strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
@@ -193,24 +192,23 @@
 										<strong><span>.</span></strong>
 									}
 								}
-									<h5>More files to convert?</h5>
-									<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a>
+									<h4>More files to convert? &nbsp;<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a></h4>
 									<br />
 								</div>
 								<div class="col-sm-3">
-									<h4>Spread the word!</h4>
+									<h3>Spread the word!</h3>
 									<ul class="social-list list-unstyled">
 										<li>
 											@Html.Partial("Plugins/_FacebookLike")
 										</li>
 										<li>
-											<i class="icon-facebook-squared"></i> <a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl">Share on Facebook</a>
+											<a data-share-on-facebook="" data-full-facebook-url="facebookShareUrl"><i class="icon-facebook"></i> Share on Facebook</a>
 										</li>
 										<li>
-											<i class="icon-twitter-squared"></i> <a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com">Tweet about #PolarConverter</a>
+											<a data-share-on-twitter="" data-text="uc.tweetText" data-url="http://www.polarconverter.com"><i class="icon-twitter"></i> Tweet about #PolarConverter</a>
 										</li>
 										<li>
-											<i class="icon-paypal"></i> @Html.ActionLink("Donate", "Donate")
+											<a href="Home/Donate"><i class="icon-paypal"></i> Donate</a>
 										</li>
 									</ul>
 								</div>

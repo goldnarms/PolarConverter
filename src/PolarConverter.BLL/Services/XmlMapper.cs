@@ -220,22 +220,35 @@ namespace PolarConverter.BLL.Services
                         }
                     case sampleType.SPEED:
                         {
-                            var values = ConvertToValues(sample.values).Skip(valuesToskip);
-                            lap.speed = new floatrange
-                            {
-                                averageSpecified = true,
-                                average = values.Count() > 0 ? (float)values.Average() : 0,
-                                maximumSpecified = true,
-                                maximum = values.Count() > 0 ? (float)values.Max() : 0,
-                                minimumSpecified = true,
-                                minimum = values.Count() > 0 ? (float)values.Min() : 0
-                            };
-                            if (!samples.Any(s => s.type == sampleType.DISTANCE))
-                            {
-                                var meters = values.Count() > 0 ? values.Sum() / 0.06f / 60 * recordingRate : 0;
-                                lap.distanceSpecified = true;
-                                lap.distance = (float)meters;
-                            }
+                            var values = ConvertToValues(sample.values).Skip(valuesToskip).ToList();
+							if (values.Count > 0)
+							{
+								lap.speed = new floatrange
+								{
+									averageSpecified = true,
+									average = (float)values.Average(),
+									maximumSpecified = true,
+									maximum = (float)values.Max(),
+									minimumSpecified = true,
+									minimum = (float)values.Min()
+								};
+								if (!samples.Any(s => s.type == sampleType.DISTANCE))
+								{
+									var meters = values.Sum() / 0.06f / 60 * recordingRate;
+									lap.distanceSpecified = true;
+									lap.distance = (float)meters;
+								}
+							}
+							else
+							{
+								lap.speed = new floatrange
+								{
+									averageSpecified = false,
+									maximumSpecified = false,
+									minimumSpecified = false
+								};
+								lap.distanceSpecified = false;
+							}
                             break;
                         }
                     case sampleType.CADENCE:
@@ -314,7 +327,7 @@ namespace PolarConverter.BLL.Services
 
         private static IEnumerable<float> ConvertToValues(string values)
         {
-            return values.Split(',').Select(v => float.Parse(v, CultureInfo.InvariantCulture.NumberFormat));
+            return values.Split(',').Where(v => !string.IsNullOrEmpty(v)).Select(v => float.Parse(v, CultureInfo.InvariantCulture.NumberFormat));
         }
 
         private ActivityLap_t[] GenerateLapFromData(result result, DateTime startTime, double v02Max)

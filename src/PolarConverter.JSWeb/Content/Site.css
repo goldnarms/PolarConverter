@@ -18,8 +18,49 @@
     padding-top: 50px;
 }
 
-.social-list > li{
-    font-size: 1.6rem;
+.success-dialogue h3{
+	font-weight: 400;
+	margin-bottom: 20px;
+}
+
+.success-dialogue .btn{
+	font-size: 1.6em;
+	font-size: 1.6rem;
+	text-decoration: none;
+}
+
+.alert h4.upgrade-text  {
+	color: #454545;
+}
+
+.alert h4.upgrade-text > a {
+	color: #454545;
+	font-weight: 400;
+}
+
+/*.success-dialogue .alert h4 {
+	color: #454545;
+}*/
+
+.social-list > li > a > i {
+	color: #454545;
+	font-size: 3.2em;
+    font-size: 3.2rem;
+}
+
+.social-list > li > a:hover > i {
+	color: #fff;
+}
+
+.social-list > li > a {
+	color: #454545;
+	text-decoration: none;
+	font-size: 1.4em;
+    font-size: 1.4rem;
+}
+
+.social-list > li > a:hover {
+	color: #fff;
 }
 
 .download-list > li {
@@ -53,7 +94,7 @@
 
 .success-dialogue > div > div:last-child{
 	background-color: #008CBA;
-	height: 100%;
+	min-height: 350px;
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
