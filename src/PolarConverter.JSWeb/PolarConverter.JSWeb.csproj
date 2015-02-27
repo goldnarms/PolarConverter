@@ -1201,6 +1201,7 @@
     <Content Include="Views\Pro\Activate.cshtml" />
     <Content Include="Views\Shared\Plugins\_GoogleAdLeader.cshtml" />
     <Content Include="Views\Account\RegisterUser.cshtml" />
+    <Content Include="Views\Shared\Plugins\_GoogleAdLeader_Medium.cshtml" />
     <None Include="Web.Backload.Default.config" />
     <None Include="Web.Backload.xsd">
       <SubType>Designer</SubType>

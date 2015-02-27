@@ -171,8 +171,7 @@
 									<h4><i class="icon-download"></i> Click the links below to download your files:</h4>
 									<ul class="list-unstyled download-list">
 										<li data-ng-repeat="file in uc.convertedFiles">
-											<i class="glyphicon glyphicon-file"></i>
-											<a data-ng-href="@Model.BlobPath{{ file.reference }}">{{file.name}}</a>
+											<a data-ng-href="@Model.BlobPath{{ file.reference }}"><i class="glyphicon glyphicon-file"></i> {{file.name}}</a>
 										</li>
 									</ul>
 									@if (!Request.IsAuthenticated && showUpdate)

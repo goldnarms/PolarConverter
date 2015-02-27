@@ -29,13 +29,25 @@
 	text-decoration: none;
 }
 
-.alert h4.upgrade-text  {
+.alert h4  {
 	color: #454545;
 }
 
 .alert h4.upgrade-text > a {
 	color: #454545;
 	font-weight: 400;
+}
+
+.download-list{
+    color: #454545;
+}
+
+.download-list a{
+    color: #454545;
+}
+
+.download-list a:hover{
+    color: #fff;
 }
 
 /*.success-dialogue .alert h4 {
@@ -94,7 +106,7 @@
 
 .success-dialogue > div > div:last-child{
 	background-color: #008CBA;
-	min-height: 350px;
+	min-height: 330px;
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
