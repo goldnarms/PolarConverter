@@ -29,6 +29,24 @@
 	text-decoration: none;
 }
 
+.ad-large {
+	display: block;
+}
+
+.ad-medium {
+	display: none;
+}
+
+@media (max-width: 1023px) {
+	.ad-large {
+		display: none;
+	}
+
+	.ad-medium {
+		display: block;
+	}
+}
+
 .alert h4  {
 	color: #454545;
 }

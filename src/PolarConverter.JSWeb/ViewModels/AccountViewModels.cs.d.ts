@@ -25,6 +25,7 @@
 		timeZoneOffset: number;
 		birthDate: string;
 		accessToken: string;
+		providerUsername: string;
 		providerType: any;
 	}
 	interface sendCodeViewModel {

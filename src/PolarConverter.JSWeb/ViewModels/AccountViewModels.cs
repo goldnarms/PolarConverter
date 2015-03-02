@@ -97,7 +97,9 @@ namespace PolarConverter.JSWeb.ViewModels
 
         public string AccessToken { get; set; }
 
-        public ProviderType ProviderType { get; set; }
+		public string ProviderUsername { get; set; }
+
+		public ProviderType ProviderType { get; set; }
     }
 
     public class SendCodeViewModel

@@ -175,8 +175,9 @@
 										</li>
 									</ul>
 									@if (!Request.IsAuthenticated && showUpdate)
-								{
-										@Html.Partial("Plugins/_GoogleAdLeader")
+									{
+										<div class="ad-large">@Html.Partial("Plugins/_GoogleAdLeader")</div>
+										<div class="ad-medium">@Html.Partial("Plugins/_GoogleAdLeader_Medium")</div>
 										<h4 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
 								}
 								else if(Request.IsAuthenticated)
@@ -275,7 +276,14 @@
 				</p>
 			</div>
 			<div class="col-md-4">
-				@Html.Partial("Plugins/_GoogleAdsense")
+				@if (!Request.IsAuthenticated)
+				{
+					@Html.Partial("Plugins/_GoogleAdsense")
+				}
+				else
+				{
+
+				}
 			</div>
 		</div>
 	</div>

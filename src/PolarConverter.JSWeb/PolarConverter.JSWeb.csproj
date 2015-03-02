@@ -383,6 +383,10 @@
     <Compile Include="Migrations\201501181704135_AddedUserProperties.Designer.cs">
       <DependentUpon>201501181704135_AddedUserProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503022133049_Provider Username.cs" />
+    <Compile Include="Migrations\201503022133049_Provider Username.Designer.cs">
+      <DependentUpon>201503022133049_Provider Username.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\RunkeeperResult.cs" />
     <Compile Include="Models\Subscription.cs" />
@@ -1325,6 +1329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501181704135_AddedUserProperties.resx">
       <DependentUpon>201501181704135_AddedUserProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503022133049_Provider Username.resx">
+      <DependentUpon>201503022133049_Provider Username.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

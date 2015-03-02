@@ -115,7 +115,7 @@ namespace PolarConverter.JSWeb.Controllers
                 Weight = applicationUser.Weight,
                 ForceGarmin = applicationUser.ForceGarmin,
                 TimezoneOffset = applicationUser.TimeZoneOffset,
-                RegisteredProviders = applicationUser.OauthTokens != null ? applicationUser.OauthTokens.Select(ot => ot.ProviderType).ToList() : null,
+                RegisteredProviders = applicationUser.OauthTokens != null ? applicationUser.OauthTokens.Select(ot => new RegisteredProvider { ProviderType = ot.ProviderType, Username = ot.Username }).ToList() : null,
                 ActiveSubscription = applicationUser.Subscriptions != null ? applicationUser.Subscriptions.FirstOrDefault(s => s.Paid && s.StartTime <= today && s.EndTime >= today) : null
             };
         }

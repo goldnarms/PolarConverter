@@ -1,136 +1,141 @@
 ﻿@using PolarConverter.JSWeb.Models
 @using PolarConverter.DAL.Models
+@using System.Linq
 @model PolarConverter.JSWeb.ViewModels.UserViewModel
 @{
-    ViewBag.Title = "UserProfile";
+	ViewBag.Title = "UserProfile";
 }
 <div data-ng-controller="userProfileCtrl as up">
-    <div class="row">
-        <div class="col-md-12">
-            @if (Model.ActiveSubscription != null)
-            {
-                <strong>Pro Subscription</strong>
-                <p>
-                    Subscription will continue to run until canceled. Next charge will come on: @Model.ActiveSubscription.EndTime.ToString("d")
-                    @using (Html.BeginForm("AbortSubscription", "Account", new { id = @Model.ActiveSubscription.SubscriptionId }, FormMethod.Post, null))
-                    {
-                    <p><button type="submit" class="btn btn-primary btn-sm">Cancel subscription</button></p>
-                    }
-                    </p>
-                    <h4>Services</h4>
-                if (Model.RegisteredProviders.Any(p => p == ProviderType.Dropbox))
-                {
-                    <p><em>Dropbox connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 2 }, null)</p>
-                }
-                else
-                {
-                    using (Html.BeginForm("ConnectToDropbox", "Services", FormMethod.Post, new { }))
-                    {
-                        <p><button type="submit" class="btn btn-primary btn-sm">Connect to Dropbox</button></p>
-                    }
-                }
+	<div class="row">
+		<div class="col-md-12">
+			@if (Model.ActiveSubscription != null)
+			{
+				<strong>Pro Subscription</strong>
+				<p>
+					Subscription will continue to run until canceled. Next charge will come on: @Model.ActiveSubscription.EndTime.ToString("d")
+					@using (Html.BeginForm("AbortSubscription", "Account", new { id = @Model.ActiveSubscription.SubscriptionId }, FormMethod.Post, null))
+					{
+					<p><button type="submit" class="btn btn-primary btn-sm">Cancel subscription</button></p>
+					}
+					</p>
+					<h4>Services</h4>
+				if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Dropbox))
+				{
+					<p>
+						<em>Dropbox connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 2 }, null)
+				</p>
+							}
+							else
+							{
+							using (Html.BeginForm("ConnectToDropbox", "Services", FormMethod.Post, new { }))
+							{
+							<p><button type="submit" class="btn btn-primary btn-sm">Connect to Dropbox</button></p>
+					}
+				}
 
-                if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
-                {
-                    <p><em>Strava connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
-                }
-                else
-                {
-                    using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new { }))
-                    {
-                        <p><button type="submit" class="btn btn-provider btn-strava btn-sm">Connect to Strava</button></p>
-                    }
-                }
-                if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
-                {
-                    <p><em>Runkeeper connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
-                }
-                else
-                {
-                    using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new { }))
-                    {
-                        <button type="submit" class="btn btn-provider btn-runkeeper btn-sm">Connect to Runkeeper</button>
-                    }
-                }
-            }
-            else
-            {
-                <h6>Order Pro subscription</h6>
-                using (Html.BeginForm("OrderSubscription", "Account", FormMethod.Post, new { }))
-                {
-                    <button type="submit">Order (12$/yr)</button>
-                }
-            }
-        </div>
-    </div>
-    <div class="row" style="padding-top: 45px">
-        <div class="col-md-12">
-            <div class="well">
-                @using (Html.BeginForm("UserProfile", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <fieldset>
-                        <legend>User profile</legend>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                <label>
-                                    @Html.RadioButtonFor(m => m.PreferKg, "true", Model.PreferKg ? new { Checked = "checked" } : null) Kg
-                                </label>
-                                <label>
-                                    @Html.RadioButtonFor(m => m.PreferKg, "false", !Model.PreferKg ? new { Checked = "checked" } : null) Lbs
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control date" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.TimezoneOffset, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(m => m.TimezoneOffset, (SelectList)ViewBag.TimeZones, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                <label>
-                                    @Html.RadioButtonFor(m => m.IsMale, "true", Model.IsMale ? new { Checked = "checked" } : null) Male
-                                </label>
-                                <label>
-                                    @Html.RadioButtonFor(m => m.IsMale, "false", !Model.IsMale ? new { Checked = "checked" } : null) Female
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.ForceGarmin, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                <label>
-                                    @Html.CheckBoxFor(m => m.ForceGarmin)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-10 col-md-offset-2">
-                                <input type="submit" class="btn btn-default" value="Save" />
-                                @if (TempData["message"] != null)
-                                {
-                                    <span>@TempData["message"] <i class="glyphicon glyphicon-ok"></i></span>
-                                }
-                            </div>
-                        </div>
-                    </fieldset>
-                }
-            </div>
-        </div>
-    </div>
-</div>
+				if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Strava))
+				{
+						var stravaUsername = Model.RegisteredProviders.First(p => p.ProviderType == ProviderType.Strava).Username;
+							<p><em>Strava connected (@stravaUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
+							}
+							else
+							{
+							using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new { }))
+							{
+							<p><button type="submit" class="btn btn-provider btn-strava btn-sm">Connect to Strava</button></p>
+							}
+							}
+							if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Runkeeper))
+							{
+					var runkeeperUsername = Model.RegisteredProviders.First(p => p.ProviderType == ProviderType.Runkeeper).Username;
+							<p><em>Runkeeper connected (@runkeeperUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
+							}
+							else
+							{
+							using (Html.BeginForm("ConnectToRunkeeper", "Services", FormMethod.Post, new { }))
+							{
+							<button type="submit" class="btn btn-provider btn-runkeeper btn-sm">Connect to Runkeeper</button>
+							}
+							}
+							}
+							else
+							{
+							<h6>Order Pro subscription</h6>
+							using (Html.BeginForm("OrderSubscription", "Account", FormMethod.Post, new { }))
+							{
+							<button type="submit">Order (12$/yr)</button>
+							}
+							}
+						</div>
+					</div>
+					<div class="row" style="padding-top: 45px">
+						<div class="col-md-12">
+							<div class="well">
+								@using (Html.BeginForm("UserProfile", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+								{
+									@Html.AntiForgeryToken()
+									<fieldset>
+										<legend>User profile</legend>
+										<div class="form-group">
+											@Html.LabelFor(m => m.Weight, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												@Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
+											</div>
+										</div>
+										<div class="form-group">
+											@Html.LabelFor(m => m.PreferKg, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												<label>
+													@Html.RadioButtonFor(m => m.PreferKg, "true", Model.PreferKg ? new { Checked = "checked" } : null) Kg
+												</label>
+												<label>
+													@Html.RadioButtonFor(m => m.PreferKg, "false", !Model.PreferKg ? new { Checked = "checked" } : null) Lbs
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											@Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control date" })
+											</div>
+										</div>
+										<div class="form-group">
+											@Html.LabelFor(m => m.TimezoneOffset, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												@Html.DropDownListFor(m => m.TimezoneOffset, (SelectList)ViewBag.TimeZones, new { @class = "form-control" })
+											</div>
+										</div>
+										<div class="form-group">
+											@Html.LabelFor(m => m.IsMale, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												<label>
+													@Html.RadioButtonFor(m => m.IsMale, "true", Model.IsMale ? new { Checked = "checked" } : null) Male
+												</label>
+												<label>
+													@Html.RadioButtonFor(m => m.IsMale, "false", !Model.IsMale ? new { Checked = "checked" } : null) Female
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											@Html.LabelFor(m => m.ForceGarmin, new { @class = "col-md-2 control-label" })
+											<div class="col-md-10">
+												<label>
+													@Html.CheckBoxFor(m => m.ForceGarmin)
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-10 col-md-offset-2">
+												<input type="submit" class="btn btn-default" value="Save" />
+												@if (TempData["message"] != null)
+												{
+													<span>@TempData["message"] <i class="glyphicon glyphicon-ok"></i></span>
+												}
+											</div>
+										</div>
+									</fieldset>
+								}
+							</div>
+						</div>
+					</div>
+				</div>

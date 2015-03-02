@@ -189,9 +189,10 @@ namespace PolarConverter.JSWeb.Controllers
                         else
                         {
                             TempData["AccessToken"] = athleteResult.access_token;
+							TempData["ProviderUsername"] = athleteResult.athlete.email;
                             return RedirectToAction("RegisterUser", new
                             {
-                                providerType = ProviderType.Runkeeper,
+                                providerType = ProviderType.Strava,
                                 preferKg = athleteResult.athlete.measurement_preference == "meters",
                                 isMale = athleteResult.athlete.sex == null || (string)athleteResult.athlete.sex == "M",
                                 email = athleteResult.athlete.email,
@@ -261,6 +262,7 @@ namespace PolarConverter.JSWeb.Controllers
                                 var weightFeed = weightRequest.GetFeedPage();
                                 var weight = weightFeed.Items.Count > 0 ? weightFeed.Items.First().Weight : null;
                                 TempData["AccessToken"] = result.access_token;
+								TempData["ProviderUsername"] = profile.Name ?? "";
                                 return RedirectToAction("RegisterUser", new
                                 {
                                     providerType = ProviderType.Runkeeper,
@@ -282,6 +284,7 @@ namespace PolarConverter.JSWeb.Controllers
         public ActionResult RegisterUser(ProviderType providerType, double? weight=null, bool? preferKg=null, bool? isMale=null, string email = "", string birthdate = "")
         {
             object accessToken;
+			object providerUsername;
             var timeZones = TimeZoneHelper.GetTimeZones();
 
             ViewBag.TimeZones = new SelectList(timeZones, "Offset", "Text");
@@ -289,6 +292,10 @@ namespace PolarConverter.JSWeb.Controllers
             {
                 accessToken = null;
             }
+
+			if (!TempData.TryGetValue("ProviderUsername", out providerUsername)){
+				providerUsername = null;
+			}
             var model = new RegisterViewModel
             {
                 Weight = weight.HasValue ? Math.Round(weight.Value, 1) : 0,
@@ -297,6 +304,7 @@ namespace PolarConverter.JSWeb.Controllers
                 PreferKg = preferKg ?? true,
                 IsMale = isMale ?? true,
                 AccessToken = accessToken != null ? accessToken.ToString() : "",
+				ProviderUsername = providerUsername != null ? providerUsername.ToString() : "",
                 ProviderType = providerType
             };
 
@@ -323,7 +331,7 @@ namespace PolarConverter.JSWeb.Controllers
                     ForceGarmin = model.ForceGarmin,
                     TimeZoneOffset = model.TimeZoneOffset
                 };
-                return await CreateUser(user, model.AccessToken, model.ProviderType);
+                return await CreateUser(user, model.AccessToken, model.ProviderUsername, model.ProviderType);
             }
             var timeZones = TimeZoneHelper.GetTimeZones();
 
@@ -331,7 +339,7 @@ namespace PolarConverter.JSWeb.Controllers
             return View(model);
         }
 
-        private void SaveTokenForUser(string accessToken, ProviderType providerType)
+        private void SaveTokenForUser(string accessToken, string username, ProviderType providerType)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -356,7 +364,7 @@ namespace PolarConverter.JSWeb.Controllers
             }
         }
 
-        private async Task<ActionResult> CreateUser(ApplicationUser user, string token, ProviderType providerType)
+        private async Task<ActionResult> CreateUser(ApplicationUser user, string token, string userName, ProviderType providerType)
         {
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)

@@ -14,5 +14,7 @@ namespace PolarConverter.JSWeb.Models
         public ProviderType ProviderType { get; set; }
         public string Token { get; set; }
         public string Secret { get; set; }
-    }
+
+		public string Username { get; set; }
+	}
 }
