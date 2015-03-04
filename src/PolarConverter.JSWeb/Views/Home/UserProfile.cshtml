@@ -1,9 +1,7 @@
-﻿@using PolarConverter.JSWeb.Models
-@using PolarConverter.DAL.Models
-@using System.Linq
-@model PolarConverter.JSWeb.ViewModels.UserViewModel
+﻿@using PolarConverter.DAL.Models
+@model UserViewModel
 @{
-	ViewBag.Title = "UserProfile";
+	ViewBag.Title = "User Profile";
 }
 <div data-ng-controller="userProfileCtrl as up">
 	<div class="row">
@@ -19,7 +17,7 @@
 					}
 					</p>
 					<h4>Services</h4>
-				if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Dropbox))
+				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Dropbox))
 				{
 					<p>
 						<em>Dropbox connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 2 }, null)
@@ -33,9 +31,9 @@
 					}
 				}
 
-				if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Strava))
+				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Strava))
 				{
-						var stravaUsername = Model.RegisteredProviders.First(p => p.ProviderType == ProviderType.Strava).Username;
+					var stravaUsername = Model.Providers.Find(p => p.ProviderType == ProviderType.Strava).Username;
 							<p><em>Strava connected (@stravaUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
 							}
 							else
@@ -43,12 +41,12 @@
 							using (Html.BeginForm("ConnectToStrava", "Services", FormMethod.Post, new { }))
 							{
 							<p><button type="submit" class="btn btn-provider btn-strava btn-sm">Connect to Strava</button></p>
-							}
-							}
-							if (Model.RegisteredProviders.Any(p => p.ProviderType == ProviderType.Runkeeper))
-							{
-					var runkeeperUsername = Model.RegisteredProviders.First(p => p.ProviderType == ProviderType.Runkeeper).Username;
-							<p><em>Runkeeper connected (@runkeeperUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
+					}
+				}
+				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Runkeeper))
+                {
+							var runkeeperUsername = Model.Providers.Find(p => p.ProviderType == ProviderType.Runkeeper).Username;
+                            <p><em>Runkeeper connected (@runkeeperUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
 							}
 							else
 							{

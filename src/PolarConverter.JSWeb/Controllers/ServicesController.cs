@@ -64,7 +64,7 @@ namespace PolarConverter.JSWeb.Controllers
                     var responseContent = await stravaResult.Content.ReadAsStringAsync();
                     var athleteResult = JsonConvert.DeserializeObject<Rootobject>(responseContent);
 
-                    SaveTokenForUser(athleteResult.access_token, ProviderType.Strava);
+                    SaveTokenForUser(athleteResult.access_token, athleteResult.athlete.email, ProviderType.Strava);
                 }
             }
             return RedirectToAction("UserProfile", "Home");
@@ -108,7 +108,12 @@ namespace PolarConverter.JSWeb.Controllers
                     var result = JsonConvert.DeserializeObject<RunkeeperResult>(content);
                     if (result.access_token != null)
                     {
-                        SaveTokenForUser(result.access_token, ProviderType.Runkeeper);
+						var tokenManager = new AccessTokenManager(_runkeeperClientId, clientSecret, returnUrl, result.access_token);
+						var userRequest = new UsersEndpoint(tokenManager);
+						var userResult = userRequest.GetUser();
+						var profileRequest = new ProfileEndpoint(tokenManager, userResult);
+						var profile = profileRequest.GetProfile();
+						SaveTokenForUser(result.access_token, profile.Name ?? "", ProviderType.Runkeeper);
                     }
                 }
             }
@@ -181,7 +186,7 @@ namespace PolarConverter.JSWeb.Controllers
             }
         }
 
-        private void SaveTokenForUser(string accessToken, ProviderType providerType)
+        private void SaveTokenForUser(string accessToken, string username, ProviderType providerType)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -195,6 +200,7 @@ namespace PolarConverter.JSWeb.Controllers
                     {
                         ProviderType = providerType,
                         UserId = userId,
+						Username = username,
                         Token = accessToken
                     });
                 }

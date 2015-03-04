@@ -19,11 +19,11 @@
             <td>{{ file.name }}</td>
             <td><a data-ng-href="@ViewData["BlobPath"]{{ file.reference }}">Zip</a></td>
             <td>
-                @if (Model.RegisteredProviders.Any(p => p == ProviderType.Strava))
+                @if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Strava))
                 {
                     <a data-ng-click="ufc.exportToStrava(file)" href="#" title="Export to Strava"><img class="strava-logo" src="../../Content/strava_logo_sm.png" alt="" /></a>
                 }
-                @if (Model.RegisteredProviders.Any(p => p == ProviderType.Runkeeper))
+                @if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Runkeeper))
                 {
                     <a data-ng-click="ufc.exportToRunkeeper(file)" href="#" title="Export to Runkeeper"><img class="runkeeper-logo" src="../../Content/runkeeper_sm.png" alt="" /></a>
                 }

@@ -106,7 +106,7 @@ namespace PolarConverter.JSWeb.Controllers
         {
             var today = DateTime.Today;
 
-            return new UserViewModel
+            var temp = new UserViewModel
             {
                 Email = applicationUser.Email,
                 BirthDate = applicationUser.BirthDate,
@@ -115,9 +115,11 @@ namespace PolarConverter.JSWeb.Controllers
                 Weight = applicationUser.Weight,
                 ForceGarmin = applicationUser.ForceGarmin,
                 TimezoneOffset = applicationUser.TimeZoneOffset,
-                RegisteredProviders = applicationUser.OauthTokens != null ? applicationUser.OauthTokens.Select(ot => new RegisteredProvider { ProviderType = ot.ProviderType, Username = ot.Username }).ToList() : null,
+                Providers = applicationUser.OauthTokens != null ? applicationUser.OauthTokens.Select(ot => new RegisteredProvider { ProviderType = ot.ProviderType, Username = ot.Username }).ToList() : null,
                 ActiveSubscription = applicationUser.Subscriptions != null ? applicationUser.Subscriptions.FirstOrDefault(s => s.Paid && s.StartTime <= today && s.EndTime >= today) : null
             };
+
+			return temp;
         }
 
         [Authorize]
