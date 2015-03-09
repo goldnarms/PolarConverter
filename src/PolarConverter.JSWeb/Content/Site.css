@@ -56,6 +56,10 @@
 	font-weight: 400;
 }
 
+	.alert h4.upgrade-text > a:hover {
+		color: white;
+	}
+
 .download-list{
     color: #454545;
 }
