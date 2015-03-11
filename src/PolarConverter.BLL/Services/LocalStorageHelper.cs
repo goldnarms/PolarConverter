@@ -6,6 +6,7 @@ using System.Web;
 using Ionic.Zip;
 using PolarConverter.BLL.Entiteter;
 using PolarConverter.BLL.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace PolarConverter.BLL.Services
 {
@@ -53,9 +54,22 @@ namespace PolarConverter.BLL.Services
 
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
+            var xmlNamespace = "";
+            var xmlnamespaceRegex = new Regex("xmlns=\"([\\w:/.]*)\"");
+
             using (var reader = new StreamReader(fileReference))
             {
-                return _gpxReader.DeserializeFile(reader.BaseStream, xmlType);
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (xmlnamespaceRegex.IsMatch(line))
+                    {
+                        xmlNamespace = xmlnamespaceRegex.Match(line).Groups[1].Value;
+                        break;
+                    }
+                }
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                return _gpxReader.DeserializeFile(reader.BaseStream, xmlType, xmlNamespace);
             }
         }
 

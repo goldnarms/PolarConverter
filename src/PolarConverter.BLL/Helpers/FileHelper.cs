@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 
@@ -76,29 +77,21 @@ namespace PolarConverter.BLL.Helpers
 
         public static void ReadGpxFile(Stream stream, out string gpxVersion)
         {
+            var gpxVersionRegex = new Regex("gpx version=\"([0-9]{1,2}.[0-9]{1,2})\"");
             gpxVersion = "";
             stream.Seek(0, SeekOrigin.Begin);
             using (var textReader = new StreamReader(stream))
             {
-                var gpxNodeHit = false;
                 while (!textReader.EndOfStream)
                 {
                     var line = textReader.ReadLine();
+
                     if (line != null)
                     {
-                        if (line.Contains("gpx") && line.Contains("version="))
+                        if (gpxVersionRegex.IsMatch(line))
                         {
-                            gpxVersion = ReadGpxVersion(line);
+                            gpxVersion = gpxVersionRegex.Match(line).Groups[1].Value;
                             break;
-                        }
-                        if (line.Contains("gpx"))
-                        {
-                            gpxNodeHit = true;
-                        }
-                        // Can read version after xml
-                        else if (gpxNodeHit && line.Contains("version="))
-                        {
-                            gpxVersion = ReadGpxVersion(line);
                         }
                     }
                 }

@@ -9,15 +9,21 @@ namespace PolarConverter.BLL.Services
 {
     public class GpxReader
     {
-        public object DeserializeFile(Stream stream, Type xmlType, bool retry = true)
+        public object DeserializeFile(Stream stream, Type xmlType, string xmlNamespace = "http://www.topografix.com/GPX/1/0")
         {
-            XmlSerializer ser = xmlType == typeof(gpx) ? new XmlSerializer(xmlType, "http://www.topografix.com/GPX/1/0") : new XmlSerializer(xmlType);
+            XmlSerializer ser = new XmlSerializer(xmlType, xmlNamespace);
             try
             {
                 return ser.Deserialize(stream);
             }
             catch (InvalidOperationException exception)
             {
+                throw;
+            }
+
+
+
+
                 //if (retry)
                 //{
                 //    // Might be because of invalid datetime, 60 minutes instead of 00, reformat and try again
@@ -50,9 +56,6 @@ namespace PolarConverter.BLL.Services
                 //    DeserializeFile(stream, xmlType, false);
                 //}
                 // Retry didn't work, throw exception 
-                throw;
-            }
-
         }
     }
 }

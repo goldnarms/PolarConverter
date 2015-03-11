@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using DropNet.Models;
+using System.Text.RegularExpressions;
 
 namespace PolarConverter.BLL.Services
 {
@@ -105,10 +106,24 @@ namespace PolarConverter.BLL.Services
 
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
+            var xmlNamespace = "";
+            var xmlnamespaceRegex = new Regex("xmlns=\"([\\w:/.]*)\"");
+
             using (var memoryStream = new MemoryStream(_client.GetFile(fileReference)))
             {
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                return _gpxReader.DeserializeFile(memoryStream, xmlType);
+                var reader = new StreamReader(memoryStream);
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (xmlnamespaceRegex.IsMatch(line))
+                    {
+                        xmlNamespace = xmlnamespaceRegex.Match(line).Groups[1].Value;
+                        break;
+                    }
+                }
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return _gpxReader.DeserializeFile(memoryStream, xmlType, xmlNamespace);
             }
         }
 

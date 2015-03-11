@@ -12,6 +12,7 @@ using BlobContainerPermissions = Microsoft.WindowsAzure.Storage.Blob.BlobContain
 using BlobContainerPublicAccessType = Microsoft.WindowsAzure.Storage.Blob.BlobContainerPublicAccessType;
 using CloudBlobClient = Microsoft.WindowsAzure.Storage.Blob.CloudBlobClient;
 using CloudBlobContainer = Microsoft.WindowsAzure.Storage.Blob.CloudBlobContainer;
+using System.Text.RegularExpressions;
 
 namespace PolarConverter.BLL.Services
 {
@@ -67,11 +68,25 @@ namespace PolarConverter.BLL.Services
         public object ReadXmlDocument(string fileReference, Type xmlType)
         {
             var blob = _container.GetBlockBlobReference(fileReference);
+            var xmlNamespace = "";
+            var xmlnamespaceRegex = new Regex("xmlns=\"([\\w:/.]*)\"");
+
             using (var memoryStream = new MemoryStream())
             {
                 blob.DownloadToStream(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                return _gpxReader.DeserializeFile(memoryStream, xmlType);
+                var reader = new StreamReader(memoryStream);
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (xmlnamespaceRegex.IsMatch(line))
+                    {
+                        xmlNamespace = xmlnamespaceRegex.Match(line).Groups[1].Value;
+                        break;
+                    }
+                }
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return _gpxReader.DeserializeFile(memoryStream, xmlType, xmlNamespace);
             }
         }
 
