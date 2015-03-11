@@ -167,13 +167,14 @@ namespace PolarConverter.JSWeb.Controllers
             {
                 {
                     new Change {
-                        PublishDate = new System.DateTime(2014, 11, 15),
+                        PublishDate = new System.DateTime(2015, 3, 15),
                         Version = "1.1.0",
                         Features = new List<string> {
                             { "Activities with multiple laps might sometimes have a lot of data that is not part of any lap. Theese data is now assigned to a lap and converted over with the rest." },
                             { "Removing Author tag as it was causing an issue with Garmin Connect." },
                             { "Allow for large file uploads." },
-                            { "Added Pro features: export to Strava and Runkeeper, integration with Dropbox and saving userprofiles and files uploaded." }
+                            { "Added Pro features: export to Strava and Runkeeper, integration with Dropbox and saving userprofiles and files uploaded." },
+							{ "Fixed bug with .gpx files that was on one line." }
                         }
                     }
                 }

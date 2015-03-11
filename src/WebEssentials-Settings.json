@@ -7,7 +7,9 @@
   },
   "CodeGen": {
     "CamelCasePropertyNames": true,
-    "CamelCaseTypeNames": true
+    "CamelCaseTypeNames": true,
+    "AddTypeScriptReferencePath": true,
+    "CamelCaseEnumerationValues": false
   },
   "CoffeeScript": {
     "CompileOnBuild": false,
@@ -34,12 +36,15 @@
     "ValidateStarSelector": false,
     "ValidateVendorSpecifics": false,
     "ValidateZeroUnit": false,
-    "ValidationLocation": "Messages"
+    "ValidationLocation": "Messages",
+    "SyncBase64ImageValues": true,
+    "ValidateDuplicateSelectors": true
   },
   "General": {
     "AllMessagesToOutputWindow": false,
     "KeepImportantComments": false,
-    "SvgPreviewPane": true
+    "SvgPreviewPane": true,
+    "ShowLogoWatermark": true
   },
   "Html": {
     "AutoMinify": true,
@@ -63,7 +68,14 @@
         "HtmlFormat": "<div style=\"background-image=url('{0}')\"></div>",
         "Name": "Inline CSS"
       }
-    ]
+    ],
+    "AttributeQuotesRemovalMode": "KeepQuotes",
+    "CustomAngularDirectiveList": null,
+    "EnableBootstrapValidation": true,
+    "EnableFoundationValidation": true,
+    "MinifyAngularBindingExpressions": false,
+    "MinifyKnockoutBindingExpressions": false,
+    "ProcessableScriptTypeList": null
   },
   "JavaScript": {
     "AutoMinify": true,
@@ -72,7 +84,9 @@
     "GzipMinifiedFiles": false,
     "LintOnBuild": false,
     "LintOnSave": true,
-    "LintResultLocation": "Message"
+    "LintResultLocation": "Message",
+    "EvalTreatment": "MakeImmediateSafe",
+    "TermSemicolons": true
   },
   "Less": {
     "CompileOnBuild": false,

@@ -48,17 +48,6 @@ namespace PolarConverter.BLL.Services
                 serializer.Serialize(memStream, trainingCenter);
                 return memStream.ToArray();
             }
-
-
-            //return _fileService.WriteToMemoryStream(polarData).ToArray();
-            //if (model.SendToStrava)
-            //{
-            //    using (var fs = File.OpenWrite(filSti))
-            //    {
-            //        fs.Write(memStreamArray, 0, memStreamArray.Length);
-            //    }
-            //    tcxFilstier.Add(filSti);
-            //}
         }
 
         public PolarData InitalizePolarData(PolarFile file, UploadViewModel model)
