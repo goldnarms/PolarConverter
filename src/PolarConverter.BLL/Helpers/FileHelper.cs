@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
@@ -28,7 +29,7 @@ namespace PolarConverter.BLL.Helpers
             }
             else if (extension == "gpx")
             {
-                ReadGpxFile(stream, out gpxVersion);
+				gpxVersion = ReadGpxFile(stream);
             }
         }
 
@@ -75,27 +76,22 @@ namespace PolarConverter.BLL.Helpers
             }
         }
 
-        public static void ReadGpxFile(Stream stream, out string gpxVersion)
+        public static string ReadGpxFile(Stream stream)
         {
-            var gpxVersionRegex = new Regex("gpx version=\"([0-9]{1,2}.[0-9]{1,2})\"");
-            gpxVersion = "";
+            var gpxVersionRegex = new Regex("gpx[\r\n\\s]{1,2}version=\"([0-9]{1,2}.[0-9]{1,2})\"");
             stream.Seek(0, SeekOrigin.Begin);
             using (var textReader = new StreamReader(stream))
             {
                 while (!textReader.EndOfStream)
                 {
-                    var line = textReader.ReadLine();
-
-                    if (line != null)
-                    {
-                        if (gpxVersionRegex.IsMatch(line))
-                        {
-                            gpxVersion = gpxVersionRegex.Match(line).Groups[1].Value;
-                            break;
-                        }
-                    }
+					var text = textReader.ReadToEnd();
+					if (gpxVersionRegex.IsMatch(text))
+					{
+						return gpxVersionRegex.Match(text).Groups[1].Value;
+					}
                 }
             }
+			return "";
         }
 
         public static void ReadHrmFile(Stream stream, out string sport, out double v02Max, out double weight)

@@ -39,7 +39,7 @@ var PolarConverter;
                     this.sports.push(sport);
                 }
             }
-            this.tweetText = "I have just converted my Polar files to Endomondo compatible files using #polarconverter at ";
+            this.tweetText = "I just converted my Polar files to Endomondo compatible files using #polarconverter at ";
             this.isMetricWeight = true;
             this.isConverting = false;
             var url = "/api/upload";

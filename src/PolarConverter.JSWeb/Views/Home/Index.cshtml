@@ -38,9 +38,9 @@
 								<span>Get from Dropbox</span>
 							</span>
 						}
-						<button type="button" class="btn btn-warning cancel btn-sm" data-ng-disabled="uc.uploadedFiles.length == 0" data-ng-click="uc.initPage()">
+						<button type="button" class="btn btn-warning cancel btn-sm" data-ng-show="uc.uploadedFiles.length > 0" data-ng-click="uc.initPage()">
 							<i class="glyphicon glyphicon-ban-circle"></i>
-							<span>Cancel upload</span>
+							<span>Cancel conversion</span>
 						</button>
 						<!-- The global file processing state -->
 						<span class="fileupload-process"></span>
