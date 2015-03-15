@@ -18,7 +18,7 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			Want to upload your Polar&reg; files to Endomondo, Garmin Connect, Strava or Runkeeper? Get started by clicking Upload files... 
+			Want to upload your Polar&reg; files to Endomondo, Garmin Connect, Strava or Runkeeper? Click Upload files... to get started.
 			<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="uc.options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
 				<!-- Redirect browsers with JavaScript disabled to the origin page -->
 				<noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
@@ -167,7 +167,7 @@
 						<div class="row">
 							<div class="col-sm-9">
 								<h3>Conversion successful!</h3>
-								<h4><i class="icon-download"></i> Click the links below to download your files:</h4>
+								<h5><i class="icon-download"></i> Click the link below to download your files:</h5>
 								<ul class="list-unstyled download-list">
 									<li data-ng-repeat="file in uc.convertedFiles">
 										<a data-ng-href="@Model.BlobPath{{ file.reference }}"><i class="glyphicon glyphicon-file"></i> {{file.name}}</a>
@@ -176,22 +176,33 @@
 								@if (!Request.IsAuthenticated && showUpdate)
 								{
 									<div class="ad-large">@Html.Partial("Plugins/_GoogleAdLeader")</div>
-										<div class="ad-medium">@Html.Partial("Plugins/_GoogleAdLeader_Medium")</div>
-										<h4 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h4>
+									<div class="ad-medium">@Html.Partial("Plugins/_GoogleAdLeader_Medium")</div>
+									<h5 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h5>
 								}
 								else if (Request.IsAuthenticated)
 								{
-									<strong><span>You can also find your files under <a href="./Home/Files">Files</a></span></strong>
-									if (Model.HasDropbox)
-									{
-										<strong><span> and in your Dropbox under Apps/Converted/.</span></strong>
-									}
-									else
-									{
-										<strong><span>.</span></strong>
-									}
+									<strong>Your files are also uploaded to:</strong>
+
+									<ul class="list-unstyled">
+										<li>
+											<a href="./Home/Files">Files</a>
+										</li>
+										@if (Model.HasDropbox)
+										{
+											<li><strong>Dropbox</strong> under Apps/Converted/</li>
+										}
+										@if (Model.HasStrava)
+										{
+											<li><a href="https://www.strava.com/athlete/training?utm_source=top-nav" target="_blank">Strava</a> under My Activities</li>
+										}
+										@if (Model.HasRunkeeper)
+										{
+											var activityListUrl = string.Format("http://runkeeper.com/user/{0}/activitylist", Model.RunkeeperUsername);
+                                            <li><a href="@activityListUrl" target="_blank">Runkeeper</a> under activities</li>
+                                        }
+									</ul>
 								}
-								<h4>More files to convert? &nbsp;<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a></h4>
+								<h5>More files to convert? &nbsp;<a class="btn btn-primary btn-sm" href="" data-ng-click="uc.initPage()"><i class="icon-repeat"></i>Go back</a></h5>
 								<br />
 							</div>
 							<div class="col-sm-3">

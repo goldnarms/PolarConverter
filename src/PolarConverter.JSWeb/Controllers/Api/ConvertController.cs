@@ -76,7 +76,15 @@ namespace PolarConverter.JSWeb.Controllers.Api
 
 						var runkeeperToken = db.OauthTokens.SingleOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Runkeeper);
 						if (runkeeperToken != null) {
-							serviceController.ExportToRunkeeper(runkeeperToken.Token, exportFileData);
+							try
+							{
+								exportFileData.Provider = "Runkeeper";
+								serviceController.ExportToRunkeeper(runkeeperToken.Token, exportFileData);
+							}
+							catch (Exception)
+							{
+								throw new Exception("Could not export to Runkeeper.");
+							}
                         }
 
 						var stravaToken = db.OauthTokens.SingleOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Strava);

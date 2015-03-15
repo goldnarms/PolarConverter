@@ -113,7 +113,10 @@ namespace PolarConverter.JSWeb.Controllers
 						var userResult = userRequest.GetUser();
 						var profileRequest = new ProfileEndpoint(tokenManager, userResult);
 						var profile = profileRequest.GetProfile();
-						SaveTokenForUser(result.access_token, profile.Name ?? "", ProviderType.Runkeeper);
+						var profileUrl = profile.Profile;
+						var startIndex = profileUrl.IndexOf("/user/") + 6;
+						var username = profileUrl.Substring(startIndex, profileUrl.Length - startIndex);
+						SaveTokenForUser(result.access_token, username, ProviderType.Runkeeper);
                     }
                 }
             }

@@ -92,8 +92,6 @@ namespace PolarConverter.BLL.Services
 
                         }
                         zip.Save(output);
-                        //if (model.SendToStrava)
-                        //    EpostHelper.SendTilStrava(model.StravaUsername, tcxFilstier);
                     }
                 });
 

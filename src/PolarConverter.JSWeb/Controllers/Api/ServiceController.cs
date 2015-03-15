@@ -102,7 +102,15 @@ namespace PolarConverter.JSWeb.Controllers.Api
             var activitiesRequest = new FitnessActivitiesEndpoint(_tokenManager, user);
             foreach (var activity in activities)
             {
-                var uri = activitiesRequest.CreateActivity(activity);
+				try
+				{
+					var uri = activitiesRequest.CreateActivity(activity);
+				}
+				catch (Exception ex)
+				{
+					var ss = ex;
+					throw;
+				}                
             }
         }
 
@@ -134,24 +142,29 @@ namespace PolarConverter.JSWeb.Controllers.Api
                         HeartRate = t.HeartRateBpm.Value,
                         Timestamp = (startTime - t.Time).TotalSeconds
                     })).ToList(),
-                    Notes = activity.Notes,
+					Equipment = "",
+                    Notes = activity.Notes ?? "",
                     Type = type,
                     StartTime = startTime,
                     TotalCalories= activity.Lap.Sum(l => l.Calories),
                     TotalDistance= activity.Lap.Sum(l => l.DistanceMeters)
                 };
 
-                if (activity.Lap.Any(l => l.Track != null && l.Track.Any(t => t.Position != null)))
-                {
-                    runkeeperActivity.Path = activity.Lap.SelectMany(l => l.Track.Select(t => new PathModel
-                    {
-                        Altitude = t.AltitudeMeters,
-                        Latitude = t.Position.LatitudeDegrees,
-                        Longitude = t.Position.LongitudeDegrees,
-                        Type = "gps",
-                        Timestamp = (startTime - t.Time).TotalSeconds
-                    })).ToList();
-                }
+				if (activity.Lap.Any(l => l.Track != null && l.Track.Any(t => t.Position != null)))
+				{
+					runkeeperActivity.Path = activity.Lap.SelectMany(l => l.Track.Select(t => new PathModel
+					{
+						Altitude = t.AltitudeMeters,
+						Latitude = t.Position.LatitudeDegrees,
+						Longitude = t.Position.LongitudeDegrees,
+						Type = "gps",
+						Timestamp = (t.Time - startTime).TotalSeconds
+					})).ToList();
+				}
+				else
+				{
+					runkeeperActivity.Path = null;
+				}
                 runkeeperList.Add(runkeeperActivity);
             }
             return runkeeperList;

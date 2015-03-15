@@ -18,6 +18,12 @@
     padding-top: 50px;
 }
 
+.success-dialogue {
+	color: #454545;
+	font-size: 1.5em;
+	font-size: 1.5rem;
+}
+
 .success-dialogue h3{
 	font-weight: 400;
 	margin-bottom: 20px;
@@ -48,6 +54,7 @@
 }
 
 .alert h4  {
+	margin-top: 10px;
 	color: #454545;
 }
 

@@ -18,6 +18,7 @@ namespace PolarConverter.BLL.Services
             }
             catch (InvalidOperationException exception)
             {
+				var tt = exception;
 				throw new Exception("There was an error converting your .gpx file. You can check and edit your .gpx file in Notepad. Check if <time>x</time> is in the format yyyy-MM-ddTHH:mm:ssZ. E.g. 2015-03-22T21:12:55Z");
 					
             }

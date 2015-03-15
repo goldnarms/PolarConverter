@@ -27,6 +27,9 @@ namespace PolarConverter.JSWeb.Controllers
         public async Task<ActionResult> Index()
         {
             var hasDropbox = false;
+			var hasRunkeeper = false;
+			var hasStrava = false;
+			var runkeeperUsername = "";
             UserViewModel user = null;
             if (User.Identity.IsAuthenticated)
             {
@@ -34,6 +37,9 @@ namespace PolarConverter.JSWeb.Controllers
                 using (var context = new ApplicationDbContext())
                 {
                     hasDropbox = await context.OauthTokens.AnyAsync(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Dropbox);
+					hasRunkeeper = await context.OauthTokens.AnyAsync(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Runkeeper);
+					hasStrava = await context.OauthTokens.AnyAsync(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Strava);
+					runkeeperUsername = await context.OauthTokens.AnyAsync(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Runkeeper) ? context.OauthTokens.First(oa => oa.UserId == userId && oa.ProviderType == DAL.Models.ProviderType.Runkeeper).Username : "";
                     var applicationUser = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
                     user = applicationUser != null ? MapToViewModel(applicationUser) : null;
                 }
@@ -42,7 +48,10 @@ namespace PolarConverter.JSWeb.Controllers
                 {
                     BlobPath = _blobPath,
                     HasDropbox = hasDropbox,
-                    User = user
+					HasRunkeeper = hasRunkeeper,
+					HasStrava = hasStrava,
+                    User = user,
+					RunkeeperUsername = runkeeperUsername
                 };
             return View(frontPageModel);
         }

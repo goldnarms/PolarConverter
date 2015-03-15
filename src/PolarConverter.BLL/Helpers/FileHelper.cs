@@ -78,8 +78,10 @@ namespace PolarConverter.BLL.Helpers
 
         public static string ReadGpxFile(Stream stream)
         {
-            var gpxVersionRegex = new Regex("gpx[\r\n\\s]{1,2}version=\"([0-9]{1,2}.[0-9]{1,2})\"");
-            stream.Seek(0, SeekOrigin.Begin);
+			var versionMatch = "<gpx(.|\n)*version=\"([0-9]{1,2}.[0-9]{1,2})\"(.|\n)*>";
+            var gpxVersionRegex = new Regex(versionMatch, RegexOptions.IgnoreCase);
+
+			stream.Seek(0, SeekOrigin.Begin);
             using (var textReader = new StreamReader(stream))
             {
                 while (!textReader.EndOfStream)
@@ -87,7 +89,8 @@ namespace PolarConverter.BLL.Helpers
 					var text = textReader.ReadToEnd();
 					if (gpxVersionRegex.IsMatch(text))
 					{
-						return gpxVersionRegex.Match(text).Groups[1].Value;
+						var matches = gpxVersionRegex.Match(text).Groups;
+                        return gpxVersionRegex.Match(text).Groups[2].Value;
 					}
                 }
             }
