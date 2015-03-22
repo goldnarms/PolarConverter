@@ -5,11 +5,12 @@
 }
 
 <h2>@ViewBag.Title!</h2>
-
+<h6>Go pro for only $12/year ($1/month).</h6>
 <h4>By going Pro, you will have access to these features:</h4>
 <ul>
     <li>All your converted files are stored for easy retrieval.</li>
     <li>You can upload files directly from your Dropbox account.</li>
+	<li>No ads!</li>
     <li>Easy export to Strava.</li>
     <li>Easy export to Runkeeper.</li>
 </ul>
@@ -26,7 +27,7 @@
             @Html.ActionLink("Runkeeper", "LoginRunkeeper", null, new { @class = "btn btn-provider btn-runkeeper", title = "Log in using your Runkeeper account" })
             <button type="submit" class="btn btn-provider btn-facebook" id="Facebook" name="provider" value="Facebook" title="Log in using your Facebook account">Facebook</button>
             <button type="submit" class="btn btn-provider btn-twitter" id="Twitter" name="provider" value="Twitter" title="Log in using your Twitter account">Twitter</button>
-            <button type="submit" class="btn btn-provider btn-google" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
+            @*<button type="submit" class="btn btn-provider btn-google" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>*@
         </p>
     </div>
     }

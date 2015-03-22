@@ -21,7 +21,7 @@ namespace PolarConverter.BLL.Services
             _dropboxService = new DropboxService();
         }
 
-        public IGpx ReadGpxFile(string fileReference, bool fromDropbox, string version, int timeOffset, string userId)
+        public IGpx ReadGpxFile(string fileReference, bool fromDropbox, string version, string userId)
         {
             IGpx xml = null;
             switch (version)
@@ -76,10 +76,9 @@ namespace PolarConverter.BLL.Services
             return xml;
         }
 
-        public IGpx MapGpxFile(GpxFile gpxFile, double invertedOffset, string userId)
+        public IGpx MapGpxFile(GpxFile gpxFile, string userId)
         {
-            var timeKorreksjon = IntHelper.HentTidsKorreksjon(invertedOffset);
-            return ReadGpxFile(gpxFile.Reference, gpxFile.FromDropbox, gpxFile.Version, timeKorreksjon, userId);
+            return ReadGpxFile(gpxFile.Reference, gpxFile.FromDropbox, gpxFile.Version, userId);
         }
 
 
@@ -195,7 +194,7 @@ namespace PolarConverter.BLL.Services
                     return Convert.ToInt32(Math.Ceiling(difference.TotalHours) - 1);
                 }
             }
-            return difference.Minutes > 0 ?
+            return difference.Minutes >= 0 ?
                 Convert.ToInt32(Math.Floor(difference.TotalHours)) :
                 Convert.ToInt32(Math.Ceiling(difference.TotalHours));
         }

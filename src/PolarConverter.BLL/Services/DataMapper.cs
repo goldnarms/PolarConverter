@@ -133,7 +133,7 @@ namespace PolarConverter.BLL.Services
             polardata.CadenseData = new List<string>();
             polardata.SpeedData = new List<string>();
             polardata.AntallMeter = new List<double>();
-            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model.TimeZoneOffset * -1, model.Uid) : null;
+            polardata.GpxData = file.GpxFile != null ? _gpxService.MapGpxFile(file.GpxFile, model.Uid) : null;
             polardata.RundeTider = KonverteringsHelper.VaskIntTimes(hrmData);
             return polardata;
         }

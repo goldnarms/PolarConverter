@@ -138,9 +138,10 @@ namespace PolarConverter.BLL.Services
                                     {
                                         RecordingRate = recordingRate,
                                         StartTime = startTime,
-                                        GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.TimeZoneOffset * -1, model.Uid),
-                                        UploadViewModel = model
-                                    };
+                                        GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.Uid),
+                                        UploadViewModel = model,
+										InvertedOffset = model.TimeZoneOffset * -1
+									};
                                     foreach (var lap in activity.Lap.Where(l => l != null))
                                     {
                                         var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate));
@@ -587,7 +588,7 @@ namespace PolarConverter.BLL.Services
         {
             var dataMaxLength = sampleDic.Select(keyValue => keyValue.Value.Length).Concat(new[] { 0 }).Max();
             var rangeLength = endRange - startRange;
-            return dataMaxLength > rangeLength ? dataMaxLength : rangeLength;
+            return dataMaxLength > rangeLength ? rangeLength : dataMaxLength;
         }
     }
 }
