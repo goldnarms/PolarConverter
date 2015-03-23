@@ -121,20 +121,21 @@ namespace PolarConverter.BLL.Services
 
         private static string RemoveFileExtension(string filename)
         {
-            if (filename.Length > 4)
+            var filenameLower = filename.ToLower();
+            if (filenameLower.Length > 4)
             {
-                if (filename.ToLower().Contains(".hrm") &&
-                    filename.Substring(filename.LastIndexOf(".hrm"), 4).ToLower() == ".hrm")
+                if (filenameLower.Contains(".hrm") &&
+                    filenameLower.Substring(filenameLower.LastIndexOf(".hrm"), 4) == ".hrm")
                 {
-                    return filename.Substring(0, filename.LastIndexOf(".hrm"));
+                    return filenameLower.Substring(0, filenameLower.LastIndexOf(".hrm"));
                 }
-                else if (filename.ToLower().Contains(".xml") &&
-                    filename.Substring(filename.LastIndexOf(".xml"), 4).ToLower() == ".xml")
+                else if (filenameLower.Contains(".xml") &&
+                    filenameLower.Substring(filenameLower.LastIndexOf(".xml"), 4) == ".xml")
                 {
-                    return filename.Substring(0, filename.LastIndexOf(".xml"));
+                    return filenameLower.Substring(0, filenameLower.LastIndexOf(".xml"));
                 }
             }
-            return filename;
+            return filenameLower;
         }
     }
 }

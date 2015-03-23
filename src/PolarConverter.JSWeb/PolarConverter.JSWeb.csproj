@@ -1091,6 +1091,7 @@
     <Content Include="bower_components\moment\scripts\npm_prepublish.sh" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter-staging - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\polarconverter__staging %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\polarconverter__staging.pubxml" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
