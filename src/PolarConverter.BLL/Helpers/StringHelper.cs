@@ -39,7 +39,7 @@ namespace PolarConverter.BLL.Helpers
                 Convert.ToInt32(date.Substring(0, 2)), //hour
                 Convert.ToInt32(date.Substring(3, 2)), //minutes
                 Convert.ToInt32(date.Substring(6, 2)), //seconds
-                Convert.ToInt32(date.Substring(9, 3)) //mm
+                Convert.ToInt32(date.Substring(9, 3)) //ms
                 );
             }
             if (date.Length == 10)
@@ -49,7 +49,7 @@ namespace PolarConverter.BLL.Helpers
                 Convert.ToInt32(date.Substring(0, 2)), //hour
                 Convert.ToInt32(date.Substring(3, 2)), //minutes
                 Convert.ToInt32(date.Substring(6, 2)), //seconds
-                Convert.ToInt32(date.Substring(9, 1) + "00") //mm
+                Convert.ToInt32(date.Substring(9, 1) + "00") //ms
                 );
             }
             if (date.Length == 9)
@@ -59,7 +59,7 @@ namespace PolarConverter.BLL.Helpers
                 Convert.ToInt32(date.Substring(0, 1)), //hour
                 Convert.ToInt32(date.Substring(2, 2)), //minutes
                 Convert.ToInt32(date.Substring(5, 2)), //seconds
-                Convert.ToInt32(date.Substring(8, 1) + "00") //mm
+                Convert.ToInt32(date.Substring(8, 1) + "00") //ms
                 );
             }
             if (date.Length == 8)

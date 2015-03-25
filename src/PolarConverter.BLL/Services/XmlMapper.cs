@@ -45,131 +45,187 @@ namespace PolarConverter.BLL.Services
             }
             if (polarExercise != null && polarExercise.calendaritems != null)
             {
+                PolarData polardata = null;
                 var activites = new List<Activity_t>();
                 foreach (calendaritem calendaritem in polarExercise.calendaritems.Items)
                 {
                     var polarDateTime = calendaritem.time.ToPolarDateTime();
                     var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset * -1)) : DateTime.Now;
-                    var activity = ActivityFactory.CreateActivity(xmlFile.Sport, model.Notes, startTime);
 
-                    var type = calendaritem.GetType();
-                    switch (type.Name)
+                    var data = calendaritem as exercisedata;
+                    if (data == null) return null;
+
+                    var recordingRate = data != null && data.result != null && data.result.recordingrateSpecified ? data.result.recordingrate : 1;
+
+                    if (xmlFile.GpxFile != null && recordingRate > 0)
                     {
-                        case "exercisedata":
+                        polardata = new PolarData
+                        {
+                            RecordingRate = recordingRate,
+                            StartTime = startTime,
+                            GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.Uid),
+                            UploadViewModel = model,
+                            InvertedOffset = model.TimeZoneOffset * -1
+                        };
+                    }
+
+                    var v02max = 0d;
+                    if (data.result != null)
+                    {
+                        if (data.result.usersettings != null && data.result.usersettings.vo2maxSpecified)
+                        {
+                            v02max = data.result.usersettings.vo2max;
+                            if (data.result.usersettings.weightSpecified)
                             {
-                                var data = calendaritem as exercisedata;
-                                var recordingRate = data != null && data.result != null &&
-                                                    data.result.recordingrateSpecified
-                                    ? data.result.recordingrate
-                                    : 1;
-                                if (data != null && data.result != null)
+                                v02max = v02max * data.result.usersettings.weight;
+                            }
+                            else
+                            {
+                                v02max = v02max * model.Weight;
+                            }
+                        }
+                    }
+
+                    if (data.sportresults != null)
+                    {
+                        var previousDuration = TimeSpan.FromSeconds(0);
+                        foreach (sportresult sportresult in data.sportresults)
+                        {
+                            var sportInput = sportresult.sport.ToLower();
+                            var sport = sportInput.Contains("biking") || sportInput.Contains("cycling") ? "Biking" : (sportInput.Contains("running") ? "Running" : xmlFile.Sport);
+                            var sportResultActivity = ActivityFactory.CreateActivity(sport, model.Notes, startTime.Add(previousDuration));
+                            var startRange = 0;
+                            var previousRange = 0;
+                            if (sportresult.laps != null)
+                            {
+                                sportResultActivity.Lap = CollectLapsData(sportresult.laps, startTime.Add(previousDuration), v02max);
+                            }
+                            else if (sportresult.autolaps != null)
+                            {
+                                sportResultActivity.Lap = CollectLapsData(sportresult.autolaps, startTime.Add(previousDuration), v02max);
+                            }
+                            var totalLapDuration = sportResultActivity.Lap.Sum(l => l.TotalTimeSeconds);
+                            var lastIndex = Convert.ToInt32(Math.Floor(totalLapDuration / recordingRate));
+                            var valueData = sportresult.samples;
+                            if (valueData != null)
+                            {
+                                var valueLength = valueData.Max(vd => vd.values.Count(c => c == ',')) + 1;
+                                if (IsAbundantRemainingData(valueLength, lastIndex))
                                 {
-                                    var v02max = 0d;
-                                    if (data.result.usersettings != null && data.result.usersettings.vo2maxSpecified)
+                                    var lapDuration = (valueLength - lastIndex) * recordingRate;
+                                    var laps = sportResultActivity.Lap.ToList();
+                                    laps.Add(GenerateExtraLap(valueData, lapDuration, startTime.AddSeconds(totalLapDuration), v02max, recordingRate, lastIndex));
+                                    // use generateLapFromData to fill in values.
+                                    sportResultActivity.Lap = laps.ToArray();
+                                }
+                            }
+
+                            if (sportresult.samples != null)
+                            {
+                                foreach (var lap in sportResultActivity.Lap)
+                                {
+                                    lap.Track = CollectSampleData(sportresult.samples, startTime,
+                                        recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+                                    startRange += lap.Track.Length;
+                                }
+                            }
+                            previousDuration.Add(sportresult.duration.ToTimeSpan());
+                            if (polardata != null)
+                            {
+                                var lapLength = previousRange;
+                                foreach (var lap in sportResultActivity.Lap.Where(l => l != null))
+                                {
+                                    var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate));
+                                    var gpsData = _gpxService.CollectGpxData(polardata, lap.StartTime, lapLength, lapLength + length);
+                                    lapLength+= lap.Track.Length;
+                                    for (int i = 0; i < lap.Track.Length; i++)
                                     {
-                                        v02max = data.result.usersettings.vo2max;
-                                        if (data.result.usersettings.weightSpecified)
+                                        if (gpsData.Length <= i || gpsData[i] == null) break;
+                                        lap.Track[i].Position = new Position_t
                                         {
-                                            v02max = v02max * data.result.usersettings.weight;
-                                        }
-                                        else
+                                            LatitudeDegrees = Convert.ToDouble(gpsData[i].Lat),
+                                            LongitudeDegrees = Convert.ToDouble(gpsData[i].Lon)
+                                        };
+                                        if (gpsData[i].Altitude.HasValue)
                                         {
-                                            v02max = v02max * 80;
-                                        }
-                                    }
-                                    if (data.result.laps != null)
-                                    {
-                                        activity.Lap = CollectLapsData(data.result.laps, startTime, v02max);
-                                    }
-                                    else if (data.result.autolaps != null)
-                                    {
-                                        activity.Lap = CollectLapsData(data.result.autolaps, startTime, v02max);
-                                    }
-                                    else
-                                    {
-                                        activity.Lap = GenerateLapFromData(data.result, startTime, v02max);
-                                    }
-                                    if (data.result.samples != null)
-                                    {
-                                        var startRange = 0;
-                                        var totalLapDuration = activity.Lap.Sum(l => l.TotalTimeSeconds);
-                                        var lastIndex = Convert.ToInt32(Math.Floor(totalLapDuration / recordingRate));
-                                        var valueData = data.result.samples;
-                                        if (valueData != null)
-                                        {
-                                            var valueLength = valueData.Max(vd => vd.values.Count(c => c == ',')) + 1;
-                                            if (IsAbundantRemainingData(valueLength, lastIndex))
-                                            {
-                                                var lapDuration = (valueLength - lastIndex) * recordingRate;
-                                                var laps = activity.Lap.ToList();
-                                                laps.Add(GenerateExtraLap(valueData, lapDuration, startTime.AddSeconds(totalLapDuration), v02max, recordingRate, lastIndex));
-                                                // use generateLapFromData to fill in values.
-                                                activity.Lap = laps.ToArray();
-                                            }
-                                        }
-                                        foreach (var lap in activity.Lap)
-                                        {
-                                            lap.Track = CollectSampleData(data.result.samples, startTime,
-                                                recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
-                                            startRange += lap.Track.Length;
-                                        }
-                                    }
-                                    else if (data.sportresults != null)
-                                    {
-                                        var startRange = 0;
-                                        foreach (var sportResult in data.sportresults)
-                                        {
-                                            if (sportResult.samples != null)
-                                            {
-                                                foreach (var lap in activity.Lap)
-                                                {
-                                                    lap.Track = CollectSampleData(sportResult.samples, startTime,
-                                                        recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
-                                                    startRange += lap.Track.Length;
-                                                }
-                                            }
+                                            lap.Track[i].AltitudeMetersSpecified = true;
+                                            lap.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
                                         }
                                     }
                                 }
-                                if (xmlFile.GpxFile != null && recordingRate > 0)
+                            }
+                            previousRange = startRange;
+                            activites.Add(sportResultActivity);
+                        }
+                    }
+                    else if (data.result != null)
+                    {
+                        var activity = ActivityFactory.CreateActivity(xmlFile.Sport, model.Notes, startTime);
+                        if (data.result.laps != null)
+                        {
+                            activity.Lap = CollectLapsData(data.result.laps, startTime, v02max);
+                        }
+                        else if (data.result.autolaps != null)
+                        {
+                            activity.Lap = CollectLapsData(data.result.autolaps, startTime, v02max);
+                        }
+                        else
+                        {
+                            activity.Lap = GenerateLapFromData(data.result, startTime, v02max);
+                        }
+                        if (data.result.samples != null)
+                        {
+                            var startRange = 0;
+                            var totalLapDuration = activity.Lap.Sum(l => l.TotalTimeSeconds);
+                            var lastIndex = Convert.ToInt32(Math.Floor(totalLapDuration / recordingRate));
+                            var valueData = data.result.samples;
+                            if (valueData != null)
+                            {
+                                var valueLength = valueData.Max(vd => vd.values.Count(c => c == ',')) + 1;
+                                if (IsAbundantRemainingData(valueLength, lastIndex))
                                 {
-                                    var startRange = 0;
-                                    var polardata = new PolarData
+                                    var lapDuration = (valueLength - lastIndex) * recordingRate;
+                                    var laps = activity.Lap.ToList();
+                                    laps.Add(GenerateExtraLap(valueData, lapDuration, startTime.AddSeconds(totalLapDuration), v02max, recordingRate, lastIndex));
+                                    // use generateLapFromData to fill in values.
+                                    activity.Lap = laps.ToArray();
+                                }
+                            }
+                            foreach (var lap in activity.Lap)
+                            {
+                                lap.Track = CollectSampleData(data.result.samples, startTime,
+                                    recordingRate, startRange, startRange + Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate)));
+                                startRange += lap.Track.Length;
+                            }
+                        }
+
+
+                        if (polardata != null)
+                        {
+                            var startRange = 0;
+
+                            foreach (var lap in activity.Lap.Where(l => l != null))
+                            {
+                                var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate));
+                                var gpsData = _gpxService.CollectGpxData(polardata, lap.StartTime, startRange, startRange + length);
+                                startRange += lap.Track.Length;
+                                for (int i = 0; i < lap.Track.Length; i++)
+                                {
+                                    if (gpsData.Length <= i || gpsData[i] == null) break;
+                                    lap.Track[i].Position = new Position_t
                                     {
-                                        RecordingRate = recordingRate,
-                                        StartTime = startTime,
-                                        GpxData = _gpxService.MapGpxFile(xmlFile.GpxFile, model.Uid),
-                                        UploadViewModel = model,
-										InvertedOffset = model.TimeZoneOffset * -1
-									};
-                                    foreach (var lap in activity.Lap.Where(l => l != null))
+                                        LatitudeDegrees = Convert.ToDouble(gpsData[i].Lat),
+                                        LongitudeDegrees = Convert.ToDouble(gpsData[i].Lon)
+                                    };
+                                    if (gpsData[i].Altitude.HasValue)
                                     {
-                                        var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate));
-                                        var gpsData = _gpxService.CollectGpxData(polardata, lap.StartTime, startRange, startRange +                 length);
-                                        startRange += lap.Track.Length;
-                                        for (int i = 0; i < lap.Track.Length; i++)
-                                        {
-                                            if (gpsData.Length <= i || gpsData[i] == null) break;
-                                            lap.Track[i].Position = new Position_t
-                                            {
-                                                LatitudeDegrees = Convert.ToDouble(gpsData[i].Lat),
-                                                LongitudeDegrees = Convert.ToDouble(gpsData[i].Lon)
-                                            };
-                                            if (gpsData[i].Altitude.HasValue)
-                                            {
-                                                lap.Track[i].AltitudeMetersSpecified = true;
-                                                lap.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
-                                            }
-                                        }
+                                        lap.Track[i].AltitudeMetersSpecified = true;
+                                        lap.Track[i].AltitudeMeters = Convert.ToDouble(gpsData[i].Altitude.Value);
                                     }
                                 }
-                                activites.Add(activity);
-                                break;
                             }
-                        default:
-                            {
-                                break;
-                            }
+                        }
+                        activites.Add(activity);
                     }
                 }
                 var trainingCenter = TrainingCenterFactory.CreateTrainingCenterDatabase(activites.ToArray());
@@ -222,34 +278,34 @@ namespace PolarConverter.BLL.Services
                     case sampleType.SPEED:
                         {
                             var values = ConvertToValues(sample.values).Skip(valuesToskip).ToList();
-							if (values.Count > 0)
-							{
-								lap.speed = new floatrange
-								{
-									averageSpecified = true,
-									average = (float)values.Average(),
-									maximumSpecified = true,
-									maximum = (float)values.Max(),
-									minimumSpecified = true,
-									minimum = (float)values.Min()
-								};
-								if (!samples.Any(s => s.type == sampleType.DISTANCE))
-								{
-									var meters = values.Sum() / 0.06f / 60 * recordingRate;
-									lap.distanceSpecified = true;
-									lap.distance = (float)meters;
-								}
-							}
-							else
-							{
-								lap.speed = new floatrange
-								{
-									averageSpecified = false,
-									maximumSpecified = false,
-									minimumSpecified = false
-								};
-								lap.distanceSpecified = false;
-							}
+                            if (values.Count > 0)
+                            {
+                                lap.speed = new floatrange
+                                {
+                                    averageSpecified = true,
+                                    average = (float)values.Average(),
+                                    maximumSpecified = true,
+                                    maximum = (float)values.Max(),
+                                    minimumSpecified = true,
+                                    minimum = (float)values.Min()
+                                };
+                                if (!samples.Any(s => s.type == sampleType.DISTANCE))
+                                {
+                                    var meters = values.Sum() / 0.06f / 60 * recordingRate;
+                                    lap.distanceSpecified = true;
+                                    lap.distance = (float)meters;
+                                }
+                            }
+                            else
+                            {
+                                lap.speed = new floatrange
+                                {
+                                    averageSpecified = false,
+                                    maximumSpecified = false,
+                                    minimumSpecified = false
+                                };
+                                lap.distanceSpecified = false;
+                            }
                             break;
                         }
                     case sampleType.CADENCE:
