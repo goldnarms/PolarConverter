@@ -61,24 +61,30 @@ var PolarConverter;
                 this.initalized = true;
             }
             this.$scope.$safeApply(function () {
-                var birthdate = $("#uv_birthDate") ? moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss") : moment().subtract("years", 33);
+                var lsKeys = _this.storage.keys();
+                var age = $("#uv_birthDate").val() ? Math.floor(moment().diff(moment($("#uv_birthDate").val(), "DD.MM.YYYY HH:mm:ss"), 'years', true)) : (_.contains(lsKeys, "age") ? parseInt(_this.storage.get("age"), 10) : 33);
                 _this.uploadViewModel = {
                     polarFiles: [],
-                    forceGarmin: $("#uv_forceGarmin") ? ($("#uv_forceGarmin").val() === "True" ? true : false) : false,
-                    gender: $("#uv_isMale") ? ($("#uv_isMale").val() === "True" ? "M" : "F") : "M",
-                    weight: $("#uv_weight") ? parseFloat($("#uv_weight").val()) : 0,
-                    weightMode: $("#uv_preferKg") ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : "kg",
-                    age: Math.floor(moment().diff(birthdate, 'years', true))
+                    forceGarmin: $("#uv_forceGarmin").val() ? ($("#uv_forceGarmin").val() === "True" ? true : false) : (_.contains(lsKeys, "forceGarmin") ? _this.storage.get("forceGarmin") === "true" : false),
+                    gender: $("#uv_isMale").val() ? ($("#uv_isMale").val() === "True" ? "M" : "F") : (_.contains(lsKeys, "gender") ? _this.storage.get("gender") : "M"),
+                    weight: $("#uv_weight").val() ? parseFloat($("#uv_weight").val()) : (_.contains(lsKeys, "weight") ? parseFloat(_this.storage.get("weight")) : 0),
+                    weightMode: $("#uv_preferKg").val() ? ($("#uv_preferKg").val() === "True" ? "kg" : "lbs") : (_.contains(lsKeys, "weightMode") ? _this.storage.get("weightMode") : "kg"),
+                    age: age
                 };
                 if ($("#uv_timezoneOffset") && $("#uv_timezoneOffset").val()) {
-                    console.log("Timezone not null: " + $("#uv_timezoneOffset").val());
                     _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
                         return tz.offset === parseFloat($("#uv_timezoneOffset").val());
                     });
                 }
+                else if (_.contains(lsKeys, "timezone")) {
+                    var timezone = parseFloat(_this.storage.get("timezone"));
+                    _this.selectedTimeZone = _.find(_this.timeZones, function (tz) {
+                        return tz.offset == timezone;
+                    });
+                }
                 else {
                     $.get("http://ipinfo.io", function (response) {
-                        if (!$("#uv_preferKg")) {
+                        if (!$("#uv_preferKg").val() && !_.contains(lsKeys, "weightMode")) {
                             _this.setWeightTypeBasedOnCountry(response.country);
                         }
                         var loc = response.loc;
@@ -238,7 +244,6 @@ var PolarConverter;
         };
         UploadController.prototype.setTimeZoneOffset = function (timeZone) {
             this.uploadViewModel.timeZoneOffset = timeZone.offset;
-            this.storage.add("TimeZoneOffset", timeZone.offset);
         };
         UploadController.prototype.convert = function (uploadViewModel) {
             var _this = this;
@@ -248,7 +253,13 @@ var PolarConverter;
             this.uploadViewModel.polarFiles = _.filter(this.uploadedFiles, function (uf) {
                 return uf.checked;
             });
-            this.common.log.info("Sent to uplpoad: " + JSON.stringify(this.uploadViewModel));
+            //this.common.log.info("Sent to uplpoad: " + JSON.stringify(this.uploadViewModel));
+            this.storage.add("forceGarmin", this.uploadViewModel.forceGarmin);
+            this.storage.add("weight", this.uploadViewModel.weight);
+            this.storage.add("weightMode", this.uploadViewModel.weightMode);
+            this.storage.add("gender", this.uploadViewModel.gender);
+            this.storage.add("age", this.uploadViewModel.age);
+            this.storage.add("timezone", this.selectedTimeZone.offset);
             this.uploadViewModel.timeZoneOffset = this.selectedTimeZone.offset;
             this.userService.getUserId().then(function (userId) {
                 _this.uploadViewModel.uid = userId.data;
