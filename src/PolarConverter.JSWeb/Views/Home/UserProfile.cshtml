@@ -20,7 +20,7 @@
 				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Dropbox))
 				{
 					<p>
-						<em>Dropbox connected</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 2 }, null)
+						<em>Dropbox connected</em> [@Html.ActionLink("Remove", "RemoveProvider", "Services", new { id = 2 }, null)]
 				</p>
 							}
 							else
@@ -34,7 +34,7 @@
 				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Strava))
 				{
 					var stravaUsername = Model.Providers.Find(p => p.ProviderType == ProviderType.Strava).Username;
-							<p><em>Strava connected (@stravaUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 0 }, null)</p>
+							<p><em>Strava connected (@stravaUsername)</em> [@Html.ActionLink("Remove", "RemoveProvider", "Services", new { id = 0 }, null)]</p>
 							}
 							else
 							{
@@ -46,7 +46,7 @@
 				if (Model.Providers.Exists(p => p.ProviderType == ProviderType.Runkeeper))
                 {
 							var runkeeperUsername = Model.Providers.Find(p => p.ProviderType == ProviderType.Runkeeper).Username;
-                            <p><em>Runkeeper connected (@runkeeperUsername)</em> @Html.ActionLink("[Remove]", "RemoveProvider", "Services", new { id = 1 }, null)</p>
+                            <p><em>Runkeeper connected (@runkeeperUsername)</em> [@Html.ActionLink("Remove", "RemoveProvider", "Services", new { id = 1 }, null)]</p>
 							}
 							else
 							{

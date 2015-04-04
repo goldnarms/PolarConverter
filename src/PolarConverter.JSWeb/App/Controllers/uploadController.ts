@@ -83,7 +83,7 @@ module PolarConverter {
                 }
             }
 
-            this.tweetText = "I just converted my Polar files to Endomondo compatible files using #polarconverter at ";
+            this.tweetText = "I just converted my @PolarGlobal files to @Endomondo and @Strava compatible files using #polarconverter at";
             this.isMetricWeight = true;
             this.isConverting = false;
             

@@ -173,11 +173,14 @@
 										<a data-ng-href="@Model.BlobPath{{ file.reference }}"><i class="glyphicon glyphicon-file"></i> {{file.name}}</a>
 									</li>
 								</ul>
-								@if (!Request.IsAuthenticated && showUpdate)
+								@if (!Request.IsAuthenticated)
 								{
 									<div class="ad-large">@Html.Partial("Plugins/_GoogleAdLeader")</div>
 									<div class="ad-medium">@Html.Partial("Plugins/_GoogleAdLeader_Medium")</div>
-									<h5 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h5>
+									if (showUpdate)
+									{
+										<h5 class="upgrade-text">@Html.ActionLink("Upgrade", "Register", "Account") to Pro to remove ads and export your workouts to Strava and Runkeeper.</h5>
+									}
 								}
 								else if (Request.IsAuthenticated)
 								{

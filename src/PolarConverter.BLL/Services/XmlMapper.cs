@@ -133,14 +133,14 @@ namespace PolarConverter.BLL.Services
 									startRange += lap.Track.Length;
 								}
 							}
-							previousDuration.Add(sportresult.duration.ToTimeSpan());
+
 							if (polardata != null)
 							{
 								var lapLength = previousRange;
 								foreach (var lap in sportResultActivity.Lap.Where(l => l != null))
 								{
 									var length = Convert.ToInt32(Math.Floor(lap.TotalTimeSeconds / recordingRate));
-									var gpsData = _gpxService.CollectGpxData(polardata, lap.StartTime, lapLength, lapLength + length);
+									var gpsData = _gpxService.CollectGpxData(polardata, lap.StartTime.Add(previousDuration), lapLength, lapLength + length);
 									lapLength += lap.Track.Length;
 									for (int i = 0; i < lap.Track.Length; i++)
 									{
@@ -158,6 +158,7 @@ namespace PolarConverter.BLL.Services
 									}
 								}
 							}
+							previousDuration.Add(sportresult.duration.ToTimeSpan());
 							previousRange = startRange;
 							activites.Add(sportResultActivity);
 						}
@@ -731,14 +732,11 @@ namespace PolarConverter.BLL.Services
 						}
 						break;
 					case sampleType.POWER:
+						
 						var doc = new XmlDocument();
 						for (int i = indexStart; i < indexEnd; i++)
 						{
-							var tpxElement = doc.CreateElement("TPX", @"http://www.garmin.com/xmlschemas/ActivityExtension/v2");
-							var wattElement = doc.CreateElement("Watts");
-							wattElement.Value = sampleData.Value[i].ToString();
-							tpxElement.AppendChild(wattElement);
-							trackPoints[i - startRange].Extensions = new Extensions_t { Any = new[] { tpxElement } };
+							trackPoints[i - startRange].Extensions = DataHelper.WritePowerData(trackPoints[i - startRange].Extensions, sampleData.Value[i].ToString());
 						}
 						break;
 					case sampleType.POWER_PI:
@@ -755,6 +753,11 @@ namespace PolarConverter.BLL.Services
 						}
 						break;
 					case sampleType.TEMPERATURE:
+						var tempDoc = new XmlDocument();
+						for (int i = indexStart; i < indexEnd; i++)
+						{
+							trackPoints[i - startRange].Extensions = DataHelper.WriteTemperature(trackPoints[i - startRange].Extensions, sampleData.Value[i].ToString());
+						}
 						break;
 					case sampleType.DISTANCE:
 						for (int i = indexStart; i < indexEnd; i++)

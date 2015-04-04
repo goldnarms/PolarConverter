@@ -355,7 +355,7 @@ namespace PolarConverter.BLL.Services
                 }
                 if (powerData != null && powerData.Length > j)
                 {
-                    trackData.Extensions = DataHelper.WritePowerData(powerData[j]);
+                    trackData.Extensions = DataHelper.WritePowerData(trackData.Extensions, powerData[j]);
                 }
                 trackData.Time = lap.StartTime.AddSeconds(polarData.RecordingRate * j).ToUniversalTimeZone();
                 lap.Track[j] = trackData;
