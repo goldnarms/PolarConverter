@@ -542,11 +542,11 @@ namespace PolarConverter.BLL.Services
             trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData.HjerteFrekvens };
         }
 
-        private PositionData[] CollectPositionData(PolarData polarData, DateTime starTime, Tuple<int, int> range)
+        private PositionData[] CollectPositionData(PolarData polarData, DateTime startTime, Tuple<int, int> range)
         {
             if (polarData.GpxData != null)
             {
-                var positionData = _gpxService.CollectGpxData(polarData, starTime, range.Item1, range.Item2);
+                var positionData = _gpxService.CollectGpxData(polarData, startTime, range.Item1, range.Item2);
                 return positionData;
             }
             return null;
