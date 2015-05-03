@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PayPal;
 using PayPal.Api;
-using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 
 namespace PolarConverter.BLL.Services
 {
-    public class PayPalService : IPaymentService
+	public class PayPalService : IPaymentService
     {
         private APIContext _apiContext;
         private Plan _subscriptionPlan;
