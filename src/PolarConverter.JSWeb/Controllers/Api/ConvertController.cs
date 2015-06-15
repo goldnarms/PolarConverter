@@ -67,7 +67,7 @@ namespace PolarConverter.JSWeb.Controllers.Api
 						var userId = uploadViewModel.Uid;
 						var exportFileData = new ServiceController.ExportFileData
 						{
-							FromDropbox = false,
+							FromDropbox = db.,
 							Name = tcxFileReference.Value,
 							Provider = "Runkeeper",
 							Reference = tcxFileReference.Key,
@@ -81,17 +81,24 @@ namespace PolarConverter.JSWeb.Controllers.Api
 								exportFileData.Provider = "Runkeeper";
 								serviceController.ExportToRunkeeper(runkeeperToken.Token, exportFileData);
 							}
-							catch (Exception)
+							catch (Exception ex)
 							{
-								throw new Exception("Could not export to Runkeeper.");
+								throw new Exception("Could not export to Runkeeper, " + ex.Message);
 							}
                         }
 
 						var stravaToken = db.OauthTokens.SingleOrDefault(oa => oa.UserId == userId && oa.ProviderType == ProviderType.Strava);
 						if (stravaToken != null)
 						{
-							exportFileData.Provider = "Strava";
-							serviceController.ExportToStrava(stravaToken.Token, exportFileData);
+							try
+							{
+								exportFileData.Provider = "Strava";
+								serviceController.ExportToStrava(stravaToken.Token, exportFileData);
+							}
+							catch (Exception ex)
+							{
+								throw new Exception("Could not export to Strava, " + ex.Message);
+							}
 						}
                     }
                     try

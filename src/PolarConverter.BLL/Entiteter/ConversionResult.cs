@@ -12,5 +12,6 @@ namespace PolarConverter.BLL.Entiteter
         public string Reference { get; set; }
         public List<string> ErrorMessages { get; set; }
         public Dictionary<string, string> TcxReferences { get; set; }
-    }
+		public bool FromDropbox { get; set; }
+	}
 }

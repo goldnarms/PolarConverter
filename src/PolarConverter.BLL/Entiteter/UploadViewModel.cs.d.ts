@@ -17,8 +17,10 @@
 				name: string;
 				reference: string;
 				version: string;
+				fromDropbox: boolean;
 			};
 			note: string;
+			fromDropbox: boolean;
 		}[];
 		notes: string;
 	}
