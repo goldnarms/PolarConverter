@@ -17,9 +17,7 @@ var PolarConverter;
             this.link = function (scope, element, attrs) { return _this.linkFn(scope, element, attrs); };
         }
         ShareOnGooglePlus.prototype.injection = function () {
-            return ["$location", function ($location) {
-                return new ShareOnGooglePlus($location);
-            }];
+            return ["$location", function ($location) { return new ShareOnGooglePlus($location); }];
         };
         ShareOnGooglePlus.prototype.linkFn = function (scope, element, attrs) {
             var url = "https://plus.google.com/share";

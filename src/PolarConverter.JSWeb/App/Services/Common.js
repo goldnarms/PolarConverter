@@ -33,7 +33,12 @@ var PolarConverter;
         CommonService.prototype.escapeHtml = function (str) {
             /*Returns a string that can safely be placed into attributes and into elements
             without being interpreted as HTML by the browser. */
-            return String(str).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
         };
         CommonService.$inject = ["$q", "$log", "$timeout", "$location", "cfpLoadingBar"];
         return CommonService;

@@ -67,7 +67,6 @@ namespace PolarConverter.JSWeb.Controllers.Api
 						var userId = uploadViewModel.Uid;
 						var exportFileData = new ServiceController.ExportFileData
 						{
-							FromDropbox = db.,
 							Name = tcxFileReference.Value,
 							Provider = "Runkeeper",
 							Reference = tcxFileReference.Key,

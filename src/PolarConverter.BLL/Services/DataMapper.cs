@@ -10,6 +10,7 @@ using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 using System.Globalization;
 using PolarConverter.DAL.Models;
+using System.Text.RegularExpressions;
 
 namespace PolarConverter.BLL.Services
 {
@@ -107,7 +108,7 @@ namespace PolarConverter.BLL.Services
                                      (modus == "Mode" && modusValue.Substring(1, 1) == "1");
                 polardata.HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1";
             }
-            var interval = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
+            var interval = Convert.ToInt32(Regex.Match(StringHelper.HentVerdi("Interval=", 3, hrmData), @"\d+").Value);
             var tabs = 0;
             var noteData = StringHelper.LesLinjer(hrmData, "[Note]", out tabs);
             var noteText = new StringBuilder();
@@ -500,15 +501,17 @@ namespace PolarConverter.BLL.Services
                 {
                     speedValue = 200;
                 }
-                if (imperial && speedValue * Converters.MphToKmh > maxSpeed || speedValue > maxSpeed)
+
+                var meterPerSecond = speedValue * (imperial ? Converters.MphToMs : Converters.HmhToMs);
+                if(meterPerSecond > maxSpeed)
                 {
-                    maxSpeed = imperial ? speedValue * Converters.MphToKmh : speedValue;
-                    maxSpeed = maxSpeed * 0.1;
+                    maxSpeed = meterPerSecond;
                 }
+
                 // Calculate distanse
                 if (!trackData.DistanceMetersSpecified)
                 {
-                    var distance = speedValue * (imperial ? Converters.MphToMs : Converters.HmhToMs) * interval;
+                    var distance = meterPerSecond * interval;
                     distanceLogged += distance;
                     trackData.DistanceMetersSpecified = true;
                     trackData.DistanceMeters = distanceLogged;
