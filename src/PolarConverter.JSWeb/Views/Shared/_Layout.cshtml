@@ -18,10 +18,15 @@
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
     <meta name="description" content="Convert your Polar files to Endomondo and Strava compatible files." />
+	<script type="text/javascript">
+    if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = '';
+    }
+	</script>
 </head>
 <body data-ng-app="polarApp">
     @{
-        var showUpdate = true;
+        var showUpdate = false;
     }
     @Html.Partial("Plugins/_FacebookSdk")
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -45,6 +50,7 @@
                         <li>@Html.ActionLink("User profile", "UserProfile", "Home")</li>
                     }
                     <li>@Html.ActionLink("F.A.Q.", "Faq", "Home")</li>
+					<li>@Html.ActionLink("Donate", "Donate", "Home")</li>
                     <li>@Html.ActionLink("Changelog", "Changelog", "Home")</li>
                 </ul>
                 @if (showUpdate)

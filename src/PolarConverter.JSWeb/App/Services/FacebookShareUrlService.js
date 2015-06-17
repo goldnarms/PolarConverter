@@ -5,9 +5,7 @@ var PolarConverter;
     var FacebookShareService = (function () {
         function FacebookShareService() {
         }
-        FacebookShareService.prototype.injection = function () {
-            return [FacebookShareService];
-        };
+        FacebookShareService.prototype.injection = function () { return [FacebookShareService]; };
         FacebookShareService.prototype.openDialogue = function () {
             return this.facebookShareUrl({
                 "name": "PolarConverter",

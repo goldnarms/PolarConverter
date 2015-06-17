@@ -101,7 +101,7 @@ namespace PolarConverter.BLL.Services
                         }
                         if (gpx.trk != null && gpx.trk.Length > 0 && endRange > 0 && endRange > startRange)
                         {
-                            SetPositionDataFromGpx(gpx.trk[0].trkseg, startIndex, endRange - startRange, ref positionData, polarData.InvertedOffset, offsetInHours);
+                            SetPositionDataFromGpx(gpx.trk[0].trkseg, startIndex, endRange - startRange, ref positionData, polarData.InvertedOffset, offsetInHours, polarData.RecordingRate);
                         }
                         break;
                     }
@@ -136,7 +136,7 @@ namespace PolarConverter.BLL.Services
                         if (endRange > 0 && endRange > startRange)
                         {
                             SetPositionDataFromGpx(combinedPoints, startIndex, endRange - startRange, ref positionData,
-                                polarData.InvertedOffset, offsetInHours);
+                                polarData.InvertedOffset, offsetInHours, polarData.RecordingRate);
                         }
                         break;
                     }
@@ -233,31 +233,51 @@ namespace PolarConverter.BLL.Services
         }
 
         private void SetPositionDataFromGpx<T>(T[] pointData, int index, int length, ref PositionData[] positionData,
-            double timezoneOffset, int timeDifference) where T : ITrackPoint
+            double timezoneOffset, int timeDifference, int interval) where T : ITrackPoint
         {
             //Note: ta inn index og length istede for start, end
-            var gpsData = RangeHelper.GetRange(pointData, index < 0 ? 0 : index, length);
+			var gpxLength = pointData.Length - (index < 0 ? 0 : index);
+            var gpsData = RangeHelper.GetRange(pointData, index < 0 ? 0 : index, gpxLength);
             if (gpsData == null)
             {
                 return;
             }
+			DateTime? pointTime = null;
+			var gpxIndex = 0;
             for (int i = 0; i < length; i++)
             {
-                //var gpxIndex = i + index;
-                if (i < 0)
+				if (i < 0)
                 {
                     // Fill in firstposition
                     positionData[i] = MapPositionData(gpsData.First(), timezoneOffset, timeDifference);
                 }
-                else if (i < gpsData.Length)
+                else if (gpxIndex < gpxLength)
                 {
-                    positionData[i] = MapPositionData(gpsData[i], timezoneOffset, timeDifference);
+					if (gpsData[gpxIndex].timeSpecified)
+					{
+						if (i == 0)
+							pointTime = gpsData[0].time;
+						else if (pointTime.HasValue)
+							pointTime = pointTime.Value.AddSeconds(interval);
+
+						while (pointTime.HasValue && gpsData[gpxIndex].time <= pointTime.Value && (gpxIndex + 1) < gpxLength)
+						{
+							gpxIndex++;
+						}
+					}
+					else
+						gpxIndex++;
+
+					var gpxData = gpsData[gpxIndex];
+                    positionData[i] = MapPositionData(gpxData, timezoneOffset, timeDifference);
+					if(gpxData.timeSpecified && !pointTime.HasValue)
+						pointTime = gpxData.time;
                 }
                 else
                 {
                     positionData[i] = MapPositionData(gpsData.Last(), timezoneOffset, timeDifference);
                 }
-            }
+			}
         }
 
         private PositionData MapPositionData<T>(T trackPoint, double timezoneOffset, int difference) where T : ITrackPoint

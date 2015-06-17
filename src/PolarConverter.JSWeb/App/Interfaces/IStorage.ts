@@ -6,5 +6,6 @@ module PolarConverter {
         get(key: string): any;
         remove(key: string): boolean;
         clearAll(): void;
+		keys(): string[];
     }
 }

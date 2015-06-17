@@ -11,6 +11,6 @@
         public string Gender { get; set; }
         public bool ForceGarmin { get; set; }
         public PolarFile[] PolarFiles { get; set; }
-        public string Notes { get; set; }
-    }
+		public string Notes { get; set; }
+	}
 }

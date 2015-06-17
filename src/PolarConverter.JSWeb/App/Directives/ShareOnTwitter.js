@@ -20,9 +20,7 @@ var PolarConverter;
             this.link = function (scope, element, attrs) { return _this.linkFn(scope, element, attrs); };
         }
         ShareOnTwitter.prototype.injection = function () {
-            return ["$location", function ($location) {
-                return new ShareOnTwitter($location);
-            }];
+            return ["$location", function ($location) { return new ShareOnTwitter($location); }];
         };
         ShareOnTwitter.prototype.linkFn = function (scope, element, attrs) {
             var _this = this;

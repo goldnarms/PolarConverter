@@ -15,15 +15,19 @@ var PolarConverter;
         };
         UserFilesController.prototype.exportToStrava = function (file) {
             var _this = this;
-            this.fileService.exportToService("Strava", file.reference, file.name, this.userId, file.fromDropbox).success(function () {
-            }).catch(function (error) {
+            this.fileService.exportToService("Strava", file.reference, file.name, this.userId, file.fromDropbox)
+                .success(function () {
+            })
+                .catch(function (error) {
                 _this.common.log.error("Error: " + error);
             });
         };
         UserFilesController.prototype.exportToRunkeeper = function (file) {
             var _this = this;
-            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId, file.fromDropbox).success(function () {
-            }).catch(function (error) {
+            this.fileService.exportToService("Runkeeper", file.reference, file.name, this.userId, file.fromDropbox)
+                .success(function () {
+            })
+                .catch(function (error) {
                 _this.common.log.error("Error: " + error);
             });
         };
@@ -38,7 +42,8 @@ var PolarConverter;
                         return { name: pf.name, reference: pf.reference };
                     });
                     _this.cfpLoadingBar.complete();
-                }).catch(function (error) {
+                })
+                    .catch(function (error) {
                     _this.cfpLoadingBar.complete();
                     _this.common.log.error(error);
                 });

@@ -10,6 +10,7 @@ using PolarConverter.BLL.Helpers;
 using PolarConverter.BLL.Interfaces;
 using System.Globalization;
 using PolarConverter.DAL.Models;
+using System.Text.RegularExpressions;
 
 namespace PolarConverter.BLL.Services
 {
@@ -107,7 +108,7 @@ namespace PolarConverter.BLL.Services
                                      (modus == "Mode" && modusValue.Substring(1, 1) == "1");
                 polardata.HarPower = modus == "SMode" && modusValue.Substring(3, 1) == "1";
             }
-            var interval = Convert.ToInt32(StringHelper.HentVerdi("Interval=", 3, hrmData).Trim());
+            var interval = Convert.ToInt32(Regex.Match(StringHelper.HentVerdi("Interval=", 3, hrmData), @"\d+").Value);
             var tabs = 0;
             var noteData = StringHelper.LesLinjer(hrmData, "[Note]", out tabs);
             var noteText = new StringBuilder();
@@ -355,7 +356,7 @@ namespace PolarConverter.BLL.Services
                 }
                 if (powerData != null && powerData.Length > j)
                 {
-                    trackData.Extensions = DataHelper.WritePowerData(powerData[j]);
+                    trackData.Extensions = DataHelper.WritePowerData(trackData.Extensions, powerData[j]);
                 }
                 trackData.Time = lap.StartTime.AddSeconds(polarData.RecordingRate * j).ToUniversalTimeZone();
                 lap.Track[j] = trackData;
@@ -500,15 +501,17 @@ namespace PolarConverter.BLL.Services
                 {
                     speedValue = 200;
                 }
-                if (imperial && speedValue * Converters.MphToKmh > maxSpeed || speedValue > maxSpeed)
+
+                var meterPerSecond = speedValue * (imperial ? Converters.MphToMs : Converters.HmhToMs);
+                if(meterPerSecond > maxSpeed)
                 {
-                    maxSpeed = imperial ? speedValue * Converters.MphToKmh : speedValue;
-                    maxSpeed = maxSpeed * 0.1;
+                    maxSpeed = meterPerSecond;
                 }
+
                 // Calculate distanse
                 if (!trackData.DistanceMetersSpecified)
                 {
-                    var distance = speedValue * (imperial ? Converters.MphToMs : Converters.HmhToMs) * interval;
+                    var distance = meterPerSecond * interval;
                     distanceLogged += distance;
                     trackData.DistanceMetersSpecified = true;
                     trackData.DistanceMeters = distanceLogged;
@@ -542,11 +545,11 @@ namespace PolarConverter.BLL.Services
             trackData.HeartRateBpm = new HeartRateInBeatsPerMinute_t { Value = heartRateData.HjerteFrekvens };
         }
 
-        private PositionData[] CollectPositionData(PolarData polarData, DateTime starTime, Tuple<int, int> range)
+        private PositionData[] CollectPositionData(PolarData polarData, DateTime startTime, Tuple<int, int> range)
         {
             if (polarData.GpxData != null)
             {
-                var positionData = _gpxService.CollectGpxData(polarData, starTime, range.Item1, range.Item2);
+                var positionData = _gpxService.CollectGpxData(polarData, startTime, range.Item1, range.Item2);
                 return positionData;
             }
             return null;
