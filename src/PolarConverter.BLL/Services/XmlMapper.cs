@@ -89,13 +89,13 @@ namespace PolarConverter.BLL.Services
                     if (data.sportresults != null)
                     {
                         var previousDuration = TimeSpan.FromSeconds(0);
+                        var previousRange = 0;
                         foreach (sportresult sportresult in data.sportresults)
                         {
                             var sportInput = sportresult.sport.ToLower();
                             var sport = sportInput.Contains("biking") || sportInput.Contains("cycling") ? "Biking" : (sportInput.Contains("running") ? "Running" : xmlFile.Sport);
                             var sportResultActivity = ActivityFactory.CreateActivity(sport, model.Notes, startTime.Add(previousDuration));
                             var startRange = 0;
-                            var previousRange = 0;
                             if (sportresult.laps != null)
                             {
                                 sportResultActivity.Lap = CollectLapsData(sportresult.laps, startTime.Add(previousDuration), v02max);
@@ -154,7 +154,7 @@ namespace PolarConverter.BLL.Services
                                     }
                                 }
                             }
-                            previousRange = startRange;
+                            previousRange += startRange;
                             activites.Add(sportResultActivity);
                         }
                     }
