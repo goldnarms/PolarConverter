@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22512.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.BLL", "PolarConverter.BLL\PolarConverter.BLL.csproj", "{B22CD80D-5630-44A6-87F4-1CBB8AD31275}"
 EndProject
@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{95B629
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.Win", "PolarConverter.Win\PolarConverter.Win.csproj", "{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarConverter.JSWeb", "PolarConverter.JSWeb\PolarConverter.JSWeb.csproj", "{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}"
 EndProject
@@ -86,30 +84,6 @@ Global
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Staging|x64.Build.0 = Staging|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Staging|x86.ActiveCfg = Staging|Any CPU
 		{6175550E-89BD-4F54-9DC8-919FC4EAC3DB}.Staging|x86.Build.0 = Staging|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.ActiveCfg = Debug|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.Build.0 = Debug|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|ARM.Deploy.0 = Debug|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x64.ActiveCfg = Debug|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x64.Build.0 = Debug|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x64.Deploy.0 = Debug|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x86.ActiveCfg = Debug|x86
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x86.Build.0 = Debug|x86
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Debug|x86.Deploy.0 = Debug|x86
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|ARM.ActiveCfg = Release|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|ARM.Build.0 = Release|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|ARM.Deploy.0 = Release|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.ActiveCfg = Release|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.Build.0 = Release|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x64.Deploy.0 = Release|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Release|x86.ActiveCfg = Release|x86
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Staging|Any CPU.ActiveCfg = Release|Any CPU
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Staging|ARM.ActiveCfg = Release|ARM
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Staging|x64.ActiveCfg = Release|x64
-		{E0B16DA8-56A3-43DB-A364-999FBC3CB7BA}.Staging|x86.ActiveCfg = Release|x86
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D20FBB41-2CCD-4AC6-BC6D-DEDF7FA40D32}.Debug|ARM.ActiveCfg = Debug|Any CPU

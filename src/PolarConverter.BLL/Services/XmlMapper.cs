@@ -53,7 +53,7 @@ namespace PolarConverter.BLL.Services
                     var startTime = polarDateTime.HasValue ? polarDateTime.Value.AddMinutes(IntHelper.HentTidsKorreksjon(model.TimeZoneOffset * -1)) : DateTime.Now;
 
                     var data = calendaritem as exercisedata;
-                    if (data == null) return null;
+                    if (data == null) continue;
 
                     var recordingRate = data != null && data.result != null && data.result.recordingrateSpecified ? data.result.recordingrate : 1;
 
@@ -102,8 +102,14 @@ namespace PolarConverter.BLL.Services
                             }
                             else if (sportresult.autolaps != null)
                             {
-                                sportResultActivity.Lap = CollectLapsData(sportresult.autolaps, startTime.Add(previousDuration), v02max);
+                                sportResultActivity.Lap = CollectLapsData(sportresult.autolaps,
+                                    startTime.Add(previousDuration), v02max);
                             }
+                            else
+                            {
+                                sportResultActivity.Lap = CollectLapsData(sportresult, startTime);
+                            }
+
                             var totalLapDuration = sportResultActivity.Lap.Sum(l => l.TotalTimeSeconds);
                             var lastIndex = Convert.ToInt32(Math.Floor(totalLapDuration / recordingRate));
                             var valueData = sportresult.samples;
@@ -496,6 +502,43 @@ namespace PolarConverter.BLL.Services
                 lapStartTime = lapStartTime.Add(lap.duration.ToTimeSpan());
             }
             return lapList.ToArray();
+        }
+
+        private ActivityLap_t[] CollectLapsData(sportresult sportResult, DateTime startTime)
+        {
+            byte zero = 0;
+            var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
+            var sampleDic = sportResult.samples?.ToDictionary(sample => sample.type, sample => Array.ConvertAll(sample.values.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries), s => float.Parse(s, numberFormatInfo)));
+
+            var lapList = new ActivityLap_t[]
+            {
+                new ActivityLap_t
+                {
+                    AverageHeartRateBpm = sportResult.heartrate != null && sportResult.heartrate.averageSpecified ? new HeartRateInBeatsPerMinute_t
+                    {
+                        Value = Convert.ToByte(sportResult.heartrate.average)
+                    } : (sampleDic != null && sampleDic.ContainsKey(sampleType.HEARTRATE) ? new HeartRateInBeatsPerMinute_t
+                    {
+                        Value = Convert.ToByte(sampleDic[sampleType.HEARTRATE].Average())
+                    } : null),
+                    Cadence = sampleDic != null && sampleDic.ContainsKey(sampleType.CADENCE) ? Convert.ToByte(sampleDic[sampleType.CADENCE].Average()) : zero,
+                    CadenceSpecified = sampleDic != null && sampleDic.ContainsKey(sampleType.CADENCE),
+                    Calories = Convert.ToUInt16(sportResult.calories),
+                    DistanceMeters = sportResult.distanceSpecified ? sportResult.distance : 0,
+                    MaximumHeartRateBpm = sportResult.heartrate != null && sportResult.heartrate.maximumSpecified ? new HeartRateInBeatsPerMinute_t
+                    {
+                        Value = Convert.ToByte(sportResult.heartrate.maximum)
+                    } : (sampleDic != null && sampleDic.ContainsKey(sampleType.HEARTRATE) ? new HeartRateInBeatsPerMinute_t
+                    {
+                        Value = Convert.ToByte(sampleDic[sampleType.HEARTRATE].Max())
+                    }  : null),
+                    MaximumSpeed = sampleDic != null && sampleDic.ContainsKey(sampleType.SPEED) ? sampleDic[sampleType.SPEED].Max() : 0,
+                    MaximumSpeedSpecified = sampleDic != null && sampleDic.ContainsKey(sampleType.SPEED),
+                    StartTime = startTime,
+                    TotalTimeSeconds = sportResult.duration.ToTimeSpan().TotalSeconds
+                }
+            };
+            return lapList;
         }
 
         private ActivityLap_t GenerateLap(lap lap, DateTime lapStartTime, double v02max)

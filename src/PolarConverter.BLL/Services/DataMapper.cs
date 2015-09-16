@@ -169,6 +169,7 @@ namespace PolarConverter.BLL.Services
         public void VaskHrData(ref PolarData data)
         {
             int antallTabs;
+            int lastAltitude = 0;
             var hrmVerdier = StringHelper.LesLinjer(data.HrmData, "[HRData]", out antallTabs, true, true);
             if (hrmVerdier.Count == 0)
             {
@@ -200,7 +201,14 @@ namespace PolarConverter.BLL.Services
                     else if (data.HarCadence)
                         data.CadenseData.Add(hrmVerdier[i]);
                     else if (data.HarAltitude)
+                    {
                         data.AltitudeData.Add(hrmVerdier[i]);
+                        if (Convert.ToInt32(hrmVerdier[i]) - lastAltitude > 30)
+                        {
+                            data.AltitudeData = AdjustMissingData(data.AltitudeData);
+                        }
+                        lastAltitude = Convert.ToInt32(hrmVerdier[i]);
+                    }
                     else if (data.HarPower)
                         data.PowerData.Add(hrmVerdier[i]);
                 }
@@ -209,11 +217,25 @@ namespace PolarConverter.BLL.Services
                     if (data.HarSpeed && data.HarCadence)
                         data.CadenseData.Add(hrmVerdier[i]);
                     else if (data.HarSpeed && data.HarAltitude)
+                    {
                         data.AltitudeData.Add(hrmVerdier[i]);
+                        if (Convert.ToInt32(hrmVerdier[i]) - lastAltitude > 30)
+                        {
+                            data.AltitudeData = AdjustMissingData(data.AltitudeData);
+                        }
+                        lastAltitude = Convert.ToInt32(hrmVerdier[i]);
+                    }
                     else if (data.HarSpeed && data.HarPower)
                         data.PowerData.Add(hrmVerdier[i]);
                     else if (data.HarCadence && data.HarAltitude)
+                    {
                         data.AltitudeData.Add(hrmVerdier[i]);
+                        if (Convert.ToInt32(hrmVerdier[i]) - lastAltitude > 30)
+                        {
+                            data.AltitudeData = AdjustMissingData(data.AltitudeData);
+                        }
+                        lastAltitude = Convert.ToInt32(hrmVerdier[i]);
+                    }
                     else if (data.HarCadence && data.HarPower)
                         data.PowerData.Add(hrmVerdier[i]);
                     else if (data.HarAltitude && data.HarPower)
@@ -222,7 +244,14 @@ namespace PolarConverter.BLL.Services
                 else if (i % antallTabs == 3)
                 {
                     if (data.HarSpeed && data.HarCadence && data.HarAltitude)
+                    {
                         data.AltitudeData.Add(hrmVerdier[i]);
+                        if (Convert.ToInt32(hrmVerdier[i]) - lastAltitude > 30)
+                        {
+                            data.AltitudeData = AdjustMissingData(data.AltitudeData);
+                        }
+                        lastAltitude = Convert.ToInt32(hrmVerdier[i]);
+                    }
                     else if (data.HarSpeed && data.HarCadence && data.HarPower)
                         data.PowerData.Add(hrmVerdier[i]);
                 }
@@ -232,6 +261,17 @@ namespace PolarConverter.BLL.Services
                         data.PowerData.Add(hrmVerdier[i]);
                 }
             }
+        }
+
+        private List<string> AdjustMissingData(List<string> data)
+        {
+            var firstReading = data.Last();
+            for (var i = data.Count - 2; i >= 0; i--)
+            {
+                if (data[i] == "0")
+                    data[i] = firstReading;
+            }
+            return data;
         }
 
         private double GetDistanceForSpeed(List<string> values, int index, int interval, bool isImperial)
